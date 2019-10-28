@@ -1,0 +1,12 @@
+Button with round sides:
+brn_round.xml
+
+Button with rounded corners:
+btn_round_corner.xml
+
+Text:
+Font:      @font/montserrat
+Textsize:  16sp
+Color:     @android:color/background_light (#ffffffff)
+Textstyle: android:textStyle="bold"
+Tryk på AllCaps knappen to gange for at disable at alt er AllCaps

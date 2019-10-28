@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <corners android:radius="200dp"/>
+    <corners android:radius="8dp"/>
     <solid android:color="#180B2C"/>
-    <
 </shape>
 
-<!-- https://medium.com/@inibukanadit/androidstarter-1-i-want-a-round-button-636bc5553d6d -->
+    <!-- https://medium.com/@inibukanadit/androidstarter-1-i-want-a-round-button-636bc5553d6d -->
