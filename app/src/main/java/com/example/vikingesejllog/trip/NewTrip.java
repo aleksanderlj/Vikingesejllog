@@ -10,7 +10,7 @@ public class NewTrip extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_trip);
+        setContentView(R.layout.new_harbor);
     }
 
     @Override
