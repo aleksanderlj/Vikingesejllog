@@ -6,12 +6,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Button
-        android:id="@+id/new_note"
+        android:id="@+id/new_journey"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:background="@drawable/btn_round"
-        app:layout_constraintBottom_toTopOf="@+id/fragment3"
+        app:layout_constraintBottom_toTopOf="@+id/bottomMenu"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left" />
 
@@ -39,10 +39,10 @@
         android:textColor="@android:color/background_light"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/new_note"
-        app:layout_constraintEnd_toEndOf="@id/new_note"
-        app:layout_constraintStart_toStartOf="@id/new_note"
-        app:layout_constraintTop_toTopOf="@id/new_note" />
+        app:layout_constraintBottom_toBottomOf="@id/new_journey"
+        app:layout_constraintEnd_toEndOf="@id/new_journey"
+        app:layout_constraintStart_toStartOf="@id/new_journey"
+        app:layout_constraintTop_toTopOf="@id/new_journey" />
 
     <ImageView
         android:id="@+id/imageView10"
@@ -50,9 +50,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@id/new_note"
+        app:layout_constraintBottom_toBottomOf="@id/new_journey"
         app:layout_constraintEnd_toStartOf="@+id/textView7"
-        app:layout_constraintTop_toTopOf="@id/new_note"
+        app:layout_constraintTop_toTopOf="@id/new_journey"
         app:srcCompat="@drawable/new_trip" />
 
     <Button
@@ -68,10 +68,10 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/fragment5" />
+        app:layout_constraintTop_toBottomOf="@+id/topMenu" />
 
     <fragment
-        android:id="@+id/fragment3"
+        android:id="@+id/bottomMenu"
         android:name="com.example.vikingesejllog.BottomMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <fragment
-        android:id="@+id/fragment5"
+        android:id="@+id/topMenu"
         android:name="com.example.vikingesejllog.TopMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

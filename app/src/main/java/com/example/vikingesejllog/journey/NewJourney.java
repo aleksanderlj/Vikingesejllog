@@ -11,13 +11,14 @@ public class NewJourney extends AppCompatActivity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_harbor);
+        setContentView(R.layout.new_journey);
+        findViewById(R.id.button11).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.new_journey:
+            case R.id.button11:
                 this.finish();
                 break;
         }
