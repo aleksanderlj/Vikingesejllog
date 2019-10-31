@@ -1,11 +1,12 @@
-package com.example.vikingesejllog.trip;
+package com.example.vikingesejllog.journey;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.vikingesejllog.R;
 
-public class NewTrip extends AppCompatActivity implements View.OnClickListener {
+public class NewJourney extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +16,10 @@ public class NewTrip extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.new_journey:
+                this.finish();
+                break;
+        }
     }
 }
