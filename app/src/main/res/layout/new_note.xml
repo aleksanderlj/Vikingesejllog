@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/micButton"
         android:layout_width="112dp"
         android:layout_height="78dp"
         android:layout_marginBottom="40dp"
@@ -17,14 +17,14 @@
         app:srcCompat="@drawable/mic" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/pencilButton"
         android:layout_width="112dp"
         android:layout_height="78dp"
         android:layout_marginBottom="40dp"
         android:backgroundTint="#180B2C"
         app:layout_constraintBottom_toTopOf="@+id/button16"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton3"
-        app:layout_constraintStart_toEndOf="@+id/imageButton"
+        app:layout_constraintEnd_toStartOf="@+id/micButton"
+        app:layout_constraintStart_toEndOf="@+id/cameraButton"
         app:srcCompat="@drawable/pencil" />
 
     <TextView
@@ -320,7 +320,7 @@
         app:layout_constraintTop_toBottomOf="@+id/fragment7" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/cameraButton"
         android:layout_width="112dp"
         android:layout_height="78dp"
         android:layout_marginBottom="40dp"
