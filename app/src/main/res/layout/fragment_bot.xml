@@ -10,10 +10,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.25"
+        android:background="@null"
+        android:drawableTop="@drawable/mob"
+        android:fontFamily="@font/montserrat"
         android:gravity="bottom|center"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
         android:text="MOB"
         android:textAllCaps="false"
-        android:textColor="@android:color/background_light" />
+        android:textColor="@android:color/background_light"
+        android:textSize="12sp" />
 
     <Button
         android:id="@+id/button7"
@@ -21,10 +27,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.25"
+        android:background="@null"
+        android:drawableTop="@drawable/map"
+        android:fontFamily="@font/montserrat"
         android:gravity="bottom|center"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
         android:text="Kort"
         android:textAllCaps="false"
-        android:textColor="@android:color/background_light" />
+        android:textColor="@android:color/background_light"
+        android:textSize="12sp" />
 
     <Button
         android:id="@+id/button12"
@@ -32,11 +44,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.25"
+        android:drawableTop="@drawable/list"
         android:fontFamily="@font/montserrat"
         android:gravity="bottom|center"
         android:text="Oversigt"
         android:textAllCaps="false"
-        android:textColor="@android:color/background_light" />
+        android:textColor="@android:color/background_light"
+        android:background="@null"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:textSize="12sp" />
 
     <Button
         android:id="@+id/button13"
@@ -47,7 +64,13 @@
         android:drawableTop="@drawable/plus"
         android:fontFamily="@font/montserrat"
         android:gravity="bottom|center"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
         android:text="Ny note"
         android:textAllCaps="false"
-        android:textColor="@android:color/background_light" />
+        android:textColor="@android:color/background_light"
+        android:background="@null"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:textSize="12sp" />
 </LinearLayout>
