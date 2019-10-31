@@ -12,7 +12,7 @@
         android:layout_height="78dp"
         android:layout_marginBottom="40dp"
         android:backgroundTint="#180B2C"
-        app:layout_constraintBottom_toTopOf="@+id/button16"
+        app:layout_constraintBottom_toTopOf="@+id/confirmButton"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:srcCompat="@drawable/mic" />
 
@@ -22,13 +22,13 @@
         android:layout_height="78dp"
         android:layout_marginBottom="40dp"
         android:backgroundTint="#180B2C"
-        app:layout_constraintBottom_toTopOf="@+id/button16"
+        app:layout_constraintBottom_toTopOf="@+id/confirmButton"
         app:layout_constraintEnd_toStartOf="@+id/micButton"
         app:layout_constraintStart_toEndOf="@+id/cameraButton"
         app:srcCompat="@drawable/pencil" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/pathButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -36,13 +36,13 @@
         android:text="Sejlføring"
         android:textColor="@android:color/black"
         android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/button22"
-        app:layout_constraintEnd_toEndOf="@+id/button22"
-        app:layout_constraintStart_toStartOf="@+id/button22"
-        app:layout_constraintTop_toTopOf="@+id/button22" />
+        app:layout_constraintBottom_toBottomOf="@+id/pathButton"
+        app:layout_constraintEnd_toEndOf="@+id/pathButton"
+        app:layout_constraintStart_toStartOf="@+id/pathButton"
+        app:layout_constraintTop_toTopOf="@+id/pathButton" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/directionButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
@@ -50,13 +50,13 @@
         android:text="Sejlstilling"
         android:textColor="@android:color/black"
         android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/button23"
-        app:layout_constraintEnd_toEndOf="@+id/button23"
-        app:layout_constraintStart_toStartOf="@+id/button23"
-        app:layout_constraintTop_toTopOf="@+id/button23" />
+        app:layout_constraintBottom_toBottomOf="@+id/directionButton"
+        app:layout_constraintEnd_toEndOf="@+id/directionButton"
+        app:layout_constraintStart_toStartOf="@+id/directionButton"
+        app:layout_constraintTop_toTopOf="@+id/directionButton" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/courseButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -64,13 +64,13 @@
         android:text="Kurs"
         android:textColor="@android:color/black"
         android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/button24"
-        app:layout_constraintEnd_toEndOf="@+id/button24"
-        app:layout_constraintStart_toStartOf="@+id/button24"
-        app:layout_constraintTop_toTopOf="@+id/button24" />
+        app:layout_constraintBottom_toBottomOf="@+id/courseButton"
+        app:layout_constraintEnd_toEndOf="@+id/courseButton"
+        app:layout_constraintStart_toStartOf="@+id/courseButton"
+        app:layout_constraintTop_toTopOf="@+id/courseButton" />
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/windspeedButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -78,14 +78,14 @@
         android:text="x m/s"
         android:textColor="@android:color/black"
         android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/button19"
-        app:layout_constraintEnd_toEndOf="@+id/button19"
+        app:layout_constraintBottom_toBottomOf="@+id/windspeedButton"
+        app:layout_constraintEnd_toEndOf="@+id/windspeedButton"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
-        app:layout_constraintStart_toStartOf="@+id/button19"
-        app:layout_constraintTop_toTopOf="@+id/button19" />
+        app:layout_constraintStart_toStartOf="@+id/windspeedButton"
+        app:layout_constraintTop_toTopOf="@+id/windspeedButton" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/coordsButtonText"
         android:layout_width="116dp"
         android:layout_height="33dp"
         android:layout_marginStart="36dp"
@@ -93,13 +93,13 @@
         android:text="41° 54′ 8″ N 012° 27′ 12″ Ø"
         android:textColor="@android:color/black"
         android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@+id/button20"
-        app:layout_constraintEnd_toEndOf="@+id/button20"
-        app:layout_constraintStart_toStartOf="@+id/button20"
-        app:layout_constraintTop_toTopOf="@+id/button20" />
+        app:layout_constraintBottom_toBottomOf="@+id/coordsButton"
+        app:layout_constraintEnd_toEndOf="@+id/coordsButton"
+        app:layout_constraintStart_toStartOf="@+id/coordsButton"
+        app:layout_constraintTop_toTopOf="@+id/coordsButton" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/clockButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -107,13 +107,13 @@
         android:text="xx:xx"
         android:textColor="@android:color/black"
         android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/button21"
-        app:layout_constraintEnd_toEndOf="@+id/button21"
-        app:layout_constraintStart_toStartOf="@+id/button21"
-        app:layout_constraintTop_toTopOf="@+id/button21" />
+        app:layout_constraintBottom_toBottomOf="@+id/clockButton"
+        app:layout_constraintEnd_toEndOf="@+id/clockButton"
+        app:layout_constraintStart_toStartOf="@+id/clockButton"
+        app:layout_constraintTop_toTopOf="@+id/clockButton" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/rowersButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -122,13 +122,13 @@
         android:text="Antal roere"
         android:textColor="@android:color/black"
         android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/button18"
-        app:layout_constraintEnd_toEndOf="@+id/button18"
-        app:layout_constraintStart_toStartOf="@+id/button18"
-        app:layout_constraintTop_toTopOf="@+id/button18" />
+        app:layout_constraintBottom_toBottomOf="@+id/rowersButton"
+        app:layout_constraintEnd_toEndOf="@+id/rowersButton"
+        app:layout_constraintStart_toStartOf="@+id/rowersButton"
+        app:layout_constraintTop_toTopOf="@+id/rowersButton" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/sailingSpeedButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -136,13 +136,13 @@
         android:text="x kn"
         android:textColor="@android:color/black"
         android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/button17"
-        app:layout_constraintEnd_toEndOf="@+id/button17"
-        app:layout_constraintStart_toStartOf="@+id/button17"
-        app:layout_constraintTop_toTopOf="@+id/button17" />
+        app:layout_constraintBottom_toBottomOf="@+id/sailingSpeedButton"
+        app:layout_constraintEnd_toEndOf="@+id/sailingSpeedButton"
+        app:layout_constraintStart_toStartOf="@+id/sailingSpeedButton"
+        app:layout_constraintTop_toTopOf="@+id/sailingSpeedButton" />
 
     <Button
-        android:id="@+id/button24"
+        android:id="@+id/courseButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="37dp"
@@ -152,10 +152,10 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toBottomOf="@+id/button23" />
+        app:layout_constraintTop_toBottomOf="@+id/directionButton" />
 
     <Button
-        android:id="@+id/button23"
+        android:id="@+id/directionButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -165,10 +165,10 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toBottomOf="@+id/button22" />
+        app:layout_constraintTop_toBottomOf="@+id/pathButton" />
 
     <Button
-        android:id="@+id/button22"
+        android:id="@+id/pathButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -178,10 +178,10 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toBottomOf="@+id/button18" />
+        app:layout_constraintTop_toBottomOf="@+id/rowersButton" />
 
     <Button
-        android:id="@+id/button19"
+        android:id="@+id/windspeedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -191,10 +191,10 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/button17" />
+        app:layout_constraintTop_toBottomOf="@+id/sailingSpeedButton" />
 
     <Button
-        android:id="@+id/button20"
+        android:id="@+id/coordsButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -204,23 +204,23 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/button19" />
+        app:layout_constraintTop_toBottomOf="@+id/windspeedButton" />
 
     <Button
-        android:id="@+id/button21"
+        android:id="@+id/clockButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="36dp"
         android:backgroundTint="#319B60FB"
-        android:drawableLeft="@drawable/boat"
+        android:drawableLeft="@drawable/clock"
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/button20" />
+        app:layout_constraintTop_toBottomOf="@+id/coordsButton" />
 
     <fragment
-        android:id="@+id/fragment7"
+        android:id="@+id/topMenu"
         android:name="com.example.vikingesejllog.TopMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -257,7 +257,7 @@
         app:layout_constraintGuide_percent="0.55" />
 
     <Button
-        android:id="@+id/button16"
+        android:id="@+id/confirmButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="84dp"
@@ -268,7 +268,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/confirmText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"
@@ -278,23 +278,23 @@
         android:textColor="#180B2C"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/button16"
-        app:layout_constraintEnd_toEndOf="@+id/button16"
-        app:layout_constraintStart_toStartOf="@+id/button16"
-        app:layout_constraintTop_toTopOf="@+id/button16" />
+        app:layout_constraintBottom_toBottomOf="@+id/confirmButton"
+        app:layout_constraintEnd_toEndOf="@+id/confirmButton"
+        app:layout_constraintStart_toStartOf="@+id/confirmButton"
+        app:layout_constraintTop_toTopOf="@+id/confirmButton" />
 
     <ImageView
-        android:id="@+id/imageView11"
+        android:id="@+id/checkMark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/button16"
-        app:layout_constraintEnd_toStartOf="@+id/textView9"
-        app:layout_constraintTop_toTopOf="@+id/button16"
+        app:layout_constraintBottom_toBottomOf="@+id/confirmButton"
+        app:layout_constraintEnd_toStartOf="@+id/confirmText"
+        app:layout_constraintTop_toTopOf="@+id/confirmButton"
         app:srcCompat="@drawable/checkmark" />
 
     <Button
-        android:id="@+id/button17"
+        android:id="@+id/sailingSpeedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -304,10 +304,10 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/fragment7" />
+        app:layout_constraintTop_toBottomOf="@+id/topMenu" />
 
     <Button
-        android:id="@+id/button18"
+        android:id="@+id/rowersButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -317,7 +317,7 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toBottomOf="@+id/fragment7" />
+        app:layout_constraintTop_toBottomOf="@+id/topMenu" />
 
     <ImageButton
         android:id="@+id/cameraButton"
@@ -325,7 +325,7 @@
         android:layout_height="78dp"
         android:layout_marginBottom="40dp"
         android:backgroundTint="#180B2C"
-        app:layout_constraintBottom_toTopOf="@+id/button16"
+        app:layout_constraintBottom_toTopOf="@+id/confirmButton"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:srcCompat="@drawable/camera" />
 
