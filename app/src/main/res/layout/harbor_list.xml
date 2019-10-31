@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Button
-        android:id="@+id/button14"
+        android:id="@+id/new_journey"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
@@ -40,10 +40,10 @@
         android:textColor="@android:color/background_light"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/button14"
-        app:layout_constraintEnd_toEndOf="@+id/button14"
-        app:layout_constraintStart_toStartOf="@+id/button14"
-        app:layout_constraintTop_toTopOf="@+id/button14" />
+        app:layout_constraintBottom_toBottomOf="@+id/new_journey"
+        app:layout_constraintEnd_toEndOf="@+id/new_journey"
+        app:layout_constraintStart_toStartOf="@+id/new_journey"
+        app:layout_constraintTop_toTopOf="@+id/new_journey" />
 
     <ImageView
         android:id="@+id/imageView10"
