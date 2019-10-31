@@ -18,8 +18,7 @@ public class NewJourney extends AppCompatActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.new_journey:
-                Intent i = new Intent(this, JourneyList.class);
-                startActivity(i);
+                this.finish();
                 break;
         }
     }
