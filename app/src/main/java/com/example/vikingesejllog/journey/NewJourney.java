@@ -1,6 +1,5 @@
 package com.example.vikingesejllog.journey;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,13 +11,13 @@ public class NewJourney extends AppCompatActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_journey);
-        findViewById(R.id.button11).setOnClickListener(this);
+        findViewById(R.id.confirmButton).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.button11:
+            case R.id.confirmButton:
                 this.finish();
                 break;
         }

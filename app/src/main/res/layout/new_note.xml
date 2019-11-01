@@ -220,7 +220,7 @@
         app:layout_constraintTop_toBottomOf="@+id/coordsButton" />
 
     <fragment
-        android:id="@+id/topMenu"
+        android:id="@+id/topMenuFragment"
         android:name="com.example.vikingesejllog.TopMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -284,7 +284,7 @@
         app:layout_constraintTop_toTopOf="@+id/confirmButton" />
 
     <ImageView
-        android:id="@+id/checkMark"
+        android:id="@+id/checkMarkImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"
@@ -304,7 +304,7 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/topMenu" />
+        app:layout_constraintTop_toBottomOf="@+id/topMenuFragment" />
 
     <Button
         android:id="@+id/rowersButton"
@@ -317,7 +317,7 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toBottomOf="@+id/topMenu" />
+        app:layout_constraintTop_toBottomOf="@+id/topMenuFragment" />
 
     <ImageButton
         android:id="@+id/cameraButton"

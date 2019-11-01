@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/confirmText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"
@@ -16,13 +16,13 @@
         android:textColor="#180B2C"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/button11"
-        app:layout_constraintEnd_toEndOf="@+id/button11"
-        app:layout_constraintStart_toStartOf="@+id/button11"
-        app:layout_constraintTop_toTopOf="@+id/button11" />
+        app:layout_constraintBottom_toBottomOf="@+id/confirmButton"
+        app:layout_constraintEnd_toEndOf="@+id/confirmButton"
+        app:layout_constraintStart_toStartOf="@+id/confirmButton"
+        app:layout_constraintTop_toTopOf="@+id/confirmButton" />
 
     <Button
-        android:id="@+id/button11"
+        android:id="@+id/confirmButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="84dp"
@@ -38,18 +38,18 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left" />
 
     <ImageView
-        android:id="@+id/imageView20"
+        android:id="@+id/checkmarkImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/button11"
-        app:layout_constraintEnd_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toTopOf="@+id/button11"
+        app:layout_constraintBottom_toBottomOf="@+id/confirmButton"
+        app:layout_constraintEnd_toStartOf="@+id/confirmText"
+        app:layout_constraintTop_toTopOf="@+id/confirmButton"
         app:srcCompat="@drawable/checkmark" />
 
     <ImageView
-        android:id="@+id/imageView15"
+        android:id="@+id/journeyBoxImage"
         android:layout_width="0dp"
         android:layout_height="110dp"
         android:layout_marginTop="28dp"
@@ -60,46 +60,46 @@
         app:srcCompat="@drawable/btn_round_corner" />
 
     <ImageView
-        android:id="@+id/imageView17"
+        android:id="@+id/navigationArrowImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/imageView19"
-        app:layout_constraintEnd_toEndOf="@+id/imageView19"
-        app:layout_constraintStart_toStartOf="@+id/imageView19"
-        app:layout_constraintTop_toTopOf="@+id/imageView15"
+        app:layout_constraintBottom_toTopOf="@+id/dotsImage"
+        app:layout_constraintEnd_toEndOf="@+id/dotsImage"
+        app:layout_constraintStart_toStartOf="@+id/dotsImage"
+        app:layout_constraintTop_toTopOf="@+id/journeyBoxImage"
         app:srcCompat="@drawable/navigation" />
 
     <ImageView
-        android:id="@+id/imageView18"
+        android:id="@+id/destinationPinImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView15"
-        app:layout_constraintEnd_toEndOf="@+id/imageView19"
-        app:layout_constraintStart_toStartOf="@+id/imageView19"
-        app:layout_constraintTop_toBottomOf="@+id/imageView19"
+        app:layout_constraintBottom_toBottomOf="@+id/journeyBoxImage"
+        app:layout_constraintEnd_toEndOf="@+id/dotsImage"
+        app:layout_constraintStart_toStartOf="@+id/dotsImage"
+        app:layout_constraintTop_toBottomOf="@+id/dotsImage"
         app:srcCompat="@drawable/destination" />
 
     <ImageView
-        android:id="@+id/imageView19"
+        android:id="@+id/dotsImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView15"
-        app:layout_constraintStart_toStartOf="@+id/imageView15"
-        app:layout_constraintTop_toTopOf="@+id/imageView15"
+        app:layout_constraintBottom_toBottomOf="@+id/journeyBoxImage"
+        app:layout_constraintStart_toStartOf="@+id/journeyBoxImage"
+        app:layout_constraintTop_toTopOf="@+id/journeyBoxImage"
         app:srcCompat="@drawable/dots" />
 
     <ImageView
-        android:id="@+id/imageView16"
+        android:id="@+id/dottedLineImage"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:paddingStart="8dp"
         android:paddingEnd="28dp"
         android:tint="#ECEBED"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView15"
-        app:layout_constraintEnd_toEndOf="@+id/imageView15"
-        app:layout_constraintStart_toEndOf="@+id/imageView19"
-        app:layout_constraintTop_toTopOf="@+id/imageView15"
+        app:layout_constraintBottom_toBottomOf="@+id/journeyBoxImage"
+        app:layout_constraintEnd_toEndOf="@+id/journeyBoxImage"
+        app:layout_constraintStart_toEndOf="@+id/dotsImage"
+        app:layout_constraintTop_toTopOf="@+id/journeyBoxImage"
         app:srcCompat="@drawable/dotted_line" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -117,7 +117,7 @@
         app:layout_constraintGuide_percent="0.95" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/journeyStartEditText"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:background="@null"
@@ -126,12 +126,12 @@
         android:inputType="textPersonName"
         android:paddingLeft="12dp"
         android:textColorHint="@android:color/background_light"
-        app:layout_constraintBottom_toTopOf="@+id/imageView16"
-        app:layout_constraintStart_toEndOf="@+id/imageView17"
-        app:layout_constraintTop_toTopOf="@+id/imageView15" />
+        app:layout_constraintBottom_toTopOf="@+id/dottedLineImage"
+        app:layout_constraintStart_toEndOf="@+id/navigationArrowImage"
+        app:layout_constraintTop_toTopOf="@+id/journeyBoxImage" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/journeyDestinationEditText"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:background="@null"
@@ -140,8 +140,8 @@
         android:inputType="textPersonName"
         android:paddingLeft="12dp"
         android:textColorHint="@android:color/background_light"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView15"
-        app:layout_constraintStart_toEndOf="@+id/imageView18"
-        app:layout_constraintTop_toBottomOf="@+id/imageView16" />
+        app:layout_constraintBottom_toBottomOf="@+id/journeyBoxImage"
+        app:layout_constraintStart_toEndOf="@+id/destinationPinImage"
+        app:layout_constraintTop_toBottomOf="@+id/dottedLineImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
