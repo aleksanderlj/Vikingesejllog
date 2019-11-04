@@ -125,7 +125,8 @@
         android:hint="Start"
         android:inputType="textPersonName"
         android:paddingLeft="12dp"
-        android:textColorHint="@android:color/background_light"
+        android:textColor="@android:color/background_light"
+        android:textColorHint="@android:color/darker_gray"
         app:layout_constraintBottom_toTopOf="@+id/dottedLineImage"
         app:layout_constraintStart_toEndOf="@+id/navigationArrowImage"
         app:layout_constraintTop_toTopOf="@+id/journeyBoxImage" />
@@ -139,7 +140,8 @@
         android:hint="Slut"
         android:inputType="textPersonName"
         android:paddingLeft="12dp"
-        android:textColorHint="@android:color/background_light"
+        android:textColor="@android:color/background_light"
+        android:textColorHint="@android:color/darker_gray"
         app:layout_constraintBottom_toBottomOf="@+id/journeyBoxImage"
         app:layout_constraintStart_toEndOf="@+id/destinationPinImage"
         app:layout_constraintTop_toBottomOf="@+id/dottedLineImage" />
