@@ -53,7 +53,7 @@
         app:layout_constraintBottom_toBottomOf="@id/newHarborButton"
         app:layout_constraintEnd_toStartOf="@+id/addNewNoteText"
         app:layout_constraintTop_toTopOf="@id/newHarborButton"
-        app:srcCompat="@drawable/new_trip" />
+        app:srcCompat="@drawable/boat_white" />
 
     <Button
         android:id="@+id/sortByTimeButton"
@@ -87,5 +87,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/newHarborButton"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/sortByTimeButton"></androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
