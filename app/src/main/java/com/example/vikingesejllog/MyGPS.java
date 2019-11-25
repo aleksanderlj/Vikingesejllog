@@ -35,6 +35,7 @@ public class MyGPS implements LocationListener {
         return null;
     }
 
+
     public String getSpeed() {
         if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return null;
