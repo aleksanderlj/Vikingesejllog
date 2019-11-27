@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView imageNote;
     AudioRecorder audioRecorder;
 
-    /*Author: s164497 - Hemsen
+    /*Author: s164497 - Hemsen :-)
 
     Følgende skal tilføjes manifestet:
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
