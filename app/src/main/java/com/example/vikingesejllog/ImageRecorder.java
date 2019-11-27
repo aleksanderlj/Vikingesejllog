@@ -2,11 +2,14 @@ package com.example.vikingesejllog;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
@@ -14,48 +17,40 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ImageRecorder {
+public class ImageRecorder extends AppCompatActivity {
 
     /*Author: s164497 - Hemsen
 
-    Denne klasse har til formål at styre logikken bag knaptrykkene på hhv. "Optag" og "Kamera",
-    når brugeren er ved at lave en note. Herefter skal billedet eller lydfilen gemmes sammen med
-    noten.
-
-    Følgende skal tilføjes manifestet:
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-
-    <uses-feature android:name="android.hardware.camera"
-                  android:required="true" />
-
-                  <provider
-        android:name="android.support.v4.content.FileProvider"
-        android:authorities="com.example.android.fileprovider"
-        android:exported="false"
-        android:grantUriPermissions="true">
-        <meta-data
-            android:name="android.support.FILE_PROVIDER_PATHS"
-            android:resource="@xml/file_paths"></meta-data>
-    </provider>
-
-
-
+    Denne klasse har til formål at styre logikken bag kamera-funktionen inde i "Opret Note". Herved
+    gemmes billedet som et imageview. Filnavnet defineres ud fra hvilken note, der oprettes, således
+    at hvert filnavn er unikt.
     */
 
-/*
-
-    MediaPlayer videoPlayer;
-    Uri test;
-    String currentPhotoPath;
-
+    public void takePicture() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePictureIntent, 0);
+    }
 
 
+   public void savePicture(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+    }
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+   /* static final int REQUEST_IMAGE_CAPTURE = 1;
 
     SharedPreferences sharedPreferences;
 
@@ -65,17 +60,17 @@ public class ImageRecorder {
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                imageFileName,  /* prefix */
-        //        ".jpg",         /* suffix */
-       //         storageDir      /* directory */
-       // );
-/*
+                imageFileName,
+              ".jpg",
+                storageDir
+        );
+
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
-    public void takePicture(){
+    /*public void takePicture(){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File imageNote = null;
         try {
@@ -92,14 +87,4 @@ public class ImageRecorder {
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
         }
-    }
-
-
-
-
-    public void showImageNote(){
-//Et eller andet med at klikke på det nye imageview og det åbner op.
-    }
-}
-*/
-}
+    }*/

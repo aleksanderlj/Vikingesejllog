@@ -3,10 +3,8 @@ package com.example.vikingesejllog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 
@@ -18,16 +16,25 @@ import static android.media.MediaRecorder.AudioEncoder.DEFAULT;
 
 public class AudioRecorder {
 
+    /*Author: s164497 - Hemsen
+
+    Denne klasse har til formål at styre logikken bag lydoptagelsen inde i "Opret Note". Herved
+    gemmes noten som en .MPEG4-fil. Filnavnet defineres ud fra hvilken note, der oprettes, således
+    at hvert filnavn er unikt. Lige pt. gemmes de under music-mappen på SDkortet.
+     */
+
+
     MediaRecorder audioRecorder;
-    ProgressDialog progressDialog;
-
     MediaPlayer audioPlayer;
-
+    ProgressDialog progressDialog;
 
 
 
     public void recordAudio(String fileName) throws IOException {
-        //Mangler noget der gemmet noten med samme navn som selve noten..
+        /*Denne metode gemmer en lydfil, der optages gennem mikrofonen. FileName skal vi have
+        defineret som en variabel svarende til noten, der oprettes.
+         */
+
 
         ContentValues values = new ContentValues(3);
         audioRecorder = new MediaRecorder();
@@ -54,6 +61,7 @@ public class AudioRecorder {
     }
 
 public void stopAudioRecord(){
+        //Stopper optagelsen og frigiver objektet til garbage-collector
     progressDialog.dismiss();
     audioRecorder.stop();
     audioRecorder.release();
@@ -61,7 +69,7 @@ public void stopAudioRecord(){
 
 
     public void playAudioNote(String fileName) throws IOException {
-        //Skal også have noget, der afspiller den rigtige lydfil afhængig af navn på note.
+        //Husk fileName skal defineres enten her eller inden metoden kaldes.
         String filePath = Environment.getExternalStorageDirectory()+"/sdcard/music" + fileName;
 
         audioPlayer = new MediaPlayer();
@@ -83,6 +91,7 @@ public void stopAudioRecord(){
     }
 
     public void stopAudioNote(){
+        //Stopper afspilningen af noten.
         progressDialog.dismiss();
         audioPlayer.stop();
         audioPlayer.release();
