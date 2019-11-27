@@ -5,8 +5,10 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.MicrophoneDirection;
+import android.net.Uri;
 
 import java.io.IOException;
+import java.net.URI;
 
 import static android.media.MediaRecorder.AudioEncoder.AAC;
 
@@ -27,13 +29,16 @@ public class NoteRecorder {
     */
 MediaRecorder mediaRecorder;
 MediaPlayer audioPlayer, videoPlayer;
+Uri test;
 
 SharedPreferences sharedPreferences;
 
 public void recordAudio() throws IOException {
+    //Mangler noget der gemmet noten med samme navn som selve noten..
+
     mediaRecorder.setAudioSource(MicrophoneDirection.MIC_DIRECTION_TOWARDS_USER);
     mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_2_TS);
-    mediaRecorder.setOutputFile("LydNote");
+    mediaRecorder.setOutputFile(test.getPath());
     mediaRecorder.setAudioEncoder(AAC);
     mediaRecorder.prepare();
     mediaRecorder.start();
@@ -45,15 +50,26 @@ public void saveAudio(){
 }
 
 
-public void playAudioNote() {
-    audioPlayer = MediaPlayer.create(this, mediaRecorder.);
-    audioPlayer.setVolume(1, 1);
+public void playAudioNote() throws IOException {
+    //Skal også have noget, der afspiller den rigtige lydfil afhængig af navn på note.
 
-    setVolumeControlStream(AudioManager.STREAM_MUSIC);
+    audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+    audioPlayer.setDataSource(getApplicationContext(), test);
+    audioPlayer.setVolume(1, 1);
+    audioPlayer.prepare();
+    audioPlayer.start();
+}
+
+public void stopAudioNote(){
+    audioPlayer.stop();
+    audioPlayer.release();
+}
+
+public void saveImageNote(){
 
 }
 
+public void showImageNote(){
 
-
-
+}
 }
