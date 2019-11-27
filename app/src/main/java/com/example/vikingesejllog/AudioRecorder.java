@@ -6,7 +6,8 @@ import android.content.DialogInterface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.media.MicrophoneDirection;
+import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 
 import java.io.IOException;
@@ -19,57 +20,70 @@ public class AudioRecorder {
 
     MediaRecorder audioRecorder;
     ProgressDialog progressDialog;
+
     MediaPlayer audioPlayer;
+
+
+
 
     public void recordAudio(String fileName) throws IOException {
         //Mangler noget der gemmet noten med samme navn som selve noten..
+
         ContentValues values = new ContentValues(3);
+        audioRecorder = new MediaRecorder();
         //fileName = et eller andet navn på noten
         values.put(MediaStore.MediaColumns.TITLE, fileName);
-        audioRecorder.setAudioSource(MicrophoneDirection.MIC_DIRECTION_TOWARDS_USER);
-        audioRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_2_TS);
+        audioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        audioRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         audioRecorder.setAudioEncoder(DEFAULT);
-        audioRecorder.setOutputFile("/sdcard/sound/vikingesejllog" + fileName);
+        audioRecorder.setOutputFile("/sdcard/music" + fileName);
         audioRecorder.prepare();
+
+        audioRecorder.start();
 
         progressDialog.setTitle("Optager lydnote");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setButton("Afslut optagelse", new DialogInterface.OnClickListener() {
+        progressDialog.show();
+
+        progressDialog.setButton(1, "Afslut optagelse", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                progressDialog.dismiss();
-                audioRecorder.stop();
-                audioRecorder.release();
+                stopAudioRecord();
             }
         });
-        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                audioRecorder.stop();
-                audioRecorder.release();
-            }
-        });
-        audioRecorder.start();
-        progressDialog.show();
     }
 
-/*public void saveAudio(){
+public void stopAudioRecord(){
+    progressDialog.dismiss();
     audioRecorder.stop();
     audioRecorder.release();
-}*/
+}
 
 
-    public void playAudio() throws IOException {
+    public void playAudioNote(String fileName) throws IOException {
         //Skal også have noget, der afspiller den rigtige lydfil afhængig af navn på note.
+        String filePath = Environment.getExternalStorageDirectory()+"/sdcard/music" + fileName;
 
-        audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        audioPlayer.setDataSource(getApplicationContext(), test);
+        audioPlayer = new MediaPlayer();
+        audioPlayer.setDataSource(filePath);
         audioPlayer.setVolume(1, 1);
         audioPlayer.prepare();
         audioPlayer.start();
+
+        progressDialog.setTitle("Afspiller lydnote");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
+        progressDialog.setButton(1, "Afslut afspilning", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                stopAudioNote();
+            }
+        });
     }
 
     public void stopAudioNote(){
+        progressDialog.dismiss();
         audioPlayer.stop();
         audioPlayer.release();
     }

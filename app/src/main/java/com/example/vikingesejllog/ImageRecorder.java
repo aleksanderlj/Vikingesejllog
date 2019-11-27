@@ -1,14 +1,8 @@
 package com.example.vikingesejllog;
 
-import android.app.ProgressDialog;
-import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.media.MicrophoneDirection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -20,10 +14,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static android.media.MediaRecorder.AudioEncoder.AAC;
-import static android.media.MediaRecorder.AudioEncoder.DEFAULT;
-
-public class NoteRecorder {
+public class ImageRecorder {
 
     /*Author: s164497 - Hemsen
 
@@ -55,16 +46,18 @@ public class NoteRecorder {
 
     */
 
-MediaPlayer videoPlayer;
-Uri test;
-String currentPhotoPath;
+/*
+
+    MediaPlayer videoPlayer;
+    Uri test;
+    String currentPhotoPath;
 
 
 
 
-static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
-SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences;
 
     private File saveImageFile() throws IOException {
         // Create an image file name
@@ -73,17 +66,17 @@ SharedPreferences sharedPreferences;
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
+        //        ".jpg",         /* suffix */
+       //         storageDir      /* directory */
+       // );
+/*
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
-public void takePicture(){
-    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    public void takePicture(){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File imageNote = null;
         try {
             imageNote = saveImageFile();
@@ -104,7 +97,9 @@ public void takePicture(){
 
 
 
-public void showImageNote(){
+    public void showImageNote(){
 //Et eller andet med at klikke på det nye imageview og det åbner op.
+    }
 }
+*/
 }
