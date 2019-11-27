@@ -1,8 +1,5 @@
 package com.example.vikingesejllog;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -12,10 +9,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TableLayout;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
+public class TestActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
 
     Button record, play, snapshot;
     ImageView imageNote;
@@ -31,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     <uses-feature android:name="android.hardware.camera"
                   android:required="true" />
-
 
 
     Ser ingen grund til at have en klasse til ImageRecorder, da det bare kan gøres med et intent
@@ -81,11 +79,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } }
 
         if (v == play){
-        try {
-            audioRecorder.playAudioNote("Noten");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }}
+            try {
+                audioRecorder.playAudioNote("Noten");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }}
 
         if (v == snapshot){
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
