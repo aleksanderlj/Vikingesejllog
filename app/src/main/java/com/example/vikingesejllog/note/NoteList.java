@@ -12,6 +12,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.vikingesejllog.R;
+import com.example.vikingesejllog.model.Etape;
+import com.example.vikingesejllog.model.Note;
+
+import java.util.ArrayList;
 
 public class NoteList extends AppCompatActivity {
 
@@ -24,13 +28,22 @@ public class NoteList extends AppCompatActivity {
         setContentView(R.layout.note_list);
 
         pager = findViewById(R.id.note_viewpager);
-        adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle());
+
+        //TODO These are tests
+        ArrayList<Note> list = new ArrayList<>();
+
+
+        adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle(), null);
         pager.setAdapter(adapter);
     }
 
     private class NotePagerAdapter extends FragmentStateAdapter {
-        public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+        private ArrayList<NoteListFragment> etapeFragments = new ArrayList<>();
+        private ArrayList<Etape> etapes;
+
+        public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ArrayList<Etape> etapes) {
             super(fragmentManager, lifecycle);
+            this.etapes = etapes;
         }
 
         @NonNull
@@ -41,7 +54,11 @@ public class NoteList extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return 5;
+            return etapes.size();
+        }
+
+        public void setEtapeFragments(ArrayList<NoteListFragment> etapeFragments) {
+            this.etapeFragments = etapeFragments;
         }
     }
 }
