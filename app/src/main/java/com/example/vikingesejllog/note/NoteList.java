@@ -31,7 +31,7 @@ public class NoteList extends AppCompatActivity {
     }
 
     private class NotePagerAdapter extends FragmentStateAdapter {
-        private ArrayList<NoteListFragment> arrayList = new ArrayList<>();
+        private ArrayList<NoteListFragment> etapeFragments = new ArrayList<>();
 
         public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
@@ -45,7 +45,11 @@ public class NoteList extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return 5;
+            return etapeFragments.size();
+        }
+
+        public void setEtapeFragments(ArrayList<NoteListFragment> etapeFragments) {
+            this.etapeFragments = etapeFragments;
         }
     }
 }
