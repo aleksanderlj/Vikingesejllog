@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.vikingesejllog.R;
+import com.example.vikingesejllog.model.Etape;
 
 public class EtapeTopFragment extends Fragment {
     public EtapeTopFragment(){}
@@ -30,9 +31,15 @@ public class EtapeTopFragment extends Fragment {
         tv.setText(s);
     }
 
-    public void setEtape(int id){
+    public void setEtape(int id, int max){
         TextView tv = getView().findViewById(R.id.etape_nr);
-        String s = "" + id;
+        String s = "" + (id+1) + "/" + max;
         tv.setText(s);
+    }
+
+    public void setAll(Etape etape, int id, int max){
+        setCrew(etape.getSkipper(), etape.getCrew().size());
+        setDestination(etape.getStart(), etape.getEnd());
+        setEtape(id, max);
     }
 }

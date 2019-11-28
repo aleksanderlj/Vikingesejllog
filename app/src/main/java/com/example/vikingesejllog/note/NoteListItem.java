@@ -1,5 +1,7 @@
 package com.example.vikingesejllog.note;
 
+import com.example.vikingesejllog.R;
+
 public class NoteListItem {
 
     private String noteName;
@@ -8,13 +10,12 @@ public class NoteListItem {
     private int cameraImageResource;
     private int micImageResource;
 
-    public NoteListItem(String noteName, String noteDate, int pencilImageResource,
-                        int cameraImageResource, int micImageResource) {
+    public NoteListItem(String noteName, String noteDate) {
         this.noteName = noteName;
         this.noteDate = noteDate;
-        this.pencilImageResource = pencilImageResource;
-        this.cameraImageResource = cameraImageResource;
-        this.micImageResource = micImageResource;
+        this.pencilImageResource = R.drawable.pencil_black;
+        this.cameraImageResource = R.drawable.camera_black;
+        this.micImageResource = R.drawable.mic_black;
     }
 
     public String getNoteName() {

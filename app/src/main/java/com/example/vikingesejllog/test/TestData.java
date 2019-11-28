@@ -68,9 +68,9 @@ public class TestData {
 
         etaper.add(e3);
 
+        togter.get(0).setEtapeList(new ArrayList<>(etaper));
         togter.get(1).setEtapeList(new ArrayList<>(etaper));
         togter.get(2).setEtapeList(new ArrayList<>(etaper));
-        togter.get(3).setEtapeList(new ArrayList<>(etaper));
     }
 
     public static ArrayList<Togt> getTogter() {

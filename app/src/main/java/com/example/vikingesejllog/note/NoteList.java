@@ -13,7 +13,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
-import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.test.TestData;
 
 import java.util.ArrayList;
@@ -32,30 +31,46 @@ public class NoteList extends AppCompatActivity {
 
         //TODO These are tests
         TestData.createTestData();
-        ArrayList<Etape> testList = TestData.togter.get(1).getEtapeList();
+        final ArrayList<Etape> testList = TestData.togter.get(1).getEtapeList();
 
         adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle(), testList);
         pager.setAdapter(adapter);
+
+        pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                EtapeTopFragment f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
+                f.setAll(testList.get(pager.getCurrentItem()), pager.getCurrentItem(), testList.size());
+                System.out.println(pager.getCurrentItem());
+            }
+        });
     }
 
     private class NotePagerAdapter extends FragmentStateAdapter {
         private ArrayList<NoteListFragment> etapeFragments = new ArrayList<>();
-        private ArrayList<Etape> etapes;
+        private ArrayList<Etape> etaper;
 
         public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ArrayList<Etape> etapes) {
             super(fragmentManager, lifecycle);
-            this.etapes = etapes;
+            this.etaper = etapes;
         }
 
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            return new NoteListFragment();
+            if(position<etaper.size()) {
+                NoteListFragment f = new NoteListFragment();
+                return f;
+            } else {
+                System.out.println("");
+            }
+
         }
 
         @Override
         public int getItemCount() {
-            return etapes.size();
+            return etaper.size()+1;
         }
 
         public void setEtapeFragments(ArrayList<NoteListFragment> etapeFragments) {
