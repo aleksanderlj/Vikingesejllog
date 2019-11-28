@@ -64,7 +64,7 @@ public class NoteList extends AppCompatActivity {
         @Override
         public Fragment createFragment(int position) {
             if(position<etaper.size()) {
-                NoteListFragment f = new NoteListFragment();
+                NoteListFragment f = new NoteListFragment(etaper.get(position).getNoteList());
                 return f;
             } else {
                 NewEtapeFragment newEtape = new NewEtapeFragment();

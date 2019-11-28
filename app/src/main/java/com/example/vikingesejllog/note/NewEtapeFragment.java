@@ -12,8 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.vikingesejllog.R;
-import com.example.vikingesejllog.model.Etape;
-import com.google.gson.Gson;
 
 
 public class NewEtapeFragment extends Fragment implements View.OnClickListener {

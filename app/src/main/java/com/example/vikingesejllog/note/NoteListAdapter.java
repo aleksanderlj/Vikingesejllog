@@ -11,12 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vikingesejllog.R;
+import com.example.vikingesejllog.model.Note;
 
 import java.util.List;
 
 public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHolder> {
 
-    private List<NoteListItem> noteListItems;
+    private List<Note> noteListItems;
     private Context context;
     private OnItemClickListener listener;
 
@@ -28,7 +29,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
         this.listener = listener;
     }
 
-    public NoteListAdapter(List<NoteListItem> noteListItems, Context context) {
+    public NoteListAdapter(List<Note> noteListItems, Context context) {
         this.noteListItems = noteListItems;
         this.context = context;
     }
@@ -42,9 +43,9 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        NoteListItem noteListItem = noteListItems.get(position);
-        holder.noteName.setText(noteListItem.getNoteName());
-        holder.noteDate.setText(noteListItem.getNoteDate());
+        Note noteListItem = noteListItems.get(position);
+        holder.noteName.setText(noteListItem.getTime());
+        holder.noteDate.setText(noteListItem.getTime());
         holder.pencil.setImageResource(noteListItem.getPencilImageResource());
         holder.camera.setImageResource(noteListItem.getCameraImageResource());
         holder.mic.setImageResource(noteListItem.getMicImageResource());
