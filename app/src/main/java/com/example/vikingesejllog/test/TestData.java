@@ -4,12 +4,15 @@ import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.model.Togt;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class TestData {
     public static ArrayList<Togt> togter;
+
+    /*
+        Der er 3 togter med 3 etaper som hver har 3 noter.
+     */
 
     public static void createTestData(){
         ArrayList<String> crew = new ArrayList<>();

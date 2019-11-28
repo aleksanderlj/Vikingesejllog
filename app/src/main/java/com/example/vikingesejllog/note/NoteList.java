@@ -14,6 +14,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Note;
+import com.example.vikingesejllog.test.TestData;
 
 import java.util.ArrayList;
 
@@ -30,10 +31,10 @@ public class NoteList extends AppCompatActivity {
         pager = findViewById(R.id.note_viewpager);
 
         //TODO These are tests
-        ArrayList<Note> list = new ArrayList<>();
+        TestData.createTestData();
+        ArrayList<Etape> testList = TestData.togter.get(1).getEtapeList();
 
-
-        adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle(), null);
+        adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle(), testList);
         pager.setAdapter(adapter);
     }
 
