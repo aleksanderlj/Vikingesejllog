@@ -29,6 +29,7 @@ public class MakeNoteActivity extends AppCompatActivity {
     private TextView rowersBtnText;
     private TextView timeText;
     private TextView gpsText;
+    private EditText commentText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,8 @@ public class MakeNoteActivity extends AppCompatActivity {
         rowersBtnText = findViewById(R.id.rowersButtonText);
         timeText = findViewById(R.id.clockButtonText);
         gpsText = findViewById(R.id.coordsButtonText);
+        commentText = findViewById(R.id.textComment);
+
 
     }
 
@@ -213,7 +216,7 @@ public class MakeNoteActivity extends AppCompatActivity {
 
         Note note = new Note(gps.getLocation().getLatitude()+String.valueOf(gps.getLocation().getLongitude()).substring(0,8),
                                     sailingSpeed.getText().toString(), windSpeed.getText().toString(), timeText.getText().toString(),
-                                    rowers.getText().toString(), path.getText().toString(), direction.getText().toString(),course.getText().toString());
+                                    rowers.getText().toString(), path.getText().toString(), direction.getText().toString(),course.getText().toString(),commentText.getText().toString());
 
         Gson gson = new Gson();
         String myJson = gson.toJson(note);
