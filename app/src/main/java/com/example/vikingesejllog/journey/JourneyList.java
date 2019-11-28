@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,45 +32,11 @@ public class JourneyList extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.journey_list);
-
-        recyclerView = (RecyclerView) findViewById(R.id.journeyRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        journeyListItems = new ArrayList<>();
-        
-        // Inserts data into RecyclerView
-        Togt togt;
-        JourneyListItem journeyListItem;
-        Gson gson = new Gson();
-        prefs = getSharedPreferences("togtListe", MODE_PRIVATE);
-        Map<String,?> togtHash = prefs.getAll();
-        for (int i = 0; i<=togtHash.size(); i++){
-            String currTogt = (String) togtHash.get(Integer.toString(i));
-            if (currTogt != null) {
-                togt = gson.fromJson(currTogt, Togt.class);
-                journeyListItem = new JourneyListItem(togt.getStart() + " - " + togt.getEnd(), "04-06-2019 - 17-08-2019");
-                journeyListItems.add(journeyListItem);
-            }
-            else
-                break;
-        }
-        
-        adapter = new JourneyListAdapter(journeyListItems, this);
-        recyclerView.setAdapter(adapter);
-
-        adapter.setOnItemClickListener(new JourneyListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                // Logik her til tryk af element i recyclerview. Husk position starter fra 0.
-
-            }
-        });
-
-        TopMenu tm = (TopMenu) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
-        tm.updateTextView("Liste over togter");
-
-        findViewById(R.id.newHarborButton).setOnClickListener(this);
+		recyclerView = (RecyclerView) findViewById(R.id.journeyRecyclerView);
+		recyclerView.setHasFixedSize(true);
+		recyclerView.setLayoutManager(new LinearLayoutManager(this));
+		
+        updateList();
     }
 
     @Override
@@ -77,8 +44,48 @@ public class JourneyList extends AppCompatActivity implements View.OnClickListen
         switch (v.getId()){
             case R.id.newHarborButton:
                 Intent i = new Intent(this, NewJourney.class);
-                startActivity(i);
+                startActivityForResult(i, 1);
                 break;
         }
     }
+	
+    public void updateList(){
+		journeyListItems = new ArrayList<>();
+		// Inserts data into RecyclerView
+		Togt togt;
+		JourneyListItem journeyListItem;
+		Gson gson = new Gson();
+		prefs = getSharedPreferences("togtListe", MODE_PRIVATE);
+		Map<String,?> togtHash = prefs.getAll();
+		for (int i = 0; i<=togtHash.size(); i++){
+			String currTogt = (String) togtHash.get(Integer.toString(i));
+			if (currTogt != null) {
+				togt = gson.fromJson(currTogt, Togt.class);
+				journeyListItem = new JourneyListItem(togt.getStart() + " - " + togt.getEnd(), "04-06-2019 - 17-08-2019");
+				journeyListItems.add(journeyListItem);
+			}
+			else
+				break;
+		}
+	
+		adapter = new JourneyListAdapter(journeyListItems, this);
+		recyclerView.setAdapter(adapter);
+	
+		adapter.setOnItemClickListener(new JourneyListAdapter.OnItemClickListener() {
+			@Override
+			public void onItemClick(int position) {
+				// Logik her til tryk af element i recyclerview. Husk position starter fra 0.
+			
+			}
+		});
+		TopMenu tm = (TopMenu) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
+		tm.updateTextView("Liste over togter");
+		findViewById(R.id.newHarborButton).setOnClickListener(this);
+	}
+ 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		updateList();
+	}
 }

@@ -39,7 +39,6 @@ public class NewJourney extends AppCompatActivity implements View.OnClickListene
 		editor.putString(Integer.toString(prefs.getAll().size()), jsonTogt);
 		editor.apply();
 		
-		Intent togtList = new Intent(this, JourneyList.class);
-		startActivity(togtList);
+		this.finish();
 	}
 }
