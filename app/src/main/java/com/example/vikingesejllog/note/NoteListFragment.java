@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,8 +22,8 @@ public class NoteListFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-
     private List<NoteListItem> noteListItems;
+    private ImageView pencil, camera, mic;
 
     @Nullable
     @Override
@@ -33,16 +34,16 @@ public class NoteListFragment extends Fragment {
        recyclerView.setHasFixedSize(true);
        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        noteListItems = new ArrayList<>();
+        pencil = (ImageView)getActivity().findViewById(R.id.notePencil);
+        camera = (ImageView)getActivity().findViewById(R.id.noteCamera);
+        mic = (ImageView)getActivity().findViewById(R.id.noteMic);
 
-        int pencilID = getResources().getIdentifier("notePencil","drawable", getActivity().getPackageName());
-        int cameraID = getResources().getIdentifier("noteCamera","drawable", getActivity().getPackageName());
-        int micID = getResources().getIdentifier("noteMic","drawable", getActivity().getPackageName());
+        noteListItems = new ArrayList<>();
 
         // Test list items
         for (int i = 0; i<=10; i++){
-            NoteListItem noteListItem = new NoteListItem("Note " + (i+1),
-                    "28/10-2019 09:13", pencilID, cameraID, micID);
+            NoteListItem noteListItem = new NoteListItem("Note: " + (i+1),
+                    "28/10-2019\n09:13", R.drawable.pencil_black, R.drawable.camera_black, R.drawable.mic_black);
             noteListItems.add(noteListItem);
         }
 
