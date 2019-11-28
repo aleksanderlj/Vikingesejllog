@@ -5,7 +5,7 @@
     android:background="#180B2C">
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/mobButton"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
         android:textSize="12sp" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/mapButton"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         android:textSize="12sp" />
 
     <Button
-        android:id="@+id/button12"
+        android:id="@+id/overviewButton"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
         android:textSize="12sp" />
 
     <Button
-        android:id="@+id/button13"
+        android:id="@+id/newNoteButton"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
