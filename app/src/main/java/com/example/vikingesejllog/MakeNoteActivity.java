@@ -45,6 +45,7 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
     private TextView rowersBtnText;
     private TextView timeText;
     private TextView gpsText;
+    private EditText commentText;
 
     private ImageButton micButton;
     private ImageButton cameraButton;
@@ -75,6 +76,8 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
         rowersBtnText = findViewById(R.id.rowersButtonText);
         timeText = findViewById(R.id.clockButtonText);
         gpsText = findViewById(R.id.coordsButtonText);
+        commentText = findViewById(R.id.textComment);
+
 
         micButton = findViewById(R.id.micButton);
         micButton.setOnClickListener(this);
@@ -247,7 +250,7 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
 
         Note note = new Note(gps.getLocation().getLatitude()+String.valueOf(gps.getLocation().getLongitude()).substring(0,8),
                                     sailingSpeed.getText().toString(), windSpeed.getText().toString(), timeText.getText().toString(),
-                                    rowers.getText().toString(), path.getText().toString(), direction.getText().toString(),course.getText().toString());
+                                    rowers.getText().toString(), path.getText().toString(), direction.getText().toString(),course.getText().toString(),commentText.getText().toString());
 
         Gson gson = new Gson();
         String myJson = gson.toJson(note);

@@ -10,8 +10,9 @@ public class Note {
     private String sailForing;
     private String sailStilling;
     private String course;
+    private String comment;
 
-    public Note(String gpsLoc, String boatSpeed, String windSpeed, String time, String rowers, String sailForing, String sailStilling, String course) {
+    public Note(String gpsLoc, String boatSpeed, String windSpeed, String time, String rowers, String sailForing, String sailStilling, String course, String comment) {
         this.gpsLoc = gpsLoc;
         this.boatSpeed = boatSpeed;
         this.windSpeed = windSpeed;
@@ -20,6 +21,8 @@ public class Note {
         this.sailForing = sailForing;
         this.sailStilling = sailStilling;
         this.course = course;
+        this.comment = comment;
+
     }
 
     public String getGpsLoc() {
@@ -84,6 +87,14 @@ public class Note {
 
     public void setCourse(String course) {
         this.course = course;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }
 

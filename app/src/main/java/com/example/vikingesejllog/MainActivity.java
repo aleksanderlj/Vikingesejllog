@@ -47,16 +47,13 @@ public class MainActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 Note note = gson.fromJson(data.getStringExtra("myjson"), Note.class);
 
-
-
-                //activity_makeNote
+                //activity_makenote test
                 TextView test = findViewById(R.id.textView);
-                test.setText(note.getBoatSpeed()+note.getCourse()+note.getGpsLoc());
+                test.setText(note.getComment());
 
             }
         }
     }
-
 
 }
 
