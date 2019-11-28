@@ -1,11 +1,17 @@
 package com.example.vikingesejllog;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -25,12 +31,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     AudioRecorder audioRecorder;
     ProgressDialog progressDialog;
 
+    private int STORAGE_PERMISSION_CODE = 1;
+
     /*Author: s164497 - Hemsen :-)
 
     Følgende skal tilføjes manifestet:
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
 
     <uses-feature android:name="android.hardware.camera"
@@ -90,18 +99,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } }
 
         if (v == play){
-        try {
-            audioRecorder.playAudioNote("test");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }}
+
+            //Skal køres først, for at sikre, at brugeren har givet tilladelse til appen.
+            if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            try {
+                audioRecorder.playAudioNote("test");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+                //Hvis tilladelsen ikke allerede er givet, skal der spørges efter den.
+            requestStoragePermission(); }
+        }
 
         if (v == snapshot){
+            //Sender intent til at åbne kameraet og afventer resultatet.
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(takePictureIntent, 0);
         }
 
         if (v == test){
+            //Test af ProgressDialog med knap
             progressDialog = new ProgressDialog(this);
             progressDialog.setMax(200);
             progressDialog.setTitle("Optager lydnote...");
@@ -118,8 +137,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //Køres når der er et resultat fra kamera appen og gemmer det som et bitmap:
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = (Bitmap)data.getExtras().get("data");
         //Skal evt. gemmes i noget sharedprefs med navn på note..
@@ -144,4 +165,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return false;
     }
-}
+
+
+//Følgede to metoder beder brugeren om tilladelse til at tilgå enhedens lagerplads:
+    public void requestStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)){
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Tilladelse påkrævet!")
+                    .setMessage("Følgende tilladelsen kræves for at kunne afspille gemte lydnoter")
+                    .setPositiveButton("Godkend", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            {ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+                        }
+                    }})
+                    .setNegativeButton("Afvis", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+
+    }   else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+          if (requestCode == STORAGE_PERMISSION_CODE) {
+              if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                  Toast.makeText(this, "Tilladelsen blev givet", Toast.LENGTH_SHORT).show();
+              } else{
+                  Toast.makeText(this, "Tilladelsen blev afvist", Toast.LENGTH_SHORT).show();
+              }
+        }
+}}
