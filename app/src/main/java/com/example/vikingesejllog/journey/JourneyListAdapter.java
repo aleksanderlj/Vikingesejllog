@@ -17,6 +17,15 @@ public class JourneyListAdapter extends RecyclerView.Adapter<JourneyListAdapter.
 
     private List<JourneyListItem> listItems;
     private Context context;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
+    }
 
     public JourneyListAdapter(List<JourneyListItem> listItems, Context context) {
         this.listItems = listItems;
@@ -52,6 +61,18 @@ public class JourneyListAdapter extends RecyclerView.Adapter<JourneyListAdapter.
 
             departureDestination = (TextView) itemView.findViewById(R.id.departureDestination);
             journeyDate = (TextView) itemView.findViewById(R.id.journeyDate);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }
