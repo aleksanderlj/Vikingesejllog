@@ -10,12 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vikingesejllog.R;
+import com.example.vikingesejllog.model.Togt;
 
 import java.util.List;
 
 public class JourneyListAdapter extends RecyclerView.Adapter<JourneyListAdapter.ViewHolder> {
 
-    private List<JourneyListItem> listItems;
+    private List<Togt> togtList;
     private Context context;
     private OnItemClickListener listener;
 
@@ -27,8 +28,8 @@ public class JourneyListAdapter extends RecyclerView.Adapter<JourneyListAdapter.
         this.listener = listener;
     }
 
-    public JourneyListAdapter(List<JourneyListItem> listItems, Context context) {
-        this.listItems = listItems;
+    public JourneyListAdapter(List<Togt> togtList, Context context) {
+        this.togtList = togtList;
         this.context = context;
     }
 
@@ -41,26 +42,26 @@ public class JourneyListAdapter extends RecyclerView.Adapter<JourneyListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        JourneyListItem journeyListItem = listItems.get(position);
+        Togt togt = togtList.get(position);
 
-        holder.departureDestination.setText(journeyListItem.getDepartureDestination());
-        holder.journeyDate.setText(journeyListItem.getDate());
+        holder.departure.setText(togt.getDeparture());
+        holder.destination.setText(togt.getDestination());
     }
 
     @Override
     public int getItemCount() {
-        return listItems.size();
+        return togtList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView departureDestination;
-        public TextView journeyDate;
+        public TextView departure, destination;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            departureDestination = (TextView) itemView.findViewById(R.id.departureDestination);
-            journeyDate = (TextView) itemView.findViewById(R.id.journeyDate);
+            departure = (TextView) itemView.findViewById(R.id.togtAfgang);
+            destination = (TextView) itemView.findViewById(R.id.togtDestination);
+//            togtDate = (TextView) itemView.findViewById(R.id.togtDato);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

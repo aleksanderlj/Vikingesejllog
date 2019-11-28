@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.TopMenu;
+import com.example.vikingesejllog.model.Etape;
+import com.example.vikingesejllog.model.Togt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +21,7 @@ public class JourneyList extends AppCompatActivity implements View.OnClickListen
     private RecyclerView recyclerView;
     private JourneyListAdapter adapter;
 
-    private List<JourneyListItem> journeyListItems;
+    private List<Togt> togtList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +32,18 @@ public class JourneyList extends AppCompatActivity implements View.OnClickListen
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        journeyListItems = new ArrayList<>();
+        togtList = new ArrayList<>();
+        List<Etape> exampleEtapeList = new ArrayList<>();
+
 
         // Test list items
         for (int i = 0; i<=10; i++){
-            JourneyListItem journeyListItem = new JourneyListItem("Etape " + (i+1),
-                    "19/11-2019 - 21/11-2019");
-            journeyListItems.add(journeyListItem);
+            Togt togt = new Togt("Nyborg -",
+                    "Skagen");
+            togtList.add(togt);
         }
 
-        adapter = new JourneyListAdapter(journeyListItems, this);
+        adapter = new JourneyListAdapter(togtList, this);
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new JourneyListAdapter.OnItemClickListener() {

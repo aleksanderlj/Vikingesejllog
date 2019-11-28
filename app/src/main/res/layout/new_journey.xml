@@ -117,7 +117,7 @@
         app:layout_constraintGuide_percent="0.95" />
 
     <EditText
-        android:id="@+id/start"
+        android:id="@+id/departure"
         android:layout_width="340dp"
         android:layout_height="54dp"
         android:background="@null"
@@ -132,7 +132,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView15" />
 
     <EditText
-        android:id="@+id/end"
+        android:id="@+id/destination"
         android:layout_width="330dp"
         android:layout_height="48dp"
         android:background="@null"
