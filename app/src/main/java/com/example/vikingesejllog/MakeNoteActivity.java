@@ -104,7 +104,6 @@ public class MakeNoteActivity extends AppCompatActivity {
 
     public void setSailingSpeed(final View v){
 
-
         sailingSpeedBtnText.setVisibility(View.INVISIBLE);
 
         sailingSpeed.setVisibility(View.VISIBLE);
