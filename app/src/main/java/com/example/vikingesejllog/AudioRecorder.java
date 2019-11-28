@@ -43,7 +43,7 @@ public class AudioRecorder {
         audioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         audioRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         audioRecorder.setAudioEncoder(DEFAULT);
-        audioRecorder.setOutputFile("/sdcard/music" + fileName);
+        audioRecorder.setOutputFile(Environment.getExternalStorageDirectory().getPath()+"/vikingesejllog/lydnoter" + fileName);
         audioRecorder.prepare();
 
         audioRecorder.start();
@@ -70,7 +70,7 @@ public void stopAudioRecord(){
 
     public void playAudioNote(String fileName) throws IOException {
         //Husk fileName skal defineres enten her eller inden metoden kaldes.
-        String filePath = Environment.getExternalStorageDirectory()+"/sdcard/music" + fileName;
+        String filePath = Environment.getExternalStorageDirectory().getPath()+"/vikingesejllog/lydnoter" + fileName;
 
         audioPlayer = new MediaPlayer();
         audioPlayer.setDataSource(filePath);
