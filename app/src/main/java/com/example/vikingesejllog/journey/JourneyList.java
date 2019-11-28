@@ -36,17 +36,18 @@ public class JourneyList extends AppCompatActivity implements View.OnClickListen
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         journeyListItems = new ArrayList<>();
-
+        
+        // Inserts data into RecyclerView
+        Togt togt;
+        JourneyListItem journeyListItem;
         Gson gson = new Gson();
         prefs = getSharedPreferences("togtListe", MODE_PRIVATE);
         Map<String,?> togtHash = prefs.getAll();
-        // Test list items
-        for (Integer i = 0; i<=togtHash.size(); i++){
-            String currTogt = (String) togtHash.get(i.toString());
+        for (int i = 0; i<=togtHash.size(); i++){
+            String currTogt = (String) togtHash.get(Integer.toString(i));
             if (currTogt != null) {
-                Togt togt = gson.fromJson(currTogt, Togt.class);
-                JourneyListItem journeyListItem = new JourneyListItem(togt.getStart() + " - " + togt.getEnd(),
-                        "");
+                togt = gson.fromJson(currTogt, Togt.class);
+                journeyListItem = new JourneyListItem(togt.getStart() + " - " + togt.getEnd(), "04-06-2019 - 17-08-2019");
                 journeyListItems.add(journeyListItem);
             }
             else
