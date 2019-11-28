@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,11 +49,10 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
 
     private ImageButton micButton;
     private ImageButton cameraButton;
-    private boolean pictureNote;
-
+    private ImageView takenPicture, savedPicture;
 
     AudioRecorder audioRecorder;
-    private boolean hasRecorded = false;
+
 
     private int STORAGE_PERMISSION_CODE = 1;
 
@@ -84,6 +84,12 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
 
         cameraButton= findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(this);
+
+        takenPicture = findViewById(R.id.takenPicture);
+        takenPicture.setOnTouchListener(this);
+
+        savedPicture = findViewById(R.id.savedPicture);
+        savedPicture.setImageAlpha(0);
 
 
     }
@@ -263,25 +269,21 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
 
         @Override
         public void onClick(View v) {
-            if (v == micButton && !hasRecorded) {
-                if (ContextCompat.checkSelfPermission(MakeNoteActivity.this,
-                        Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+            if (v == micButton) {
                     try {
-                        audioRecorder.recordAudio(timeText.toString());
-                        hasRecorded = true;
+                        audioRecorder.recordAudio("test");
                         micButton.setImageResource(R.drawable.nem);
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-                }
             }
             if (v == micButton){
                 //Skal køres først, for at sikre, at brugeren har givet tilladelse til appen.
                 if (ContextCompat.checkSelfPermission(MakeNoteActivity.this,
                         Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                     try {
-                        audioRecorder.playAudioNote(timeText.toString());
+                        audioRecorder.playAudioNote("test");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -301,26 +303,24 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
             super.onActivityResult(requestCode, resultCode, data);
             Bitmap bitmap = (Bitmap)data.getExtras().get("data");
             //Skal evt. gemmes i noget sharedprefs med navn på note..
-            cameraButton.setImageBitmap(bitmap);
-            pictureNote = true;
+            takenPicture.setImageBitmap(bitmap);
+            savedPicture.setImageBitmap(bitmap);
         }
 
         @Override
-        public boolean onTouch(View cameraButton, MotionEvent event) {
+        public boolean onTouch(View takenPicture, MotionEvent event) {
         /*Zoomer ind på billedet, hvis brugeren rør ved det, og zoomer ud igen,
         hvis fingeren slippes
          */
-
-            if(event.getAction() == MotionEvent.ACTION_DOWN && pictureNote){
-                cameraButton.setMinimumHeight(2000);
-                cameraButton.setMinimumWidth(2000);
-                return true;
-            }
-            if(event.getAction() == MotionEvent.ACTION_UP && pictureNote){
-                cameraButton.setMinimumHeight(250);
-                cameraButton.setMinimumWidth(250);
-                return true;
-            }
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    savedPicture.setImageAlpha(255);
+                    savedPicture.setElevation(100);
+                    return true;
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    savedPicture.setImageAlpha(0);
+                    return true;
+                }
             return false;
         }
 
