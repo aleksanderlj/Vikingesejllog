@@ -5,71 +5,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Button
-        android:id="@+id/newHarborButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/btn_round"
-        app:layout_constraintBottom_toTopOf="@+id/bottomMenuFragment"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
-
-    <TextView
-        android:id="@+id/addNewNoteText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="5dp"
-        android:text="Tilføj ny note"
-        android:textAllCaps="false"
-        android:textColor="@android:color/background_light"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/newHarborButton"
-        app:layout_constraintEnd_toEndOf="@+id/newHarborButton"
-        app:layout_constraintStart_toStartOf="@+id/newHarborButton"
-        app:layout_constraintTop_toTopOf="@+id/newHarborButton" />
-
-    <ImageView
-        android:id="@+id/plusImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/newHarborButton"
-        app:layout_constraintEnd_toStartOf="@+id/addNewNoteText"
-        app:layout_constraintTop_toTopOf="@+id/newHarborButton"
-        app:srcCompat="@drawable/plus" />
-
-    <Button
-        android:id="@+id/sortByTimeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:drawableEnd="@drawable/down"
-        android:fontFamily="@font/montserrat"
-        android:text="Sorter efter tid"
-        android:textAllCaps="false"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/topMenuFragment" />
-
     <fragment
         android:id="@+id/bottomMenuFragment"
         android:name="com.example.vikingesejllog.BottomMenu"
@@ -81,11 +16,20 @@
 
     <fragment
         android:id="@+id/topMenuFragment"
-        android:name="com.example.vikingesejllog.TopMenu"
+        android:name="com.example.vikingesejllog.note.EtapeTopFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/note_viewpager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomMenuFragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topMenuFragment" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

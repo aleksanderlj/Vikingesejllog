@@ -1,4 +1,6 @@
-package com.example.vikingesejllog;
+package com.example.vikingesejllog.model;
+
+import com.example.vikingesejllog.R;
 
 public class Note {
 
@@ -11,6 +13,9 @@ public class Note {
     private String sailStilling;
     private String course;
     private String comment;
+    private int pencilImageResource;
+    private int cameraImageResource;
+    private int micImageResource;
 
     public Note(String gpsLoc, String boatSpeed, String windSpeed, String time, String rowers, String sailForing, String sailStilling, String course, String comment) {
         this.gpsLoc = gpsLoc;
@@ -22,7 +27,9 @@ public class Note {
         this.sailStilling = sailStilling;
         this.course = course;
         this.comment = comment;
-
+        this.pencilImageResource = R.drawable.pencil_black;
+        this.cameraImageResource = R.drawable.camera_black;
+        this.micImageResource = R.drawable.mic_black;
     }
 
     public String getGpsLoc() {
@@ -87,6 +94,40 @@ public class Note {
 
     public void setCourse(String course) {
         this.course = course;
+    }
+
+    public int getPencilImageResource() {
+        return pencilImageResource;
+    }
+
+    public int getCameraImageResource() {
+        return cameraImageResource;
+    }
+
+    public int getMicImageResource() {
+        return micImageResource;
+    }
+
+    public void hidePencil(boolean hidden){
+        if(hidden == true){
+            this.pencilImageResource = 0;
+        } else {
+            this.pencilImageResource = R.drawable.pencil_black;
+        }
+    }
+    public void hideCamera(boolean hidden){
+        if(hidden == true){
+            this.cameraImageResource = 0;
+        } else {
+            this.cameraImageResource = R.drawable.pencil_black;
+        }
+    }
+    public void hideMic(boolean hidden){
+        if(hidden == true){
+            this.micImageResource = 0;
+        } else {
+            this.micImageResource = R.drawable.pencil_black;
+        }
     }
 
     public String getComment() {
