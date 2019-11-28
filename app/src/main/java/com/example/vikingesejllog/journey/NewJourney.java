@@ -1,12 +1,14 @@
 package com.example.vikingesejllog.journey;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.vikingesejllog.R;
+import com.example.vikingesejllog.model.Togt;
 
 public class NewJourney extends AppCompatActivity implements View.OnClickListener {
     TextView start, end;
@@ -22,10 +24,13 @@ public class NewJourney extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.godkend:
-                this.finish();
-                break;
+        if (v.getId() == R.id.godkend){
+            String startPoint, endPoint;
+            startPoint = start.getText().toString();
+            endPoint = end.getText().toString();
+            Togt togt = new Togt(startPoint, endPoint);
+    
+            //SharedPreferences()
         }
     }
 }

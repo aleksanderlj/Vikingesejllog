@@ -9,16 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".journey.JourneyList"/>
-
-        <activity android:name=".journey.NewJourney" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".note.NoteList" >
-        <intent-filter>
+        <activity android:name=".journey.JourneyList">
+            <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
+        </activity>
+
+        <activity android:name=".journey.NewJourney" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".note.NoteList" >
+
     </activity>
 
         <meta-data
