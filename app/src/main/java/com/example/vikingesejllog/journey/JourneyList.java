@@ -21,7 +21,8 @@ import java.util.Map;
 public class JourneyList extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private JourneyListAdapter adapter;
+
     private List<JourneyListItem> journeyListItems;
     private SharedPreferences prefs;
     
@@ -56,6 +57,14 @@ public class JourneyList extends AppCompatActivity implements View.OnClickListen
         
         adapter = new JourneyListAdapter(journeyListItems, this);
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new JourneyListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                // Logik her til tryk af element i recyclerview. Husk position starter fra 0.
+
+            }
+        });
 
         TopMenu tm = (TopMenu) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
         tm.updateTextView("Liste over togter");
