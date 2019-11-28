@@ -6,12 +6,12 @@ public class Note {
     private String boatSpeed;
     private String windSpeed;
     private String time;
-    private int rowers;
+    private String rowers;
     private String sailForing;
     private String sailStilling;
     private String course;
 
-    public Note(String gpsLoc, String boatSpeed, String windSpeed, String time, int rowers, String sailForing, String sailStilling, String course) {
+    public Note(String gpsLoc, String boatSpeed, String windSpeed, String time, String rowers, String sailForing, String sailStilling, String course) {
         this.gpsLoc = gpsLoc;
         this.boatSpeed = boatSpeed;
         this.windSpeed = windSpeed;
@@ -54,11 +54,11 @@ public class Note {
         this.time = time;
     }
 
-    public int getRowers() {
+    public String getRowers() {
         return rowers;
     }
 
-    public void setRowers(int rowers) {
+    public void setRowers(String rowers) {
         this.rowers = rowers;
     }
 
