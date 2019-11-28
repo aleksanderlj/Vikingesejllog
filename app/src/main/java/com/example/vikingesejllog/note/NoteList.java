@@ -70,7 +70,6 @@ public class NoteList extends AppCompatActivity {
                 NewEtapeFragment newEtape = new NewEtapeFragment();
                 return newEtape;
             }
-            return new NoteListFragment();
         }
 
         @Override
