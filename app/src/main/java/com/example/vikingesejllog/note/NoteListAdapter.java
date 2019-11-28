@@ -18,6 +18,15 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
 
     private List<NoteListItem> noteListItems;
     private Context context;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
+    }
 
     public NoteListAdapter(List<NoteListItem> noteListItems, Context context) {
         this.noteListItems = noteListItems;
@@ -62,6 +71,18 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
             pencil = (ImageView) itemView.findViewById(R.id.notePencil);
             camera = (ImageView) itemView.findViewById(R.id.noteCamera);
             mic = (ImageView) itemView.findViewById(R.id.noteMic);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

@@ -21,7 +21,7 @@ import java.util.List;
 public class NoteListFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private NoteListAdapter adapter;
     private List<NoteListItem> noteListItems;
 
     @Nullable
@@ -44,6 +44,15 @@ public class NoteListFragment extends Fragment {
 
         adapter = new NoteListAdapter(noteListItems, getActivity());
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new NoteListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                // Logik her til tryk af element i recyclerview. Husk position starter fra 0.
+
+            }
+        });
+
 
         return view;
     }
