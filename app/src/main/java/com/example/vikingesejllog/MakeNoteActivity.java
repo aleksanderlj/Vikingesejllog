@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.vikingesejllog.model.Note;
 import com.google.gson.Gson;
 
 public class MakeNoteActivity extends AppCompatActivity {
@@ -203,7 +204,8 @@ public class MakeNoteActivity extends AppCompatActivity {
 
     public void setCoordinates(View v){
         gps = new MyGPS(this);
-        gpsText.setText("LAT: "+(gps.getLocation().getLatitude()+"\n"+"LON: "+(String.valueOf(gps.getLocation().getLongitude()).substring(0,8))));
+        String s = "LAT: "+(gps.getLocation().getLatitude()+"\n"+"LON: "+(String.valueOf(gps.getLocation().getLongitude()).substring(0,8)));
+        gpsText.setText(s);
     }
 
     public void setTime(View v){
@@ -222,7 +224,7 @@ public class MakeNoteActivity extends AppCompatActivity {
         String myJson = gson.toJson(note);
 
         Intent result = new Intent();
-        result.putExtra("myjson",myJson);
+        result.putExtra("note",myJson);
         setResult(MainActivity.RESULT_OK,result);
 
         finish();

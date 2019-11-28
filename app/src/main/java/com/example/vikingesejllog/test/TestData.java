@@ -24,9 +24,9 @@ public class TestData {
         crew.add("Det skal være Max");
 
         ArrayList<Note> notes = new ArrayList<Note>();
-        notes.add(new Note("1.2.1", "88", "22", "19:00", 7, "9", "12", "922"));
-        notes.add(new Note("1.8.4", "44", "12", "15:00", 3, "3", "21", "41"));
-        notes.add(new Note("1.5.1", "51", "65", "12:44", 12, "4", "16", "221"));
+        notes.add(new Note("1.2.1", "88", "22", "19:00", "7", "9", "12", "922", "Hello"));
+        notes.add(new Note("1.8.4", "44", "12", "15:00", "3", "3", "21", "41", "Pushkinti"));
+        notes.add(new Note("1.5.1", "51", "65", "12:44", "12", "4", "16", "221", "Malibu"));
 
 
 

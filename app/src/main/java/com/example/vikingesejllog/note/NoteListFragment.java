@@ -1,5 +1,6 @@
 package com.example.vikingesejllog.note;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.vikingesejllog.MakeNoteActivity;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Note;
@@ -19,12 +21,13 @@ import com.example.vikingesejllog.model.Note;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NoteListFragment extends Fragment {
+public class NoteListFragment extends Fragment implements View.OnClickListener {
 
     private RecyclerView recyclerView;
     private NoteListAdapter adapter;
-    private List<NoteListItem> noteListItems;
     private List<Note> notes;
+
+    public NoteListFragment(){}
 
     public NoteListFragment(ArrayList<Note> notes){
         this.notes = notes;
@@ -61,7 +64,18 @@ public class NoteListFragment extends Fragment {
             }
         });
 
-
+        view.findViewById(R.id.newHarborButton).setOnClickListener(this);
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        System.out.println("Hello");
+        switch(v.getId()){
+            case R.id.newHarborButton:
+                Intent i = new Intent(getActivity(), MakeNoteActivity.class);
+                getActivity().startActivityForResult(i,2);
+                break;
+        }
     }
 }
