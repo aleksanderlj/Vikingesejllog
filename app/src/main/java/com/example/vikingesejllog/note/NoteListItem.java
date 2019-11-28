@@ -37,4 +37,26 @@ public class NoteListItem {
     public int getMicImageResource() {
         return micImageResource;
     }
+
+    public void hidePencil(boolean hidden){
+        if(hidden == true){
+            this.pencilImageResource = 0;
+        } else {
+            this.pencilImageResource = R.drawable.pencil_black;
+        }
+    }
+    public void hideCamera(boolean hidden){
+        if(hidden == true){
+            this.cameraImageResource = 0;
+        } else {
+            this.cameraImageResource = R.drawable.pencil_black;
+        }
+    }
+    public void hideMic(boolean hidden){
+        if(hidden == true){
+            this.micImageResource = 0;
+        } else {
+            this.micImageResource = R.drawable.pencil_black;
+        }
+    }
 }
