@@ -1,6 +1,7 @@
 package com.example.vikingesejllog.journey;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -10,17 +11,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.TopMenu;
+import com.example.vikingesejllog.model.Togt;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class JourneyList extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-
     private List<JourneyListItem> journeyListItems;
-
+    private SharedPreferences prefs;
+    
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,13 +37,22 @@ public class JourneyList extends AppCompatActivity implements View.OnClickListen
 
         journeyListItems = new ArrayList<>();
 
+        Gson gson = new Gson();
+        prefs = getSharedPreferences("togtListe", MODE_PRIVATE);
+        Map<String,?> togtHash = prefs.getAll();
         // Test list items
-        for (int i = 0; i<=10; i++){
-            JourneyListItem journeyListItem = new JourneyListItem("Etape " + (i+1),
-                    "19/11-2019 - 21/11-2019");
-            journeyListItems.add(journeyListItem);
+        for (Integer i = 0; i<=togtHash.size(); i++){
+            String currTogt = (String) togtHash.get(i.toString());
+            if (currTogt != null) {
+                Togt togt = gson.fromJson(currTogt, Togt.class);
+                JourneyListItem journeyListItem = new JourneyListItem(togt.getStart() + " - " + togt.getEnd(),
+                        "");
+                journeyListItems.add(journeyListItem);
+            }
+            else
+                break;
         }
-
+        
         adapter = new JourneyListAdapter(journeyListItems, this);
         recyclerView.setAdapter(adapter);
 
