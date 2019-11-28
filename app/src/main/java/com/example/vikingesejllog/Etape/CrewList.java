@@ -30,7 +30,9 @@ public class CrewList extends AppCompatActivity {
 
         crewListItems = new ArrayList<>();
 
-
+        // test for crew list '
+        // tilføjer 10 crewmembers til en liste
+        //TODO: lav logik så man kan fjerne og tiljøfe besætning
         for(int i=0; i < 10; i++){
 
             CrewListItem crewListItem = new CrewListItem("Crew " + (i+1));
