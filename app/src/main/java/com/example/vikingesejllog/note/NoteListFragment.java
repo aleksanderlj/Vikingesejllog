@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
+import com.example.vikingesejllog.model.Note;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +22,13 @@ import java.util.List;
 public class NoteListFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private NoteListAdapter adapter;
     private List<NoteListItem> noteListItems;
+    private List<Note> notes;
+
+    public NoteListFragment(ArrayList<Note> notes){
+        this.notes = notes;
+    }
 
     @Nullable
     @Override
@@ -33,17 +39,28 @@ public class NoteListFragment extends Fragment {
        recyclerView.setHasFixedSize(true);
        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        noteListItems = new ArrayList<>();
-
+       /*
         // Test list items
+        noteListItems = new ArrayList<>();
         for (int i = 0; i<=10; i++){
             NoteListItem noteListItem = new NoteListItem("Note: " + (i+1),
                     "28/10-2019\n09:13");
             noteListItems.add(noteListItem);
         }
 
-        adapter = new NoteListAdapter(noteListItems, getActivity());
+        */
+
+        adapter = new NoteListAdapter(notes, getActivity());
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new NoteListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                // Logik her til tryk af element i recyclerview. Husk position starter fra 0.
+
+            }
+        });
+
 
         return view;
     }

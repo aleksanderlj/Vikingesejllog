@@ -11,15 +11,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vikingesejllog.R;
+import com.example.vikingesejllog.model.Note;
 
 import java.util.List;
 
 public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHolder> {
 
-    private List<NoteListItem> noteListItems;
+    private List<Note> noteListItems;
     private Context context;
+    private OnItemClickListener listener;
 
-    public NoteListAdapter(List<NoteListItem> noteListItems, Context context) {
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
+    }
+
+    public NoteListAdapter(List<Note> noteListItems, Context context) {
         this.noteListItems = noteListItems;
         this.context = context;
     }
@@ -33,9 +43,9 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        NoteListItem noteListItem = noteListItems.get(position);
-        holder.noteName.setText(noteListItem.getNoteName());
-        holder.noteDate.setText(noteListItem.getNoteDate());
+        Note noteListItem = noteListItems.get(position);
+        holder.noteName.setText(noteListItem.getTime());
+        holder.noteDate.setText(noteListItem.getTime());
         holder.pencil.setImageResource(noteListItem.getPencilImageResource());
         holder.camera.setImageResource(noteListItem.getCameraImageResource());
         holder.mic.setImageResource(noteListItem.getMicImageResource());
@@ -62,6 +72,18 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
             pencil = (ImageView) itemView.findViewById(R.id.notePencil);
             camera = (ImageView) itemView.findViewById(R.id.noteCamera);
             mic = (ImageView) itemView.findViewById(R.id.noteMic);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

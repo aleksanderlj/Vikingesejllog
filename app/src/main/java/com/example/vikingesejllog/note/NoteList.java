@@ -1,8 +1,11 @@
 package com.example.vikingesejllog.note;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -14,6 +17,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.test.TestData;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -21,6 +25,7 @@ public class NoteList extends AppCompatActivity {
 
     private ViewPager2 pager;
     private RecyclerView.Adapter adapter;
+    private ArrayList<Etape> etaper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,9 +36,9 @@ public class NoteList extends AppCompatActivity {
 
         //TODO These are tests
         TestData.createTestData();
-        final ArrayList<Etape> testList = TestData.togter.get(1).getEtapeList();
+        etaper = TestData.togter.get(1).getEtapeList();
 
-        adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle(), testList);
+        adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle(), etaper);
         pager.setAdapter(adapter);
 
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -41,29 +46,29 @@ public class NoteList extends AppCompatActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 EtapeTopFragment f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
-                f.setAll(testList.get(pager.getCurrentItem()), pager.getCurrentItem(), testList.size());
-                System.out.println(pager.getCurrentItem());
+                if (pager.getCurrentItem() < etaper.size()) {
+                    f.setAll(etaper.get(pager.getCurrentItem()), pager.getCurrentItem(), etaper.size());
+                } else {
+                    // TODO top fragment needs to change when it reaches the end of viewpager
+                }
             }
         });
     }
 
     private class NotePagerAdapter extends FragmentStateAdapter {
-        private ArrayList<NoteListFragment> etapeFragments = new ArrayList<>();
-        private ArrayList<Etape> etaper;
-
-        public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ArrayList<Etape> etapes) {
+        public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ArrayList<Etape> etaper) {
             super(fragmentManager, lifecycle);
-            this.etaper = etapes;
         }
 
         @NonNull
         @Override
         public Fragment createFragment(int position) {
             if(position<etaper.size()) {
-                NoteListFragment f = new NoteListFragment();
+                NoteListFragment f = new NoteListFragment(etaper.get(position).getNoteList());
                 return f;
             } else {
-                System.out.println("");
+                NewEtapeFragment newEtape = new NewEtapeFragment();
+                return newEtape;
             }
             return new NoteListFragment();
         }
@@ -72,9 +77,18 @@ public class NoteList extends AppCompatActivity {
         public int getItemCount() {
             return etaper.size()+1;
         }
+    }
 
-        public void setEtapeFragments(ArrayList<NoteListFragment> etapeFragments) {
-            this.etapeFragments = etapeFragments;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK){
+            String json = data.getStringExtra("etape");
+            Gson gson = new Gson();
+            Etape newEtape = gson.fromJson(json, Etape.class);
+            etaper.add(newEtape);
+            pager.setAdapter(adapter);
+            //adapter.notifyDataSetChanged();
         }
     }
 }
