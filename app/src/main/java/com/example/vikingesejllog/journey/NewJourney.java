@@ -1,6 +1,5 @@
 package com.example.vikingesejllog.journey;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -9,9 +8,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Togt;
+import com.google.gson.Gson;
 
 public class NewJourney extends AppCompatActivity implements View.OnClickListener {
-    TextView start, end;
+    private TextView start, end;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +25,21 @@ public class NewJourney extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.godkend){
+            Togt togt;
             String startPoint, endPoint;
             startPoint = start.getText().toString();
             endPoint = end.getText().toString();
-            Togt togt = new Togt(startPoint, endPoint);
-    
-            //SharedPreferences()
+            togt = new Togt(startPoint, endPoint);
+            
+            Gson gson = new Gson();
+            String jsonTogt = gson.toJson(togt);
+            SharedPreferences prefs = getSharedPreferences("togtListe", MODE_PRIVATE);
+            SharedPreferences.Editor editor = getSharedPreferences("togtListe", MODE_PRIVATE).edit();
+            Integer hejsa = prefs.getAll().size() + 1;
+            editor.putString(hejsa.toString(), jsonTogt);
+            editor.apply();
+            
+            this.finish();
         }
     }
 }
