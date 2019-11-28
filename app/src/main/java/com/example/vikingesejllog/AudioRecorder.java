@@ -30,7 +30,7 @@ public class AudioRecorder extends AppCompatActivity {
     MediaPlayer audioPlayer;
     ProgressDialog progressDialog;
 
-    final int REQUEST_PERMISSION_CODE = 1000;
+    //final int REQUEST_PERMISSION_CODE = 1000;
 
 
 
@@ -60,8 +60,7 @@ public class AudioRecorder extends AppCompatActivity {
         progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                audioRecorder.stop();
-                progressDialog.dismiss();
+                stopAudioRecord();
             }});
 
         audioRecorder.start();
@@ -88,16 +87,18 @@ public class AudioRecorder extends AppCompatActivity {
         audioPlayer.prepare();
         audioPlayer.start();
 
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMax(200);
         progressDialog.setTitle("Afspiller lydnote");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
 
-        progressDialog.setButton(1, "Afslut afspilning", new DialogInterface.OnClickListener() {
+        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 stopAudioNote();
-            }
-        });
+            }});
+
+        progressDialog.show();
     }
 
     private void stopAudioNote(){
