@@ -22,6 +22,7 @@
         <activity android:name=".journey.NewJourney" />
         <activity android:name=".MainActivity" />
         <activity android:name=".MakeNoteActivity" />
+        <activity android:name=".Etape.CrewList" />
         <activity android:name=".note.NoteList" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />

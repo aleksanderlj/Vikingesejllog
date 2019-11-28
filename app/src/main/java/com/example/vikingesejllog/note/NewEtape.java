@@ -9,6 +9,7 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.vikingesejllog.Etape.CrewList;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
 import com.google.gson.Gson;
@@ -41,7 +42,8 @@ public class NewEtape extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.crewCountButton:
-                // TODO: Intent i = new Intent();
+                Intent i = new Intent(this, CrewList.class);
+                startActivity(i);
                 break;
 
             case R.id.confirmButton:

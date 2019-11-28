@@ -25,7 +25,7 @@ public class AudioRecorder extends AppCompatActivity {
     ProgressDialog progressDialog;
 
 
-    void recordAudio(String fileName) throws IOException {
+    public void recordAudio(String fileName) throws IOException {
         /*Denne metode gemmer en lydfil, der optages gennem mikrofonen. FileName skal vi have
         defineret som en variabel svarende til noten, der oprettes.
          */
@@ -66,7 +66,7 @@ public class AudioRecorder extends AppCompatActivity {
 }
 
 
-    void playAudioNote(String fileName) throws IOException {
+    public void playAudioNote(String fileName) throws IOException {
         //Husk fileName skal defineres enten her eller inden metoden kaldes.
 
         String filePath = Environment.getExternalStorageDirectory().getPath()+ fileName;

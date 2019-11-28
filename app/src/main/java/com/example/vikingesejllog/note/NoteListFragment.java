@@ -70,7 +70,6 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        System.out.println("Hello");
         switch(v.getId()){
             case R.id.newHarborButton:
                 Intent i = new Intent(getActivity(), MakeNoteActivity.class);

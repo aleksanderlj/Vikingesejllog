@@ -78,6 +78,7 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
         timeText = findViewById(R.id.clockButtonText);
         gpsText = findViewById(R.id.coordsButtonText);
         commentText = findViewById(R.id.textComment);
+        gps = new MyGPS(this);
 
 
         micButton = findViewById(R.id.micButton);
@@ -243,7 +244,6 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void setCoordinates(View v){
-        gps = new MyGPS(this);
         String s = "LAT: "+(gps.getLocation().getLatitude()+"\n"+"LON: "+(String.valueOf(gps.getLocation().getLongitude()).substring(0,8)));
         gpsText.setText(s);
     }
