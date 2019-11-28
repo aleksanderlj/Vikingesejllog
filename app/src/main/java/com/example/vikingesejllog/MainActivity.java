@@ -3,6 +3,8 @@ package com.example.vikingesejllog;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -12,14 +14,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TableLayout;
+import android.widget.Toast;
 
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
 
-    Button record, play, snapshot;
+    Button record, play, snapshot, test;
     ImageView imageNote;
     AudioRecorder audioRecorder;
+    ProgressDialog progressDialog;
 
     /*Author: s164497 - Hemsen :-)
 
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         audioRecorder = new AudioRecorder();
 
+
         TableLayout tl = new TableLayout(this);
 
         record = new Button(this);
@@ -66,6 +71,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imageNote.setOnTouchListener(this);
         tl.addView(imageNote);
 
+        test = new Button(this);
+        test.setText("Test");
+        test.setOnClickListener(this);
+        tl.addView(test);
 
         setContentView(tl);
     }
@@ -75,14 +84,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Skal have defineret en variabel for fileName!!!
         if (v == record) {
             try {
-                audioRecorder.recordAudio("Noten");
+                audioRecorder.recordAudio("test");
             } catch (IOException e) {
                 e.printStackTrace();
             } }
 
         if (v == play){
         try {
-            audioRecorder.playAudioNote("Noten");
+            audioRecorder.playAudioNote("test");
         } catch (IOException e) {
             e.printStackTrace();
         }}
@@ -90,6 +99,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v == snapshot){
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(takePictureIntent, 0);
+        }
+
+        if (v == test){
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMax(200);
+            progressDialog.setTitle("Optager lydnote...");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+
+            progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    progressDialog.dismiss();
+                }});
+
+            progressDialog.show();
         }
     }
 

@@ -31,6 +31,9 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     <uses-feature android:name="android.hardware.camera"
                   android:required="true" />
 
+if (fileName == null){
+            Toast.makeText(getAppContext, "Der er ingen gemt lydnote", Toast.LENGTH_LONG).show();
+        }
 
     Ser ingen grund til at have en klasse til ImageRecorder, da det bare kan gøres med et intent
     og et bitmap lige pt:
