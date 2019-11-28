@@ -37,7 +37,7 @@ public class AudioRecorder extends AppCompatActivity {
         audioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         audioRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         audioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-        audioRecorder.setOutputFile(Environment.getExternalStorageDirectory().getPath() + "/Download/" + fileName);
+        audioRecorder.setOutputFile(Environment.getExternalStorageDirectory().getPath() + fileName);
 
         audioRecorder.prepare();
 
@@ -69,7 +69,7 @@ public class AudioRecorder extends AppCompatActivity {
     void playAudioNote(String fileName) throws IOException {
         //Husk fileName skal defineres enten her eller inden metoden kaldes.
 
-        String filePath = Environment.getExternalStorageDirectory().getPath() + "/sdcard/Music/" + fileName+ ".mp3";
+        String filePath = Environment.getExternalStorageDirectory().getPath()+ fileName;
 
         audioPlayer = new MediaPlayer();
         audioPlayer.setDataSource(filePath);

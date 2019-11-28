@@ -1,19 +1,35 @@
 package com.example.vikingesejllog;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.vikingesejllog.model.Note;
 import com.google.gson.Gson;
 
-public class MakeNoteActivity extends AppCompatActivity {
+import java.io.IOException;
+
+public class MakeNoteActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener{
 
     private MyGPS gps;
     private EditText windSpeed;
@@ -31,6 +47,16 @@ public class MakeNoteActivity extends AppCompatActivity {
     private TextView timeText;
     private TextView gpsText;
     private EditText commentText;
+
+    private ImageButton micButton;
+    private ImageButton cameraButton;
+    private ImageView takenPicture, savedPicture;
+
+    AudioRecorder audioRecorder;
+    private boolean recordingDone;
+
+
+    private int STORAGE_PERMISSION_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +78,20 @@ public class MakeNoteActivity extends AppCompatActivity {
         timeText = findViewById(R.id.clockButtonText);
         gpsText = findViewById(R.id.coordsButtonText);
         commentText = findViewById(R.id.textComment);
+
+
+        micButton = findViewById(R.id.micButton);
+        micButton.setOnClickListener(this);
+        audioRecorder = new AudioRecorder();
+
+        cameraButton= findViewById(R.id.cameraButton);
+        cameraButton.setOnClickListener(this);
+
+        takenPicture = findViewById(R.id.takenPicture);
+        takenPicture.setOnTouchListener(this);
+
+        savedPicture = findViewById(R.id.savedPicture);
+        savedPicture.setImageAlpha(0);
 
 
     }
@@ -229,4 +269,100 @@ public class MakeNoteActivity extends AppCompatActivity {
 
         finish();
     }
+
+        @Override
+        public void onClick(View v) {
+            if (v == micButton && !recordingDone) {
+                try {
+                        audioRecorder.recordAudio("test");
+                        micButton.setImageResource(R.drawable.nem);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+            }
+            if (v == micButton && recordingDone){
+                //Skal køres først, for at sikre, at brugeren har givet tilladelse til appen.
+                if (ContextCompat.checkSelfPermission(MakeNoteActivity.this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                    try {
+                        audioRecorder.playAudioNote("test");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    //Hvis tilladelsen ikke allerede er givet, skal der spørges efter den.
+                    requestStoragePermission(); }
+            }
+            if (v == cameraButton){
+                //Sender intent til at åbne kameraet og afventer resultatet.
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(takePictureIntent, 0);
+            }
+        }
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+            //Køres når der er et resultat fra kamera appen og gemmer det som et bitmap:
+            super.onActivityResult(requestCode, resultCode, data);
+            Bitmap bitmap = (Bitmap)data.getExtras().get("data");
+            //Skal evt. gemmes i noget sharedprefs med navn på note..
+            takenPicture.setImageBitmap(bitmap);
+            savedPicture.setImageBitmap(bitmap);
+        }
+
+        @Override
+        public boolean onTouch(View takenPicture, MotionEvent event) {
+        /*Zoomer ind på billedet, hvis brugeren rør ved det, og zoomer ud igen,
+        hvis fingeren slippes
+         */
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    savedPicture.setImageAlpha(255);
+                    savedPicture.setElevation(100);
+                    return true;
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    savedPicture.setImageAlpha(0);
+                    return true;
+                }
+            return false;
+        }
+
+
+        //Følgede to metoder beder brugeren om tilladelse til at tilgå enhedens lagerplads:
+    public void requestStoragePermission() {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)){
+
+                new AlertDialog.Builder(this)
+                        .setTitle("Tilladelse påkrævet!")
+                        .setMessage("Følgende tilladelsen kræves for at kunne afspille gemte lydnoter")
+                        .setPositiveButton("Godkend", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                {ActivityCompat.requestPermissions(MakeNoteActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+                                }
+                            }})
+                        .setNegativeButton("Afvis", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create().show();
+
+            }   else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+            }
+        }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+            if (requestCode == STORAGE_PERMISSION_CODE) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Tilladelsen blev givet", Toast.LENGTH_SHORT).show();
+                } else{
+                    Toast.makeText(this, "Tilladelsen blev afvist", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
 }

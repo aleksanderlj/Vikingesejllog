@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -382,5 +383,25 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/clockButton"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" />
+
+    <ImageView
+        android:id="@+id/takenPicture"
+        android:layout_width="75dp"
+        android:layout_height="66dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/confirmButton"
+        app:layout_constraintEnd_toStartOf="@+id/micButton"
+        app:layout_constraintStart_toEndOf="@+id/cameraButton"
+        app:srcCompat="?attr/colorControlHighlight" />
+
+    <ImageView
+        android:id="@+id/savedPicture"
+        android:layout_width="347dp"
+        android:layout_height="457dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/cast_expanded_controller_ad_container_white_stripe_color" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
