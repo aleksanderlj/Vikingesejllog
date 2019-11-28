@@ -118,8 +118,6 @@
 
     <EditText
         android:id="@+id/start"
-        android:layout_width="340dp"
-        android:layout_height="54dp"
         android:background="@null"
         android:ems="10"
         android:hint="Start"
@@ -128,13 +126,13 @@
         android:textColor="@android:color/background_light"
         android:textColorHint="@android:color/background_light"
         app:layout_constraintBottom_toTopOf="@+id/imageView16"
+        app:layout_constraintEnd_toEndOf="@+id/imageView15"
         app:layout_constraintStart_toEndOf="@+id/imageView17"
         app:layout_constraintTop_toTopOf="@+id/imageView15" />
 
     <EditText
         android:id="@+id/end"
-        android:layout_width="330dp"
-        android:layout_height="48dp"
+        android:layout_height="0dp"
         android:background="@null"
         android:ems="10"
         android:hint="Slut"
@@ -143,6 +141,7 @@
         android:textColor="@android:color/background_light"
         android:textColorHint="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="@+id/imageView15"
+        app:layout_constraintEnd_toEndOf="@+id/imageView15"
         app:layout_constraintStart_toEndOf="@+id/imageView18"
         app:layout_constraintTop_toBottomOf="@+id/imageView16" />
 

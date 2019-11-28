@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +14,7 @@ import com.example.vikingesejllog.model.Togt;
 import com.google.gson.Gson;
 
 public class NewJourney extends AppCompatActivity implements View.OnClickListener {
-	private TextView start, end;
+	private EditText start, end;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class NewJourney extends AppCompatActivity implements View.OnClickListene
 		SharedPreferences.Editor editor = getSharedPreferences("togtListe", MODE_PRIVATE).edit();
 		editor.putString(Integer.toString(prefs.getAll().size()), jsonTogt);
 		editor.apply();
-		
+
 		Intent togtList = new Intent(this, JourneyList.class);
 		startActivity(togtList);
 	}
