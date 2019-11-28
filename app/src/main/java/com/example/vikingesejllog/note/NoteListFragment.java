@@ -49,6 +49,7 @@ public class NoteListFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 // Logik her til tryk af element i recyclerview. Husk position starter fra 0.
+
             }
         });
 

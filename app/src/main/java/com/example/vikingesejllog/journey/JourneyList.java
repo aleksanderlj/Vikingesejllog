@@ -46,7 +46,7 @@ public class JourneyList extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onItemClick(int position) {
                 // Logik her til tryk af element i recyclerview. Husk position starter fra 0.
-                System.out.println("Trykket på " + position);
+
             }
         });
 
