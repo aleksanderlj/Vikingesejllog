@@ -52,6 +52,7 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
     private ImageView takenPicture, savedPicture;
 
     AudioRecorder audioRecorder;
+    private boolean recordingDone;
 
 
     private int STORAGE_PERMISSION_CODE = 1;
@@ -269,8 +270,8 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
 
         @Override
         public void onClick(View v) {
-            if (v == micButton) {
-                    try {
+            if (v == micButton && !recordingDone) {
+                try {
                         audioRecorder.recordAudio("test");
                         micButton.setImageResource(R.drawable.nem);
 
@@ -278,7 +279,7 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
                         e.printStackTrace();
                     }
             }
-            if (v == micButton){
+            if (v == micButton && recordingDone){
                 //Skal køres først, for at sikre, at brugeren har givet tilladelse til appen.
                 if (ContextCompat.checkSelfPermission(MakeNoteActivity.this,
                         Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
