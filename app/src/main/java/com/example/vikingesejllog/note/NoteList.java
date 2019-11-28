@@ -65,7 +65,7 @@ public class NoteList extends AppCompatActivity {
             } else {
                 System.out.println("");
             }
-
+            return new NoteListFragment();
         }
 
         @Override

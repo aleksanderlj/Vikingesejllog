@@ -9,17 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Etape.CrewList"></activity>
-        <activity android:name=".Etape.crew_list" />
-        <activity android:name=".journey.JourneyList" />
-        <activity android:name=".journey.NewJourney" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".note.NoteList">
+        <activity android:name=".Etape.CrewList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+        <activity android:name=".journey.JourneyList" />
+        <activity android:name=".journey.NewJourney" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".note.NoteList">
+
         </activity>
 
         <meta-data

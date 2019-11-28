@@ -1,17 +1,18 @@
 package com.example.vikingesejllog.Etape;
 
 public class CrewListItem {
-    private String crewMemberName;
 
-   public CrewListItem(String crewMemberName){
-       this.crewMemberName = crewMemberName;
-   }
+    private String CrewMember;
 
-    public String getCrewMemberName() {
-        return crewMemberName;
+    public String getCrewMember() {
+        return CrewMember;
     }
 
-    public void setCrewMemberName(String crewMemberName) {
-        this.crewMemberName = crewMemberName;
+    public void setCrewMember(String crewMember) {
+        CrewMember = crewMember;
+    }
+
+    public CrewListItem(String crewMember) {
+        CrewMember = crewMember;
     }
 }
