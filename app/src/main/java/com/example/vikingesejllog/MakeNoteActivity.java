@@ -2,7 +2,6 @@ package com.example.vikingesejllog;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,10 +48,10 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
 
     private ImageButton micButton;
     private ImageButton cameraButton;
+    private boolean pictureNote;
 
 
     AudioRecorder audioRecorder;
-    ProgressDialog progressDialog;
     private boolean hasRecorded = false;
 
     private int STORAGE_PERMISSION_CODE = 1;
@@ -265,21 +264,24 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
         @Override
         public void onClick(View v) {
             if (v == micButton && !hasRecorded) {
-                try {
-                    audioRecorder.recordAudio("test");
-                    hasRecorded = true;
-                    micButton.setImageResource(R.id.);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                if (ContextCompat.checkSelfPermission(MakeNoteActivity.this,
+                        Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+                    try {
+                        audioRecorder.recordAudio(timeText.toString());
+                        hasRecorded = true;
+                        micButton.setImageResource(R.drawable.nem);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
+                }
             }
             if (v == micButton){
                 //Skal køres først, for at sikre, at brugeren har givet tilladelse til appen.
                 if (ContextCompat.checkSelfPermission(MakeNoteActivity.this,
                         Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                     try {
-                        audioRecorder.playAudioNote("test");
+                        audioRecorder.playAudioNote(timeText.toString());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -300,6 +302,7 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
             Bitmap bitmap = (Bitmap)data.getExtras().get("data");
             //Skal evt. gemmes i noget sharedprefs med navn på note..
             cameraButton.setImageBitmap(bitmap);
+            pictureNote = true;
         }
 
         @Override
@@ -308,14 +311,14 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
         hvis fingeren slippes
          */
 
-            if(event.getAction() == MotionEvent.ACTION_DOWN){
+            if(event.getAction() == MotionEvent.ACTION_DOWN && pictureNote){
                 cameraButton.setMinimumHeight(2000);
                 cameraButton.setMinimumWidth(2000);
                 return true;
             }
-            if(event.getAction() == MotionEvent.ACTION_UP){
-                cameraButton.setMinimumHeight(200);
-                cameraButton.setMinimumWidth(200);
+            if(event.getAction() == MotionEvent.ACTION_UP && pictureNote){
+                cameraButton.setMinimumHeight(250);
+                cameraButton.setMinimumWidth(250);
                 return true;
             }
             return false;
