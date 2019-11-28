@@ -69,13 +69,13 @@ public class AudioRecorder extends AppCompatActivity {
     void playAudioNote(String fileName) throws IOException {
         //Husk fileName skal defineres enten her eller inden metoden kaldes.
 
-        String filePath = Environment.getExternalStorageDirectory().getPath() + "/Download/" + fileName;
+        String filePath = Environment.getExternalStorageDirectory().getPath() + "/sdcard/Music/" + fileName+ ".mp3";
 
         audioPlayer = new MediaPlayer();
         audioPlayer.setDataSource(filePath);
         audioPlayer.setVolume(4, 4); //Så projektleder kan høre det
         audioPlayer.prepare();
-        audioPlayer.start();
+
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMax(200);
@@ -86,9 +86,12 @@ public class AudioRecorder extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 stopAudioNote();
+
+
             }});
 
         progressDialog.show();
+        audioPlayer.start();
     }
 
     private void stopAudioNote(){
