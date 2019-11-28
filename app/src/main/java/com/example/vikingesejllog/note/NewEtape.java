@@ -24,7 +24,10 @@ public class NewEtape extends AppCompatActivity implements View.OnClickListener 
         crew.add("Alek");
         crew.add("Freddy Fazbear");
 
+
+
         findViewById(R.id.crewCountButton).setOnClickListener(this);
+
     }
 
     @Override

@@ -41,14 +41,16 @@ public class NoteList extends AppCompatActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 EtapeTopFragment f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
-                f.setAll(testList.get(pager.getCurrentItem()), pager.getCurrentItem(), testList.size());
-                System.out.println(pager.getCurrentItem());
+                if (pager.getCurrentItem() < testList.size()) {
+                    f.setAll(testList.get(pager.getCurrentItem()), pager.getCurrentItem(), testList.size());
+                } else {
+                    // TODO top fragment
+                }
             }
         });
     }
 
     private class NotePagerAdapter extends FragmentStateAdapter {
-        private ArrayList<NoteListFragment> etapeFragments = new ArrayList<>();
         private ArrayList<Etape> etaper;
 
         public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ArrayList<Etape> etapes) {
@@ -63,7 +65,8 @@ public class NoteList extends AppCompatActivity {
                 NoteListFragment f = new NoteListFragment();
                 return f;
             } else {
-                System.out.println("");
+                NewEtapeFragment newEtape = new NewEtapeFragment();
+                return newEtape;
             }
 
         }
@@ -71,10 +74,6 @@ public class NoteList extends AppCompatActivity {
         @Override
         public int getItemCount() {
             return etaper.size()+1;
-        }
-
-        public void setEtapeFragments(ArrayList<NoteListFragment> etapeFragments) {
-            this.etapeFragments = etapeFragments;
         }
     }
 }
