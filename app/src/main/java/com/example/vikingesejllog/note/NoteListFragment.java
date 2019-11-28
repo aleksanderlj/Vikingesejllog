@@ -23,7 +23,6 @@ public class NoteListFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<NoteListItem> noteListItems;
-    private ImageView pencil, camera, mic;
 
     @Nullable
     @Override
@@ -34,16 +33,12 @@ public class NoteListFragment extends Fragment {
        recyclerView.setHasFixedSize(true);
        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        pencil = (ImageView)getActivity().findViewById(R.id.notePencil);
-        camera = (ImageView)getActivity().findViewById(R.id.noteCamera);
-        mic = (ImageView)getActivity().findViewById(R.id.noteMic);
-
         noteListItems = new ArrayList<>();
 
         // Test list items
         for (int i = 0; i<=10; i++){
             NoteListItem noteListItem = new NoteListItem("Note: " + (i+1),
-                    "28/10-2019\n09:13", R.drawable.pencil_black, R.drawable.camera_black, R.drawable.mic_black);
+                    "28/10-2019\n09:13");
             noteListItems.add(noteListItem);
         }
 
