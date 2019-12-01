@@ -8,14 +8,16 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp">
+        android:layout_margin="4dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="0dp">
 
         <ImageView
             android:id="@+id/noteCardViewBackground"
-            android:src="@drawable/notebox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY">
+            android:scaleType="fitXY"
+            android:src="@drawable/notebox">
 
 
         </ImageView>
