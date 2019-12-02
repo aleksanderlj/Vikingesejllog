@@ -47,24 +47,22 @@ public class JourneyList extends AppCompatActivity implements View.OnClickListen
 		togtList = new ArrayList<>();
 		List<Etape> exampleEtapeList = new ArrayList<>();
 	
-	
 		// Test list items
 		Togt togt;
 		Gson gson = new Gson();
 		prefs = getSharedPreferences("togtList", MODE_PRIVATE);
 		Map<String,?> togtHash = prefs.getAll();
-		for (int i = 0; i<=togtHash.size(); i++){
+		for (int i = 1; i<=togtHash.size(); i++){
 			String currTogt = (String) togtHash.get(Integer.toString(i));
 			if (currTogt != null) {
 				togt = gson.fromJson(currTogt, Togt.class);
-				togt = new Togt(togt.getDeparture() + " - " + togt.getDestination(), "04-06-2019 - 17-08-2019");
+				togt = new Togt(togt.getDeparture(), togt.getDestination());
 				togtList.add(togt);
 			}
 			else
 				break;
 		}
-	
-	
+		
 		adapter = new JourneyListAdapter(togtList, this);
 		recyclerView.setAdapter(adapter);
 	

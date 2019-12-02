@@ -35,7 +35,7 @@ public class NewJourney extends AppCompatActivity implements View.OnClickListene
 		String jsonTogt = gson.toJson(togt);
 		SharedPreferences prefs = getSharedPreferences("togtList", MODE_PRIVATE);
 		SharedPreferences.Editor editor = getSharedPreferences("togtList", MODE_PRIVATE).edit();
-		editor.putString(Integer.toString(prefs.getAll().size()), jsonTogt);
+		editor.putString(Integer.toString(prefs.getAll().size() + 1), jsonTogt);
 		editor.apply();
 		
 		this.finish();
