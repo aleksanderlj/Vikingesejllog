@@ -1,4 +1,4 @@
-package com.example.vikingesejllog;
+package com.example.vikingesejllog.note;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

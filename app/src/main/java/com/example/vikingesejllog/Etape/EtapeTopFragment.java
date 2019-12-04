@@ -1,4 +1,4 @@
-package com.example.vikingesejllog.note;
+package com.example.vikingesejllog.Etape;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

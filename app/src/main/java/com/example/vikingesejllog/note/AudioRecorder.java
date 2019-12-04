@@ -1,4 +1,4 @@
-package com.example.vikingesejllog;
+package com.example.vikingesejllog.note;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;

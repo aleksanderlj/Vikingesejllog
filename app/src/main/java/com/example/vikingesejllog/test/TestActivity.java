@@ -22,7 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.vikingesejllog.AudioRecorder;
+import com.example.vikingesejllog.note.AudioRecorder;
 import com.example.vikingesejllog.R;
 
 import java.io.IOException;

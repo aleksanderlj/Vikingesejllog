@@ -1,4 +1,4 @@
-package com.example.vikingesejllog;
+package com.example.vikingesejllog.note;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -24,6 +24,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.vikingesejllog.MainActivity;
+import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Note;
 import com.google.gson.Gson;
 
