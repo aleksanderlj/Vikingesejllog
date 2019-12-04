@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.vikingesejllog.Etape.EtapeTopFragment;
-import com.example.vikingesejllog.Etape.NewEtapeFragment;
+import com.example.vikingesejllog.etape.EtapeTopFragment;
+import com.example.vikingesejllog.etape.CreateButton;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Note;
@@ -35,7 +35,7 @@ public class NoteList extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.note_list);
+        setContentView(R.layout.etape_activity_list);
         ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},123);
 
         pager = findViewById(R.id.note_viewpager);
@@ -73,7 +73,7 @@ public class NoteList extends AppCompatActivity {
                 NoteListFragment f = new NoteListFragment(etaper.get(position).getNoteList());
                 return f;
             } else {
-                NewEtapeFragment newEtape = new NewEtapeFragment();
+                CreateButton newEtape = new CreateButton();
                 return newEtape;
             }
         }

@@ -1,4 +1,4 @@
-package com.example.vikingesejllog.Etape;
+package com.example.vikingesejllog.etape;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,7 +9,6 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.vikingesejllog.Etape.CrewList;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
 import com.google.gson.Gson;
@@ -17,14 +16,14 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class NewEtape extends AppCompatActivity implements View.OnClickListener {
+public class CreateEtape extends AppCompatActivity implements View.OnClickListener {
 
     ArrayList<String> crew;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_harbor);
+        setContentView(R.layout.etape_activity_createetape);
 
         //TODO tests
         crew = new ArrayList<>();

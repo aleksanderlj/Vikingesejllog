@@ -31,7 +31,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 
-public class MakeNoteActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener{
+public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener{
 
     private MyGPS gps;
     private EditText windSpeed;
@@ -63,7 +63,7 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_makenote);
+        setContentView(R.layout.note_activity_createnote);
 
         windSpeed = findViewById(R.id.windspeedText);
         windSpeedBtnText = findViewById(R.id.windspeedButtonText);
@@ -285,7 +285,7 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
             }
             if (v == micButton && recordingDone){
                 //Skal køres først, for at sikre, at brugeren har givet tilladelse til appen.
-                if (ContextCompat.checkSelfPermission(MakeNoteActivity.this,
+                if (ContextCompat.checkSelfPermission(CreateNote.this,
                         Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                     try {
                         audioRecorder.playAudioNote("test");
@@ -340,7 +340,7 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
                         .setPositiveButton("Godkend", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                {ActivityCompat.requestPermissions(MakeNoteActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+                                {ActivityCompat.requestPermissions(CreateNote.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
                                 }
                             }})
                         .setNegativeButton("Afvis", new DialogInterface.OnClickListener() {

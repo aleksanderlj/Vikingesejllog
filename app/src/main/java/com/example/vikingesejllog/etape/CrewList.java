@@ -1,4 +1,4 @@
-package com.example.vikingesejllog.Etape;
+package com.example.vikingesejllog.etape;
 
 import android.os.Bundle;
 
@@ -21,7 +21,7 @@ public class CrewList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.crew_list);
+        setContentView(R.layout.note_activity_crewlist);
 
         recyclerView = findViewById(R.id.crewRecyclerView);
         recyclerView.setHasFixedSize(true);

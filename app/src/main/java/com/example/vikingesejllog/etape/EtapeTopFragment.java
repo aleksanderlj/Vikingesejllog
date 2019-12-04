@@ -1,4 +1,4 @@
-package com.example.vikingesejllog.Etape;
+package com.example.vikingesejllog.etape;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +16,7 @@ public class EtapeTopFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.etape_topfragment, container, false);
+        return inflater.inflate(R.layout.etape_fragment_top, container, false);
     }
 
     public void setCrew(String skipper, int crew){

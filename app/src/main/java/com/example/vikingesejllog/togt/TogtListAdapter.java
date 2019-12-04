@@ -1,4 +1,4 @@
-package com.example.vikingesejllog.journey;
+package com.example.vikingesejllog.togt;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import com.example.vikingesejllog.model.Togt;
 
 import java.util.List;
 
-public class JourneyListAdapter extends RecyclerView.Adapter<JourneyListAdapter.ViewHolder> {
+public class TogtListAdapter extends RecyclerView.Adapter<TogtListAdapter.ViewHolder> {
 
     private List<Togt> togtList;
     private Context context;
@@ -28,7 +28,7 @@ public class JourneyListAdapter extends RecyclerView.Adapter<JourneyListAdapter.
         this.listener = listener;
     }
 
-    public JourneyListAdapter(List<Togt> togtList, Context context) {
+    public TogtListAdapter(List<Togt> togtList, Context context) {
         this.togtList = togtList;
         this.context = context;
     }
@@ -36,7 +36,7 @@ public class JourneyListAdapter extends RecyclerView.Adapter<JourneyListAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.journey_list_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.togt_item_togtitem, parent, false);
         return new ViewHolder(v);
     }
 

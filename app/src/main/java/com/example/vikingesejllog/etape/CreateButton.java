@@ -1,4 +1,4 @@
-package com.example.vikingesejllog.Etape;
+package com.example.vikingesejllog.etape;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,12 +13,12 @@ import androidx.fragment.app.Fragment;
 import com.example.vikingesejllog.R;
 
 
-public class NewEtapeFragment extends Fragment implements View.OnClickListener {
+public class CreateButton extends Fragment implements View.OnClickListener {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.new_etape_fragment, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.etape_fragment_createbutton, container, false);
         view.findViewById(R.id.new_etape).setOnClickListener(this);
         return view;
     }
@@ -27,7 +27,7 @@ public class NewEtapeFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.new_etape:
-                Intent i = new Intent(getActivity(), NewEtape.class);
+                Intent i = new Intent(getActivity(), CreateEtape.class);
                 getActivity().startActivityForResult(i, 1);
                 break;
         }

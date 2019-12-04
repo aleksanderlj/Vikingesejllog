@@ -1,4 +1,4 @@
-package com.example.vikingesejllog.Etape;
+package com.example.vikingesejllog.etape;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -26,7 +26,7 @@ public class CrewListAdapter extends RecyclerView.Adapter<CrewListAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.crew_list_item, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_item_crewitem, parent,false);
         return new ViewHolder(view);
     }
 

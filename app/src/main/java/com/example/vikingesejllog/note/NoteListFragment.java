@@ -33,7 +33,7 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.note_list_fragment, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.note_fragment_notelist, container, false);
 
        recyclerView = (RecyclerView) view.findViewById(R.id.noteRecyclerView);
        recyclerView.setHasFixedSize(true);
@@ -69,7 +69,7 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.newHarborButton:
-                Intent i = new Intent(getActivity(), MakeNoteActivity.class);
+                Intent i = new Intent(getActivity(), CreateNote.class);
                 getActivity().startActivityForResult(i,2);
                 break;
         }

@@ -1,4 +1,4 @@
-package com.example.vikingesejllog.journey;
+package com.example.vikingesejllog.togt;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,17 +20,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class JourneyList extends AppCompatActivity implements View.OnClickListener {
+public class TogtList extends AppCompatActivity implements View.OnClickListener {
 	private SharedPreferences prefs;
     private RecyclerView recyclerView;
-    private JourneyListAdapter adapter;
+    private TogtListAdapter adapter;
 
     private List<Togt> togtList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.journey_list);
+        setContentView(R.layout.togt_activity_list);
 
         recyclerView = (RecyclerView) findViewById(R.id.journeyRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -65,10 +65,10 @@ public class JourneyList extends AppCompatActivity implements View.OnClickListen
 		}
 	
 	
-		adapter = new JourneyListAdapter(togtList, this);
+		adapter = new TogtListAdapter(togtList, this);
 		recyclerView.setAdapter(adapter);
 	
-		adapter.setOnItemClickListener(new JourneyListAdapter.OnItemClickListener() {
+		adapter.setOnItemClickListener(new TogtListAdapter.OnItemClickListener() {
 			@Override
 			public void onItemClick(int position) {
 				// Logik her til tryk af element i recyclerview. Husk position starter fra 0.
@@ -81,7 +81,7 @@ public class JourneyList extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.newHarborButton:
-                Intent i = new Intent(this, NewJourney.class);
+                Intent i = new Intent(this, CreateTogt.class);
                 startActivityForResult(i, 1);
                 break;
         }
