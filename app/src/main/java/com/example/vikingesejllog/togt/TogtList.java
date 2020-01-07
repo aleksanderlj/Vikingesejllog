@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.TopMenu;
 import com.example.vikingesejllog.model.Etape;
+import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.model.Togt;
+import com.example.vikingesejllog.note.NoteList;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -69,8 +71,13 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
 		adapter.setOnItemClickListener(new TogtListAdapter.OnItemClickListener() {
 			@Override
 			public void onItemClick(int position) {
-				// Logik her til tryk af element i recyclerview. Husk position starter fra 0.
-			
+				Intent noteList = new Intent(TogtList.this, NoteList.class);
+				Gson gson = new Gson();
+				
+				ArrayList<Etape> etapeList = togtList.get(position).getEtapeList();
+				String jsonEtapeList = gson.toJson(etapeList);
+				noteList.putExtra("etaper", jsonEtapeList);
+				startActivity(noteList);
 			}
 		});
 	}
