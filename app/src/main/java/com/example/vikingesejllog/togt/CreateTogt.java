@@ -1,6 +1,5 @@
 package com.example.vikingesejllog.togt;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -11,7 +10,6 @@ import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.other.DatabaseBuilder;
-import com.google.gson.Gson;
 
 public class CreateTogt extends AppCompatActivity implements View.OnClickListener {
 	private TextView departure, destination;

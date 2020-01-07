@@ -1,9 +1,7 @@
 package com.example.vikingesejllog.togt;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -14,19 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.TopMenu;
-import com.example.vikingesejllog.model.Etape;
-import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.note.NoteList;
 import com.example.vikingesejllog.other.DatabaseBuilder;
-import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class TogtList extends AppCompatActivity implements View.OnClickListener {
-	private SharedPreferences prefs;
     private RecyclerView recyclerView;
     private TogtListAdapter adapter;
     private List<Togt> togtList;
