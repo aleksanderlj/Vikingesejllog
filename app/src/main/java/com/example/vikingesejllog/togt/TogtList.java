@@ -3,6 +3,7 @@ package com.example.vikingesejllog.togt;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -10,12 +11,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.TopMenu;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.note.NoteList;
+import com.example.vikingesejllog.other.DatabaseBuilder;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -27,10 +30,11 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
     private RecyclerView recyclerView;
     private TogtListAdapter adapter;
     private List<Togt> togtList;
-
+    private AppDatabase db = DatabaseBuilder.get(this);
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
         setContentView(R.layout.togt_activity_list);
 
         recyclerView = (RecyclerView) findViewById(R.id.journeyRecyclerView);
@@ -42,6 +46,7 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
         tm.updateTextView("Liste over togter");
 
         findViewById(R.id.newTogtButton).setOnClickListener(this);
+		AppDatabase db = DatabaseBuilder.get(this);
     }
 
     public void updateList(){
@@ -69,9 +74,10 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
 			public void onItemClick(int position) {
 				Intent noteList = new Intent(TogtList.this, NoteList.class);
 				Gson gson = new Gson();
+				db.togtDAO().getAll();
+				togtList.get(position).getId();
 				
 				
-				ArrayList<Etape> etapeList = togtList.get(position).getEtapeList();
 				String jsonEtapeList = gson.toJson(etapeList);
 				noteList.putExtra("etapeList", jsonEtapeList);
 				startActivity(noteList);
