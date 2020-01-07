@@ -70,6 +70,7 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
         switch(v.getId()){
             case R.id.newHarborButton:
                 Intent i = new Intent(getActivity(), CreateNote.class);
+                i.putExtra("etape_id")
                 getActivity().startActivityForResult(i,2);
                 break;
         }
