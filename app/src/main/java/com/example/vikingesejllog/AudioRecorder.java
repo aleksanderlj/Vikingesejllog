@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Environment;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.IOException;
 
 
@@ -24,7 +26,6 @@ public class AudioRecorder extends AppCompatActivity {
     MediaPlayer audioPlayer;
     ProgressDialog progressDialog;
 
-
     void recordAudio(String fileName) throws IOException {
         /*Denne metode gemmer en lydfil, der optages gennem mikrofonen. FileName skal vi have
         defineret som en variabel svarende til noten, der oprettes.
@@ -41,26 +42,11 @@ public class AudioRecorder extends AppCompatActivity {
 
         audioRecorder.prepare();
 
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMax(200);
-        progressDialog.setTitle("Optager lydnote...");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-
-
-        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                stopAudioRecord();
-            }});
-
         audioRecorder.start();
-        progressDialog.show();
     }
 
-    private void stopAudioRecord(){
+    void stopAudioRecord(){
         //Stopper optagelsen og frigiver objektet til garbage-collector
-    progressDialog.dismiss();
     audioRecorder.stop();
     audioRecorder.release();
 }
