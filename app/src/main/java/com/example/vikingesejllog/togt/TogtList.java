@@ -42,7 +42,7 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
         TopMenu tm = (TopMenu) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
         tm.updateTextView("Liste over togter");
 
-        findViewById(R.id.newHarborButton).setOnClickListener(this);
+        findViewById(R.id.newTogtButton).setOnClickListener(this);
     }
 
     public void updateList(){
@@ -85,7 +85,7 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.newHarborButton:
+            case R.id.newTogtButton:
                 Intent i = new Intent(this, CreateTogt.class);
                 startActivityForResult(i, 1);
                 break;
