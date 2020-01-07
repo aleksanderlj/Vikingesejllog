@@ -50,22 +50,7 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
     }
 
     public void updateList(){
-		togtList = new ArrayList<>();
-		// Test list items
-		Togt togt;
-		Gson gson = new Gson();
-		prefs = getSharedPreferences("togtList", MODE_PRIVATE);
-		Map<String,?> togtHash = prefs.getAll();
-		for (int i = 1; i<=togtHash.size(); i++){
-			String currTogt = (String) togtHash.get(Integer.toString(i));
-			if (currTogt != null) {
-				togt = gson.fromJson(currTogt, Togt.class);
-				togt = new Togt(togt.getDeparture(), togt.getDestination());
-				togtList.add(togt);
-			}
-			else
-				break;
-		}
+		togtList = db.togtDAO().getAll();
 		adapter = new TogtListAdapter(togtList, this);
 		recyclerView.setAdapter(adapter);
 	
@@ -73,13 +58,8 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
 			@Override
 			public void onItemClick(int position) {
 				Intent noteList = new Intent(TogtList.this, NoteList.class);
-				Gson gson = new Gson();
-				db.togtDAO().getAll();
-				togtList.get(position).getId();
-				
-				
-				String jsonEtapeList = gson.toJson(etapeList);
-				noteList.putExtra("etapeList", jsonEtapeList);
+				Togt currTogt = db.togtDAO().getById(togtList.get(position).getTogt_id());
+				noteList.putExtra("togt_id", currTogt.getTogt_id());
 				startActivity(noteList);
 			}
 		});
