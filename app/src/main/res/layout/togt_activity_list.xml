@@ -11,9 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:background="@drawable/btn_round"
-        app:layout_constraintBottom_toTopOf="@+id/bottomMenuFragment"
+        app:layout_constraintBottom_toTopOf="@+id/bottomMenu"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -35,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"
-        android:text="Tilføj ny havn"
+        android:text="Start nyt togt"
         android:textAllCaps="false"
         android:textColor="@android:color/background_light"
         android:textSize="16sp"
@@ -54,7 +53,7 @@
         app:layout_constraintBottom_toBottomOf="@id/newHarborButton"
         app:layout_constraintEnd_toStartOf="@+id/addNewNoteText"
         app:layout_constraintTop_toTopOf="@id/newHarborButton"
-        app:srcCompat="@drawable/plus" />
+        app:srcCompat="@drawable/new_trip" />
 
     <Button
         android:id="@+id/sortByTimeButton"
@@ -72,8 +71,8 @@
         app:layout_constraintTop_toBottomOf="@+id/topMenuFragment" />
 
     <fragment
-        android:id="@+id/bottomMenuFragment"
-        android:name="com.example.vikingesejllog.BottomMenu"
+        android:id="@+id/bottomMenu"
+        class="com.example.vikingesejllog.BottomMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -88,5 +87,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/journeyRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/newHarborButton"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/sortByTimeButton"
+        app:layout_constraintVertical_bias="1.0"></androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

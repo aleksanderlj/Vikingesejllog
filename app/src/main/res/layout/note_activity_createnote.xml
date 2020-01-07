@@ -8,24 +8,14 @@
 
     <ImageButton
         android:id="@+id/micButton"
-        android:layout_width="112dp"
-        android:layout_height="78dp"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
         android:layout_marginBottom="40dp"
         android:backgroundTint="#180B2C"
         app:layout_constraintBottom_toTopOf="@+id/confirmButton"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
         app:srcCompat="@drawable/mic" />
-
-    <ImageButton
-        android:id="@+id/pencilButton"
-        android:layout_width="112dp"
-        android:layout_height="78dp"
-        android:layout_marginBottom="40dp"
-        android:backgroundTint="#180B2C"
-        app:layout_constraintBottom_toTopOf="@+id/confirmButton"
-        app:layout_constraintEnd_toStartOf="@+id/micButton"
-        app:layout_constraintStart_toEndOf="@+id/cameraButton"
-        app:srcCompat="@drawable/pencil" />
 
     <TextView
         android:id="@+id/pathButtonText"
@@ -152,7 +142,8 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toBottomOf="@+id/directionButton" />
+        app:layout_constraintTop_toBottomOf="@+id/directionButton"
+        android:onClick="setCourse"/>
 
     <Button
         android:id="@+id/directionButton"
@@ -165,7 +156,8 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toBottomOf="@+id/pathButton" />
+        app:layout_constraintTop_toBottomOf="@+id/pathButton"
+        android:onClick="setDirection"/>
 
     <Button
         android:id="@+id/pathButton"
@@ -178,7 +170,8 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toBottomOf="@+id/rowersButton" />
+        app:layout_constraintTop_toBottomOf="@+id/rowersButton"
+        android:onClick="setPath"/>
 
     <Button
         android:id="@+id/windspeedButton"
@@ -191,7 +184,69 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/sailingSpeedButton" />
+        app:layout_constraintTop_toBottomOf="@+id/sailingSpeedButton"
+        android:onClick="setWindSpeed"/>
+
+    <EditText
+        android:id="@+id/pathText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/pathButton"
+        app:layout_constraintEnd_toEndOf="@+id/pathButton"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintTop_toTopOf="@+id/pathButton" />
+
+    <EditText
+        android:id="@+id/windspeedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/windspeedButtonText"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
+        app:layout_constraintStart_toStartOf="@+id/windspeedButton"
+        app:layout_constraintTop_toTopOf="@+id/windspeedButton"
+        app:layout_constraintVertical_bias="0.0"
+        android:visibility="gone"/>
+
+    <EditText
+        android:id="@+id/courseText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/courseButton"
+        app:layout_constraintEnd_toEndOf="@+id/courseButton"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintTop_toTopOf="@+id/courseButton" />
+
+    <EditText
+        android:id="@+id/directionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/directionButton"
+        app:layout_constraintEnd_toEndOf="@+id/directionButton"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintTop_toTopOf="@+id/directionButton" />
+
+    <EditText
+        android:id="@+id/rowers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/rowersButton"
+        app:layout_constraintEnd_toEndOf="@+id/rowersButton"
+        app:layout_constraintStart_toStartOf="@+id/rowersButton"
+        app:layout_constraintTop_toTopOf="@+id/rowersButton" />
+
+    <EditText
+        android:id="@+id/sailingSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/sailingSpeedButton"
+        app:layout_constraintEnd_toEndOf="@+id/sailingSpeedButton"
+        app:layout_constraintStart_toStartOf="@+id/sailingSpeedButton"
+        app:layout_constraintTop_toTopOf="@+id/sailingSpeedButton" />
 
     <Button
         android:id="@+id/coordsButton"
@@ -204,7 +259,8 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/windspeedButton" />
+        app:layout_constraintTop_toBottomOf="@+id/windspeedButton"
+        android:onClick="setCoordinates"/>
 
     <Button
         android:id="@+id/clockButton"
@@ -217,16 +273,9 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/coordsButton" />
+        app:layout_constraintTop_toBottomOf="@+id/coordsButton"
+        android:onClick="setTime"/>
 
-    <fragment
-        android:id="@+id/topMenuFragment"
-        android:name="com.example.vikingesejllog.TopMenu"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_left"
@@ -260,12 +309,13 @@
         android:id="@+id/confirmButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="84dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/btn_round"
         android:backgroundTint="#46FF00"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left" />
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        android:onClick="confirm"/>
 
     <TextView
         android:id="@+id/confirmText"
@@ -283,50 +333,75 @@
         app:layout_constraintStart_toStartOf="@+id/confirmButton"
         app:layout_constraintTop_toTopOf="@+id/confirmButton" />
 
-    <ImageView
-        android:id="@+id/checkMarkImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/confirmButton"
-        app:layout_constraintEnd_toStartOf="@+id/confirmText"
-        app:layout_constraintTop_toTopOf="@+id/confirmButton"
-        app:srcCompat="@drawable/checkmark" />
 
     <Button
         android:id="@+id/sailingSpeedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="36dp"
         android:backgroundTint="#319B60FB"
         android:drawableLeft="@drawable/boat"
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/topMenuFragment" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="setSailingSpeed"/>
 
     <Button
         android:id="@+id/rowersButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
         android:layout_marginEnd="10dp"
         android:backgroundTint="#319B60FB"
         android:drawableLeft="@drawable/roere"
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toBottomOf="@+id/topMenuFragment" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="setRowers"/>
 
     <ImageButton
         android:id="@+id/cameraButton"
-        android:layout_width="112dp"
-        android:layout_height="78dp"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
         android:layout_marginBottom="40dp"
         android:backgroundTint="#180B2C"
         app:layout_constraintBottom_toTopOf="@+id/confirmButton"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:srcCompat="@drawable/camera" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Tilføj kommentar"
+        app:layout_constraintBottom_toTopOf="@+id/cameraButton"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/clockButton"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" />
+
+    <ImageView
+        android:id="@+id/takenPicture"
+        android:layout_width="75dp"
+        android:layout_height="66dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/confirmButton"
+        app:layout_constraintEnd_toStartOf="@+id/micButton"
+        app:layout_constraintStart_toEndOf="@+id/cameraButton"
+        app:srcCompat="?attr/colorControlHighlight" />
+
+    <ImageView
+        android:id="@+id/savedPicture"
+        android:layout_width="347dp"
+        android:layout_height="457dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/cast_expanded_controller_ad_container_white_stripe_color" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

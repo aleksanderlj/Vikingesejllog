@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/topMenuFragment"
-        android:name="com.example.vikingesejllog.note.EtapeTopFragment"
+        android:name="com.example.vikingesejllog.etape.EtapeTopFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

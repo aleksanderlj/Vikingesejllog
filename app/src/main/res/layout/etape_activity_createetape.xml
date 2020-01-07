@@ -19,20 +19,24 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.95" />
 
-    <Button
+    <EditText
         android:id="@+id/skipperNameButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:background="@drawable/btn_round_corner"
         android:fontFamily="@font/montserrat"
-        android:text="Indtast navn på skipper"
+        android:gravity="center"
+        android:hint="Skipper"
+        android:maxLines="1"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
         android:textAllCaps="false"
         android:textColor="@android:color/background_light"
+        android:textColorHint="@android:color/darker_gray"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -84,9 +88,9 @@
         app:layout_constraintStart_toStartOf="@+id/departureDateButton"
         app:layout_constraintTop_toTopOf="@+id/departureDateButton" />
 
-    <TextView
+    <EditText
         android:id="@+id/dateText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
         android:elevation="5dp"
@@ -97,6 +101,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/departureDateButton"
+        app:layout_constraintEnd_toStartOf="@+id/calendarImage"
         app:layout_constraintStart_toEndOf="@+id/dateOfDepartureText"
         app:layout_constraintTop_toTopOf="@+id/departureDateButton" />
 
@@ -209,35 +214,41 @@
         app:layout_constraintTop_toTopOf="@+id/harborBoxImage"
         app:srcCompat="@drawable/dotted_line" />
 
-    <Button
+    <EditText
         android:id="@+id/journeyStartButton"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat"
-        android:text="Start"
+        android:hint="Start"
+        android:maxLines="1"
         android:textAlignment="viewStart"
         android:textAllCaps="false"
         android:textColor="@android:color/background_light"
+        android:textColorHint="@android:color/darker_gray"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/dottedLineImage"
+        app:layout_constraintEnd_toEndOf="@+id/harborBoxImage"
         app:layout_constraintStart_toEndOf="@+id/navigationArrowImage"
         app:layout_constraintTop_toTopOf="@+id/harborBoxImage" />
 
-    <Button
+    <EditText
         android:id="@+id/journeyEndButton"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat"
-        android:text="Slut"
+        android:hint="Slut"
+        android:maxLines="1"
         android:textAlignment="viewStart"
         android:textAllCaps="false"
         android:textColor="@android:color/background_light"
+        android:textColorHint="@android:color/darker_gray"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/harborBoxImage"
+        app:layout_constraintEnd_toEndOf="@+id/harborBoxImage"
         app:layout_constraintStart_toEndOf="@+id/navigationArrowImage"
         app:layout_constraintTop_toBottomOf="@+id/dottedLineImage" />
 </androidx.constraintlayout.widget.ConstraintLayout>
