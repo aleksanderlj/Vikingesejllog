@@ -49,6 +49,8 @@ public class Note {
     @ColumnInfo(name = "mic_image")
     private int micImageResource;
 
+    public Note(){}
+
     public Note(String gpsLoc, String boatSpeed, String windSpeed, String time, String rowers, String sailForing, String sailStilling, String course, String comment) {
         this.gpsLoc = gpsLoc;
         this.boatSpeed = boatSpeed;

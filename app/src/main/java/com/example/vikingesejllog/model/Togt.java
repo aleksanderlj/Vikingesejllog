@@ -29,6 +29,8 @@ public class Togt {
     @ColumnInfo(name = "destination")
     private String destination;
 
+    public Togt(){}
+
     public Togt(String departure, String destination){
         this.departure = departure;
         this.destination = destination;
