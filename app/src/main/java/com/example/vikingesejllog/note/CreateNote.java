@@ -57,7 +57,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     AudioRecorder audioRecorder;
     private boolean recordingDone;
 
-
     private int STORAGE_PERMISSION_CODE = 1;
 
     @Override
@@ -253,7 +252,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     public void setTime(View v){
         MyTime time = new MyTime();
         timeText.setText(time.getTime());
-
     }
 
     public void confirm(View v){
@@ -271,7 +269,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         finish();
     }
-
         @Override
         public void onClick(View v) {
             if (v == micButton && !recordingDone) {

@@ -1,4 +1,4 @@
-package com.example.vikingesejllog.etape;
+package com.example.vikingesejllog.Etape;
 
 public class CrewListItem {
 
@@ -16,3 +16,5 @@ public class CrewListItem {
         CrewMember = crewMember;
     }
 }
+
+
