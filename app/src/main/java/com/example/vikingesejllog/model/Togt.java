@@ -60,4 +60,12 @@ public class Togt {
     public void setDestination(String destination) {
         this.destination = destination;
     }
+
+    public long getTogt_id() {
+        return togt_id;
+    }
+
+    public void setTogt_id(long togt_id) {
+        this.togt_id = togt_id;
+    }
 }
