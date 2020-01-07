@@ -12,8 +12,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
+import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Note;
+import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,18 +25,20 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
 
     private RecyclerView recyclerView;
     private NoteListAdapter adapter;
-    private List<Note> notes;
+    private Etape etape;
+    private AppDatabase db;
 
     public NoteListFragment(){}
 
-    public NoteListFragment(ArrayList<Note> notes){
-        this.notes = notes;
+    public NoteListFragment(Etape etape){
+        this.etape = etape;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.note_fragment_notelist, container, false);
+        db = DatabaseBuilder.get(getActivity());
 
        recyclerView = (RecyclerView) view.findViewById(R.id.noteRecyclerView);
        recyclerView.setHasFixedSize(true);
@@ -50,7 +55,7 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
 
         */
 
-        adapter = new NoteListAdapter(notes, getActivity());
+        adapter = new NoteListAdapter(db.noteDAO().getAllByIds(etape.getNoteList()), getActivity());
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new NoteListAdapter.OnItemClickListener() {
@@ -70,7 +75,7 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
         switch(v.getId()){
             case R.id.newHarborButton:
                 Intent i = new Intent(getActivity(), CreateNote.class);
-                i.putExtra("etape_id")
+                i.putExtra("etape_id", etape.getEtape_id());
                 getActivity().startActivityForResult(i,2);
                 break;
         }
