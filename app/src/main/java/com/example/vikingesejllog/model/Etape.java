@@ -56,7 +56,7 @@ public class Etape {
         return crew;
     }
 
-    public void setCrew(ArrayList<String> crew) {
+    public void setCrew(List<String> crew) {
         this.crew = crew;
     }
 
@@ -98,9 +98,5 @@ public class Etape {
 
     public void setEtape_id(long etape_id) {
         this.etape_id = etape_id;
-    }
-
-    public void setCrew(List<String> crew) {
-        this.crew = crew;
     }
 }

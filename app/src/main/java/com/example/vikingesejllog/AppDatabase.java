@@ -10,9 +10,10 @@ import com.example.vikingesejllog.dao.TogtDAO;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.model.Togt;
+import com.example.vikingesejllog.other.Converters;
 
 @Database(entities = {Note.class, Etape.class, Togt.class}, version = 1)
-@TypeConverters({DateConverter.class})
+@TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract NoteDAO noteDAO();
     public abstract EtapeDAO etapeDAO();

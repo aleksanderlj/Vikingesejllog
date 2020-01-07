@@ -3,6 +3,7 @@ package com.example.vikingesejllog.model;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class Togt {
 
     public Togt(){}
 
+    @Ignore
     public Togt(String departure, String destination){
         this.departure = departure;
         this.destination = destination;

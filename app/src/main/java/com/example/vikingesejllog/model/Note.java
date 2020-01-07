@@ -2,6 +2,7 @@ package com.example.vikingesejllog.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.example.vikingesejllog.R;
@@ -51,6 +52,7 @@ public class Note {
 
     public Note(){}
 
+    @Ignore
     public Note(String gpsLoc, String boatSpeed, String windSpeed, String time, String rowers, String sailForing, String sailStilling, String course, String comment) {
         this.gpsLoc = gpsLoc;
         this.boatSpeed = boatSpeed;
