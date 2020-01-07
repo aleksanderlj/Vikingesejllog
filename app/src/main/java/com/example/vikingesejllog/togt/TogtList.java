@@ -26,7 +26,6 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
 	private SharedPreferences prefs;
     private RecyclerView recyclerView;
     private TogtListAdapter adapter;
-
     private List<Togt> togtList;
 
     @Override
@@ -47,9 +46,6 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
 
     public void updateList(){
 		togtList = new ArrayList<>();
-		List<Etape> exampleEtapeList = new ArrayList<>();
-	
-	
 		// Test list items
 		Togt togt;
 		Gson gson = new Gson();
@@ -74,9 +70,10 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
 				Intent noteList = new Intent(TogtList.this, NoteList.class);
 				Gson gson = new Gson();
 				
+				
 				ArrayList<Etape> etapeList = togtList.get(position).getEtapeList();
 				String jsonEtapeList = gson.toJson(etapeList);
-				noteList.putExtra("etaper", jsonEtapeList);
+				noteList.putExtra("etapeList", jsonEtapeList);
 				startActivity(noteList);
 			}
 		});
