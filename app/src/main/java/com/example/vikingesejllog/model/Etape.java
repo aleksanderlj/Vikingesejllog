@@ -1,14 +1,42 @@
 package com.example.vikingesejllog.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(foreignKeys = @ForeignKey(entity = Note.class,
+        parentColumns = "note_id",
+        childColumns = "note_ids",
+        onDelete = CASCADE))
 public class Etape {
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "etape_id")
+    private long etape_id;
+
+    @ColumnInfo(name = "skipper")
     private String skipper;
-    private ArrayList<String> crew;
-    private ArrayList<Note> noteList;
+
+    @ColumnInfo(name = "crew")
+    private List<String> crew;
+
+    @ColumnInfo(name = "note_ids")
+    private List<Long> noteList;
+
+    @ColumnInfo(name = "start")
     private String start;
+
+    @ColumnInfo(name = "end")
     private String end;
+
+    @ColumnInfo(name = "departure")
     private Date departure;
 
     public Etape(){
@@ -24,7 +52,7 @@ public class Etape {
         this.skipper = skipper;
     }
 
-    public ArrayList<String> getCrew() {
+    public List<String> getCrew() {
         return crew;
     }
 
@@ -32,11 +60,11 @@ public class Etape {
         this.crew = crew;
     }
 
-    public ArrayList<Note> getNoteList() {
+    public List<Long> getNoteList() {
         return noteList;
     }
 
-    public void setNoteList(ArrayList<Note> noteList) {
+    public void setNoteList(List<Long> noteList) {
         this.noteList = noteList;
     }
 
@@ -62,5 +90,17 @@ public class Etape {
 
     public void setDeparture(Date departure) {
         this.departure = departure;
+    }
+
+    public long getEtape_id() {
+        return etape_id;
+    }
+
+    public void setEtape_id(long etape_id) {
+        this.etape_id = etape_id;
+    }
+
+    public void setCrew(List<String> crew) {
+        this.crew = crew;
     }
 }
