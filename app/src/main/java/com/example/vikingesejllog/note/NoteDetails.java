@@ -14,6 +14,7 @@ public class NoteDetails extends AppCompatActivity {
     private ImageButton cameraButton, micButton;
     private TextView hastighedBox, vindBox, GPSBox, clockBox,
             antalRoerBox, sejlfoeringBox, sejlStillingBox, kursBox, noteField;
+    private int noteNumber, totalNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,11 @@ public class NoteDetails extends AppCompatActivity {
         sejlStillingBox.setText(intent.getStringExtra("sailStilling"));
         kursBox.setText(intent.getStringExtra("course"));
         noteField.setText(intent.getStringExtra("comment"));
+        noteNumber = intent.getIntExtra("noteNumber", 0);
+        totalNotes = intent.getIntExtra("noteCount", 0);
 
+        NoteDetailsTopFragment topFragment = (NoteDetailsTopFragment) getSupportFragmentManager().findFragmentById(R.id.noteDetailsTopFragment);
+        topFragment.updateTextView("Note " + noteNumber + "/" + totalNotes);
 
     }
 
