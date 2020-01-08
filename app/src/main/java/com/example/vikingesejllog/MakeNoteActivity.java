@@ -44,32 +44,19 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
 
 
     private MyGPS gps;
-    private EditText windSpeed;
-    private TextView windSpeedBtnText;
-    private EditText course;
-    private TextView courseBtnText;
-    private TextView sailingSpeedBtnText;
-    private EditText sailingSpeed;
-    private EditText path;
-    private TextView pathBtnText;
-    private EditText direction;
-    private TextView directionBtnText;
-    private EditText rowers;
-    private TextView rowersBtnText;
-    private TextView timeText;
-    private TextView gpsText;
-    private EditText commentText;
+    private EditText windSpeed, course, sailingSpeed, path, direction, rowers, commentText;
+    private TextView windSpeedBtnText, courseBtnText, sailingSpeedBtnText, pathBtnText,
+            directionBtnText, rowersBtnText, timeText, gpsText;
 
-    private ImageButton micButton;
-    private ImageButton cameraButton;
+    private MyTime time;
+
+    private ImageButton micButton, cameraButton;
     private ImageView takenPicture, savedPicture;
-
-    private ProgressDialog progressDialog;
 
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
 
-    private String fileName;
+    private String filePath, fileName;
 
     private boolean recordingDone;
 
@@ -108,25 +95,25 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
 
-        fileName = getExternalCacheDir().getAbsolutePath();
-        fileName += "/audiorecordtest.3gp";
-
-        Log.d(TAG, fileName);
+        //Skaffer lagerlokation til mig:
+        filePath = getExternalCacheDir().getAbsolutePath();
+        Log.d(TAG, filePath);
 
         micButton = findViewById(R.id.micButton);
         if(recordingDone){
             micButton.setImageResource(android.R.drawable.ic_media_play);
         }
 
-        micButton.setOnClickListener(this);
 
         cameraButton= findViewById(R.id.cameraButton);
-        cameraButton.setOnClickListener(this);
-
         takenPicture = findViewById(R.id.takenPicture);
+        savedPicture = findViewById(R.id.savedPicture);
+
         takenPicture.setOnTouchListener(this);
 
-        savedPicture = findViewById(R.id.savedPicture);
+        cameraButton.setOnClickListener(this);
+        micButton.setOnClickListener(this);
+
         savedPicture.setImageAlpha(0);
     }
 
@@ -283,9 +270,8 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void setTime(View v){
-        MyTime time = new MyTime();
         timeText.setText(time.getTime());
-
+        fileName = time.getTime();
     }
 
     public void confirm(View v){
@@ -306,6 +292,7 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
 
         @Override
         public void onClick(View v) {
+            ProgressDialog progressDialog;
             if (v == micButton && !recordingDone) {
                     ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
@@ -315,7 +302,7 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
                     protected Object doInBackground(Object... arg0) {
                         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                        mediaRecorder.setOutputFile(fileName);
+                        mediaRecorder.setOutputFile(filePath+fileName);
                         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
 
                         try {
@@ -360,7 +347,9 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
                         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                         mediaPlayer.setVolume(5,5);
                         try {
-                            mediaPlayer.setDataSource(fileName);
+                            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                            mediaPlayer.setVolume(5,5);
+                            mediaPlayer.setDataSource(filePath+fileName);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -383,9 +372,15 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
                     progressDialog.setMax(200);
                     progressDialog.setTitle("Afspiller lydnote...");
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        mediaPlayer.stop();
+                        mediaPlayer.release();
+                        }});
+                    progressDialog.show();
 
-
-                    /*Kan kun spille en gemt lyd i applikationen lige nu - mangler databasen.
+                  /*Kan kun spille en gemt lyd i applikationen lige nu - mangler databasen.
                     Her skal der oprettes en URI, der leder til pladsen i databasen, hvorefter
                     følgede kan bruges:
                     Uri myUri = ....; // initialize Uri here
@@ -397,23 +392,7 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
 
                     Der skal måske bruges noget aSyncTask til at håndtere mediaafspilning fra
                     den lokale database.
-
-
-
-                    mediaPlayer = MediaPlayer.create(this, R.raw.toilet_flushing);
-                    mediaPlayer.setVolume(5,5);
-                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                     */
-
-
-                progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        mediaPlayer.stop();
-                        }});
-                    progressDialog.show();
-
-                   // mediaPlayer.start();
             }
 
 
@@ -431,17 +410,21 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode){
             case REQUEST_RECORD_AUDIO_PERMISSION:
+                if (!permissionToRecordAccepted){
                 permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;
+                break;}
             case REQUEST_CAMERA_PERMISSION:
+                if (!permissionToCamera){
                 permissionToCamera = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;
+                break;}
             case REQUEST_READ_EXTERNAL_STORAGE_PERMISSION:
+                if (!permissionToReadStorage){
                 permissionToReadStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;
+                break;}
             case REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION:
+                if (!permissionToWriteStorage){
                 permissionToWriteStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;
+                break;}
         }}
 
         //Gemmer billede som bitmap:
