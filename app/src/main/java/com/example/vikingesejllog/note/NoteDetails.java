@@ -31,8 +31,6 @@ public class NoteDetails extends AppCompatActivity {
         noteField = findViewById(R.id.noteField);
 
 
-
-
     }
 
 }
