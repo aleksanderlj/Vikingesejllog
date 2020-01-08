@@ -21,6 +21,7 @@ import com.example.vikingesejllog.etape.EtapeTopFragment;
 import com.example.vikingesejllog.etape.CreateButton;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
+import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 import com.google.gson.Gson;
@@ -33,7 +34,7 @@ public class NoteList extends AppCompatActivity {
 
     private ViewPager2 pager;
     private RecyclerView.Adapter adapter;
-    private ArrayList<Etape> etaper;
+    private ArrayList<EtapeWithNotes> etaper;
     private Togt togt;
     private AppDatabase db;
 
@@ -46,14 +47,11 @@ public class NoteList extends AppCompatActivity {
 
         pager = findViewById(R.id.note_viewpager);
 
-        //TODO These are tests
-        //TestData.createTestData();
-        //etaper = TestData.togter.get(1).getEtapeList();
         Intent i = getIntent();
         togt = db.togtDAO().getById(i.getLongExtra("togt_id", -1L));
-        etaper = (ArrayList<Etape>) db.etapeDAO().getAllByIds(togt.getEtapeList());
+        etaper = (ArrayList<EtapeWithNotes>) db.etapeDAO().getAllByTogtId(togt.getTogt_id());
 
-        adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle(), etaper);
+        adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle());
         pager.setAdapter(adapter);
 
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -71,7 +69,7 @@ public class NoteList extends AppCompatActivity {
     }
 
     private class NotePagerAdapter extends FragmentStateAdapter {
-        public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ArrayList<Etape> etaper) {
+        public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
         }
 
@@ -97,10 +95,7 @@ public class NoteList extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == Activity.RESULT_OK){
-            String json = data.getStringExtra("etape");
-            Gson gson = new Gson();
-            Etape newEtape = gson.fromJson(json, Etape.class);
-            etaper.add(newEtape);
+            etaper = (ArrayList<EtapeWithNotes>) db.etapeDAO().getAllByTogtId(togt.getTogt_id());
             pager.setAdapter(adapter);
             //adapter.notifyDataSetChanged();
         }

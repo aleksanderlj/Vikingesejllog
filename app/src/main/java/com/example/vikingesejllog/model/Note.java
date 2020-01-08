@@ -14,6 +14,9 @@ public class Note {
     @ColumnInfo(name = "note_id")
     private long note_id;
 
+    @ColumnInfo(name = "etape_parent_id")
+    private long etape_id;
+
     @ColumnInfo(name = "gps_loc")
     private String gpsLoc;
 
@@ -53,7 +56,8 @@ public class Note {
     public Note(){}
 
     @Ignore
-    public Note(String gpsLoc, String boatSpeed, String windSpeed, String time, String rowers, String sailForing, String sailStilling, String course, String comment) {
+    public Note(long etape_id, String gpsLoc, String boatSpeed, String windSpeed, String time, String rowers, String sailForing, String sailStilling, String course, String comment) {
+        this.etape_id = etape_id;
         this.gpsLoc = gpsLoc;
         this.boatSpeed = boatSpeed;
         this.windSpeed = windSpeed;
@@ -192,6 +196,14 @@ public class Note {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public long getEtape_id() {
+        return etape_id;
+    }
+
+    public void setEtape_id(long etape_id) {
+        this.etape_id = etape_id;
     }
 }
 

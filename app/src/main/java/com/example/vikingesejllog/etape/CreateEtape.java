@@ -64,17 +64,9 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
                 e.setEnd(end.getText().toString());
                 //TODO Lav dato halløj
                 e.setDeparture(new Date());
+                e.setTogt_id(getIntent().getLongExtra("togt_id", -1L));
 
-                Intent returnIntent = new Intent();
-                /*Gson gson = new Gson();
-                String json = gson.toJson(e);
-                returnIntent.putExtra("etape", json);
-                setResult(Activity.RESULT_OK, returnIntent);
-                 */
-
-                Togt togt = db.togtDAO().getById(getIntent().getLongExtra("togt_id", -1L));
-                togt.getEtapeList().add(db.etapeDAO().insert(e));
-                db.togtDAO().update(togt);
+                db.etapeDAO().insert(e);
 
                 finish();
                 break;

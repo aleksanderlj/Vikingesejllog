@@ -11,7 +11,7 @@ public class DatabaseBuilder {
 
     public static AppDatabase get(Context context){
         if(db == null){
-            db = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "VikingeDB").build();
+            db = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "VikingeDB").fallbackToDestructiveMigration().build();
         }
         return db;
     }

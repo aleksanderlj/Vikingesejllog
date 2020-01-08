@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.example.vikingesejllog.model.Etape;
@@ -15,12 +16,15 @@ import java.util.List;
 @Dao
 public interface TogtDAO {
 
+    @Transaction
     @Query("SELECT * FROM Togt")
     List<Togt> getAll();
 
+    @Transaction
     @Query("SELECT * FROM Togt WHERE togt_id IN (:togt_ids)")
     List<Togt> getAllByIds(List<Long> togt_ids);
 
+    @Transaction
     @Query("SELECT * FROM Togt WHERE togt_id = :togt_id")
     Togt getById(long togt_id);
 

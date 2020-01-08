@@ -50,7 +50,7 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
         togtList = new ArrayList<>();
         Executor ex = Executors.newSingleThreadExecutor();
         ex.execute(() -> {
-            togtList = db.togtDAO().getAll();
+            togtList.addAll(db.togtDAO().getAll());
             adapter.notifyDataSetChanged();
         });
 		adapter = new TogtListAdapter(togtList, this);

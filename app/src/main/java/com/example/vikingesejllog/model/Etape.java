@@ -1,10 +1,12 @@
 package com.example.vikingesejllog.model;
 
+import androidx.annotation.RequiresPermission;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+import androidx.room.Relation;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,25 +14,21 @@ import java.util.List;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(foreignKeys = @ForeignKey(entity = Note.class,
-        parentColumns = "note_id",
-        childColumns = "note_ids",
-        onDelete = CASCADE),
-        indices = {@Index("note_ids")})
+@Entity
 public class Etape {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "etape_id")
     private long etape_id;
 
+    @ColumnInfo(name = "togt_parent_id")
+    private long togt_id;
+
     @ColumnInfo(name = "skipper")
     private String skipper;
 
     @ColumnInfo(name = "crew")
     private List<String> crew;
-
-    @ColumnInfo(name = "note_ids")
-    private List<Long> noteList;
 
     @ColumnInfo(name = "start")
     private String start;
@@ -43,7 +41,6 @@ public class Etape {
 
     public Etape(){
         crew = new ArrayList<>();
-        noteList = new ArrayList<>();
     }
 
     public String getSkipper() {
@@ -60,14 +57,6 @@ public class Etape {
 
     public void setCrew(List<String> crew) {
         this.crew = crew;
-    }
-
-    public List<Long> getNoteList() {
-        return noteList;
-    }
-
-    public void setNoteList(List<Long> noteList) {
-        this.noteList = noteList;
     }
 
     public String getStart() {
@@ -100,5 +89,13 @@ public class Etape {
 
     public void setEtape_id(long etape_id) {
         this.etape_id = etape_id;
+    }
+
+    public long getTogt_id() {
+        return togt_id;
+    }
+
+    public void setTogt_id(long togt_id) {
+        this.togt_id = togt_id;
     }
 }

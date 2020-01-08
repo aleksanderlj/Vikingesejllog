@@ -263,23 +263,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     public void confirm(View v) {
 
-        Note note = new Note(gps.getLocation().getLatitude() + String.valueOf(gps.getLocation().getLongitude()).substring(0, 8),
+        Note note = new Note(getIntent().getLongExtra("etape_id", -1L), gps.getLocation().getLatitude() + String.valueOf(gps.getLocation().getLongitude()).substring(0, 8),
                 sailingSpeed.getText().toString(), windSpeed.getText().toString(), timeText.getText().toString(),
                 rowers.getText().toString(), path.getText().toString(), direction.getText().toString(), course.getText().toString(), commentText.getText().toString());
 
-        /*
-        Gson gson = new Gson();
-        String myJson = gson.toJson(note);
-
-        Intent result = new Intent();
-        result.putExtra("note", myJson);
-        setResult(MainActivity.RESULT_OK, result);
-         */
-
-        Etape etape = db.etapeDAO().getById(getIntent().getLongExtra("etape_id", -1L));
-        etape.getNoteList().add(db.noteDAO().insert(note));
-        db.etapeDAO().update(etape);
-
+        db.noteDAO().insert(note);
         finish();
     }
 

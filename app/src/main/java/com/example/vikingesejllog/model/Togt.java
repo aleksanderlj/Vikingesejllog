@@ -6,25 +6,19 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+import androidx.room.Relation;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(foreignKeys = @ForeignKey(entity = Etape.class,
-        parentColumns = "etape_id",
-        childColumns = "etape_ids",
-        onDelete = CASCADE),
-        indices = {@Index("etape_ids")})
+@Entity
 public class Togt {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "togt_id")
     private long togt_id;
-
-    @ColumnInfo(name = "etape_ids")
-    private List<Long> etapeList;
 
     @ColumnInfo(name = "departure")
     private String departure;
@@ -38,15 +32,6 @@ public class Togt {
     public Togt(String departure, String destination){
         this.departure = departure;
         this.destination = destination;
-        this.etapeList = new ArrayList<>();
-    }
-
-    public List<Long> getEtapeList() {
-        return etapeList;
-    }
-
-    public void setEtapeList(List<Long> etapeList) {
-        this.etapeList = etapeList;
     }
 
     public String getDeparture() {
