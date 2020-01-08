@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".note.NoteDetails">
+
+    <TextView
+        android:id="@+id/antalRoereBox"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/border"
+        android:elevation="5dp"
+        android:text="TextView"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="@+id/darkblueBackground"
+        app:layout_constraintTop_toTopOf="@+id/darkblueBackground" />
+
+    <TextView
+        android:id="@+id/GPSBox"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="22dp"
+        android:background="@drawable/border"
+        android:elevation="5dp"
+        android:text="TextView"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="@+id/vindBox"
+        app:layout_constraintTop_toBottomOf="@+id/vindBox" />
+
+    <TextView
+        android:id="@+id/klokkeslætBox"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="22dp"
+        android:background="@drawable/border"
+        android:elevation="5dp"
+        android:text="TextView"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="@+id/GPSBox"
+        app:layout_constraintTop_toBottomOf="@+id/GPSBox" />
+
+    <TextView
+        android:id="@+id/noteField"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="16dp"
+        android:background="#FFF2AB"
+        android:backgroundTint="#FFF2AB"
+        android:text="TextView"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/cameraButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/darkblueBackground" />
+
+    <fragment
+        android:id="@+id/noteDetailsTopFragment"
+        android:name="com.example.vikingesejllog.note.NoteDetailsTopFragment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/darkblueBackground"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/btn_round_corner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noteDetailsTopFragment" />
+
+    <ImageButton
+        android:id="@+id/cameraButton"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#180B2C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/noteField"
+        app:layout_constraintStart_toStartOf="@+id/noteField"
+        app:srcCompat="@drawable/camera" />
+
+    <ImageButton
+        android:id="@+id/micButton"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#180B2C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/noteField"
+        app:layout_constraintStart_toStartOf="@+id/noteField"
+        app:srcCompat="@drawable/mic" />
+
+    <TextView
+        android:id="@+id/hastighedBox"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/border"
+        android:elevation="5dp"
+        android:text="TextView"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="@+id/darkblueBackground"
+        app:layout_constraintTop_toTopOf="@+id/darkblueBackground" />
+
+    <TextView
+        android:id="@+id/vindBox"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="22dp"
+        android:background="@drawable/border"
+        android:text="TextView"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="@+id/hastighedBox"
+        app:layout_constraintTop_toBottomOf="@+id/hastighedBox" />
+
+    <TextView
+        android:id="@+id/sejlføringBox"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="22dp"
+        android:background="@drawable/border"
+        android:text="TextView"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="@+id/antalRoereBox"
+        app:layout_constraintTop_toBottomOf="@+id/antalRoereBox" />
+
+    <TextView
+        android:id="@+id/sejlstillingBox"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="22dp"
+        android:background="@drawable/border"
+        android:text="TextView"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="@+id/sejlføringBox"
+        app:layout_constraintTop_toBottomOf="@+id/sejlføringBox" />
+
+    <TextView
+        android:id="@+id/kursBox"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="22dp"
+        android:background="@drawable/border"
+        android:text="TextView"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="@+id/sejlstillingBox"
+        app:layout_constraintTop_toBottomOf="@+id/sejlstillingBox" />
+
+    <TextView
+        android:id="@+id/hastighedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hastighed"
+        android:textColor="@color/design_default_color_background"
+        app:layout_constraintBottom_toTopOf="@+id/hastighedBox"
+        app:layout_constraintEnd_toEndOf="@+id/hastighedBox"
+        app:layout_constraintStart_toStartOf="@+id/hastighedBox" />
+
+    <TextView
+        android:id="@+id/vindText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vindhastighed"
+        android:textColor="@color/design_default_color_on_primary"
+        app:layout_constraintBottom_toTopOf="@+id/vindBox"
+        app:layout_constraintEnd_toEndOf="@+id/vindBox"
+        app:layout_constraintStart_toStartOf="@+id/vindBox" />
+
+    <TextView
+        android:id="@+id/geocoordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GPS"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/GPSBox"
+        app:layout_constraintEnd_toEndOf="@+id/GPSBox"
+        app:layout_constraintStart_toStartOf="@+id/GPSBox" />
+
+    <TextView
+        android:id="@+id/klokkeslætText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Klokkeslæt"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/klokkeslætBox"
+        app:layout_constraintEnd_toEndOf="@+id/klokkeslætBox"
+        app:layout_constraintStart_toStartOf="@+id/klokkeslætBox" />
+
+    <TextView
+        android:id="@+id/antalRoereText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Antal Roere"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/antalRoereBox"
+        app:layout_constraintEnd_toEndOf="@+id/antalRoereBox"
+        app:layout_constraintStart_toStartOf="@+id/antalRoereBox" />
+
+    <TextView
+        android:id="@+id/sejlføringText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sejlføring"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/sejlføringBox"
+        app:layout_constraintEnd_toEndOf="@+id/sejlføringBox"
+        app:layout_constraintStart_toStartOf="@+id/sejlføringBox" />
+
+    <TextView
+        android:id="@+id/sejlstillingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sejlstilling"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/sejlstillingBox"
+        app:layout_constraintEnd_toEndOf="@+id/sejlstillingBox"
+        app:layout_constraintStart_toStartOf="@+id/sejlstillingBox" />
+
+    <TextView
+        android:id="@+id/kursText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kurs"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/kursBox"
+        app:layout_constraintEnd_toEndOf="@+id/kursBox"
+        app:layout_constraintStart_toStartOf="@+id/kursBox" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

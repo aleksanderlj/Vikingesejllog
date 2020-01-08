@@ -23,9 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.vikingesejllog.etape.EtapeTopFragment;
 import com.example.vikingesejllog.etape.CreateButton;
 import com.example.vikingesejllog.R;
+import com.example.vikingesejllog.etape.EtapeTopFragment;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.model.Togt;
