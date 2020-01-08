@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -35,7 +34,6 @@ import com.example.vikingesejllog.togt.TogtListAdapter;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class NoteList extends AppCompatActivity implements View.OnClickListener {
 
@@ -110,7 +108,12 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     @SuppressLint("WrongConstant")
     @Override
     public void onClick(View v) {
-        mDrawerLayout.openDrawer(Gravity.END);
+        switch(v.getId()){
+            case R.id.menu_button:
+                mDrawerLayout.openDrawer(Gravity.END);
+                break;
+            // din case her Jonatan
+        }
     }
 
     private class NotePagerAdapter extends FragmentStateAdapter {
