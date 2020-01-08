@@ -38,6 +38,7 @@ public class TestData {
 
         ArrayList<Etape> etaper = new ArrayList<>();
 
+        /*
         Etape e1 = new Etape();
         e1.setSkipper("Troels");
         e1.setCrew(new ArrayList<>(crew));
@@ -71,6 +72,8 @@ public class TestData {
         togter.get(0).setEtapeList(new ArrayList<>(etaper));
         togter.get(1).setEtapeList(new ArrayList<>(etaper));
         togter.get(2).setEtapeList(new ArrayList<>(etaper));
+
+         */
     }
 
     public static ArrayList<Togt> getTogter() {

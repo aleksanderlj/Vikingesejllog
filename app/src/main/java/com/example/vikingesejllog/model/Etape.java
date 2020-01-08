@@ -3,6 +3,7 @@ package com.example.vikingesejllog.model;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
@@ -14,7 +15,8 @@ import static androidx.room.ForeignKey.CASCADE;
 @Entity(foreignKeys = @ForeignKey(entity = Note.class,
         parentColumns = "note_id",
         childColumns = "note_ids",
-        onDelete = CASCADE))
+        onDelete = CASCADE),
+        indices = {@Index("note_ids")})
 public class Etape {
 
     @PrimaryKey(autoGenerate = true)

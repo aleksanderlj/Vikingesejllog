@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
@@ -14,7 +15,8 @@ import static androidx.room.ForeignKey.CASCADE;
 @Entity(foreignKeys = @ForeignKey(entity = Etape.class,
         parentColumns = "etape_id",
         childColumns = "etape_ids",
-        onDelete = CASCADE))
+        onDelete = CASCADE),
+        indices = {@Index("etape_ids")})
 public class Togt {
 
     @PrimaryKey(autoGenerate = true)

@@ -21,10 +21,8 @@ import com.example.vikingesejllog.etape.EtapeTopFragment;
 import com.example.vikingesejllog.etape.CreateButton;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
-import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.other.DatabaseBuilder;
-import com.example.vikingesejllog.test.TestData;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Array;
