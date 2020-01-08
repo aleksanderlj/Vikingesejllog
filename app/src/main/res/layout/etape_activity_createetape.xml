@@ -47,7 +47,7 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/btn_round_corner"
         android:fontFamily="@font/montserrat"
-        android:text="Antal besætningsmedlemmer"
+        android:text="Besætningsmedlemmer"
         android:textAllCaps="false"
         android:textColor="@android:color/background_light"
         android:textSize="16sp"

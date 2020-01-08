@@ -1,9 +1,10 @@
 package com.example.vikingesejllog.etape;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vikingesejllog.R;
@@ -13,34 +14,59 @@ import java.util.List;
 
 public class CrewList extends AppCompatActivity {
 
+    public List<CrewListItem> getCrewListItems() {
+        return crewListItems;
+    }
+
     private List<CrewListItem> crewListItems;
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private RecyclerView mRecyclerView;
+    private CrewListAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
+    private Button newCrewButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.note_activity_crewlist);
 
-        recyclerView = findViewById(R.id.crewRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        newCrewButton = findViewById(R.id.newCrewButton);
+        newCrewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        createCrewList();
+        buildRecyclerView();
 
 
+    }
+
+    public void newCrewMember(int position){
+
+    }
+
+    public void createCrewList(){
         crewListItems = new ArrayList<>();
-
-        // test for crew list '
+        // test for crew list
         // tilføjer 10 crewmembers til en liste
-        //TODO: lav logik så man kan fjerne og tiljøfe besætning
-        for(int i=0; i < 10; i++){
-
+        for(int i=0; i < 22; i++){
             CrewListItem crewListItem = new CrewListItem("Crew " + (i+1));
-
             crewListItems.add(crewListItem);
         }
 
-        adapter = new CrewListAdapter(crewListItems,this);
-        recyclerView.setAdapter(adapter);
     }
+
+    public void buildRecyclerView(){
+        mRecyclerView = findViewById(R.id.crewRecyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter = new CrewListAdapter(crewListItems,this);
+    }
+
 }

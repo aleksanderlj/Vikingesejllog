@@ -25,17 +25,11 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.etape_activity_createetape);
 
-        //TODO tests
-        crew = new ArrayList<>();
-        crew.add("Max");
-        crew.add("Alek");
-        crew.add("Freddy Fazbear");
-
-
-
         findViewById(R.id.crewCountButton).setOnClickListener(this);
         findViewById(R.id.confirmButton).setOnClickListener(this);
+
     }
+
 
     @Override
     public void onClick(View v) {
