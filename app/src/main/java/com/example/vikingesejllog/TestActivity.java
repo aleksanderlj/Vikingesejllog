@@ -20,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
 
@@ -93,24 +92,11 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         //Skal have defineret en variabel for fileName!!!
         if (v == record) {
             try {
-                audioRecorder.recordAudio("test");
+                audioRecorder.setupAudioRecord("test");
             } catch (IOException e) {
                 e.printStackTrace();
             } }
 
-        if (v == play){
-            //Skal køres først, for at sikre, at brugeren har givet tilladelse til appen.
-            if (ContextCompat.checkSelfPermission(TestActivity.this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-                try {
-                    audioRecorder.playAudioNote("test");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                //Hvis tilladelsen ikke allerede er givet, skal der spørges efter den.
-                requestStoragePermission(); }
-        }
 
         if (v == snapshot){
             //Sender intent til at åbne kameraet og afventer resultatet.
