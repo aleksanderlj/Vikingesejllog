@@ -2,6 +2,7 @@ package com.example.vikingesejllog.note;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -29,6 +30,17 @@ public class NoteDetails extends AppCompatActivity {
         sejlStillingBox = findViewById(R.id.sejlstillingBox);
         kursBox = findViewById(R.id.kursBox);
         noteField = findViewById(R.id.noteField);
+
+        Intent intent = getIntent();
+        hastighedBox.setText(intent.getStringExtra("boatSpeed"));
+        vindBox.setText(intent.getStringExtra("windSpeed"));
+        GPSBox.setText(intent.getStringExtra("gpsLoc"));
+        clockBox.setText(intent.getStringExtra("time"));
+        antalRoerBox.setText(intent.getStringExtra("rowers"));
+        sejlfoeringBox.setText(intent.getStringExtra("sailForing"));
+        sejlStillingBox.setText(intent.getStringExtra("sailStilling"));
+        kursBox.setText(intent.getStringExtra("course"));
+        noteField.setText(intent.getStringExtra("comment"));
 
 
     }
