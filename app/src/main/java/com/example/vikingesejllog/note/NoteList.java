@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.vikingesejllog.etape.EtapeTopFragment;
 import com.example.vikingesejllog.etape.CreateButton;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.etape.EtapeTopFragment;
@@ -34,6 +35,7 @@ import com.example.vikingesejllog.togt.TogtListAdapter;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NoteList extends AppCompatActivity implements View.OnClickListener {
 
@@ -78,13 +80,17 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         etaper = TestData.togter.get(1).getEtapeList();
 
         adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle(), etaper);
+        
         pager.setAdapter(adapter);
-
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 EtapeTopFragment f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
+                ((NotePagerAdapter)adapter).etapeFragments.get(pager.getCurrentItem()).getView().
+                        findViewById(R.id.nextButton).setOnClickListener(NoteList.this);
+                ((NotePagerAdapter)adapter).etapeFragments.get(pager.getCurrentItem()).getView().
+                        findViewById(R.id.nextButton).setOnClickListener(NoteList.this);
                 if (pager.getCurrentItem() < etaper.size()) {
                     f.setAll(etaper.get(pager.getCurrentItem()), pager.getCurrentItem(), etaper.size());
                 } else {
@@ -108,15 +114,28 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     @SuppressLint("WrongConstant")
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.menu_button:
-                mDrawerLayout.openDrawer(Gravity.END);
+        int currItem;
+        switch (v.getId()){
+			case R.id.menu_button:
+				mDrawerLayout.openDrawer(Gravity.END);
+				break;
+			// din case her Jonatan
+            case R.id.prevButton:
+                System.out.println("Penis1");
+                currItem = pager.getCurrentItem();
+                pager.setCurrentItem(currItem-1, true);
                 break;
-            // din case her Jonatan
+            case R.id.nextButton:
+                System.out.println("Penis2");
+                currItem = pager.getCurrentItem();
+                pager.setCurrentItem(currItem+1, true);
+                break;
         }
     }
 
     private class NotePagerAdapter extends FragmentStateAdapter {
+        private List<Fragment> etapeFragments = new ArrayList<>();
+        
         public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ArrayList<Etape> etaper) {
             super(fragmentManager, lifecycle);
         }
@@ -126,6 +145,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         public Fragment createFragment(int position) {
             if(position<etaper.size()) {
                 NoteListFragment f = new NoteListFragment(etaper.get(position).getNoteList());
+                etapeFragments.add(f);
                 return f;
             } else {
                 CreateButton newEtape = new CreateButton();
@@ -136,6 +156,10 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         @Override
         public int getItemCount() {
             return etaper.size()+1;
+        }
+    
+        public List<Fragment> getEtapeFragments() {
+            return etapeFragments;
         }
     }
 
