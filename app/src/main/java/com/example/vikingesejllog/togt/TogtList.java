@@ -2,6 +2,8 @@ package com.example.vikingesejllog.togt;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -16,18 +18,22 @@ import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.note.NoteList;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class TogtList extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView recyclerView;
     private TogtListAdapter adapter;
     private List<Togt> togtList;
-    private AppDatabase db = DatabaseBuilder.get(this);
+    private AppDatabase db;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.togt_activity_list);
+        db = DatabaseBuilder.get(this);
 
         recyclerView = (RecyclerView) findViewById(R.id.journeyRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -38,14 +44,18 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
         tm.updateTextView("Liste over togter");
 
         findViewById(R.id.newTogtButton).setOnClickListener(this);
-		AppDatabase db = DatabaseBuilder.get(this);
     }
 
     public void updateList(){
-		togtList = db.togtDAO().getAll();
+        togtList = new ArrayList<>();
+        Executor ex = Executors.newSingleThreadExecutor();
+        ex.execute(() -> {
+            togtList = db.togtDAO().getAll();
+            adapter.notifyDataSetChanged();
+        });
 		adapter = new TogtListAdapter(togtList, this);
 		recyclerView.setAdapter(adapter);
-	
+
 		adapter.setOnItemClickListener(new TogtListAdapter.OnItemClickListener() {
 			@Override
 			public void onItemClick(int position) {

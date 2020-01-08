@@ -1,6 +1,8 @@
 package com.example.vikingesejllog.togt;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,6 +12,9 @@ import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.other.DatabaseBuilder;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class CreateTogt extends AppCompatActivity implements View.OnClickListener {
 	private TextView departure, destination;
@@ -28,7 +33,7 @@ public class CreateTogt extends AppCompatActivity implements View.OnClickListene
 		Togt togt;
 		togt = new Togt(departure.getText().toString(), destination.getText().toString());
 		AppDatabase db = DatabaseBuilder.get(this);
-		db.togtDAO().insert(togt);
+		Executors.newSingleThreadExecutor().execute(() -> db.togtDAO().insert(togt));
 		this.finish();
 	}
 }
