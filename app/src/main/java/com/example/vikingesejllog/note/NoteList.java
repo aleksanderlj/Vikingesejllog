@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +27,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-public class NoteList extends AppCompatActivity {
+public class NoteList extends AppCompatActivity implements View.OnClickListener{
 
     private ViewPager2 pager;
     private RecyclerView.Adapter adapter;
@@ -36,17 +37,17 @@ public class NoteList extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.etape_activity_list);
-        ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},123);
-
+        ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
+    
         pager = findViewById(R.id.note_viewpager);
-
+    
         //TODO These are tests
         TestData.createTestData();
         etaper = TestData.togter.get(1).getEtapeList();
-
+    
         adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle(), etaper);
         pager.setAdapter(adapter);
-
+    
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -60,7 +61,13 @@ public class NoteList extends AppCompatActivity {
             }
         });
     }
-
+    
+    @Override
+    public void onClick(View v) {
+        //switch (v.getId())
+        
+    }
+    
     private class NotePagerAdapter extends FragmentStateAdapter {
         public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ArrayList<Etape> etaper) {
             super(fragmentManager, lifecycle);
@@ -104,4 +111,5 @@ public class NoteList extends AppCompatActivity {
             pager.setAdapter(adapter);
         }
     }
+    
 }
