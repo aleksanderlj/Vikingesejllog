@@ -7,9 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,8 +26,6 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.vikingesejllog.model.Note;
 import com.google.gson.Gson;
-
-import java.io.IOException;
 
 public class MakeNoteActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener{
 
@@ -53,8 +48,8 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
     private ImageButton micButton, cameraButton;
     private ImageView takenPicture, savedPicture;
 
-    MediaRecorder mediaRecorder;
-    MediaPlayer mediaPlayer;
+    AudioRecorder audioRecorder;
+    AudioPlayer audioPlayer;
 
     private String filePath, fileName;
 
@@ -290,25 +285,20 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
         finish();
     }
 
-        @Override
-        public void onClick(View v) {
-            ProgressDialog progressDialog;
-            if (v == micButton && !recordingDone) {
-                    ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
+    @Override
+    public void onClick(View v) {
+        ProgressDialog progressDialog;
+        if (v == micButton && !recordingDone) {
+                ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
-                    mediaRecorder = new MediaRecorder();
+                audioRecorder = new AudioRecorder();
+
                 new AsyncTask() {
                     @Override
                     protected Object doInBackground(Object... arg0) {
-                        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                        mediaRecorder.setOutputFile(filePath+fileName);
-                        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-
                         try {
-                            mediaRecorder.prepare();
+                            audioRecorder.setupAudioRecord(filePath+fileName);
                             return Log.d(TAG, "Det virker");
-
                         } catch (Exception e){
                             e.printStackTrace();
                             return Log.d(TAG, "Det virker IKKE " + e);
@@ -316,95 +306,86 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
 
                     @Override
                     protected void onPostExecute(Object obj){
-                        mediaRecorder.start();
+                        audioRecorder.startAudioRecord();
                     }
                 }.execute();
 
-                    progressDialog = new ProgressDialog(MakeNoteActivity.this);
-                    progressDialog.setMax(200);
-                    progressDialog.setTitle("Optager lydnote...");
-                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mediaRecorder.stop();
-                            mediaRecorder.release();
-                            recordingDone = true;
-                        }});
-
-                    progressDialog.show();
-                    micButton.setImageResource(android.R.drawable.ic_media_play);
-            }
-
-
-            if (v == micButton && recordingDone){
-                    ActivityCompat.requestPermissions(this, permissions, REQUEST_READ_EXTERNAL_STORAGE_PERMISSION);
-
-                mediaPlayer = new MediaPlayer();
-                new AsyncTask() {
+                progressDialog = new ProgressDialog(MakeNoteActivity.this);
+                progressDialog.setMax(200);
+                progressDialog.setTitle("Optager lydnote...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
                     @Override
-                    protected Object doInBackground(Object... arg0) {
-                        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                        mediaPlayer.setVolume(5,5);
-                        try {
-                            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                            mediaPlayer.setVolume(5,5);
-                            mediaPlayer.setDataSource(filePath+fileName);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            mediaPlayer.prepare();
-                            return Log.d(TAG, "Det virker");
+                    public void onClick(DialogInterface dialog, int which) {
+                        audioRecorder.stopAudioRecord();
+                        recordingDone = true;
+                    }});
+                progressDialog.show();
 
-                        } catch (Exception e){
-                            e.printStackTrace();
-                            return Log.d(TAG, "Det virker IKKE " + e);
-                        } }
-
-                    @Override
-                    protected void onPostExecute(Object obj){
-                        mediaPlayer.start();
-                    }
-                }.execute();
-
-                    progressDialog = new ProgressDialog(MakeNoteActivity.this);
-                    progressDialog.setMax(200);
-                    progressDialog.setTitle("Afspiller lydnote...");
-                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        mediaPlayer.stop();
-                        mediaPlayer.release();
-                        }});
-                    progressDialog.show();
-
-                  /*Kan kun spille en gemt lyd i applikationen lige nu - mangler databasen.
-                    Her skal der oprettes en URI, der leder til pladsen i databasen, hvorefter
-                    følgede kan bruges:
-                    Uri myUri = ....; // initialize Uri here
-                    MediaPlayer mediaPlayer = new MediaPlayer();
-                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    mediaPlayer.setDataSource(getApplicationContext(), myUri);
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
-
-                    Der skal måske bruges noget aSyncTask til at håndtere mediaafspilning fra
-                    den lokale database.
-                    */
-            }
-
-
-            if (v == cameraButton){
-                //Sender intent til at åbne kameraet og afventer resultatet.
-                ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
-
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePictureIntent, 1);
-            }
+                //Skaber "PLAY"-knap.
+                micButton.setImageResource(android.R.drawable.ic_media_play);
         }
 
+
+        if (v == micButton && recordingDone){
+                ActivityCompat.requestPermissions(this, permissions, REQUEST_READ_EXTERNAL_STORAGE_PERMISSION);
+
+                audioPlayer = new AudioPlayer();
+
+                new AsyncTask() {
+                    @Override
+                    protected Object doInBackground(Object... arg0) {
+                        try {
+                            audioPlayer.setupAudioNote(filePath+fileName);
+                            return Log.d(TAG, "Det virker");
+                        } catch (Exception e){
+                            e.printStackTrace();
+                            return Log.d(TAG, "Det virker IKKE " + e);
+                        }}
+
+                    @Override
+                    protected void onPostExecute(Object obj){
+                        audioPlayer.startAudioPlayer();
+                    }
+                }.execute();
+
+                progressDialog = new ProgressDialog(MakeNoteActivity.this);
+                progressDialog.setMax(200);
+                progressDialog.setTitle("Afspiller lydnote...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                   audioPlayer.stopAudioNote();
+                    }});
+                progressDialog.show();
+
+              /*Kan kun spille en gemt lyd i applikationen lige nu - mangler databasen.
+                Her skal der oprettes en URI, der leder til pladsen i databasen, hvorefter
+                følgede kan bruges:
+                Uri myUri = ....; // initialize Uri here
+                MediaPlayer mediaPlayer = new MediaPlayer();
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                mediaPlayer.setDataSource(getApplicationContext(), myUri);
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+
+                Der skal måske bruges noget aSyncTask til at håndtere mediaafspilning fra
+                den lokale database.
+                */
+        }
+
+
+        if (v == cameraButton){
+            //Sender intent til at åbne kameraet og afventer resultatet.
+            ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(takePictureIntent, 1);
+        }
+    }
+
+    //Checker om permissions er gemt.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -427,32 +408,32 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
                 break;}
         }}
 
-        //Gemmer billede som bitmap:
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-            //Køres når der er et resultat fra kamera appen og gemmer det som et bitmap:
-            super.onActivityResult(1, resultCode, data);
-            Bitmap bitmap = (Bitmap)data.getExtras().get("data");
-            //Skal evt. gemmes i noget sharedprefs med navn på note..
-            takenPicture.setImageBitmap(bitmap);
-            savedPicture.setImageBitmap(bitmap);
-        }
+    //Gemmer billede som bitmap:
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //Køres når der er et resultat fra kamera appen og gemmer det som et bitmap:
+        super.onActivityResult(1, resultCode, data);
+        Bitmap bitmap = (Bitmap)data.getExtras().get("data");
+        //Skal evt. gemmes i noget sharedprefs med navn på note..
+        takenPicture.setImageBitmap(bitmap);
+        savedPicture.setImageBitmap(bitmap);
+    }
 
-        //Zoom ind på billede med at røre det:
-        @Override
-        public boolean onTouch(View takenPicture, MotionEvent event) {
-        /*Zoomer ind på billedet, hvis brugeren rør ved det, og zoomer ud igen,
-        hvis fingeren slippes
-         */
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    savedPicture.setImageAlpha(255);
-                    savedPicture.setElevation(100);
-                    return true;
-                }
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    savedPicture.setImageAlpha(0);
-                    return true;
-                }
-            return false;
-        }
+    //Zoom ind på billede bitmap ved at røre det:
+    @Override
+    public boolean onTouch(View takenPicture, MotionEvent event) {
+    /*Zoomer ind på billedet, hvis brugeren rør ved det, og zoomer ud igen,
+    hvis fingeren slippes
+     */
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                savedPicture.setImageAlpha(255);
+                savedPicture.setElevation(100);
+                return true;
+            }
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                savedPicture.setImageAlpha(0);
+                return true;
+            }
+        return false;
+    }
 }

@@ -1,42 +1,42 @@
 package com.example.vikingesejllog;
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.util.Log;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.io.IOException;
 
 public class AudioPlayer extends AppCompatActivity {
      /*Author: s164497 - Hemsen
 
-    Denne klasse har til formål at styre logikken bag lydoptagelsen inde i "Opret Note". Herved
-    gemmes noten som en .MPEG4-fil. Filnavnet defineres ud fra hvilken note, der oprettes, således
-    at hvert filnavn er unikt. Lige pt. gemmes de under music-mappen på SDkortet.
+    Denne klasse har til formål at styre logikken bag lydafspilning inde i "MakeNoteActivity". Herved
+    kan optagelsen, der er knyttet til den specifikke note afspilles igen.
+    Filnavnet defineres ud fra hvilken note, der oprettes, således
+    at hvert filnavn er unikt. Der mangler databasefunktionalitet!
      */
 
     MediaPlayer audioPlayer;
 
-
-    void playAudioNote() throws IOException {
-        //Husk fileName skal defineres enten her eller inden metoden kaldes.
-
-        //String filePath = Environment.getExternalStorageDirectory().getPath()+ fileName;
-
-        audioPlayer = MediaPlayer.create(this, R.raw.toilet_flushing);
-        audioPlayer.setVolume(5, 5); //Så projektleder kan høre det
-
+    void setupAudioNote(String fileDestination) throws IOException {
+        //Gør afspilleren klar samt input af fildestination
         try {
+            audioPlayer = new MediaPlayer();
+            audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            audioPlayer.setVolume(5,5);
+            audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            audioPlayer.setVolume(5,5);
+            audioPlayer.setDataSource(fileDestination);
             audioPlayer.prepare();
-            audioPlayer.start();
         } catch (IOException e) {
-            Log.d("Fejl", "onClick: FEJL");
-        }
+            e.printStackTrace();
+        }}
+
+    void startAudioPlayer(){
+        //Starter afspilning
+        audioPlayer.start();
     }
 
     void stopAudioNote(){
-        //Stopper afspilningen af noten.
-        //progressDialog.dismiss();
+        //Stopper afspilningen af noten og frigiver objekt
         audioPlayer.stop();
         audioPlayer.release();
         audioPlayer = null;
