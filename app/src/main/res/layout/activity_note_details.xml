@@ -16,6 +16,7 @@
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="center"
+        android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="@+id/darkblueBackground"
         app:layout_constraintTop_toTopOf="@+id/darkblueBackground" />
 
@@ -28,6 +29,7 @@
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="center"
+        android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="@+id/vindBox"
         app:layout_constraintTop_toBottomOf="@+id/vindBox" />
 
@@ -40,6 +42,7 @@
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="center"
+        android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="@+id/GPSBox"
         app:layout_constraintTop_toBottomOf="@+id/GPSBox" />
 
@@ -54,6 +57,7 @@
         android:background="#FFF2AB"
         android:backgroundTint="#FFF2AB"
         android:text="TextView"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/cameraButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,6 +118,7 @@
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="center"
+        android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="@+id/darkblueBackground"
         app:layout_constraintTop_toTopOf="@+id/darkblueBackground" />
 
@@ -125,6 +130,7 @@
         android:background="@drawable/border"
         android:text="TextView"
         android:textAlignment="center"
+        android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="@+id/hastighedBox"
         app:layout_constraintTop_toBottomOf="@+id/hastighedBox" />
 
@@ -136,6 +142,7 @@
         android:background="@drawable/border"
         android:text="TextView"
         android:textAlignment="center"
+        android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="@+id/antalRoereBox"
         app:layout_constraintTop_toBottomOf="@+id/antalRoereBox" />
 
@@ -147,6 +154,7 @@
         android:background="@drawable/border"
         android:text="TextView"
         android:textAlignment="center"
+        android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="@+id/sejlføringBox"
         app:layout_constraintTop_toBottomOf="@+id/sejlføringBox" />
 
@@ -158,6 +166,7 @@
         android:background="@drawable/border"
         android:text="TextView"
         android:textAlignment="center"
+        android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="@+id/sejlstillingBox"
         app:layout_constraintTop_toBottomOf="@+id/sejlstillingBox" />
 
