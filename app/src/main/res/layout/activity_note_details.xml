@@ -10,7 +10,7 @@
         android:id="@+id/antalRoereBox"
         android:layout_width="130dp"
         android:layout_height="50dp"
-        android:layout_marginStart="212dp"
+        android:layout_marginStart="205dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/border"
         android:elevation="5dp"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/GPSBox" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/noteField"
         android:layout_width="0dp"
         android:layout_height="230dp"
         android:layout_marginStart="10dp"
@@ -76,27 +76,27 @@
         app:layout_constraintTop_toBottomOf="@+id/fragment" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/cameraButton"
         android:layout_width="68dp"
         android:layout_height="68dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="100dp"
         android:backgroundTint="#180B2C"
-        app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="@+id/noteField"
+        app:layout_constraintStart_toStartOf="@+id/noteField"
+        app:layout_constraintTop_toBottomOf="@+id/noteField"
         app:srcCompat="@drawable/camera" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/micButton"
         android:layout_width="68dp"
         android:layout_height="68dp"
         android:layout_marginStart="100dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="#180B2C"
-        app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="@+id/noteField"
+        app:layout_constraintStart_toStartOf="@+id/noteField"
+        app:layout_constraintTop_toBottomOf="@+id/noteField"
         app:srcCompat="@drawable/mic" />
 
     <TextView
