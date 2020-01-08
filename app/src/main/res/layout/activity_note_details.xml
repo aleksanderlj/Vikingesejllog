@@ -202,7 +202,7 @@
         android:id="@+id/geocoordText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GPS"
+        android:text="Geo-lokation"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/GPSBox"
         app:layout_constraintEnd_toEndOf="@+id/GPSBox"
