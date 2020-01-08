@@ -7,28 +7,38 @@
     tools:context=".note.NoteDetails">
 
     <TextView
-        android:id="@+id/textView10"
-        android:layout_width="98dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="164dp"
+        android:id="@+id/antalRoereBox"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="212dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/border"
         android:elevation="5dp"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintStart_toStartOf="@+id/darkblueBackground"
+        app:layout_constraintTop_toTopOf="@+id/darkblueBackground" />
 
     <TextView
-        android:id="@+id/textView11"
-        android:layout_width="98dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="232dp"
+        android:id="@+id/GPSBox"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/border"
         android:elevation="5dp"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintStart_toStartOf="@+id/vindBox"
+        app:layout_constraintTop_toBottomOf="@+id/vindBox" />
+
+    <TextView
+        android:id="@+id/klokkeslætBox"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border"
+        android:elevation="5dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/GPSBox"
+        app:layout_constraintTop_toBottomOf="@+id/GPSBox" />
 
     <TextView
         android:id="@+id/textView2"
@@ -42,7 +52,7 @@
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/darkblueBackground" />
 
     <fragment
         android:id="@+id/fragment"
@@ -54,7 +64,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/darkblueBackground"
         android:layout_width="0dp"
         android:layout_height="297dp"
         android:layout_marginStart="10dp"
@@ -90,26 +100,56 @@
         app:srcCompat="@drawable/mic" />
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="98dp"
-        android:layout_height="51dp"
+        android:id="@+id/hastighedBox"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/border"
+        android:elevation="5dp"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintStart_toStartOf="@+id/darkblueBackground"
+        app:layout_constraintTop_toTopOf="@+id/darkblueBackground" />
 
     <TextView
-        android:id="@+id/textView9"
-        android:layout_width="98dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="92dp"
+        android:id="@+id/vindBox"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/border"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintStart_toStartOf="@+id/hastighedBox"
+        app:layout_constraintTop_toBottomOf="@+id/hastighedBox" />
+
+    <TextView
+        android:id="@+id/sejlføringBox"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/antalRoereBox"
+        app:layout_constraintTop_toBottomOf="@+id/antalRoereBox" />
+
+    <TextView
+        android:id="@+id/sejlstillingBox"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/sejlføringBox"
+        app:layout_constraintTop_toBottomOf="@+id/sejlføringBox" />
+
+    <TextView
+        android:id="@+id/kursBox"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/sejlstillingBox"
+        app:layout_constraintTop_toBottomOf="@+id/sejlstillingBox" />
 
     <TextView
         android:id="@+id/textView6"
@@ -117,8 +157,78 @@
         android:layout_height="wrap_content"
         android:text="Hastighed"
         android:textColor="@color/design_default_color_background"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
-        app:layout_constraintEnd_toEndOf="@+id/textView3"
-        app:layout_constraintStart_toStartOf="@+id/textView3" />
+        app:layout_constraintBottom_toTopOf="@+id/hastighedBox"
+        app:layout_constraintEnd_toEndOf="@+id/hastighedBox"
+        app:layout_constraintStart_toStartOf="@+id/hastighedBox" />
+
+    <TextView
+        android:id="@+id/vindText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vind"
+        android:textColor="@color/design_default_color_on_primary"
+        app:layout_constraintBottom_toTopOf="@+id/vindBox"
+        app:layout_constraintEnd_toEndOf="@+id/vindBox"
+        app:layout_constraintStart_toStartOf="@+id/vindBox" />
+
+    <TextView
+        android:id="@+id/geocoordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GPS"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/GPSBox"
+        app:layout_constraintEnd_toEndOf="@+id/GPSBox"
+        app:layout_constraintStart_toStartOf="@+id/GPSBox" />
+
+    <TextView
+        android:id="@+id/klokkeslætText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Klokkeslæt"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/klokkeslætBox"
+        app:layout_constraintEnd_toEndOf="@+id/klokkeslætBox"
+        app:layout_constraintStart_toStartOf="@+id/klokkeslætBox" />
+
+    <TextView
+        android:id="@+id/antalRoereText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Antal Roere"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/antalRoereBox"
+        app:layout_constraintEnd_toEndOf="@+id/antalRoereBox"
+        app:layout_constraintStart_toStartOf="@+id/antalRoereBox" />
+
+    <TextView
+        android:id="@+id/sejlføringText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sejlføring"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/sejlføringBox"
+        app:layout_constraintEnd_toEndOf="@+id/sejlføringBox"
+        app:layout_constraintStart_toStartOf="@+id/sejlføringBox" />
+
+    <TextView
+        android:id="@+id/sejlstillingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sejlstilling"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/sejlstillingBox"
+        app:layout_constraintEnd_toEndOf="@+id/sejlstillingBox"
+        app:layout_constraintStart_toStartOf="@+id/sejlstillingBox" />
+
+    <TextView
+        android:id="@+id/kursText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kurs"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/kursBox"
+        app:layout_constraintEnd_toEndOf="@+id/kursBox"
+        app:layout_constraintStart_toStartOf="@+id/kursBox" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
