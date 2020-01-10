@@ -55,8 +55,12 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.etape_activity_list);
 
         Button button = findViewById(R.id.menu_button);
+        prevButton = findViewById(R.id.prevButton);
+        nextButton = findViewById(R.id.nextButton);
         button.setOnClickListener(this);
-
+        prevButton.setOnClickListener(this);
+        nextButton.setOnClickListener(this);
+        
         togt_list = new ArrayList<>();
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -111,23 +115,23 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     @SuppressLint("WrongConstant")
     @Override
     public void onClick(View v) {
-        //int currFragment;
         switch (v.getId()){
 			case R.id.menu_button:
 				mDrawerLayout.openDrawer(Gravity.END);
 				break;
-            /*case R.id.prevButton:
-                System.out.println("Penis1");
-                currFragment = pager.getCurrentItem();
-                ((NotePagerAdapter)adapter).createFragment(currItem+1);
-                pager.setCurrentItem(currItem-1, true);
+            case R.id.prevButton:
+                pager.setCurrentItem(pager.getCurrentItem() - 1, true);
+                if (pager.getCurrentItem() == 0)
+                    prevButton.setEnabled(false);
+                nextButton.setEnabled(true);
                 break;
             case R.id.nextButton:
-                System.out.println("Penis2");
-                currFragment = pager.getCurrentItem();
-                ((NotePagerAdapter)adapter).createFragment(currItem+1);
-                pager.setCurrentItem(currItem+1, true);
-                break;*/
+                pager.setCurrentItem(pager.getCurrentItem() + 1, true);
+                if (pager.getCurrentItem() == pager.getAdapter().getItemCount()-1)
+                    nextButton.setEnabled(false);
+                prevButton.setEnabled(true);
+                System.out.println(pager.getAdapter().getItemCount());
+                break;
         }
     }
 
