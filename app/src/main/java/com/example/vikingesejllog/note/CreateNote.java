@@ -2,6 +2,7 @@ package com.example.vikingesejllog.note;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,12 +10,18 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Layout;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,7 +87,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         timeText = findViewById(R.id.clockButtonText);
         gpsText = findViewById(R.id.coordsButtonText);
         commentText = findViewById(R.id.textComment);
-        gps = new MyGPS(this);
+
 
 
         micButton = findViewById(R.id.micButton);
@@ -95,6 +102,13 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         savedPicture = findViewById(R.id.savedPicture);
         savedPicture.setImageAlpha(0);
+
+        gps = new MyGPS(this);
+        String s = "LAT: "+(gps.getLocation().getLatitude()+"\n"+"LON: "+(String.valueOf(gps.getLocation().getLongitude()).substring(0,14)));
+        gpsText.setText(s);
+
+        MyTime time = new MyTime();
+        timeText.setText(time.getTime());
 
 
     }
@@ -221,39 +235,25 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         });
     }
 
-    public void setRowers(final View v){
+    public void setRowers(final View v) {
 
-        rowersBtnText.setVisibility(View.INVISIBLE);
+        //TODO Måske ændre PopupMenu til et PopupWindow som ser lidt pænere ud
 
-        rowers.setVisibility(View.VISIBLE);
+        PopupMenu popup = new PopupMenu(this, v);
 
-        rowers.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+        popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
 
-        rowers.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-
-                    rowersBtnText.setText(rowers.getText());
-                    rowersBtnText.setVisibility(View.VISIBLE);
-                    rowers.setVisibility(View.INVISIBLE);
-
-                }
+            public boolean onMenuItemClick(MenuItem item) {
+                rowersBtnText.setText(item.getTitle());
+                rowersBtnText.setVisibility(View.VISIBLE);
+                rowers.setVisibility(View.INVISIBLE);
+                return true;
             }
         });
-    }
 
-    public void setCoordinates(View v){
-        String s = "LAT: "+(gps.getLocation().getLatitude()+"\n"+"LON: "+(String.valueOf(gps.getLocation().getLongitude()).substring(0,8)));
-        gpsText.setText(s);
-    }
-
-    public void setTime(View v){
-        MyTime time = new MyTime();
-        timeText.setText(time.getTime());
-
+        popup.show();
     }
 
     public void confirm(View v){

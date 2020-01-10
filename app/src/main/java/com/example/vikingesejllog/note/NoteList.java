@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -74,6 +73,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
 
         togtAdapter = new TogtListAdapter(togt_list,this);
         recyclerView.setAdapter(togtAdapter);
+
 
 
         ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},123);

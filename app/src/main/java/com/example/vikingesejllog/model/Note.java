@@ -119,14 +119,14 @@ public class Note {
         if(hidden == true){
             this.cameraImageResource = 0;
         } else {
-            this.cameraImageResource = R.drawable.pencil_black;
+            this.cameraImageResource = R.drawable.camera_black;
         }
     }
     public void hideMic(boolean hidden){
         if(hidden == true){
             this.micImageResource = 0;
         } else {
-            this.micImageResource = R.drawable.pencil_black;
+            this.micImageResource = R.drawable.mic_black;
         }
     }
 
