@@ -36,7 +36,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".etape.CreateEtape" />
-        <activity android:name=".note.NewEtape"/>
         <activity android:name=".note.AudioPlayer" />
         <activity android:name=".note.AudioRecorder" />
 

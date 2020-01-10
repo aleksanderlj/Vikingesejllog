@@ -23,7 +23,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -36,16 +35,21 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener{
 
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+
     private static final int REQUEST_CAMERA_PERMISSION = 300;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+
     private static final int REQUEST_READ_EXTERNAL_STORAGE_PERMISSION = 400;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION = 500;
 
-    private static final String TAG = "TEST AF LYDOPTAGER";
+    private static final String audioTAG = "TEST AF LYDOPTAGER";
+    private static final String imageTAG = "TEST AF BILLEDEFUNKTION";
 
 
 
@@ -59,17 +63,20 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private ImageButton micButton, cameraButton;
     private ImageView takenPicture, savedPicture;
 
+    //Media support:
     private AudioRecorder audioRecorder;
     private AudioPlayer audioPlayer;
     private String audioFolderName = "Lydnoter";
+
+    private Intent takePictureIntent;
     private String imageFolderName = "Billednoter";
-    private File audioFolder, imageFolder;
+    private File audioFolder, imageFolder, image;
 
     private String fileName;
 
     private boolean recordingDone = true;
 
-    // Boolean, der checker for permissions.
+    // Permissions support:
     private boolean permissionToRecordAccepted = false;
     private boolean permissionToCamera = false;
     private boolean permissionToReadStorage = false;
@@ -104,18 +111,20 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
 
-        audioFolder = new File(Environment.DIRECTORY_MUSIC, audioFolderName);
+        audioFolder = new File(Environment.DIRECTORY_DOWNLOADS, audioFolderName);
         if (!audioFolder.exists()) {
             audioFolder.mkdirs();
         }
 
-        imageFolder = new File(Environment.DIRECTORY_PICTURES, imageFolderName);
+        imageFolder = new File(Environment.DIRECTORY_DOWNLOADS, imageFolderName);
         if (!imageFolder.exists()){
             imageFolder.mkdirs();
         }
+
         /*Skaffer lagerlokation til mig:
         filePath = getExternalCacheDir().getAbsolutePath();*/
-        Log.d(TAG, audioFolder.toString() + imageFolder.toString());
+        Log.d(audioTAG, audioFolder.toString());
+        Log.d(imageTAG, imageFolder.toString());
 
         micButton = findViewById(R.id.micButton);
         if(recordingDone){
@@ -143,7 +152,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy-HH:mm", Locale.getDefault());
         fileName = sdf.format(new Date());
-        Log.d(TAG, fileName);
+        Log.d("Aktuelle filnavn: ", fileName);
     }
 
     public void setWindSpeed(final View v){
@@ -305,6 +314,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         finish();
     }
 
+
+    //Implementering af AudioRecorder, AudioPlayer og kamerafunktionalitet:
     @Override
     public void onClick(View v) {
         ProgressDialog progressDialog;
@@ -318,10 +329,10 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     protected Object doInBackground(Object... arg0) {
                         try {
                             audioRecorder.setupAudioRecord(audioFolder + "/" + fileName + ".mp3");
-                            return Log.d(TAG, "Det virker: " + audioFolder + "/" + fileName + ".mp3");
+                            return Log.d(audioTAG, "Det virker: " + audioFolder + "/" + fileName + ".mp3");
                         } catch (Exception e){
                             e.printStackTrace();
-                            return Log.d(TAG, "Det virker IKKE: " + e);
+                            return Log.d(audioTAG, "Det virker IKKE: " + e);
                         } }
 
                     @Override
@@ -357,10 +368,10 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     protected Object doInBackground(Object... arg0) {
                         try {
                             audioPlayer.setupAudioNote(audioFolder + "/" + fileName + ".mp3");
-                            return Log.d(TAG, "Det virker: " + audioFolder + "/" + fileName + ".mp3");
+                            return Log.d(audioTAG, "Det virker: " + audioFolder + "/" + fileName + ".mp3");
                         } catch (Exception e){
                             e.printStackTrace();
-                            return Log.d(TAG, "Det virker IKKE: " + e);
+                            return Log.d(audioTAG, "Det virker IKKE: " + e);
                         }}
 
                     @Override
@@ -386,10 +397,27 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             //Sender intent til at åbne kameraet og afventer resultatet.
             ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
 
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageFolder + "/" + fileName + ".png");
-            startActivityForResult(takePictureIntent, 1);
+            new AsyncTask() {
+                @Override
+                protected Object doInBackground(Object... arg0) {
+                    try {
+                        image = File.createTempFile(fileName, ".jpg", imageFolder);
+                        return Log.d(imageTAG, image.toString());
+                    } catch (Exception e){
+                        e.printStackTrace();
+                        return Log.d(imageTAG, "Det virker IKKE: " + e);
+                    }}
+
+                @Override
+                protected void onPostExecute(Object obj){
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,image);
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    }}
+            }.execute();
+            //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageFolder + "/" + fileName + ".png");
         }}
 
     //Checker om permissions er gemt.
@@ -417,14 +445,14 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     //Gemmer billede som bitmap:
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //Køres når der er et resultat fra kamera appen og gemmer det som et bitmap:
-        super.onActivityResult(1, resultCode, data);
-        Bitmap bitmap = (Bitmap)data.getExtras().get("data");
+        super.onActivityResult(REQUEST_IMAGE_CAPTURE, resultCode, data);
+
+        Bitmap bitmap = (Bitmap) Objects.requireNonNull(takePictureIntent.getExtras()).get("data");
         //Skal evt. gemmes i noget sharedprefs med navn på note..
         takenPicture.setImageBitmap(bitmap);
         savedPicture.setImageBitmap(bitmap);
-
     }
 
     //Zoom ind på billede bitmap ved at røre det:
