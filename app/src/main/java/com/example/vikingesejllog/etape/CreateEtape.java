@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.Executors;
 
 public class CreateEtape extends AppCompatActivity implements View.OnClickListener {
 
@@ -66,9 +67,12 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
                 e.setDeparture(new Date());
                 e.setTogt_id(getIntent().getLongExtra("togt_id", -1L));
 
-                db.etapeDAO().insert(e);
+                setResult(Activity.RESULT_OK);
 
-                finish();
+                Executors.newSingleThreadExecutor().execute(() -> {
+                    db.etapeDAO().insert(e);
+                    finish();
+                });
                 break;
         }
     }

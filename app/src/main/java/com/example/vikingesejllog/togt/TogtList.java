@@ -35,7 +35,7 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.togt_activity_list);
         db = DatabaseBuilder.get(this);
 
-        recyclerView = (RecyclerView) findViewById(R.id.journeyRecyclerView);
+        recyclerView = findViewById(R.id.journeyRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 		updateList();
@@ -48,23 +48,18 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
 
     public void updateList(){
         togtList = new ArrayList<>();
-        Executor ex = Executors.newSingleThreadExecutor();
-        ex.execute(() -> {
+        Executors.newSingleThreadExecutor().execute(() -> {
             togtList.addAll(db.togtDAO().getAll());
-            adapter.notifyDataSetChanged();
+            recyclerView.post(() -> adapter.notifyDataSetChanged());
         });
 		adapter = new TogtListAdapter(togtList, this);
 		recyclerView.setAdapter(adapter);
 
-		adapter.setOnItemClickListener(new TogtListAdapter.OnItemClickListener() {
-			@Override
-			public void onItemClick(int position) {
-				Intent noteList = new Intent(TogtList.this, NoteList.class);
-				Togt currTogt = db.togtDAO().getById(togtList.get(position).getTogt_id());
-				noteList.putExtra("togt_id", currTogt.getTogt_id());
-				startActivity(noteList);
-			}
-		});
+		adapter.setOnItemClickListener((int position) -> {
+            Intent noteList = new Intent(TogtList.this, NoteList.class);
+            noteList.putExtra("togt_id", togtList.get(position).getTogt_id());
+            startActivity(noteList);
+        });
 	}
     
     @Override

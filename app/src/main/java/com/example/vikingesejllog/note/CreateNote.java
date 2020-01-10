@@ -1,6 +1,7 @@
 package com.example.vikingesejllog.note;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,6 +34,7 @@ import com.example.vikingesejllog.other.DatabaseBuilder;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
 
 public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
 
@@ -267,8 +269,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 sailingSpeed.getText().toString(), windSpeed.getText().toString(), timeText.getText().toString(),
                 rowers.getText().toString(), path.getText().toString(), direction.getText().toString(), course.getText().toString(), commentText.getText().toString());
 
-        db.noteDAO().insert(note);
-        finish();
+        Executors.newSingleThreadExecutor().execute(() -> {
+            db.noteDAO().insert(note);
+            setResult(Activity.RESULT_OK);
+            finish();
+        });
     }
 
     @Override

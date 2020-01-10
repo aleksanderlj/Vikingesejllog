@@ -34,9 +34,9 @@ public class CreateTogt extends AppCompatActivity implements View.OnClickListene
 		Togt togt;
 		togt = new Togt(departure.getText().toString(), destination.getText().toString());
 		AppDatabase db = DatabaseBuilder.get(this);
-		Executors.newSingleThreadExecutor().execute(() -> {db.togtDAO().insert(togt);
-            System.out.println("Hllao");
-        });
-		this.finish();
+		Executors.newSingleThreadExecutor().execute(() -> {
+			db.togtDAO().insert(togt);
+			finish();
+		});
 	}
 }
