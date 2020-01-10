@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.vikingesejllog.model.Note;
+import com.example.vikingesejllog.note.CreateNote;
 import com.google.gson.Gson;
 
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendMessage(View v){
 
-        Intent i = new Intent(this,MakeNoteActivity.class);
+        Intent i = new Intent(this, CreateNote.class);
         startActivityForResult(i,1);
 
     }
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 Note note = gson.fromJson(data.getStringExtra("myjson"), Note.class);
 
-                //activity_makenote test
+                //note_activity_createnote test
                 TextView test = findViewById(R.id.textView);
                 test.setText(note.getComment());
 

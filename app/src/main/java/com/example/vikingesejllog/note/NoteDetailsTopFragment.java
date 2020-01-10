@@ -1,4 +1,4 @@
-package com.example.vikingesejllog;
+package com.example.vikingesejllog.note;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,18 +8,20 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-public class TopMenu extends Fragment {
-    public TopMenu(){
+import com.example.vikingesejllog.R;
+
+public class NoteDetailsTopFragment extends Fragment {
+    public NoteDetailsTopFragment(){
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.togt_fragment_top, container, false);
+        return inflater.inflate(R.layout.note_details_fragment_top, container, false);
     }
 
     public void updateTextView(String text){
-        TextView tv = getView().findViewById(R.id.currentMenuText);
+        TextView tv = getView().findViewById(R.id.noteFragmentMenuText);
         tv.setText(text);
     }
 }

@@ -1,7 +1,9 @@
-package com.example.vikingesejllog;
+package com.example.vikingesejllog.note;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +12,10 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Layout;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,17 +23,25 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.example.vikingesejllog.MainActivity;
+import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Note;
 import com.google.gson.Gson;
 
-public class MakeNoteActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener{
+import java.io.IOException;
+
+public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener{
 
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
@@ -69,7 +83,7 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_makenote);
+        setContentView(R.layout.note_activity_createnote);
 
         windSpeed = findViewById(R.id.windspeedText);
         windSpeedBtnText = findViewById(R.id.windspeedButtonText);
@@ -110,6 +124,15 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
         micButton.setOnClickListener(this);
 
         savedPicture.setImageAlpha(0);
+
+        gps = new MyGPS(this);
+        String s = "LAT: "+(gps.getLocation().getLatitude()+"\n"+"LON: "+(String.valueOf(gps.getLocation().getLongitude()).substring(0,14)));
+        gpsText.setText(s);
+
+        MyTime time = new MyTime();
+        timeText.setText(time.getTime());
+
+
     }
 
     public void setWindSpeed(final View v){
@@ -234,39 +257,25 @@ public class MakeNoteActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
-    public void setRowers(final View v){
+    public void setRowers(final View v) {
 
-        rowersBtnText.setVisibility(View.INVISIBLE);
+        //TODO Måske ændre PopupMenu til et PopupWindow som ser lidt pænere ud
 
-        rowers.setVisibility(View.VISIBLE);
+        PopupMenu popup = new PopupMenu(this, v);
 
-        rowers.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+        popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
 
-        rowers.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-
-                    rowersBtnText.setText(rowers.getText());
-                    rowersBtnText.setVisibility(View.VISIBLE);
-                    rowers.setVisibility(View.INVISIBLE);
-
-                }
+            public boolean onMenuItemClick(MenuItem item) {
+                rowersBtnText.setText(item.getTitle());
+                rowersBtnText.setVisibility(View.VISIBLE);
+                rowers.setVisibility(View.INVISIBLE);
+                return true;
             }
         });
-    }
 
-    public void setCoordinates(View v){
-        gps = new MyGPS(this);
-        String s = "LAT: "+(gps.getLocation().getLatitude()+"\n"+"LON: "+(String.valueOf(gps.getLocation().getLongitude()).substring(0,8)));
-        gpsText.setText(s);
-    }
-
-    public void setTime(View v){
-        timeText.setText(time.getTime());
-        fileName = time.getTime();
+        popup.show();
     }
 
     public void confirm(View v){

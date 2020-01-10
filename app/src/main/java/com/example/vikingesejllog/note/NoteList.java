@@ -1,40 +1,74 @@
 package com.example.vikingesejllog.note;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.vikingesejllog.MainActivity;
+import com.example.vikingesejllog.etape.CreateButton;
 import com.example.vikingesejllog.R;
+import com.example.vikingesejllog.etape.EtapeTopFragment;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Note;
+import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.test.TestData;
+import com.example.vikingesejllog.togt.TogtListAdapter;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-public class NoteList extends AppCompatActivity {
+public class NoteList extends AppCompatActivity implements View.OnClickListener {
 
     private ViewPager2 pager;
     private RecyclerView.Adapter adapter;
     private ArrayList<Etape> etaper;
+    private DrawerLayout mDrawerLayout;
+    private RecyclerView recyclerView;
+    private TogtListAdapter togtAdapter;
+    private ArrayList<Togt> togt_list;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.note_list);
+        setContentView(R.layout.etape_activity_list);
+
+        Button button = findViewById(R.id.menu_button);
+        button.setOnClickListener(this);
+
+        togt_list = new ArrayList<>();
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        recyclerView = findViewById(R.id.togt_list);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //TODO Indlæs alle togter ind i togt_list
+        //Måske skal det her rykkes ind i onClick metoden i stedet for onCreate?
+
+        togtAdapter = new TogtListAdapter(togt_list,this);
+        recyclerView.setAdapter(togtAdapter);
+
+
+
         ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},123);
 
         pager = findViewById(R.id.note_viewpager);
@@ -60,6 +94,28 @@ public class NoteList extends AppCompatActivity {
         });
     }
 
+    // if navigation drawer is open backbutton will close it
+    @SuppressLint("WrongConstant")
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(Gravity.END))
+            mDrawerLayout.closeDrawer(Gravity.END);
+        else{
+            super.onBackPressed();
+        }
+    }
+
+    @SuppressLint("WrongConstant")
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.menu_button:
+                mDrawerLayout.openDrawer(Gravity.END);
+                break;
+            // din case her Jonatan
+        }
+    }
+
     private class NotePagerAdapter extends FragmentStateAdapter {
         public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ArrayList<Etape> etaper) {
             super(fragmentManager, lifecycle);
@@ -72,10 +128,9 @@ public class NoteList extends AppCompatActivity {
                 NoteListFragment f = new NoteListFragment(etaper.get(position).getNoteList());
                 return f;
             } else {
-                NewEtapeFragment newEtape = new NewEtapeFragment();
+                CreateButton newEtape = new CreateButton();
                 return newEtape;
             }
-
         }
 
         @Override

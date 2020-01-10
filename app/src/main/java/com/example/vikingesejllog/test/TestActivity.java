@@ -1,4 +1,4 @@
-package com.example.vikingesejllog;
+package com.example.vikingesejllog.test;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -20,6 +20,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import com.example.vikingesejllog.note.AudioRecorder;
+import com.example.vikingesejllog.R;
 
 import java.io.IOException;
 

@@ -1,16 +1,15 @@
 package com.example.vikingesejllog.model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Togt {
     private ArrayList<Etape> etapeList;
-    private String start;
-    private String end;
+    private String departure;
+    private String destination;
 
-    public Togt(String start, String end){
-        this.start = start;
-        this.end = end;
+    public Togt(String departure, String destination){
+        this.departure = departure;
+        this.destination = destination;
         this.etapeList = new ArrayList<>();
     }
 
@@ -22,19 +21,19 @@ public class Togt {
         this.etapeList = etapeList;
     }
 
-    public String getStart() {
-        return start;
+    public String getDeparture() {
+        return departure;
     }
 
-    public void setStart(String start) {
-        this.start = start;
+    public void setDeparture(String departure) {
+        this.departure = departure;
     }
 
-    public String getEnd() {
-        return end;
+    public String getDestination() {
+        return destination;
     }
 
-    public void setEnd(String end) {
-        this.end = end;
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 }
