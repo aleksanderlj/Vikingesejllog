@@ -20,27 +20,18 @@ import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.etape.EtapeTopFragment;
-import com.example.vikingesejllog.etape.EtapeTopFragment;
 import com.example.vikingesejllog.etape.CreateButton;
 import com.example.vikingesejllog.R;
-import com.example.vikingesejllog.etape.EtapeTopFragment;
-import com.example.vikingesejllog.model.Etape;
-import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.model.Togt;
-import com.example.vikingesejllog.test.TestData;
 import com.example.vikingesejllog.togt.TogtListAdapter;
-import com.google.gson.Gson;
 import com.example.vikingesejllog.model.EtapeWithNotes;
-import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -55,6 +46,9 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     private ArrayList<EtapeWithNotes> etaper;
     private Togt togt;
     private AppDatabase db;
+    private final int ETAPE_CODE = 1;
+    private final int NOTE_CODE = 2;
+    private int savedPos;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,6 +93,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             etaper.clear();
             etaper.addAll(newEtaper);
             pager.post(() -> adapter.notifyDataSetChanged());
+            pager.setCurrentItem(etaper.size()-1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
         });
 
         pager.setAdapter(adapter);
@@ -176,14 +171,27 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode == 1 || requestCode == 2) && resultCode == Activity.RESULT_OK) {
+        if ((requestCode == ETAPE_CODE || requestCode == NOTE_CODE) && resultCode == Activity.RESULT_OK) {
             Executors.newSingleThreadExecutor().execute(() -> {
                 List<EtapeWithNotes> newEtaper = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
                 etaper.clear();
                 etaper.addAll(newEtaper);
-                pager.post(() -> pager.setAdapter(adapter));
+                pager.post(() -> {
+                    pager.setAdapter(adapter);
+                    if(requestCode == ETAPE_CODE) {
+                        pager.setCurrentItem(etaper.size() - 1, false);
+                    } else {
+                        pager.setCurrentItem(savedPos, false);
+                    }
+                });
                 //pager.post(() -> adapter.notifyDataSetChanged());
             });
         }
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        savedPos = pager.getCurrentItem();
+        super.startActivityForResult(intent, requestCode);
     }
 }
