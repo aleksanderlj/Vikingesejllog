@@ -103,8 +103,10 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                 super.onPageSelected(position);
                 EtapeTopFragment f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
                 if (pager.getCurrentItem() < etaper.size()) {
+                    getSupportFragmentManager().beginTransaction().show(f).commit();
                     f.setAll(etaper.get(pager.getCurrentItem()), pager.getCurrentItem(), etaper.size());
                 } else {
+                    getSupportFragmentManager().beginTransaction().hide(f).commit();
                     // TODO top fragment needs to change when it reaches the end of viewpager
                 }
             }
