@@ -105,9 +105,4 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
-    
-    public void giveOnClickListener(View.OnClickListener ocl){
-        getView().findViewById(R.id.prevButton).setOnClickListener(ocl);
-        getView().findViewById(R.id.nextButton).setOnClickListener(ocl);
-    }
 }

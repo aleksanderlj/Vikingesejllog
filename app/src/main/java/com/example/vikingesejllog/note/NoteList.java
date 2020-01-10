@@ -90,23 +90,11 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                 EtapeTopFragment f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
                 if (pager.getCurrentItem() < etaper.size()) {
                     f.setAll(etaper.get(pager.getCurrentItem()), pager.getCurrentItem(), etaper.size());
-                    /*View currFrag = ((NotePagerAdapter)adapter).etapeFragments.get(pager.getCurrentItem()).getView();
-                    nextButton = ((NotePagerAdapter)adapter).etapeFragments.get(pager.getCurrentItem()).getView().findViewById(R.id.prevButton);
-                    nextButton.setOnClickListener(NoteList.this);
-                    prevButton = ((NotePagerAdapter)adapter).etapeFragments.get(pager.getCurrentItem()).getView().findViewById(R.id.nextButton);
-                    prevButton.setOnClickListener(NoteList.this);*/
                 } else {
                     // TODO top fragment needs to change when it reaches the end of viewpager
                 }
             }
         });
-    }
-    
-    public void puhskinti(Fragment f){
-        Button nextButton = ((NotePagerAdapter)adapter).etapeFragments.get(pager.getCurrentItem()).getView().findViewById(R.id.prevButton);
-        nextButton.setOnClickListener(NoteList.this);
-        Button prevButton = ((NotePagerAdapter)adapter).etapeFragments.get(pager.getCurrentItem()).getView().findViewById(R.id.nextButton);
-        prevButton.setOnClickListener(NoteList.this);
     }
 
     // if navigation drawer is open backbutton will close it
@@ -123,51 +111,27 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     @SuppressLint("WrongConstant")
     @Override
     public void onClick(View v) {
-        int currItem;
+        //int currFragment;
         switch (v.getId()){
 			case R.id.menu_button:
 				mDrawerLayout.openDrawer(Gravity.END);
 				break;
-            case R.id.prevButton:
+            /*case R.id.prevButton:
                 System.out.println("Penis1");
-                currItem = pager.getCurrentItem();
+                currFragment = pager.getCurrentItem();
                 ((NotePagerAdapter)adapter).createFragment(currItem+1);
                 pager.setCurrentItem(currItem-1, true);
                 break;
             case R.id.nextButton:
                 System.out.println("Penis2");
-                currItem = pager.getCurrentItem();
+                currFragment = pager.getCurrentItem();
                 ((NotePagerAdapter)adapter).createFragment(currItem+1);
                 pager.setCurrentItem(currItem+1, true);
-                break;
-        }
-    }
-    
-    public class nextButton implements View.OnClickListener {
-        @SuppressLint("WrongConstant")
-        @Override
-        public void onClick(View v) {
-            int currItem;
-            switch (v.getId()){
-                case R.id.menu_button:
-                    mDrawerLayout.openDrawer(Gravity.END);
-                    break;
-                case R.id.prevButton:
-                    System.out.println("Penis1");
-                    currItem = pager.getCurrentItem();
-                    pager.setCurrentItem(currItem-1, true);
-                    break;
-                case R.id.nextButton:
-                    System.out.println("Penis2");
-                    currItem = pager.getCurrentItem();
-                    pager.setCurrentItem(currItem+1, true);
-                    break;
-            }
+                break;*/
         }
     }
 
     private class NotePagerAdapter extends FragmentStateAdapter {
-        private List<Fragment> etapeFragments = new ArrayList<>();
         
         public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ArrayList<Etape> etaper) {
             super(fragmentManager, lifecycle);
@@ -178,9 +142,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         public Fragment createFragment(int position) {
             if(position<etaper.size()) {
                 NoteListFragment f = new NoteListFragment(etaper.get(position).getNoteList());
-                View.OnClickListener ocl = new nextButton();
-                f.giveOnClickListener(ocl);
-                etapeFragments.add(f);
                 return f;
             } else {
                 CreateButton newEtape = new CreateButton();
@@ -192,12 +153,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         public int getItemCount() {
             return etaper.size()+1;
         }
-    
-        public List<Fragment> getEtapeFragments() {
-            return etapeFragments;
-        }
-        
-        public void
     }
 
     @Override
