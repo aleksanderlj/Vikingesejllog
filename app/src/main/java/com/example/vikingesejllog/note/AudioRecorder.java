@@ -1,7 +1,9 @@
-package com.example.vikingesejllog;
+package com.example.vikingesejllog.note;
 
 import android.media.MediaRecorder;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.IOException;
 
 
@@ -19,25 +21,25 @@ public class AudioRecorder extends AppCompatActivity {
     MediaRecorder audioRecorder;
 
 
-    void setupAudioRecord(String fileDestination) throws IOException {
+    public void setupAudioRecord(String fileName) throws IOException {
 
-        //fileDestination = et eller andet unikt navn på noten - lige nu filePath + fileName
+        //fileName = et eller andet unikt navn på noten - lige nu filePath + fileName
         try {
             audioRecorder = new MediaRecorder();
             audioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             audioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            audioRecorder.setOutputFile(fileDestination);
+            audioRecorder.setOutputFile(fileName);
             audioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
             audioRecorder.prepare();
         }catch (IOException e) {
             e.printStackTrace();
         }}
 
-    void startAudioRecord(){
+    public void startAudioRecord(){
         audioRecorder.start();
     }
 
-    void stopAudioRecord(){
+    public void stopAudioRecord(){
         //Stopper optagelsen og frigiver objektet til garbage-collector
     audioRecorder.stop();
     audioRecorder.release();

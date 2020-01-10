@@ -2,8 +2,6 @@ package com.example.vikingesejllog.note;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,12 +9,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.Layout;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -24,22 +20,22 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.example.vikingesejllog.MainActivity;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Note;
 import com.google.gson.Gson;
 
-import java.io.IOException;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener{
 
@@ -52,22 +48,26 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private static final String TAG = "TEST AF LYDOPTAGER";
 
 
-    private MyGPS gps;
+
     private EditText windSpeed, course, sailingSpeed, path, direction, rowers, commentText;
     private TextView windSpeedBtnText, courseBtnText, sailingSpeedBtnText, pathBtnText,
             directionBtnText, rowersBtnText, timeText, gpsText;
 
+    private MyGPS gps;
     private MyTime time;
 
     private ImageButton micButton, cameraButton;
     private ImageView takenPicture, savedPicture;
 
-    AudioRecorder audioRecorder;
-    AudioPlayer audioPlayer;
+    private AudioRecorder audioRecorder;
+    private AudioPlayer audioPlayer;
+    private String audioFolderName = "Lydnoter";
+    private String imageFolderName = "Billednoter";
+    private File audioFolder, imageFolder;
 
-    private String filePath, fileName;
+    private String fileName;
 
-    private boolean recordingDone;
+    private boolean recordingDone = true;
 
     // Boolean, der checker for permissions.
     private boolean permissionToRecordAccepted = false;
@@ -104,9 +104,18 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
 
-        //Skaffer lagerlokation til mig:
-        filePath = getExternalCacheDir().getAbsolutePath();
-        Log.d(TAG, filePath);
+        audioFolder = new File(Environment.DIRECTORY_MUSIC, audioFolderName);
+        if (!audioFolder.exists()) {
+            audioFolder.mkdirs();
+        }
+
+        imageFolder = new File(Environment.DIRECTORY_PICTURES, imageFolderName);
+        if (!imageFolder.exists()){
+            imageFolder.mkdirs();
+        }
+        /*Skaffer lagerlokation til mig:
+        filePath = getExternalCacheDir().getAbsolutePath();*/
+        Log.d(TAG, audioFolder.toString() + imageFolder.toString());
 
         micButton = findViewById(R.id.micButton);
         if(recordingDone){
@@ -129,10 +138,12 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         String s = "LAT: "+(gps.getLocation().getLatitude()+"\n"+"LON: "+(String.valueOf(gps.getLocation().getLongitude()).substring(0,14)));
         gpsText.setText(s);
 
-        MyTime time = new MyTime();
+        time = new MyTime();
         timeText.setText(time.getTime());
 
-
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy-HH:mm", Locale.getDefault());
+        fileName = sdf.format(new Date());
+        Log.d(TAG, fileName);
     }
 
     public void setWindSpeed(final View v){
@@ -306,11 +317,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     @Override
                     protected Object doInBackground(Object... arg0) {
                         try {
-                            audioRecorder.setupAudioRecord(filePath+fileName);
-                            return Log.d(TAG, "Det virker");
+                            audioRecorder.setupAudioRecord(audioFolder + "/" + fileName + ".mp3");
+                            return Log.d(TAG, "Det virker: " + audioFolder + "/" + fileName + ".mp3");
                         } catch (Exception e){
                             e.printStackTrace();
-                            return Log.d(TAG, "Det virker IKKE " + e);
+                            return Log.d(TAG, "Det virker IKKE: " + e);
                         } }
 
                     @Override
@@ -319,7 +330,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     }
                 }.execute();
 
-                progressDialog = new ProgressDialog(MakeNoteActivity.this);
+                progressDialog = new ProgressDialog(CreateNote.this);
                 progressDialog.setMax(200);
                 progressDialog.setTitle("Optager lydnote...");
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -345,11 +356,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     @Override
                     protected Object doInBackground(Object... arg0) {
                         try {
-                            audioPlayer.setupAudioNote(filePath+fileName);
-                            return Log.d(TAG, "Det virker");
+                            audioPlayer.setupAudioNote(audioFolder + "/" + fileName + ".mp3");
+                            return Log.d(TAG, "Det virker: " + audioFolder + "/" + fileName + ".mp3");
                         } catch (Exception e){
                             e.printStackTrace();
-                            return Log.d(TAG, "Det virker IKKE " + e);
+                            return Log.d(TAG, "Det virker IKKE: " + e);
                         }}
 
                     @Override
@@ -358,7 +369,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     }
                 }.execute();
 
-                progressDialog = new ProgressDialog(MakeNoteActivity.this);
+                progressDialog = new ProgressDialog(CreateNote.this);
                 progressDialog.setMax(200);
                 progressDialog.setTitle("Afspiller lydnote...");
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -368,20 +379,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                    audioPlayer.stopAudioNote();
                     }});
                 progressDialog.show();
-
-              /*Kan kun spille en gemt lyd i applikationen lige nu - mangler databasen.
-                Her skal der oprettes en URI, der leder til pladsen i databasen, hvorefter
-                følgede kan bruges:
-                Uri myUri = ....; // initialize Uri here
-                MediaPlayer mediaPlayer = new MediaPlayer();
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                mediaPlayer.setDataSource(getApplicationContext(), myUri);
-                mediaPlayer.prepare();
-                mediaPlayer.start();
-
-                Der skal måske bruges noget aSyncTask til at håndtere mediaafspilning fra
-                den lokale database.
-                */
         }
 
 
@@ -390,9 +387,10 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
 
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageFolder + "/" + fileName + ".png");
             startActivityForResult(takePictureIntent, 1);
-        }
-    }
+        }}
 
     //Checker om permissions er gemt.
     @Override
@@ -426,6 +424,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //Skal evt. gemmes i noget sharedprefs med navn på note..
         takenPicture.setImageBitmap(bitmap);
         savedPicture.setImageBitmap(bitmap);
+
     }
 
     //Zoom ind på billede bitmap ved at røre det:

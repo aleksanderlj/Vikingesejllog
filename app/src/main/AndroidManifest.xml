@@ -37,8 +37,8 @@
         </activity>
         <activity android:name=".etape.CreateEtape" />
         <activity android:name=".note.NewEtape"/>
-        <activity android:name=".AudioPlayer" />
-        <activity android:name=".AudioRecorder" />
+        <activity android:name=".note.AudioPlayer" />
+        <activity android:name=".note.AudioRecorder" />
 
         <meta-data
             android:name="preloaded_fonts"

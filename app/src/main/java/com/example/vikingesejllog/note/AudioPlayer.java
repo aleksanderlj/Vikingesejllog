@@ -1,4 +1,4 @@
-package com.example.vikingesejllog;
+package com.example.vikingesejllog.note;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -16,7 +16,8 @@ public class AudioPlayer extends AppCompatActivity {
 
     MediaPlayer audioPlayer;
 
-    void setupAudioNote(String fileDestination) throws IOException {
+
+    public void setupAudioNote(String fileDestination) throws IOException {
         //Gør afspilleren klar samt input af fildestination
         try {
             audioPlayer = new MediaPlayer();
@@ -30,12 +31,12 @@ public class AudioPlayer extends AppCompatActivity {
             e.printStackTrace();
         }}
 
-    void startAudioPlayer(){
+    public void startAudioPlayer(){
         //Starter afspilning
         audioPlayer.start();
     }
 
-    void stopAudioNote(){
+    public void stopAudioNote(){
         //Stopper afspilningen af noten og frigiver objekt
         audioPlayer.stop();
         audioPlayer.release();
