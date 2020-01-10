@@ -90,7 +90,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
 
         pager = findViewById(R.id.note_viewpager);
-
         adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle());
 
         Intent i = getIntent();
@@ -101,9 +100,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             etaper.addAll(newEtaper);
             pager.post(() -> adapter.notifyDataSetChanged());
         });
-
-        adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle(), etaper);
-        
 
         pager.setAdapter(adapter);
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
