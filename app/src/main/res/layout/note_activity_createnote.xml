@@ -259,8 +259,7 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/windspeedButton"
-        android:onClick="setCoordinates"/>
+        app:layout_constraintTop_toBottomOf="@+id/windspeedButton" />
 
     <Button
         android:id="@+id/clockButton"
@@ -273,8 +272,7 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/coordsButton"
-        android:onClick="setTime"/>
+        app:layout_constraintTop_toBottomOf="@+id/coordsButton" />
 
 
     <androidx.constraintlayout.widget.Guideline

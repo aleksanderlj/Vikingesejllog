@@ -41,6 +41,7 @@ import com.example.vikingesejllog.other.DatabaseBuilder;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 
 public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
@@ -111,7 +112,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         savedPicture.setImageAlpha(0);
 
         gps = new MyGPS(this);
-        String s = "LAT: "+(gps.getLocation().getLatitude()+"\n"+"LON: "+(String.valueOf(gps.getLocation().getLongitude()).substring(0,14)));
+        String s = "LAT: " + String.format(Locale.US, "%.2f", gps.getLocation().getLatitude()) + "\n" +
+                "LON: " + String.format(Locale.US, "%.2f", gps.getLocation().getLongitude());
+        System.out.println(s);
         gpsText.setText(s);
 
         MyTime time = new MyTime();
