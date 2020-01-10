@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
+import com.example.vikingesejllog.model.EtapeWithNotes;
 
 public class EtapeTopFragment extends Fragment {
     public EtapeTopFragment(){}
@@ -37,9 +38,9 @@ public class EtapeTopFragment extends Fragment {
         tv.setText(s);
     }
 
-    public void setAll(Etape etape, int id, int max){
-        setCrew(etape.getSkipper(), etape.getCrew().size());
-        setDestination(etape.getStart(), etape.getEnd());
+    public void setAll(EtapeWithNotes etape, int id, int max){
+        setCrew(etape.etape.getSkipper(), etape.etape.getCrew().size());
+        setDestination(etape.etape.getStart(), etape.etape.getEnd());
         setEtape(id, max);
     }
 }

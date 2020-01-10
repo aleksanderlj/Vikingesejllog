@@ -1,24 +1,37 @@
 package com.example.vikingesejllog.model;
 
-import java.util.ArrayList;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Ignore;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
+import androidx.room.Relation;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity
 public class Togt {
-    private ArrayList<Etape> etapeList;
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "togt_id")
+    private long togt_id;
+
+    @ColumnInfo(name = "departure")
     private String departure;
+
+    @ColumnInfo(name = "destination")
     private String destination;
 
+    public Togt(){}
+
+    @Ignore
     public Togt(String departure, String destination){
         this.departure = departure;
         this.destination = destination;
-        this.etapeList = new ArrayList<>();
-    }
-
-    public ArrayList<Etape> getEtapeList() {
-        return etapeList;
-    }
-
-    public void setEtapeList(ArrayList<Etape> etapeList) {
-        this.etapeList = etapeList;
     }
 
     public String getDeparture() {
@@ -35,5 +48,13 @@ public class Togt {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public long getTogt_id() {
+        return togt_id;
+    }
+
+    public void setTogt_id(long togt_id) {
+        this.togt_id = togt_id;
     }
 }

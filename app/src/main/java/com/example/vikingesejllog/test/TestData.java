@@ -24,9 +24,12 @@ public class TestData {
         crew.add("Det skal være Max");
 
         ArrayList<Note> notes = new ArrayList<Note>();
+        /*
         notes.add(new Note("1.2.1", "88", "22", "19:00", "7", "9", "12", "922", "Hello"));
         notes.add(new Note("1.8.4", "44", "12", "15:00", "3", "3", "21", "41", "Pushkinti"));
         notes.add(new Note("1.5.1", "51", "65", "12:44", "12", "4", "16", "221", "Malibu"));
+
+         */
 
 
 
@@ -38,6 +41,7 @@ public class TestData {
 
         ArrayList<Etape> etaper = new ArrayList<>();
 
+        /*
         Etape e1 = new Etape();
         e1.setSkipper("Troels");
         e1.setCrew(new ArrayList<>(crew));
@@ -71,6 +75,8 @@ public class TestData {
         togter.get(0).setEtapeList(new ArrayList<>(etaper));
         togter.get(1).setEtapeList(new ArrayList<>(etaper));
         togter.get(2).setEtapeList(new ArrayList<>(etaper));
+
+         */
     }
 
     public static ArrayList<Togt> getTogter() {

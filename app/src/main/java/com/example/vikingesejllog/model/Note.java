@@ -1,23 +1,63 @@
 package com.example.vikingesejllog.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.example.vikingesejllog.R;
 
+@Entity
 public class Note {
 
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "note_id")
+    private long note_id;
+
+    @ColumnInfo(name = "etape_parent_id")
+    private long etape_id;
+
+    @ColumnInfo(name = "gps_loc")
     private String gpsLoc;
+
+    @ColumnInfo(name = "boat_speed")
     private String boatSpeed;
+
+    @ColumnInfo(name = "wind_speed")
     private String windSpeed;
+
+    @ColumnInfo(name = "time")
     private String time;
+
+    @ColumnInfo(name = "rowers")
     private String rowers;
+
+    @ColumnInfo(name = "sail_foring")
     private String sailForing;
+
+    @ColumnInfo(name = "sail_stilling")
     private String sailStilling;
+
+    @ColumnInfo(name = "course")
     private String course;
+
+    @ColumnInfo(name = "comment")
     private String comment;
+
+    @ColumnInfo(name = "pencil_image")
     private int pencilImageResource;
+
+    @ColumnInfo(name = "camera_image")
     private int cameraImageResource;
+
+    @ColumnInfo(name = "mic_image")
     private int micImageResource;
 
-    public Note(String gpsLoc, String boatSpeed, String windSpeed, String time, String rowers, String sailForing, String sailStilling, String course, String comment) {
+    public Note(){}
+
+    @Ignore
+    public Note(long etape_id, String gpsLoc, String boatSpeed, String windSpeed, String time, String rowers, String sailForing, String sailStilling, String course, String comment) {
+        this.etape_id = etape_id;
         this.gpsLoc = gpsLoc;
         this.boatSpeed = boatSpeed;
         this.windSpeed = windSpeed;
@@ -108,6 +148,18 @@ public class Note {
         return micImageResource;
     }
 
+    public void setPencilImageResource(int pencilImageResource) {
+        this.pencilImageResource = pencilImageResource;
+    }
+
+    public void setCameraImageResource(int cameraImageResource) {
+        this.cameraImageResource = cameraImageResource;
+    }
+
+    public void setMicImageResource(int micImageResource) {
+        this.micImageResource = micImageResource;
+    }
+
     public void hidePencil(boolean hidden){
         if(hidden == true){
             this.pencilImageResource = 0;
@@ -130,12 +182,28 @@ public class Note {
         }
     }
 
+    public long getNote_id() {
+        return note_id;
+    }
+
+    public void setNote_id(long note_id) {
+        this.note_id = note_id;
+    }
+
     public String getComment() {
         return comment;
     }
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public long getEtape_id() {
+        return etape_id;
+    }
+
+    public void setEtape_id(long etape_id) {
+        this.etape_id = etape_id;
     }
 }
 

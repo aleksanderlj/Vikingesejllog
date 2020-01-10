@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.vikingesejllog.AppDatabase;
+import com.example.vikingesejllog.etape.EtapeTopFragment;
 import com.example.vikingesejllog.etape.CreateButton;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.etape.EtapeTopFragment;
@@ -31,8 +33,13 @@ import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.test.TestData;
 import com.example.vikingesejllog.togt.TogtListAdapter;
 import com.google.gson.Gson;
+import com.example.vikingesejllog.model.EtapeWithNotes;
+import com.example.vikingesejllog.model.Togt;
+import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
 
 public class NoteList extends AppCompatActivity implements View.OnClickListener {
 
@@ -44,6 +51,9 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     private TogtListAdapter togtAdapter;
     private ArrayList<Togt> togt_list;
 
+    private ArrayList<EtapeWithNotes> etaper;
+    private Togt togt;
+    private AppDatabase db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,14 +80,24 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
 
 
         ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},123);
+        db = DatabaseBuilder.get(this);
+        etaper = new ArrayList<>();
+        ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
 
         pager = findViewById(R.id.note_viewpager);
 
-        //TODO These are tests
-        TestData.createTestData();
-        etaper = TestData.togter.get(1).getEtapeList();
+        adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle());
 
-        adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle(), etaper);
+        Intent i = getIntent();
+        Executors.newSingleThreadExecutor().execute(() -> {
+            togt = db.togtDAO().getById(i.getLongExtra("togt_id", -1L));
+            List<EtapeWithNotes> newEtaper = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
+            etaper.clear();
+            etaper.addAll(newEtaper);
+            pager.post(() -> adapter.notifyDataSetChanged());
+        });
+
+
         pager.setAdapter(adapter);
 
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -117,46 +137,39 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     }
 
     private class NotePagerAdapter extends FragmentStateAdapter {
-        public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ArrayList<Etape> etaper) {
+        public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
         }
 
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            if(position<etaper.size()) {
-                NoteListFragment f = new NoteListFragment(etaper.get(position).getNoteList());
+            if (position < etaper.size()) {
+                NoteListFragment f = new NoteListFragment(etaper.get(position));
                 return f;
             } else {
-                CreateButton newEtape = new CreateButton();
-                return newEtape;
+                CreateButton createEtape = new CreateButton(togt.getTogt_id());
+                return createEtape;
             }
         }
 
         @Override
         public int getItemCount() {
-            return etaper.size()+1;
+            return etaper.size() + 1;
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK){
-            String json = data.getStringExtra("etape");
-            Gson gson = new Gson();
-            Etape newEtape = gson.fromJson(json, Etape.class);
-            etaper.add(newEtape);
-            pager.setAdapter(adapter);
-            //adapter.notifyDataSetChanged();
-        }
-
-        if (requestCode == 2 && resultCode == Activity.RESULT_OK){
-            String json = data.getStringExtra("note");
-            Gson gson = new Gson();
-            Note newNote = gson.fromJson(json, Note.class);
-            etaper.get(pager.getCurrentItem()).getNoteList().add(newNote);
-            pager.setAdapter(adapter);
+        if ((requestCode == 1 || requestCode == 2) && resultCode == Activity.RESULT_OK) {
+            Executors.newSingleThreadExecutor().execute(() -> {
+                List<EtapeWithNotes> newEtaper = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
+                etaper.clear();
+                etaper.addAll(newEtaper);
+                pager.post(() -> pager.setAdapter(adapter));
+                //pager.post(() -> adapter.notifyDataSetChanged());
+            });
         }
     }
 }
