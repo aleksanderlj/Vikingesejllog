@@ -1,15 +1,21 @@
 package com.example.vikingesejllog.togt;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Togt;
-import com.google.gson.Gson;
+import com.example.vikingesejllog.other.DatabaseBuilder;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class CreateTogt extends AppCompatActivity implements View.OnClickListener {
 	private TextView departure, destination;
@@ -26,18 +32,11 @@ public class CreateTogt extends AppCompatActivity implements View.OnClickListene
 	@Override
 	public void onClick(View v) {
 		Togt togt;
-		String startPoint, endPoint;
-		startPoint = departure.getText().toString();
-		endPoint = destination.getText().toString();
-		togt = new Togt(startPoint, endPoint);
-		
-		Gson gson = new Gson();
-		String jsonTogt = gson.toJson(togt);
-		SharedPreferences prefs = getSharedPreferences("togtList", MODE_PRIVATE);
-		SharedPreferences.Editor editor = getSharedPreferences("togtList", MODE_PRIVATE).edit();
-		editor.putString(Integer.toString(prefs.getAll().size()), jsonTogt);
-		editor.apply();
-		
-		this.finish();
+		togt = new Togt(departure.getText().toString(), destination.getText().toString());
+		AppDatabase db = DatabaseBuilder.get(this);
+		Executors.newSingleThreadExecutor().execute(() -> {
+			db.togtDAO().insert(togt);
+			finish();
+		});
 	}
 }

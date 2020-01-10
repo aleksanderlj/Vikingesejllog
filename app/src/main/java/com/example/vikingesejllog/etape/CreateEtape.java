@@ -3,33 +3,41 @@ package com.example.vikingesejllog.etape;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
+import com.example.vikingesejllog.model.Togt;
+import com.example.vikingesejllog.other.DatabaseBuilder;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.Executors;
 
 public class CreateEtape extends AppCompatActivity implements View.OnClickListener {
 
     ArrayList<String> crew;
+    AppDatabase db;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = DatabaseBuilder.get(this);
         setContentView(R.layout.etape_activity_createetape);
 
-        //TODO tests
+        /*TODO tests
         crew = new ArrayList<>();
         crew.add("Max");
         crew.add("Alek");
         crew.add("Freddy Fazbear");
+         */
 
 
 
@@ -57,14 +65,14 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
                 e.setEnd(end.getText().toString());
                 //TODO Lav dato halløj
                 e.setDeparture(new Date());
+                e.setTogt_id(getIntent().getLongExtra("togt_id", -1L));
 
-                Intent returnIntent = new Intent();
-                Gson gson = new Gson();
-                String json = gson.toJson(e);
-                returnIntent.putExtra("etape", json);
-                setResult(Activity.RESULT_OK, returnIntent);
+                setResult(Activity.RESULT_OK);
 
-                finish();
+                Executors.newSingleThreadExecutor().execute(() -> {
+                    db.etapeDAO().insert(e);
+                    finish();
+                });
                 break;
         }
     }
