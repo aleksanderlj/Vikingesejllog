@@ -52,7 +52,7 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
             public void onItemClick(int position) {
                         // Følgende kode henter variable fra note objektet der trykkes på, og sender dem til en NoteDetails aktivitet.
                         Intent intent = new Intent(getActivity(), NoteDetails.class);
-                        Note note = notes.get(position);
+                        Note note = etape.getNoteList().get(position);
                         if (note.getBoatSpeed() != null){
                             intent.putExtra("boatSpeed", note.getBoatSpeed());
                         }
@@ -81,7 +81,7 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
                         intent.putExtra("comment", note.getComment());
                         }
                         intent.putExtra("noteNumber", (position+1));
-                        intent.putExtra("noteCount", notes.size());
+                        intent.putExtra("noteCount", etape.getNoteList().size());
                 startActivity(intent);
             }
         });

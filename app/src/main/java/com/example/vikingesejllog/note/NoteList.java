@@ -45,7 +45,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
 
     private ViewPager2 pager;
     private RecyclerView.Adapter adapter;
-    private ArrayList<Etape> etaper;
     private DrawerLayout mDrawerLayout;
     private RecyclerView recyclerView;
     private TogtListAdapter togtAdapter;

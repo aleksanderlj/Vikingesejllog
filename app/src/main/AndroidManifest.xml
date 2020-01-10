@@ -20,19 +20,19 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".note.NoteDetails"/>
-        <activity android:name=".togt.TogtList" />
-        <activity android:name=".togt.CreateTogt" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".note.CreateNote" />
-        <activity android:name=".etape.CrewList" />
-        <activity android:name=".note.NoteList">
+        <activity android:name=".note.NoteDetails" />
+        <activity android:name=".togt.TogtList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".togt.CreateTogt" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".note.CreateNote" />
+        <activity android:name=".etape.CrewList" />
+        <activity android:name=".note.NoteList" />
         <activity android:name=".etape.CreateEtape" />
 
         <meta-data
