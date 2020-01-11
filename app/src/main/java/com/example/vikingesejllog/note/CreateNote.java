@@ -40,10 +40,13 @@ import com.example.vikingesejllog.other.DatabaseBuilder;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.Executors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, NoteDialogListener {
 
     // TODO Brug NumberPicker hvor du erstatter med Strings (du kan også kigge på Spinner)
+    // TODO ryd op i alle findByViewID() declarations (vi behøver ikke finde dem alle fra start)
 
     private MyGPS gps;
     private EditText windSpeed;
@@ -124,7 +127,20 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
     public void setWindSpeed(final View v){
+        int range = 33;
+        String[] s = new String[range+1];
+        for (int n=0 ; n < range ; n++){
+            s[n] = String.valueOf(n);
+        }
+        s[s.length-1] = "33+";
 
+        // TODO Der skal også være kompas liste, så det skal være en double NumberPicker
+        NoteDialog df = new NoteDialogDoubleNumberPicker(s, WIND_FIELD);
+        df.setNoteDialogListener(this);
+        df.show(getSupportFragmentManager().beginTransaction(), "wind");
+
+
+        /*
         windSpeedBtnText.setVisibility(View.INVISIBLE);
 
         windSpeed.setVisibility(View.VISIBLE);
@@ -146,6 +162,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 }
             }
         });
+
+         */
     }
 
     public void setCourse(final View v) {
@@ -207,31 +225,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         /*NoteDialog df = new SailForingDialogFragment();
         df.setNoteDialogListener(this);
         df.show(getSupportFragmentManager().beginTransaction(), "sailforing");
-
-         */
-
-
-        /*
-        pathBtnText.setVisibility(View.INVISIBLE);
-
-        path.setVisibility(View.VISIBLE);
-
-        path.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-        path.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-
-                    pathBtnText.setText(path.getText());
-                    pathBtnText.setVisibility(View.VISIBLE);
-                    path.setVisibility(View.INVISIBLE);
-
-                }
-            }
-        });
          */
     }
 
@@ -260,31 +253,22 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
     public void setRowers(final View v) {
+        int range = 20; //TODO should be crewsize
+        String[] s = new String[range+1];
+        for (int n=0 ; n < range + 1 ; n++){
+            s[n] = String.valueOf(n);
+        }
 
-        //TODO Måske ændre PopupMenu til et PopupWindow som ser lidt pænere ud
-
-        PopupMenu popup = new PopupMenu(this, v);
-
-        popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
-
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                rowersBtnText.setText(item.getTitle());
-                rowersBtnText.setVisibility(View.VISIBLE);
-                rowers.setVisibility(View.INVISIBLE);
-                return true;
-            }
-        });
-
-        popup.show();
+        NoteDialog df = new NoteDialogSingleNumberPicker(s, ROWERS_FIELD);
+        df.setNoteDialogListener(this);
+        df.show(getSupportFragmentManager().beginTransaction(), "rowers");
     }
 
     public void confirm(View v) {
 
         Note note = new Note(getIntent().getLongExtra("etape_id", -1L), gps.getLocation().getLatitude() + String.valueOf(gps.getLocation().getLongitude()).substring(0, 8),
-                sailingSpeed.getText().toString(), windSpeed.getText().toString(), timeText.getText().toString(),
-                rowers.getText().toString(), path.getText().toString(), direction.getText().toString(), course.getText().toString(), commentText.getText().toString());
+                sailingSpeedBtnText.getText().toString(), windSpeedBtnText.getText().toString(), timeText.getText().toString(),
+                rowersBtnText.getText().toString(), pathBtnText.getText().toString(), directionBtnText.getText().toString(), courseBtnText.getText().toString(), commentText.getText().toString());
 
         Executors.newSingleThreadExecutor().execute(() -> {
             db.noteDAO().insert(note);
