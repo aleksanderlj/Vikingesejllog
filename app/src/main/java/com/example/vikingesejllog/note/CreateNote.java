@@ -3,7 +3,6 @@ package com.example.vikingesejllog.note;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,9 +10,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Layout;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,20 +26,23 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 
 import com.example.vikingesejllog.AppDatabase;
-import com.example.vikingesejllog.MainActivity;
 import com.example.vikingesejllog.R;
-import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Note;
+import com.example.vikingesejllog.note.dialogs.NoteDialog;
+import com.example.vikingesejllog.note.dialogs.NoteDialogListener;
+import com.example.vikingesejllog.note.dialogs.SailForingDialogFragment;
 import com.example.vikingesejllog.other.DatabaseBuilder;
-import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 
-public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
+public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, NoteDialogListener {
+
+    // TODO Brug NumberPicker hvor du erstatter med Strings (du kan også kigge på Spinner)
 
     private MyGPS gps;
     private EditText windSpeed;
@@ -198,7 +196,12 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
     public void setPath(final View v) {
+        NoteDialog df = new SailForingDialogFragment();
+        df.setNoteDialogListener(this);
+        df.show(getSupportFragmentManager().beginTransaction(), "sailforing");
 
+
+        /*
         pathBtnText.setVisibility(View.INVISIBLE);
 
         path.setVisibility(View.VISIBLE);
@@ -219,6 +222,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 }
             }
         });
+         */
     }
 
     public void setDirection(final View v) {
@@ -378,4 +382,28 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+    @Override
+    public void onWindSelected(String direction, String speed) {
+
+    }
+
+    @Override
+    public void onRowersSelected(String rowers) {
+
+    }
+
+    @Override
+    public void onSailForingSelected(String sailForing) {
+        pathBtnText.setText(sailForing);
+    }
+
+    @Override
+    public void onSailDirectionSelected(String direction, String board) {
+
+    }
+
+    @Override
+    public void onCourseSelected(String course) {
+
+    }
 }
