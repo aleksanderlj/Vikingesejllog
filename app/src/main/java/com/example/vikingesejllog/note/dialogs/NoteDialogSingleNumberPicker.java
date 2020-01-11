@@ -13,13 +13,14 @@ import androidx.annotation.Nullable;
 
 import com.example.vikingesejllog.R;
 
+public class NoteDialogSingleNumberPicker extends NoteDialog {
 
-// TODO make this class super generic???
-public class SailForingDialogFragment extends NoteDialog {
-    private String[] sailforing;
+    private String[] values;
+    private int field;
 
-    public SailForingDialogFragment(){
-        this.sailforing = new String[]{"F", "Ø", "N1", "N2", "N3"};
+    public NoteDialogSingleNumberPicker(String[] values, int field){
+        this.values = values;
+        this.field = field;
     }
 
     @NonNull
@@ -30,11 +31,11 @@ public class SailForingDialogFragment extends NoteDialog {
         View v = inflater.inflate(R.layout.note_fragment_dialog_singlenumberpicker, (ViewGroup) getView(), false);
         NumberPicker picker = v.findViewById(R.id.numberpicker1);
         picker.setMinValue(0);
-        picker.setMaxValue(sailforing.length-1);
-        picker.setDisplayedValues(sailforing);
+        picker.setMaxValue(values.length-1);
+        picker.setDisplayedValues(values);
 
         builder.setPositiveButton("Godkend", (dialog, which) -> {
-            //getCallback().onSailForingSelected(sailforing[picker.getValue()]);
+            getCallback().onSingleNumberPickerSelected(values[picker.getValue()], field);
         });
 
         builder.setNegativeButton("Afbryd", (dialog, which) -> {
@@ -45,19 +46,4 @@ public class SailForingDialogFragment extends NoteDialog {
 
         return builder.create();
     }
-
-    /*
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.note_fragment_dialog_singlenumberpicker, container, false);
-
-        NumberPicker picker = v.findViewById(R.id.sail_foring_picker);
-        picker.setMinValue(0);
-        picker.setMaxValue(sailforing.length-1);
-        picker.setDisplayedValues(sailforing);
-        return v;
-    }
-
-     */
 }

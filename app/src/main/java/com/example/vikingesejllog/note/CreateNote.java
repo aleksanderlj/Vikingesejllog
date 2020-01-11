@@ -33,6 +33,7 @@ import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.note.dialogs.NoteDialog;
 import com.example.vikingesejllog.note.dialogs.NoteDialogListener;
+import com.example.vikingesejllog.note.dialogs.NoteDialogSingleNumberPicker;
 import com.example.vikingesejllog.note.dialogs.SailForingDialogFragment;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 
@@ -71,6 +72,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private AppDatabase db;
 
     private int STORAGE_PERMISSION_CODE = 1;
+    private final int WIND_FIELD = 0, ROWERS_FIELD = 1, SAILFORING_FIELD = 2, SAILDIRECTION_FIELD = 3, COURSE_FIELD = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,9 +198,17 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
     public void setPath(final View v) {
-        NoteDialog df = new SailForingDialogFragment();
+        String[] s = {"F", "Ø", "N1", "N2", "N3"};
+        NoteDialog df = new NoteDialogSingleNumberPicker(s, SAILFORING_FIELD);
         df.setNoteDialogListener(this);
         df.show(getSupportFragmentManager().beginTransaction(), "sailforing");
+
+
+        /*NoteDialog df = new SailForingDialogFragment();
+        df.setNoteDialogListener(this);
+        df.show(getSupportFragmentManager().beginTransaction(), "sailforing");
+
+         */
 
 
         /*
@@ -383,13 +393,49 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
     @Override
-    public void onWindSelected(String direction, String speed) {
+    public void onSingleNumberPickerSelected(String value, int field){
+        switch (field){
+            case ROWERS_FIELD:
+                rowersBtnText.setText(value);
+                break;
 
+            case SAILFORING_FIELD:
+                pathBtnText.setText(value);
+                break;
+
+            case COURSE_FIELD:
+                courseBtnText.setText(value);
+                break;
+
+        }
+    }
+
+    @Override
+    public void onDoubleNumberPickerSelected(String value1, String value2, int field) {
+        String s;
+        switch (field){
+            case WIND_FIELD:
+                s = value1 + " " + value2 + " m/s";
+                windSpeedBtnText.setText(s);
+                break;
+
+            case SAILDIRECTION_FIELD:
+                s = value1 + " " + value2;
+                directionBtnText.setText(s);
+                break;
+        }
+    }
+
+    /*
+    @Override
+    public void onWindSelected(String direction, String speed) {
+        String s = direction + " " + speed + " m/s";
+        windSpeedBtnText.setText(s);
     }
 
     @Override
     public void onRowersSelected(String rowers) {
-
+        rowersBtnText.setText(rowers);
     }
 
     @Override
@@ -399,11 +445,14 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public void onSailDirectionSelected(String direction, String board) {
-
+        String s = direction + " " + board;
+        directionBtnText.setText(s);
     }
 
     @Override
     public void onCourseSelected(String course) {
-
+        courseBtnText.setText(course);
     }
+
+     */
 }
