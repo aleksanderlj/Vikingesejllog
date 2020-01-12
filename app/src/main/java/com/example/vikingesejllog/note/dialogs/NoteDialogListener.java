@@ -9,5 +9,6 @@ public interface NoteDialogListener {
     //void onCourseSelected(String course);
     void onSingleNumberPickerSelected(String value, int field);
     void onDoubleNumberPickerSelected(String value1, String value2,  int field);
+    void onTripleNumberPickerSelected(String value1, String value2, String value3,  int field);
 
 }

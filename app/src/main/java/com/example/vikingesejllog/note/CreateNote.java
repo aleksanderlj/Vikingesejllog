@@ -32,8 +32,10 @@ import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.note.dialogs.NoteDialog;
+import com.example.vikingesejllog.note.dialogs.NoteDialogDoubleNumberPicker;
 import com.example.vikingesejllog.note.dialogs.NoteDialogListener;
 import com.example.vikingesejllog.note.dialogs.NoteDialogSingleNumberPicker;
+import com.example.vikingesejllog.note.dialogs.NoteDialogTripleNumberPicker;
 import com.example.vikingesejllog.note.dialogs.SailForingDialogFragment;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 
@@ -45,21 +47,15 @@ import java.util.stream.Stream;
 
 public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, NoteDialogListener {
 
-    // TODO Brug NumberPicker hvor du erstatter med Strings (du kan også kigge på Spinner)
     // TODO ryd op i alle findByViewID() declarations (vi behøver ikke finde dem alle fra start)
 
-    private MyGPS gps;
-    private EditText windSpeed;
     private TextView windSpeedBtnText;
     private EditText course;
     private TextView courseBtnText;
     private TextView sailingSpeedBtnText;
     private EditText sailingSpeed;
-    private EditText path;
     private TextView pathBtnText;
-    private EditText direction;
     private TextView directionBtnText;
-    private EditText rowers;
     private TextView rowersBtnText;
     private TextView timeText;
     private TextView gpsText;
@@ -74,7 +70,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     private AppDatabase db;
 
-    private int STORAGE_PERMISSION_CODE = 1;
+    private final int STORAGE_PERMISSION_CODE = 1;
     private final int WIND_FIELD = 0, ROWERS_FIELD = 1, SAILFORING_FIELD = 2, SAILDIRECTION_FIELD = 3, COURSE_FIELD = 4;
 
     @Override
@@ -83,23 +79,17 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.note_activity_createnote);
 
         db = DatabaseBuilder.get(this);
-        windSpeed = findViewById(R.id.windspeedText);
         windSpeedBtnText = findViewById(R.id.windspeedButtonText);
         course = findViewById(R.id.courseText);
         courseBtnText = findViewById(R.id.courseButtonText);
         sailingSpeed = findViewById(R.id.sailingSpeed);
         sailingSpeedBtnText = findViewById(R.id.sailingSpeedButtonText);
-        path = findViewById(R.id.pathText);
         pathBtnText = findViewById(R.id.pathButtonText);
-        direction = findViewById(R.id.directionText);
         directionBtnText = findViewById(R.id.directionButtonText);
-        rowers = findViewById(R.id.rowers);
         rowersBtnText = findViewById(R.id.rowersButtonText);
         timeText = findViewById(R.id.clockButtonText);
         gpsText = findViewById(R.id.coordsButtonText);
         commentText = findViewById(R.id.textComment);
-
-
 
         micButton = findViewById(R.id.micButton);
         micButton.setOnClickListener(this);
@@ -114,7 +104,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         savedPicture = findViewById(R.id.savedPicture);
         savedPicture.setImageAlpha(0);
 
-        gps = new MyGPS(this);
+        MyGPS gps = new MyGPS(this);
         String s = "LAT: " + String.format(Locale.US, "%.2f", gps.getLocation().getLatitude()) + "\n" +
                 "LON: " + String.format(Locale.US, "%.2f", gps.getLocation().getLongitude());
         System.out.println(s);
@@ -127,68 +117,36 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
     public void setWindSpeed(final View v){
-        int range = 33;
-        String[] s = new String[range+1];
-        for (int n=0 ; n < range ; n++){
-            s[n] = String.valueOf(n);
-        }
-        s[s.length-1] = "33+";
+        String[] s1 = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
 
-        // TODO Der skal også være kompas liste, så det skal være en double NumberPicker
-        NoteDialog df = new NoteDialogDoubleNumberPicker(s, WIND_FIELD);
+        int range = 33;
+        String[] s2 = new String[range+1];
+        for (int n=0 ; n < range ; n++){
+            s2[n] = String.valueOf(n) + " m/s";
+        }
+        s2[s2.length-1] = "33+";
+
+
+        // TODO Direction skal gerne vælges fra et kompas, så skal nok lave en anden klasse
+        NoteDialog df = new NoteDialogDoubleNumberPicker(s1, s2, WIND_FIELD);
         df.setNoteDialogListener(this);
         df.show(getSupportFragmentManager().beginTransaction(), "wind");
-
-
-        /*
-        windSpeedBtnText.setVisibility(View.INVISIBLE);
-
-        windSpeed.setVisibility(View.VISIBLE);
-
-        windSpeed.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-        windSpeed.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-
-                    windSpeedBtnText.setText(windSpeed.getText() + " m/s");
-                    windSpeedBtnText.setVisibility(View.VISIBLE);
-                    v.setVisibility(View.VISIBLE);
-                    windSpeed.setVisibility(View.INVISIBLE);
-
-                }
-            }
-        });
-
-         */
     }
 
     public void setCourse(final View v) {
+        int range = 10;
+        String[] s1 = {"0", "1", "2", "3"},
+                s2 = new String[range],
+                s3 = new String[range];
 
-        courseBtnText.setVisibility(View.INVISIBLE);
+        for (int n=0 ; n < range ; n++){
+            s2[n] = String.valueOf(n);
+            s3[n] = String.valueOf(n);
+        }
 
-        course.setVisibility(View.VISIBLE);
-
-        course.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-        course.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-
-                    courseBtnText.setText(course.getText());
-                    courseBtnText.setVisibility(View.VISIBLE);
-                    v.setVisibility(View.VISIBLE);
-                    course.setVisibility(View.INVISIBLE);
-
-                }
-            }
-        });
+        NoteDialog df = new NoteDialogTripleNumberPicker(s1, s2, s3, COURSE_FIELD);
+        df.setNoteDialogListener(this);
+        df.show(getSupportFragmentManager().beginTransaction(), "wind");
     }
 
     public void setSailingSpeed(final View v) {
@@ -229,27 +187,12 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
     public void setDirection(final View v) {
+        String[] s1 = {"bi", "fo", "ha", "ag", "læ"};
+        String[] s2 = {"sb", "bb"};
 
-        directionBtnText.setVisibility(View.INVISIBLE);
-
-        direction.setVisibility(View.VISIBLE);
-
-        direction.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-        direction.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-
-                    directionBtnText.setText(direction.getText());
-                    directionBtnText.setVisibility(View.VISIBLE);
-                    direction.setVisibility(View.INVISIBLE);
-
-                }
-            }
-        });
+        NoteDialog df = new NoteDialogDoubleNumberPicker(s1, s2, SAILDIRECTION_FIELD);
+        df.setNoteDialogListener(this);
+        df.show(getSupportFragmentManager().beginTransaction(), "saildirection");
     }
 
     public void setRowers(final View v) {
@@ -266,7 +209,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     public void confirm(View v) {
 
-        Note note = new Note(getIntent().getLongExtra("etape_id", -1L), gps.getLocation().getLatitude() + String.valueOf(gps.getLocation().getLongitude()).substring(0, 8),
+        Note note = new Note(getIntent().getLongExtra("etape_id", -1L), gpsText.getText().toString(),
                 sailingSpeedBtnText.getText().toString(), windSpeedBtnText.getText().toString(), timeText.getText().toString(),
                 rowersBtnText.getText().toString(), pathBtnText.getText().toString(), directionBtnText.getText().toString(), courseBtnText.getText().toString(), commentText.getText().toString());
 
@@ -387,10 +330,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 pathBtnText.setText(value);
                 break;
 
-            case COURSE_FIELD:
-                courseBtnText.setText(value);
-                break;
-
         }
     }
 
@@ -399,13 +338,24 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         String s;
         switch (field){
             case WIND_FIELD:
-                s = value1 + " " + value2 + " m/s";
+                s = value1 + " " + value2;
                 windSpeedBtnText.setText(s);
                 break;
 
             case SAILDIRECTION_FIELD:
                 s = value1 + " " + value2;
                 directionBtnText.setText(s);
+                break;
+        }
+    }
+
+    @Override
+    public void onTripleNumberPickerSelected(String value1, String value2, String value3, int field) {
+        String s;
+        switch(field) {
+            case COURSE_FIELD:
+                s = value1 + value2 + value3 + "\u00B0";
+                courseBtnText.setText(s);
                 break;
         }
     }
