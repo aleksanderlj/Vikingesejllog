@@ -1,8 +1,9 @@
 package com.example.vikingesejllog.note;
 
-import android.media.AudioManager;
 import android.media.MediaPlayer;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.IOException;
 
 public class AudioPlayer extends AppCompatActivity {
@@ -21,10 +22,7 @@ public class AudioPlayer extends AppCompatActivity {
         //Gør afspilleren klar samt input af fildestination
         try {
             audioPlayer = new MediaPlayer();
-            audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            audioPlayer.setVolume(5,5);
-            audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            audioPlayer.setVolume(5,5);
+            audioPlayer.setVolume(75,75);
             audioPlayer.setDataSource(fileDestination);
             audioPlayer.prepare();
         } catch (IOException e) {

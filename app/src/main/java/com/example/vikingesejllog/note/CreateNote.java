@@ -6,10 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
@@ -35,7 +33,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener{
 
@@ -67,14 +64,15 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private AudioRecorder audioRecorder;
     private AudioPlayer audioPlayer;
     private String audioFolderName = "Lydnoter";
+    private String imageFolderName = "Billednoter";
 
     private Intent takePictureIntent;
-    private String imageFolderName = "Billednoter";
-    private File audioFolder, imageFolder, image;
+
+    private File audioFolder, imageFolder, image, audio, filePath;
 
     private String fileName;
 
-    private boolean recordingDone = true;
+    private boolean recordingDone;
 
     // Permissions support:
     private boolean permissionToRecordAccepted = false;
@@ -107,37 +105,16 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         timeText = findViewById(R.id.clockButtonText);
         gpsText = findViewById(R.id.coordsButtonText);
         commentText = findViewById(R.id.textComment);
-
-
-        ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
-
-        audioFolder = new File(Environment.DIRECTORY_DOWNLOADS, audioFolderName);
-        if (!audioFolder.exists()) {
-            audioFolder.mkdirs();
-        }
-
-        imageFolder = new File(Environment.DIRECTORY_DOWNLOADS, imageFolderName);
-        if (!imageFolder.exists()){
-            imageFolder.mkdirs();
-        }
-
-        /*Skaffer lagerlokation til mig:
-        filePath = getExternalCacheDir().getAbsolutePath();*/
-        Log.d(audioTAG, audioFolder.toString());
-        Log.d(imageTAG, imageFolder.toString());
+        cameraButton= findViewById(R.id.cameraButton);
+        takenPicture = findViewById(R.id.takenPicture);
+        savedPicture = findViewById(R.id.savedPicture);
 
         micButton = findViewById(R.id.micButton);
         if(recordingDone){
             micButton.setImageResource(android.R.drawable.ic_media_play);
         }
 
-
-        cameraButton= findViewById(R.id.cameraButton);
-        takenPicture = findViewById(R.id.takenPicture);
-        savedPicture = findViewById(R.id.savedPicture);
-
         takenPicture.setOnTouchListener(this);
-
         cameraButton.setOnClickListener(this);
         micButton.setOnClickListener(this);
 
@@ -153,6 +130,31 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy-HH:mm", Locale.getDefault());
         fileName = sdf.format(new Date());
         Log.d("Aktuelle filnavn: ", fileName);
+
+
+
+        ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
+        //Opretter mappen for lydnoter:
+        audioFolder = new File("/sdcard/Download/" + audioFolderName);
+        if (!audioFolder.exists()) {
+            try {
+                audioFolder.mkdirs();
+                audioFolder.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        //Opretter mappen for billeder:
+        imageFolder = new File("/sdcard/Download/" + imageFolderName);
+        if (!imageFolder.exists()) {
+            try {
+                imageFolder.mkdirs();
+                imageFolder.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void setWindSpeed(final View v){
@@ -329,7 +331,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     protected Object doInBackground(Object... arg0) {
                         try {
                             audioRecorder.setupAudioRecord(audioFolder + "/" + fileName + ".mp3");
-                            return Log.d(audioTAG, "Det virker: " + audioFolder + "/" + fileName + ".mp3");
+                            return Log.d(audioTAG, "Der gemmes en lydfil i: " + audioFolder + "/" + fileName + ".mp3");
                         } catch (Exception e){
                             e.printStackTrace();
                             return Log.d(audioTAG, "Det virker IKKE: " + e);
@@ -368,7 +370,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     protected Object doInBackground(Object... arg0) {
                         try {
                             audioPlayer.setupAudioNote(audioFolder + "/" + fileName + ".mp3");
-                            return Log.d(audioTAG, "Det virker: " + audioFolder + "/" + fileName + ".mp3");
+                            return Log.d(audioTAG, "Følgende lydfil afspilles: " + audioFolder + "/" + fileName + ".mp3");
                         } catch (Exception e){
                             e.printStackTrace();
                             return Log.d(audioTAG, "Det virker IKKE: " + e);
@@ -398,8 +400,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
 
             takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-            new AsyncTask() {
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageFolder);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+            /*new AsyncTask() {
                 @Override
                 protected Object doInBackground(Object... arg0) {
                     try {
@@ -407,16 +412,16 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                         return Log.d(imageTAG, image.toString());
                     } catch (Exception e){
                         e.printStackTrace();
-                        return Log.d(imageTAG, "Det virker IKKE: " + e);
+                        return Log.d(imageTAG, "Det virker IKKE: " + image + e);
                     }}
 
                 @Override
                 protected void onPostExecute(Object obj){
                     if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,image);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageFolder);
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     }}
-            }.execute();
+            }.execute();*/
             //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageFolder + "/" + fileName + ".png");
         }}
 
@@ -443,7 +448,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 break;}
         }}
 
-    //Gemmer billede som bitmap:
+    /*Gemmer billede som bitmap:
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //Køres når der er et resultat fra kamera appen og gemmer det som et bitmap:
@@ -453,7 +458,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //Skal evt. gemmes i noget sharedprefs med navn på note..
         takenPicture.setImageBitmap(bitmap);
         savedPicture.setImageBitmap(bitmap);
-    }
+    }*/
 
     //Zoom ind på billede bitmap ved at røre det:
     @Override
