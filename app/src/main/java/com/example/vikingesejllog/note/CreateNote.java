@@ -42,7 +42,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     // TODO ryd op i alle findByViewID() declarations (vi behøver ikke finde dem alle fra start)
 
     private TextView windSpeedBtnText;
-    private EditText course;
     private TextView courseBtnText;
     private TextView sailingSpeedBtnText;
     private EditText sailingSpeed;
@@ -72,7 +71,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         db = DatabaseBuilder.get(this);
         windSpeedBtnText = findViewById(R.id.windspeedButtonText);
-        course = findViewById(R.id.courseText);
         courseBtnText = findViewById(R.id.courseButtonText);
         sailingSpeed = findViewById(R.id.sailingSpeed);
         sailingSpeedBtnText = findViewById(R.id.sailingSpeedButtonText);
@@ -140,6 +138,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         df.show(getSupportFragmentManager().beginTransaction(), "wind");
     }
 
+    //TODO delete dis
     public void setSailingSpeed(final View v) {
 
         sailingSpeedBtnText.setVisibility(View.INVISIBLE);
