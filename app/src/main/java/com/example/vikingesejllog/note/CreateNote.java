@@ -10,14 +10,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,24 +24,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.note.dialogs.NoteDialog;
-import com.example.vikingesejllog.note.dialogs.NoteDialogDoubleNumberPicker;
+import com.example.vikingesejllog.note.dialogs.NoteDialogNumberPicker;
 import com.example.vikingesejllog.note.dialogs.NoteDialogListener;
-import com.example.vikingesejllog.note.dialogs.NoteDialogSingleNumberPicker;
-import com.example.vikingesejllog.note.dialogs.NoteDialogTripleNumberPicker;
-import com.example.vikingesejllog.note.dialogs.SailForingDialogFragment;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.Executors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, NoteDialogListener {
 
@@ -107,7 +99,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         MyGPS gps = new MyGPS(this);
         String s = "LAT: " + String.format(Locale.US, "%.2f", gps.getLocation().getLatitude()) + "\n" +
                 "LON: " + String.format(Locale.US, "%.2f", gps.getLocation().getLongitude());
-        System.out.println(s);
         gpsText.setText(s);
 
         MyTime time = new MyTime();
@@ -116,19 +107,19 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     }
 
-    public void setWindSpeed(final View v){
+    public void setWindSpeed(final View v) {
         String[] s1 = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
 
         int range = 33;
-        String[] s2 = new String[range+1];
-        for (int n=0 ; n < range ; n++){
+        String[] s2 = new String[range + 1];
+        for (int n = 0; n < range; n++) {
             s2[n] = String.valueOf(n) + " m/s";
         }
-        s2[s2.length-1] = "33+";
+        s2[s2.length - 1] = "33+";
 
 
         // TODO Direction skal gerne vælges fra et kompas, så skal nok lave en anden klasse
-        NoteDialog df = new NoteDialogDoubleNumberPicker(s1, s2, WIND_FIELD);
+        NoteDialog df = new NoteDialogNumberPicker(WIND_FIELD, s1, s2);
         df.setNoteDialogListener(this);
         df.show(getSupportFragmentManager().beginTransaction(), "wind");
     }
@@ -139,12 +130,12 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 s2 = new String[range],
                 s3 = new String[range];
 
-        for (int n=0 ; n < range ; n++){
+        for (int n = 0; n < range; n++) {
             s2[n] = String.valueOf(n);
             s3[n] = String.valueOf(n);
         }
 
-        NoteDialog df = new NoteDialogTripleNumberPicker(s1, s2, s3, COURSE_FIELD);
+        NoteDialog df = new NoteDialogNumberPicker(COURSE_FIELD, s1, s2, s3);
         df.setNoteDialogListener(this);
         df.show(getSupportFragmentManager().beginTransaction(), "wind");
     }
@@ -175,34 +166,29 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     public void setPath(final View v) {
         String[] s = {"F", "Ø", "N1", "N2", "N3"};
-        NoteDialog df = new NoteDialogSingleNumberPicker(s, SAILFORING_FIELD);
+
+        NoteDialog df = new NoteDialogNumberPicker(SAILFORING_FIELD, s);
         df.setNoteDialogListener(this);
         df.show(getSupportFragmentManager().beginTransaction(), "sailforing");
-
-
-        /*NoteDialog df = new SailForingDialogFragment();
-        df.setNoteDialogListener(this);
-        df.show(getSupportFragmentManager().beginTransaction(), "sailforing");
-         */
     }
 
     public void setDirection(final View v) {
         String[] s1 = {"bi", "fo", "ha", "ag", "læ"};
         String[] s2 = {"sb", "bb"};
 
-        NoteDialog df = new NoteDialogDoubleNumberPicker(s1, s2, SAILDIRECTION_FIELD);
+        NoteDialog df = new NoteDialogNumberPicker(SAILDIRECTION_FIELD, s1, s2);
         df.setNoteDialogListener(this);
         df.show(getSupportFragmentManager().beginTransaction(), "saildirection");
     }
 
     public void setRowers(final View v) {
         int range = 20; //TODO should be crewsize
-        String[] s = new String[range+1];
-        for (int n=0 ; n < range + 1 ; n++){
+        String[] s = new String[range + 1];
+        for (int n = 0; n < range + 1; n++) {
             s[n] = String.valueOf(n);
         }
 
-        NoteDialog df = new NoteDialogSingleNumberPicker(s, ROWERS_FIELD);
+        NoteDialog df = new NoteDialogNumberPicker(ROWERS_FIELD, s);
         df.setNoteDialogListener(this);
         df.show(getSupportFragmentManager().beginTransaction(), "rowers");
     }
@@ -320,73 +306,33 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
     @Override
-    public void onSingleNumberPickerSelected(String value, int field){
-        switch (field){
+    public void onNumberPickerSelected(String[] values, int field) {
+        String s;
+
+        switch (field) {
             case ROWERS_FIELD:
-                rowersBtnText.setText(value);
+                rowersBtnText.setText(values[0]);
                 break;
 
             case SAILFORING_FIELD:
-                pathBtnText.setText(value);
+                pathBtnText.setText(values[0]);
                 break;
 
-        }
-    }
-
-    @Override
-    public void onDoubleNumberPickerSelected(String value1, String value2, int field) {
-        String s;
-        switch (field){
             case WIND_FIELD:
-                s = value1 + " " + value2;
+                s = values[0] + " " + values[1];
                 windSpeedBtnText.setText(s);
                 break;
 
             case SAILDIRECTION_FIELD:
-                s = value1 + " " + value2;
+                s = values[0] + " " + values[1];
                 directionBtnText.setText(s);
                 break;
-        }
-    }
 
-    @Override
-    public void onTripleNumberPickerSelected(String value1, String value2, String value3, int field) {
-        String s;
-        switch(field) {
             case COURSE_FIELD:
-                s = value1 + value2 + value3 + "\u00B0";
+                s = values[0] + values[1] + values[2] + "\u00B0";
                 courseBtnText.setText(s);
                 break;
         }
-    }
 
-    /*
-    @Override
-    public void onWindSelected(String direction, String speed) {
-        String s = direction + " " + speed + " m/s";
-        windSpeedBtnText.setText(s);
     }
-
-    @Override
-    public void onRowersSelected(String rowers) {
-        rowersBtnText.setText(rowers);
-    }
-
-    @Override
-    public void onSailForingSelected(String sailForing) {
-        pathBtnText.setText(sailForing);
-    }
-
-    @Override
-    public void onSailDirectionSelected(String direction, String board) {
-        String s = direction + " " + board;
-        directionBtnText.setText(s);
-    }
-
-    @Override
-    public void onCourseSelected(String course) {
-        courseBtnText.setText(course);
-    }
-
-     */
 }
