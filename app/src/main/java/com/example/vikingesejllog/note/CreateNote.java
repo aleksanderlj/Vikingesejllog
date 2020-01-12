@@ -369,11 +369,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     @Override
                     protected Object doInBackground(Object... arg0) {
                         try {
-                            audioPlayer.setupAudioNote(audioFolder + "/" + fileName + ".mp3");
+                            audioPlayer.setupAudioPlayer(audioFolder + "/" + fileName + ".mp3");
                             return Log.d(audioTAG, "Følgende lydfil afspilles: " + audioFolder + "/" + fileName + ".mp3");
                         } catch (Exception e){
                             e.printStackTrace();
-                            return Log.d(audioTAG, "Det virker IKKE: " + e);
+                            return Log.d(audioTAG, "Det virker IKKE: " + audioFolder + "    " + fileName + e);
                         }}
 
                     @Override

@@ -1,6 +1,7 @@
 package com.example.vikingesejllog.note;
 
 import android.media.MediaPlayer;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,7 +19,7 @@ public class AudioPlayer extends AppCompatActivity {
     MediaPlayer audioPlayer;
 
 
-    public void setupAudioNote(String fileDestination) throws IOException {
+    public void setupAudioPlayer(String fileDestination) {
         //Gør afspilleren klar samt input af fildestination
         try {
             audioPlayer = new MediaPlayer();
@@ -26,6 +27,7 @@ public class AudioPlayer extends AppCompatActivity {
             audioPlayer.setDataSource(fileDestination);
             audioPlayer.prepare();
         } catch (IOException e) {
+            Log.d("INDLÆSNINGSFEJL", "Filen blev ikke indlæst" + fileDestination);
             e.printStackTrace();
         }}
 
@@ -37,6 +39,7 @@ public class AudioPlayer extends AppCompatActivity {
     public void stopAudioNote(){
         //Stopper afspilningen af noten og frigiver objekt
         audioPlayer.stop();
+        audioPlayer.reset();
         audioPlayer.release();
         audioPlayer = null;
     }
