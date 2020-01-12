@@ -1,5 +1,6 @@
 package com.example.vikingesejllog.note;
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.util.Log;
 
@@ -23,8 +24,9 @@ public class AudioPlayer extends AppCompatActivity {
         //Gør afspilleren klar samt input af fildestination
         try {
             audioPlayer = new MediaPlayer();
-            audioPlayer.setVolume(75,75);
             audioPlayer.setDataSource(fileDestination);
+            audioPlayer.setVolume(75,75);
+            audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             audioPlayer.prepare();
         } catch (IOException e) {
             Log.d("INDLÆSNINGSFEJL", "Filen blev ikke indlæst" + fileDestination);

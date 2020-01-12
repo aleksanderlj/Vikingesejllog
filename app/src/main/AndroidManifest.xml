@@ -15,9 +15,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/helgeask_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/helgeask_logo"
+        android:roundIcon="@mipmap/helgeask_logo_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
