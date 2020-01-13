@@ -20,9 +20,6 @@ public class Note {
     @ColumnInfo(name = "gps_loc")
     private String gpsLoc;
 
-    @ColumnInfo(name = "boat_speed")
-    private String boatSpeed;
-
     @ColumnInfo(name = "wind_speed")
     private String windSpeed;
 
@@ -56,10 +53,9 @@ public class Note {
     public Note(){}
 
     @Ignore
-    public Note(long etape_id, String gpsLoc, String boatSpeed, String windSpeed, String time, String rowers, String sailForing, String sailStilling, String course, String comment) {
+    public Note(long etape_id, String gpsLoc, String windSpeed, String time, String rowers, String sailForing, String sailStilling, String course, String comment) {
         this.etape_id = etape_id;
         this.gpsLoc = gpsLoc;
-        this.boatSpeed = boatSpeed;
         this.windSpeed = windSpeed;
         this.time = time;
         this.rowers = rowers;
@@ -78,14 +74,6 @@ public class Note {
 
     public void setGpsLoc(String gpsLoc) {
         this.gpsLoc = gpsLoc;
-    }
-
-    public String getBoatSpeed() {
-        return boatSpeed;
-    }
-
-    public void setBoatSpeed(String boatSpeed) {
-        this.boatSpeed = boatSpeed;
     }
 
     public String getWindSpeed() {
