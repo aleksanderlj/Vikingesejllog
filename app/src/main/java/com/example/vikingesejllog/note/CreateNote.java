@@ -294,9 +294,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 confirm();
                 break;
             case R.id.createNoteMicBtn:
-                ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-
                 if (!recordingDone) {
+                    ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
                     audioRecorder = new AudioRecorder();
                     new AsyncTask() {
                         @Override
