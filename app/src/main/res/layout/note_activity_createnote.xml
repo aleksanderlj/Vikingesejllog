@@ -133,10 +133,9 @@
         android:id="@+id/createNoteMicBtn"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="16dp"
         android:background="@drawable/btn_create_note_round"
         app:layout_constraintBottom_toTopOf="@+id/commentBox"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/courseBtn" />
 
@@ -144,11 +143,10 @@
         android:id="@+id/createNoteCameraBtn"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/btn_create_note_round"
         app:layout_constraintBottom_toBottomOf="@+id/createNoteMicBtn"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintTop_toTopOf="@+id/createNoteMicBtn" />
 
     <ImageView
@@ -273,12 +271,16 @@
 
     <ImageView
         android:id="@+id/savedPicture"
-        android:layout_width="67dp"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="@+id/courseBtn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/commentBox"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintHorizontal_bias="0.441"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toTopOf="@+id/courseBtn"
+        app:layout_constraintTop_toBottomOf="@+id/sailStillingBtn"
+        app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
