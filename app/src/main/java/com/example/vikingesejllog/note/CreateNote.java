@@ -34,7 +34,6 @@ import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -151,7 +150,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
         //Opretter mappen for lydnoter:
-        audioFolder = new File(Environment.getExternalStorageDirectory() + "/Lydnoter/");
+        audioFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Lydnoter/");
         if (!audioFolder.exists()) {
             try {
                 audioFolder.mkdirs();
@@ -162,7 +161,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         }
 
         //Opretter mappen for billeder:
-        imageFolder = new File(Environment.getExternalStorageDirectory() + "/Billedenoter/");
+        imageFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Billedenoter/");
         if (!imageFolder.exists()) {
             try {
                 imageFolder.mkdirs();
@@ -413,16 +412,14 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             //Sender intent til at åbne kameraet og afventer resultatet.
             ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
 
-
-            try {
-                imageFile = File.createTempFile(fileName, ".jpg", imageFolder);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            //Ny fil der kan laves til en Uri længere nede:
+            imageFile = new File(imageFolder + "/" + fileName + ".jpg");
             currentPhotoPath = imageFile.getAbsolutePath();
+            Uri imageURI = FileProvider.getUriForFile(this, "com.example.vikingesejllog.fileprovider", imageFile);
+
+            //Udskriver stien til mig i terminalen:
             Log.d(imageTAG, imageFile.getAbsolutePath());
 
-            Uri imageURI = FileProvider.getUriForFile(this, "com.example.vikingesejllog.fileprovider", imageFile);
 
             takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
