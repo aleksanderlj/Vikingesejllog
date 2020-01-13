@@ -38,17 +38,13 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-
     private static final int REQUEST_CAMERA_PERMISSION = 300;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-
     private static final int REQUEST_READ_EXTERNAL_STORAGE_PERMISSION = 400;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION = 500;
 
     private static final String audioTAG = "TEST AF LYDOPTAGER";
     private static final String imageTAG = "TEST AF BILLEDEFUNKTION";
-
-
 
     private EditText windSpeed, course, sailingSpeed, path, direction, rowers, commentText;
     private TextView windSpeedBtnText, courseBtnText, sailingSpeedBtnText, pathBtnText,
@@ -63,22 +59,20 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     //Media support:
     private AudioRecorder audioRecorder;
     private AudioPlayer audioPlayer;
-    private String audioFolderName = "Lydnoter";
-    private String imageFolderName = "Billednoter";
 
     private Intent takePictureIntent;
 
-    private File audioFolder, imageFolder, image, audio, filePath;
+    private File audioFolder, imageFolder;
 
     private String fileName;
 
     private boolean recordingDone;
 
     // Permissions support:
-    private boolean permissionToRecordAccepted = false;
-    private boolean permissionToCamera = false;
-    private boolean permissionToReadStorage = false;
-    private boolean permissionToWriteStorage= false;
+    private boolean permissionToRecordAccepted;
+    private boolean permissionToCamera;
+    private boolean permissionToReadStorage;
+    private boolean permissionToWriteStorage;
 
     private String [] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -127,7 +121,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         time = new MyTime();
         timeText.setText(time.getTime());
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy-HH:mm", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm", Locale.getDefault());
         fileName = sdf.format(new Date());
         Log.d("Aktuelle filnavn: ", fileName);
 
@@ -135,7 +129,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
         //Opretter mappen for lydnoter:
-        audioFolder = new File("/sdcard/Download/" + audioFolderName);
+        audioFolder = new File("/sdcard/Download/" + "Lydnoter");
         if (!audioFolder.exists()) {
             try {
                 audioFolder.mkdirs();
@@ -146,7 +140,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         }
 
         //Opretter mappen for billeder:
-        imageFolder = new File("/sdcard/Download/" + imageFolderName);
+        imageFolder = new File("/sdcard/Download/" + "Billedenoter");
         if (!imageFolder.exists()) {
             try {
                 imageFolder.mkdirs();
@@ -364,6 +358,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 ActivityCompat.requestPermissions(this, permissions, REQUEST_READ_EXTERNAL_STORAGE_PERMISSION);
 
                 audioPlayer = new AudioPlayer();
+
 
                 new AsyncTask() {
                     @Override
