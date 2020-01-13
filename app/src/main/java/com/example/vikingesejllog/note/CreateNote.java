@@ -45,16 +45,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     // TODO ryd op i alle findByViewID() declarations (vi behøver ikke finde dem alle fra start)
 
-    private TextView windSpeedBtnText;
-    private TextView courseBtnText;
-    private TextView sailingSpeedBtnText;
-    private EditText sailingSpeed;
-    private TextView pathBtnText;
-    private TextView directionBtnText;
-    private TextView rowersBtnText;
-    private TextView timeText;
-    private TextView gpsText;
-
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private static final int REQUEST_CAMERA_PERMISSION = 300;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -187,9 +177,16 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 e.printStackTrace();
             }
         }
+
+        windSpeed.setOnClickListener(this);
+        course.setOnClickListener(this);
+        sejlforing.setOnClickListener(this);
+        sejlStilling.setOnClickListener(this);
+        rowers.setOnClickListener(this);
+        findViewById(R.id.createNoteAccepterBtn).setOnClickListener(this);
     }
 
-    public void setWindSpeed(final View v) {
+    public void setWindSpeed() {
         String[] s1 = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
 
         int range = 33;
@@ -206,7 +203,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         df.show(getSupportFragmentManager().beginTransaction(), "wind");
     }
 
-    public void setCourse(final View v) {
+    public void setCourse() {
         int range = 10;
         String[] s1 = {"0", "1", "2", "3"},
                 s2 = new String[range],
@@ -222,53 +219,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         df.show(getSupportFragmentManager().beginTransaction(), "wind");
     }
 
-//    public void setSailingSpeed(final View v) {
-//
-//        sailingSpeedBtnText.setVisibility(View.INVISIBLE);
-//
-//        sailingSpeed.setVisibility(View.VISIBLE);
-//
-//        sailingSpeed.requestFocus();
-//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-//
-//        sailingSpeed.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View view, boolean hasFocus) {
-//                if (!hasFocus) {
-//
-//                    sailingSpeedBtnText.setText(sailingSpeed.getText() + " kn");
-//                    sailingSpeedBtnText.setVisibility(View.VISIBLE);
-//                    sailingSpeed.setVisibility(View.INVISIBLE);
-//
-//                }
-//            }
-//        });
-//    }
-
-        sailingSpeedBtnText.setVisibility(View.INVISIBLE);
-
-        sailingSpeed.setVisibility(View.VISIBLE);
-
-        sailingSpeed.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-        sailingSpeed.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-
-                    sailingSpeedBtnText.setText(sailingSpeed.getText() + " kn");
-                    sailingSpeedBtnText.setVisibility(View.VISIBLE);
-                    sailingSpeed.setVisibility(View.INVISIBLE);
-
-                }
-            }
-        });
-    }
-
-    public void setPath(final View v) {
+    public void setSailForing() {
         String[] s = {"F", "Ø", "N1", "N2", "N3"};
 
         NoteDialog df = new NoteDialogNumberPicker(SAILFORING_FIELD, s);
@@ -276,7 +227,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         df.show(getSupportFragmentManager().beginTransaction(), "sailforing");
     }
 
-    public void setDirection(final View v) {
+    public void setSailStilling() {
         String[] s1 = {"bi", "fo", "ha", "ag", "læ"};
         String[] s2 = {"sb", "bb"};
 
@@ -285,7 +236,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         df.show(getSupportFragmentManager().beginTransaction(), "saildirection");
     }
 
-    public void setRowers(final View v) {
+    public void setRowers() {
         int range = 20; //TODO should be crewsize
         String[] s = new String[range + 1];
         for (int n = 0; n < range + 1; n++) {
@@ -297,7 +248,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         df.show(getSupportFragmentManager().beginTransaction(), "rowers");
     }
 
-    public void confirm(View v) {
+    public void confirm() {
 
         SimpleDateFormat clock = new SimpleDateFormat("HH.mm", Locale.getDefault());
         String time = clock.format(new Date());
@@ -317,6 +268,32 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     //Implementering af AudioRecorder, AudioPlayer og kamerafunktionalitet:
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.windspeedBtn:
+                setWindSpeed();
+                break;
+
+            case R.id.sailforingBtn:
+                setSailForing();
+                break;
+
+            case R.id.rowerCountBtn:
+                setRowers();
+                break;
+
+            case R.id.sailStillingBtn:
+                setSailStilling();
+                break;
+
+            case R.id.courseBtn:
+                setCourse();
+                break;
+
+            case R.id.createNoteAccepterBtn:
+                confirm();
+                break;
+        }
+
         ProgressDialog progressDialog;
         if (v == micButton && !recordingDone) {
                 ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
@@ -464,5 +441,36 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 return true;
             }
         return false;
+    }
+
+    @Override
+    public void onNumberPickerSelected(String[] values, int field) {
+        String s;
+
+        switch (field) {
+            case ROWERS_FIELD:
+                rowersBtnText.setText(values[0]);
+                break;
+
+            case SAILFORING_FIELD:
+                sejlforingBtnText.setText(values[0]);
+                break;
+
+            case WIND_FIELD:
+                s = values[0] + " " + values[1];
+                windSpeedBtnText.setText(s);
+                break;
+
+            case SAILDIRECTION_FIELD:
+                s = values[0] + " " + values[1];
+                sejlStillingBtnText.setText(s);
+                break;
+
+            case COURSE_FIELD:
+                s = values[0] + values[1] + values[2] + "\u00B0";
+                courseBtnText.setText(s);
+                break;
+        }
+
     }
 }

@@ -8,6 +8,7 @@ import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,11 +45,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         crew.add("Freddy Fazbear");
          */
 
-
-
-        findViewById(R.id.crewCountButton).setOnClickListener(this);
-        findViewById(R.id.dateText).setOnClickListener(this);
-        findViewById(R.id.confirmButton).setOnClickListener(this);
+        findViewById(R.id.createEtapeDepartureDateBox).setOnClickListener(this);
         findViewById(R.id.createEtapeCrewCountBox).setOnClickListener(this);
         findViewById(R.id.createEtapeAccepterBtn).setOnClickListener(this);
         findViewById(R.id.createEtapeAfbrydBtn).setOnClickListener(this);
@@ -62,7 +59,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
                 startActivity(i);
                 break;
 
-            case R.id.dateText:
+            case R.id.createEtapeDepartureDateBox:
                 Calendar c = Calendar.getInstance();
                 DatePickerDialog dp = new DatePickerDialog(this, this,
                         c.get(Calendar.YEAR),
@@ -103,7 +100,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         c.set(year, month, dayOfMonth);
         departure = c.getTime();
         String s = "" + dayOfMonth + "-" + (month+1) + "-" + year;
-        EditText date = findViewById(R.id.dateText);
+        TextView date = findViewById(R.id.createEtapeDepartureDateText);
         date.setText(s);
     }
 }
