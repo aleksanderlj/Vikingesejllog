@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,6 +76,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private boolean recordingDone, imageTaken;
 
     private AppDatabase db;
+
     // Permissions support:
     private boolean permissionToRecordAccepted;
     private boolean permissionToCamera;
@@ -113,6 +117,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         cameraButton.setOnClickListener(this);
 
         takenPicture = findViewById(R.id.takenPicture);
+        takenPicture.setRotation(90);
         savedPicture = findViewById(R.id.savedPicture);
 
         // Vigtigt at der her er noget, der aflæser om noten har en lydoptagelse
@@ -142,7 +147,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //Her skal der tjekkes for en instans af fileName inde i databasen, således at hvis der
         //allerede findes en fileName, skal denne bruges i stedet for at oprette et nyt, således
         //at det bliver muligt, at finde tidligere gemte billeder og lydfiler i telefonens hukommelse.
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss", Locale.getDefault());
         fileName = sdf.format(new Date());
         Log.d("Aktuelle filnavn: ", fileName);
 
@@ -364,6 +369,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     public void onClick(DialogInterface dialog, int which) {
                         audioRecorder.stopAudioRecord();
                         recordingDone = true;
+                        Toast.makeText(CreateNote.this, "Lydnoten blev gemt i mappen: " + audioFolder, Toast.LENGTH_LONG).show();
                     }});
                 progressDialog.show();
 
@@ -420,31 +426,12 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             //Udskriver stien til mig i terminalen:
             Log.d(imageTAG, imageFile.getAbsolutePath());
 
-
+            //Intent der starter kameraet:
             takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
-            /*new AsyncTask() {
-                @Override
-                protected Object doInBackground(Object... arg0) {
-                    try {
-                        imageFile = File.createTempFile(fileName, ".jpg", imageFolder);
-                        return Log.d(imageTAG, imageFile.toString());
-                    } catch (Exception e){
-                        e.printStackTrace();
-                        return Log.d(imageTAG, "Det virker IKKE: " + imageFile + e);
-                    }}
-
-                @Override
-                protected void onPostExecute(Object obj){
-                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageFolder);
-                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                    }}
-            }.execute();*/
-            //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageFolder + "/" + fileName + ".png");
         }}
 
     //Checker om permissions er gemt.
@@ -470,17 +457,20 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 break;}
         }}
 
-    /*Gemmer billede som bitmap:
+    //Først EFTER kameraet har kørt oprettes, der et BitmapFactory, der omdanner den gemte billedefil
+    // til et bitmap, der kan vise en miniature udgave af billedet inde i noten:
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //Køres når der er et resultat fra kamera appen og gemmer det som et bitmap:
         super.onActivityResult(REQUEST_IMAGE_CAPTURE, resultCode, data);
 
-        Bitmap bitmap = (Bitmap) Objects.requireNonNull(takePictureIntent.getExtras()).get("data");
-        //Skal evt. gemmes i noget sharedprefs med navn på note..
+        imageTaken = true; //Så vi kan tjekke med databasen senere!
+        Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_LONG).show();
+        Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
         takenPicture.setImageBitmap(bitmap);
         savedPicture.setImageBitmap(bitmap);
-    }*/
+        savedPicture.setRotation(90);
+    }
 
     //Zoom ind på billede bitmap ved at røre det:
     @Override
@@ -495,6 +485,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 savedPicture.setImageAlpha(0);
+                savedPicture.setElevation(1);
                 return true;
             }
         return false;

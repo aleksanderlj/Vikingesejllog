@@ -394,8 +394,8 @@
 
     <ImageView
         android:id="@+id/savedPicture"
-        android:layout_width="347dp"
-        android:layout_height="457dp"
+        android:layout_width="400dp"
+        android:layout_height="600dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
