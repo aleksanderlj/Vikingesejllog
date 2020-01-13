@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -111,6 +112,8 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                     getSupportFragmentManager().beginTransaction().show(f).commit();
                     f.setAll(etaper.get(pager.getCurrentItem()), pager.getCurrentItem(), etaper.size());
                     dotNavigation.setViewPager2(pager);
+                    String s = "" + (pager.getCurrentItem()+1) + "/" + (etaper.size());
+                    ((TextView)findViewById(R.id.pagecount)).setText(s);
                 } else {
                     getSupportFragmentManager().beginTransaction().hide(f).commit();
                     // TODO top fragment needs to change when it reaches the end of viewpager

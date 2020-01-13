@@ -31,16 +31,6 @@
         android:textColor="@android:color/background_light"
         android:textSize="14sp" />
 
-    <TextView
-        android:id="@+id/etape_nr"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="Etape: x"
-        android:textColor="@android:color/background_light"
-        android:textSize="14sp" />
-
     <Button
         android:id="@+id/menu_button"
         android:layout_width="0dp"
