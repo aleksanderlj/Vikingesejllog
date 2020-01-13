@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -16,9 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
-import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.other.DatabaseBuilder;
-import com.google.gson.Gson;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
