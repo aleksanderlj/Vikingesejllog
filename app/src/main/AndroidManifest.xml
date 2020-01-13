@@ -21,7 +21,7 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".note.NoteDetails" />
+        <activity android:name=".note.CreateNote" />
         <activity android:name=".togt.TogtList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,17 +30,22 @@
             </intent-filter>
         </activity>
         <activity android:name=".togt.CreateTogt" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".note.CreateNote" />
-        <activity android:name=".etape.CrewList" />
         <activity android:name=".note.NoteList" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".etape.CrewList" />
+        <activity android:name=".note.NoteDetails" />
         <activity android:name=".etape.CreateEtape" />
         <activity android:name=".note.AudioPlayer" />
         <activity android:name=".note.AudioRecorder" />
 
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.vikingesejllog.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
-
 </manifest>

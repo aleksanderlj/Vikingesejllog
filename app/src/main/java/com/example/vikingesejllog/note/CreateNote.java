@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
@@ -24,6 +26,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
@@ -31,6 +34,7 @@ import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -63,11 +67,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     private Intent takePictureIntent;
 
-    private File audioFolder, imageFolder;
+    private File audioFolder, imageFolder, imageFile;
 
-    private String fileName;
+    private String fileName, currentPhotoPath;
 
-    private boolean recordingDone;
+    private boolean recordingDone, imageTaken;
 
     private AppDatabase db;
     // Permissions support:
@@ -103,38 +107,42 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         gpsText = findViewById(R.id.coordsButtonText);
         commentText = findViewById(R.id.textComment);
 
-
-
-        micButton = findViewById(R.id.micButton);
-        micButton.setOnClickListener(this);
-        audioRecorder = new AudioRecorder();
-
+        // Vigtigt at der her er noget, der aflæser om noten har et billede
+        // gemt sammen med dens database objekt, således at det bliver muligt, at bestemme
+        // om cameraButton skal være med "Kamera"-ikon eller bitmap af det gemte billede.
         cameraButton = findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(this);
 
         takenPicture = findViewById(R.id.takenPicture);
         savedPicture = findViewById(R.id.savedPicture);
 
+        // Vigtigt at der her er noget, der aflæser om noten har en lydoptagelse
+        // gemt sammen med dens database objekt vha. recordingDone, således at det bliver muligt,
+        // at bestemme om micButton skal være med "Play" eller "Mikrofon"-ikon.
         micButton = findViewById(R.id.micButton);
+        micButton.setOnClickListener(this);
         if(recordingDone){
             micButton.setImageResource(android.R.drawable.ic_media_play);
         }
 
-        takenPicture.setOnTouchListener(this);
-        cameraButton.setOnClickListener(this);
-        micButton.setOnClickListener(this);
 
+        takenPicture.setOnTouchListener(this);
         savedPicture.setImageAlpha(0);
 
         gps = new MyGPS(this);
-        String s = "LAT: " + String.format(Locale.US, "%.2f", gps.getLocation().getLatitude()) + "\n" +
+        String gpsData = "LAT: " + String.format(Locale.US, "%.2f", gps.getLocation().getLatitude()) + "\n" +
                 "LON: " + String.format(Locale.US, "%.2f", gps.getLocation().getLongitude());
-        System.out.println(s);
-        gpsText.setText(s);
+        System.out.println(gpsData);
+        gpsText.setText(gpsData);
 
+        //Skal ændres til SimpleDateFormat!
         MyTime time = new MyTime();
         timeText.setText(time.getTime());
 
+
+        //Her skal der tjekkes for en instans af fileName inde i databasen, således at hvis der
+        //allerede findes en fileName, skal denne bruges i stedet for at oprette et nyt, således
+        //at det bliver muligt, at finde tidligere gemte billeder og lydfiler i telefonens hukommelse.
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm", Locale.getDefault());
         fileName = sdf.format(new Date());
         Log.d("Aktuelle filnavn: ", fileName);
@@ -143,7 +151,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
         //Opretter mappen for lydnoter:
-        audioFolder = new File("/sdcard/Download/" + "Lydnoter");
+        audioFolder = new File(Environment.getExternalStorageDirectory() + "/Lydnoter/");
         if (!audioFolder.exists()) {
             try {
                 audioFolder.mkdirs();
@@ -154,7 +162,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         }
 
         //Opretter mappen for billeder:
-        imageFolder = new File("/sdcard/Download/" + "Billedenoter");
+        imageFolder = new File(Environment.getExternalStorageDirectory() + "/Billedenoter/");
         if (!imageFolder.exists()) {
             try {
                 imageFolder.mkdirs();
@@ -405,20 +413,31 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             //Sender intent til at åbne kameraet og afventer resultatet.
             ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
 
+
+            try {
+                imageFile = File.createTempFile(fileName, ".jpg", imageFolder);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            currentPhotoPath = imageFile.getAbsolutePath();
+            Log.d(imageTAG, imageFile.getAbsolutePath());
+
+            Uri imageURI = FileProvider.getUriForFile(this, "com.example.vikingesejllog.fileprovider", imageFile);
+
             takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageFolder);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
             /*new AsyncTask() {
                 @Override
                 protected Object doInBackground(Object... arg0) {
                     try {
-                        image = File.createTempFile(fileName, ".jpg", imageFolder);
-                        return Log.d(imageTAG, image.toString());
+                        imageFile = File.createTempFile(fileName, ".jpg", imageFolder);
+                        return Log.d(imageTAG, imageFile.toString());
                     } catch (Exception e){
                         e.printStackTrace();
-                        return Log.d(imageTAG, "Det virker IKKE: " + image + e);
+                        return Log.d(imageTAG, "Det virker IKKE: " + imageFile + e);
                     }}
 
                 @Override
