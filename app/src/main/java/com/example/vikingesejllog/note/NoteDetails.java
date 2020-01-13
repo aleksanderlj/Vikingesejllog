@@ -40,19 +40,20 @@ public class NoteDetails extends AppCompatActivity {
 
         // Formatering af GPS koordinater til maks 3 cifre decimaltal
         String gpsText = intent.getStringExtra("gpsLoc");
-        // If-statement checker om "-" er med i gps koordinater. Hvis den ikke er med er det test koordinater.
-        if (gpsText != null && gpsText.contains("-")){
-            DecimalFormat df = new DecimalFormat("0.00#");
-            String[] gpsCoords = gpsText.split("-");
-            double latitudeDouble = Double.valueOf(gpsCoords[0]);
-            double longitudeDouble = Double.valueOf(gpsCoords[1]);
-            String gpsLatitude = df.format(latitudeDouble);
-            String gpsLongitude = df.format(longitudeDouble);
-            String formattedCoords = gpsLatitude + "-" + gpsLongitude;
-            GPSBox.setText(formattedCoords);
-        } else {
-            GPSBox.setText(gpsText);
-        }
+
+//        if (gpsText != null && gpsText.contains("-")){
+//            DecimalFormat df = new DecimalFormat("0.00#");
+//            String[] gpsCoords = gpsText.split("-");
+//            double latitudeDouble = Double.valueOf(gpsCoords[0]);
+//            double longitudeDouble = Double.valueOf(gpsCoords[1]);
+//            String gpsLatitude = df.format(latitudeDouble);
+//            String gpsLongitude = df.format(longitudeDouble);
+//            String formattedCoords = gpsLatitude + "-" + gpsLongitude;
+//            GPSBox.setText(formattedCoords);
+//        } else {
+
+        GPSBox.setText(gpsText);
+
 
         clockBox.setText(intent.getStringExtra("time"));
         antalRoerBox.setText(intent.getStringExtra("rowers"));
