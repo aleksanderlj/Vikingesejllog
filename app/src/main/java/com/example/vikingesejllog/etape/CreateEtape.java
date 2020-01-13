@@ -39,26 +39,25 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         crew.add("Freddy Fazbear");
          */
 
-
-
-        findViewById(R.id.crewCountButton).setOnClickListener(this);
-        findViewById(R.id.confirmButton).setOnClickListener(this);
+        findViewById(R.id.createEtapeCrewCountBox).setOnClickListener(this);
+        findViewById(R.id.createEtapeAccepterBtn).setOnClickListener(this);
+        findViewById(R.id.createEtapeAfbrydBtn).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()){
-            case R.id.crewCountButton:
+            case R.id.createEtapeCrewCountBox:
                 Intent i = new Intent(this, CrewList.class);
                 startActivity(i);
                 break;
 
-            case R.id.confirmButton:
+            case R.id.createEtapeAccepterBtn:
                 Etape e = new Etape();
-                EditText skipper = findViewById(R.id.skipperNameButton);
-                EditText start = findViewById(R.id.journeyStartButton);
-                EditText end = findViewById(R.id.journeyEndButton);
-                EditText date = findViewById(R.id.dateText);
+                EditText skipper = findViewById(R.id.skipperNameEditText);
+                EditText start = findViewById(R.id.createEtapeDepartureText);
+                EditText end = findViewById(R.id.createEtapeArrivalText);
+//                EditText date = findViewById(R.id.createEtapeDepartureDateBox);
 
                 e.setSkipper(skipper.getText().toString());
                 e.setStart(start.getText().toString());
@@ -74,6 +73,9 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
                     finish();
                 });
                 break;
+            case R.id.createEtapeAfbrydBtn:
+                finish();
+
         }
     }
 }
