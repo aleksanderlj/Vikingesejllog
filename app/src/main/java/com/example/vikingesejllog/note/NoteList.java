@@ -112,6 +112,14 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                 } else {
                     // TODO top fragment needs to change when it reaches the end of viewpager
                 }
+                if (pager.getCurrentItem() == 0)
+                    prevButton.setEnabled(false);
+                else
+                    prevButton.setEnabled(true);
+                if (pager.getAdapter().getItemCount()-1 == pager.getCurrentItem())
+                    nextButton.setEnabled(false);
+                else
+                    nextButton.setEnabled(true);
             }
         });
     }
@@ -136,16 +144,9 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
 				break;
             case R.id.prevButton:
                 pager.setCurrentItem(pager.getCurrentItem() - 1, true);
-                if (pager.getCurrentItem() == 0)
-                    prevButton.setEnabled(false);
-                nextButton.setEnabled(true);
                 break;
             case R.id.nextButton:
                 pager.setCurrentItem(pager.getCurrentItem() + 1, true);
-                if (pager.getCurrentItem() == pager.getAdapter().getItemCount()-1)
-                    nextButton.setEnabled(false);
-                prevButton.setEnabled(true);
-                System.out.println(pager.getAdapter().getItemCount());
                 break;
         }
     }
