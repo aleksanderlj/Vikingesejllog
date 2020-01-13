@@ -1,6 +1,7 @@
 package com.example.vikingesejllog.note;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,18 +26,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.vikingesejllog.AppDatabase;
-import com.example.vikingesejllog.MainActivity;
 import com.example.vikingesejllog.R;
-import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.other.DatabaseBuilder;
-import com.google.gson.Gson;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
-import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 
@@ -57,21 +53,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             directionBtnText, rowersBtnText, timeText, gpsText;
 
     private MyGPS gps;
-    private EditText windSpeed;
-    private TextView windSpeedBtnText;
-    private EditText course;
-    private TextView courseBtnText;
-    private TextView sailingSpeedBtnText;
-    private EditText sailingSpeed;
-    private EditText path;
-    private TextView pathBtnText;
-    private EditText direction;
-    private TextView directionBtnText;
-    private EditText rowers;
-    private TextView rowersBtnText;
-    private TextView timeText;
-    private TextView gpsText;
-    private EditText commentText;
 
     private ImageButton micButton, cameraButton;
     private ImageView takenPicture, savedPicture;
@@ -151,7 +132,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         System.out.println(s);
         gpsText.setText(s);
 
-        time = new MyTime();
+        MyTime time = new MyTime();
         timeText.setText(time.getTime());
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm", Locale.getDefault());
