@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +28,8 @@ import com.example.vikingesejllog.etape.EtapeTopFragment;
 import com.example.vikingesejllog.etape.CreateButton;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Togt;
+import com.example.vikingesejllog.togt.CreateTogt;
+import com.example.vikingesejllog.togt.TogtList;
 import com.example.vikingesejllog.togt.TogtListAdapter;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.other.DatabaseBuilder;
@@ -43,7 +46,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     private RecyclerView recyclerView;
     private TogtListAdapter togtAdapter;
     private ArrayList<Togt> togt_list;
-    private Button nextButton, prevButton;
+    private Button nextButton, prevButton, newTogt;
     private ArrayList<EtapeWithNotes> etaper;
     private Togt togt;
     private AppDatabase db;
@@ -55,13 +58,14 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.etape_activity_list);
-
-        Button button = findViewById(R.id.menu_button);
+        db = DatabaseBuilder.get(this);
+        ImageView button = findViewById(R.id.menu_button);
         prevButton = findViewById(R.id.prevButton);
         nextButton = findViewById(R.id.nextButton);
         button.setOnClickListener(this);
         prevButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
+
         
         togt_list = new ArrayList<>();
 
@@ -71,16 +75,19 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //TODO Indlæs alle togter ind i togt_list
-        //Måske skal det her rykkes ind i onClick metoden i stedet for onCreate?
 
         togtAdapter = new TogtListAdapter(togt_list,this);
+
+        Executors.newSingleThreadExecutor().execute(() -> {
+            togt_list.clear();
+            togt_list.addAll(db.togtDAO().getAll());
+            togtAdapter.notifyDataSetChanged();
+            });
+
         recyclerView.setAdapter(togtAdapter);
 
-
-
         ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},123);
-        db = DatabaseBuilder.get(this);
+
         etaper = new ArrayList<>();
         ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
 
@@ -125,6 +132,13 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                     nextButton.setEnabled(true);
             }
         });
+
+        togtAdapter.setOnItemClickListener((int position) -> {
+            Intent noteList = new Intent(NoteList.this, NoteList.class);
+            noteList.putExtra("togt_id",togt_list.get(position).getTogt_id());
+            finish();
+            startActivity(noteList);
+        });
     }
 
     // if navigation drawer is open backbutton will close it
@@ -144,6 +158,8 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         switch (v.getId()){
 			case R.id.menu_button:
 				mDrawerLayout.openDrawer(Gravity.END);
+                newTogt = findViewById(R.id.addNewTogt);
+                newTogt.setOnClickListener(this);
 				break;
             case R.id.prevButton:
                 pager.setCurrentItem(pager.getCurrentItem() - 1, true);
@@ -151,6 +167,10 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             case R.id.nextButton:
                 pager.setCurrentItem(pager.getCurrentItem() + 1, true);
                 break;
+            case R.id.addNewTogt:
+                Intent newIntent = new Intent(this, CreateTogt.class);
+                startActivity(newIntent);
+
         }
     }
 
