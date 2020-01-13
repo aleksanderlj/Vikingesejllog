@@ -162,7 +162,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="22dp"
-        android:text="Antal besætningsmedlemmer"
+        android:text="Tilføj besætningsmedlemmer"
         app:layout_constraintBottom_toBottomOf="@+id/createEtapeCrewCountBox"
         app:layout_constraintStart_toStartOf="@+id/createEtapeCrewCountBox"
         app:layout_constraintTop_toTopOf="@+id/createEtapeCrewCountBox" />
