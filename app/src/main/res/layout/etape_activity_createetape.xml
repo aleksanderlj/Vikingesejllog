@@ -36,30 +36,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/btn_create_note" />
 
-    <LinearLayout
-        android:id="@+id/skipperUnderline"
-        android:layout_width="0dp"
-        android:layout_height="3dp"
-        android:layout_marginTop="58dp"
-        android:background="#515151"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/createEtapeSkipperBox"
-        app:layout_constraintEnd_toEndOf="@+id/createEtapeSkipperBox"
-        app:layout_constraintStart_toStartOf="@+id/createEtapeSkipperBox"
-        app:layout_constraintTop_toTopOf="@+id/createEtapeSkipperBox" />
-
-    <LinearLayout
-        android:id="@+id/crewCountUnderline"
-        android:layout_width="0dp"
-        android:layout_height="3dp"
-        android:layout_marginTop="58dp"
-        android:background="#515151"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/createEtapeCrewCountBox"
-        app:layout_constraintEnd_toEndOf="@+id/createEtapeCrewCountBox"
-        app:layout_constraintStart_toStartOf="@+id/createEtapeCrewCountBox"
-        app:layout_constraintTop_toTopOf="@+id/createEtapeCrewCountBox" />
-
     <EditText
         android:id="@+id/skipperNameEditText"
         android:layout_width="0dp"
@@ -83,26 +59,6 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/createEtapeSkipperBox"
         app:srcCompat="@drawable/btn_create_note" />
-
-    <LinearLayout
-        android:id="@+id/arrDestinUnderline"
-        android:layout_width="0dp"
-        android:layout_height="3dp"
-        android:background="#515151"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDestinationBox"
-        app:layout_constraintEnd_toEndOf="@+id/createEtapeDepartureDestinationBox"
-        app:layout_constraintStart_toStartOf="@+id/createEtapeDepartureDestinationBox" />
-
-    <LinearLayout
-        android:id="@+id/departureDateUnderline"
-        android:layout_width="0dp"
-        android:layout_height="3dp"
-        android:background="#515151"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDateBox"
-        app:layout_constraintEnd_toEndOf="@+id/createEtapeDepartureDateBox"
-        app:layout_constraintStart_toStartOf="@+id/createEtapeDepartureDateBox" />
 
     <ImageView
         android:id="@+id/createEtapeDepartureArrow"
@@ -222,5 +178,41 @@
         app:layout_constraintStart_toStartOf="@+id/createEtapeDepartureDestinationBox"
         app:layout_constraintTop_toTopOf="@+id/createEtapeDepartureDestinationBox"
         app:srcCompat="@drawable/dotted_line" />
+
+    <ImageView
+        android:id="@+id/departureDestinationUnderline"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDestinationBox"
+        app:layout_constraintEnd_toEndOf="@+id/createEtapeDepartureDestinationBox"
+        app:layout_constraintStart_toStartOf="@+id/createEtapeDepartureDestinationBox"
+        app:srcCompat="@android:color/black" />
+
+    <ImageView
+        android:id="@+id/skipperUnderline"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeSkipperBox"
+        app:layout_constraintEnd_toEndOf="@+id/createEtapeSkipperBox"
+        app:layout_constraintStart_toStartOf="@+id/createEtapeSkipperBox"
+        app:srcCompat="@android:color/black" />
+
+    <ImageView
+        android:id="@+id/departureDateUnderline"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDateBox"
+        app:layout_constraintEnd_toEndOf="@+id/createEtapeDepartureDateBox"
+        app:layout_constraintStart_toStartOf="@+id/createEtapeDepartureDateBox"
+        app:srcCompat="@android:color/black" />
+
+    <ImageView
+        android:id="@+id/crewCountUnderline"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeCrewCountBox"
+        app:layout_constraintEnd_toEndOf="@+id/createEtapeCrewCountBox"
+        app:layout_constraintStart_toStartOf="@+id/createEtapeCrewCountBox"
+        app:srcCompat="@android:color/black" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

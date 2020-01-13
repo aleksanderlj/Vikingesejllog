@@ -111,4 +111,13 @@
         app:layout_constraintTop_toTopOf="@+id/createTogtArrDestinBox"
         app:srcCompat="@drawable/dotted_line" />
 
+    <ImageView
+        android:id="@+id/createTogtUnderline"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createTogtArrDestinBox"
+        app:layout_constraintEnd_toEndOf="@+id/createTogtArrDestinBox"
+        app:layout_constraintStart_toStartOf="@+id/createTogtArrDestinBox"
+        app:srcCompat="@android:color/black" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
