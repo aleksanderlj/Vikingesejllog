@@ -30,6 +30,7 @@ import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.togt.TogtListAdapter;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.other.DatabaseBuilder;
+import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +98,10 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         });
 
         pager.setAdapter(adapter);
+        WormDotsIndicator dotNavigation = findViewById(R.id.dotNavigator);
+        dotNavigation.setViewPager2(pager);
+        
+        
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -105,6 +110,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                 if (pager.getCurrentItem() < etaper.size()) {
                     getSupportFragmentManager().beginTransaction().show(f).commit();
                     f.setAll(etaper.get(pager.getCurrentItem()), pager.getCurrentItem(), etaper.size());
+                    dotNavigation.setViewPager2(pager);
                 } else {
                     getSupportFragmentManager().beginTransaction().hide(f).commit();
                     // TODO top fragment needs to change when it reaches the end of viewpager

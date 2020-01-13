@@ -2,6 +2,7 @@ package com.example.vikingesejllog.note;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,6 +30,9 @@ import androidx.core.app.ActivityCompat;
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Note;
+import com.example.vikingesejllog.note.dialogs.NoteDialog;
+import com.example.vikingesejllog.note.dialogs.NoteDialogNumberPicker;
+import com.example.vikingesejllog.note.dialogs.NoteDialogListener;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.io.File;
@@ -37,8 +41,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 
-public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
+public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, NoteDialogListener {
 
+    // TODO ryd op i alle findByViewID() declarations (vi behøver ikke finde dem alle fra start)
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private static final int REQUEST_CAMERA_PERMISSION = 300;
@@ -82,6 +87,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private String [] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
+    private final int STORAGE_PERMISSION_CODE = 1;
+    private final int WIND_FIELD = 0, ROWERS_FIELD = 1, SAILFORING_FIELD = 2, SAILDIRECTION_FIELD = 3, COURSE_FIELD = 4;
 
 
     @Override
@@ -170,135 +177,78 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 e.printStackTrace();
             }
         }
+
+        windSpeed.setOnClickListener(this);
+        course.setOnClickListener(this);
+        sejlforing.setOnClickListener(this);
+        sejlStilling.setOnClickListener(this);
+        rowers.setOnClickListener(this);
+        findViewById(R.id.createNoteAccepterBtn).setOnClickListener(this);
     }
 
-    public void setWindSpeed(final View v){
+    public void setWindSpeed() {
+        String[] s1 = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
 
-        windSpeedBtnText.setVisibility(View.INVISIBLE);
+        int range = 33;
+        String[] s2 = new String[range + 1];
+        for (int n = 0; n < range; n++) {
+            s2[n] = String.valueOf(n) + " m/s";
+        }
+        s2[s2.length - 1] = "33+";
 
-        windSpeed.setVisibility(View.VISIBLE);
 
-        windSpeed.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-        windSpeed.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-
-                    windSpeedBtnText.setText(windSpeed.getText() + " m/s");
-                    windSpeedBtnText.setVisibility(View.VISIBLE);
-                    v.setVisibility(View.VISIBLE);
-                    windSpeed.setVisibility(View.INVISIBLE);
-
-                }
-            }
-        });
+        // TODO Direction skal gerne vælges fra et kompas, så skal nok lave en anden klasse
+        NoteDialog df = new NoteDialogNumberPicker(WIND_FIELD, s1, s2);
+        df.setNoteDialogListener(this);
+        df.show(getSupportFragmentManager().beginTransaction(), "wind");
     }
 
-    public void setCourse(final View v) {
+    public void setCourse() {
+        int range = 10;
+        String[] s1 = {"0", "1", "2", "3"},
+                s2 = new String[range],
+                s3 = new String[range];
 
-        courseBtnText.setVisibility(View.INVISIBLE);
+        for (int n = 0; n < range; n++) {
+            s2[n] = String.valueOf(n);
+            s3[n] = String.valueOf(n);
+        }
 
-        course.setVisibility(View.VISIBLE);
-
-        course.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-        course.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-
-                    courseBtnText.setText(course.getText());
-                    courseBtnText.setVisibility(View.VISIBLE);
-                    v.setVisibility(View.VISIBLE);
-                    course.setVisibility(View.INVISIBLE);
-
-                }
-            }
-        });
+        NoteDialog df = new NoteDialogNumberPicker(COURSE_FIELD, s1, s2, s3);
+        df.setNoteDialogListener(this);
+        df.show(getSupportFragmentManager().beginTransaction(), "wind");
     }
 
-//    public void setSailingSpeed(final View v) {
-//
-//        sailingSpeedBtnText.setVisibility(View.INVISIBLE);
-//
-//        sailingSpeed.setVisibility(View.VISIBLE);
-//
-//        sailingSpeed.requestFocus();
-//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-//
-//        sailingSpeed.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View view, boolean hasFocus) {
-//                if (!hasFocus) {
-//
-//                    sailingSpeedBtnText.setText(sailingSpeed.getText() + " kn");
-//                    sailingSpeedBtnText.setVisibility(View.VISIBLE);
-//                    sailingSpeed.setVisibility(View.INVISIBLE);
-//
-//                }
-//            }
-//        });
-//    }
+    public void setSailForing() {
+        String[] s = {"F", "Ø", "N1", "N2", "N3"};
 
-    public void setSejlforing(final View v) {
-
-        sejlforingBtnText.setVisibility(View.INVISIBLE);
-
-        sejlforing.setVisibility(View.VISIBLE);
-
-        sejlforing.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-        sejlforing.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-
-                    sejlforingBtnText.setText(sejlforing.getText());
-                    sejlforingBtnText.setVisibility(View.VISIBLE);
-                    sejlforing.setVisibility(View.INVISIBLE);
-
-                }
-            }
-        });
+        NoteDialog df = new NoteDialogNumberPicker(SAILFORING_FIELD, s);
+        df.setNoteDialogListener(this);
+        df.show(getSupportFragmentManager().beginTransaction(), "sailforing");
     }
 
-    public void setSejlStilling(final View v) {
+    public void setSailStilling() {
+        String[] s1 = {"bi", "fo", "ha", "ag", "læ"};
+        String[] s2 = {"sb", "bb"};
 
-        sejlStillingBtnText.setVisibility(View.INVISIBLE);
-
-        sejlStilling.setVisibility(View.VISIBLE);
-
-        sejlStilling.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-        sejlStilling.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-
-                    sejlStillingBtnText.setText(sejlStilling.getText());
-                    sejlStillingBtnText.setVisibility(View.VISIBLE);
-                    sejlStilling.setVisibility(View.INVISIBLE);
-
-                }
-            }
-        });
+        NoteDialog df = new NoteDialogNumberPicker(SAILDIRECTION_FIELD, s1, s2);
+        df.setNoteDialogListener(this);
+        df.show(getSupportFragmentManager().beginTransaction(), "saildirection");
     }
 
-    public void setRowers(final View v) {
+    public void setRowers() {
+        int range = 20; //TODO should be crewsize
+        String[] s = new String[range + 1];
+        for (int n = 0; n < range + 1; n++) {
+            s[n] = String.valueOf(n);
+        }
 
+        NoteDialog df = new NoteDialogNumberPicker(ROWERS_FIELD, s);
+        df.setNoteDialogListener(this);
+        df.show(getSupportFragmentManager().beginTransaction(), "rowers");
     }
 
-    public void confirm(View v) {
+    public void confirm() {
 
         SimpleDateFormat clock = new SimpleDateFormat("HH.mm", Locale.getDefault());
         String time = clock.format(new Date());
@@ -312,13 +262,38 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             setResult(Activity.RESULT_OK);
             finish();
         });
-
     }
 
 
     //Implementering af AudioRecorder, AudioPlayer og kamerafunktionalitet:
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.windspeedBtn:
+                setWindSpeed();
+                break;
+
+            case R.id.sailforingBtn:
+                setSailForing();
+                break;
+
+            case R.id.rowerCountBtn:
+                setRowers();
+                break;
+
+            case R.id.sailStillingBtn:
+                setSailStilling();
+                break;
+
+            case R.id.courseBtn:
+                setCourse();
+                break;
+
+            case R.id.createNoteAccepterBtn:
+                confirm();
+                break;
+        }
+
         ProgressDialog progressDialog;
         if (v == micButton && !recordingDone) {
                 ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
@@ -466,5 +441,36 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 return true;
             }
         return false;
+    }
+
+    @Override
+    public void onNumberPickerSelected(String[] values, int field) {
+        String s;
+
+        switch (field) {
+            case ROWERS_FIELD:
+                rowersBtnText.setText(values[0]);
+                break;
+
+            case SAILFORING_FIELD:
+                sejlforingBtnText.setText(values[0]);
+                break;
+
+            case WIND_FIELD:
+                s = values[0] + " " + values[1];
+                windSpeedBtnText.setText(s);
+                break;
+
+            case SAILDIRECTION_FIELD:
+                s = values[0] + " " + values[1];
+                sejlStillingBtnText.setText(s);
+                break;
+
+            case COURSE_FIELD:
+                s = values[0] + values[1] + values[2] + "\u00B0";
+                courseBtnText.setText(s);
+                break;
+        }
+
     }
 }

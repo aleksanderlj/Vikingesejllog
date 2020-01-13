@@ -38,23 +38,7 @@ public class NoteDetails extends AppCompatActivity {
         hastighedBox.setText(intent.getStringExtra("boatSpeed"));
         vindBox.setText(intent.getStringExtra("windSpeed"));
 
-        // Formatering af GPS koordinater til maks 3 cifre decimaltal
-        String gpsText = intent.getStringExtra("gpsLoc");
-
-//        if (gpsText != null && gpsText.contains("-")){
-//            DecimalFormat df = new DecimalFormat("0.00#");
-//            String[] gpsCoords = gpsText.split("-");
-//            double latitudeDouble = Double.valueOf(gpsCoords[0]);
-//            double longitudeDouble = Double.valueOf(gpsCoords[1]);
-//            String gpsLatitude = df.format(latitudeDouble);
-//            String gpsLongitude = df.format(longitudeDouble);
-//            String formattedCoords = gpsLatitude + "-" + gpsLongitude;
-//            GPSBox.setText(formattedCoords);
-//        } else {
-
-        GPSBox.setText(gpsText);
-
-
+        GPSBox.setText(intent.getStringExtra("gpsLoc"));
         clockBox.setText(intent.getStringExtra("time"));
         antalRoerBox.setText(intent.getStringExtra("rowers"));
         sejlfoeringBox.setText(intent.getStringExtra("sailForing"));
