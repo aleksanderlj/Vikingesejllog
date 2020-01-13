@@ -108,7 +108,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         // Vigtigt at der her er noget, der aflæser om noten har et billede
         // gemt sammen med dens database objekt, således at det bliver muligt, at bestemme
-        // om cameraButton skal være med "Kamera"-ikon eller bitmap af det gemte billede. - Hemsen
+        // om cameraButton skal være med "Kamera"-ikon eller bitmap af det gemte billede.
         cameraButton = findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(this);
 
@@ -117,7 +117,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         // Vigtigt at der her er noget, der aflæser om noten har en lydoptagelse
         // gemt sammen med dens database objekt vha. recordingDone, således at det bliver muligt,
-        // at bestemme om micButton skal være med "Play" eller "Mikrofon"-ikon. - Hemsen
+        // at bestemme om micButton skal være med "Play" eller "Mikrofon"-ikon.
         micButton = findViewById(R.id.micButton);
         micButton.setOnClickListener(this);
         if(recordingDone){
@@ -141,7 +141,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         //Her skal der tjekkes for en instans af fileName inde i databasen, således at hvis der
         //allerede findes en fileName, skal denne bruges i stedet for at oprette et nyt, således
-        //at det bliver muligt, at finde tidligere gemte billeder og lydfiler i telefonens hukommelse. - Hemsen
+        //at det bliver muligt, at finde tidligere gemte billeder og lydfiler i telefonens hukommelse.
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm", Locale.getDefault());
         fileName = sdf.format(new Date());
         Log.d("Aktuelle filnavn: ", fileName);
@@ -329,7 +329,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
 
-    //Implementering af AudioRecorder, AudioPlayer og kamerafunktionalitet: - Hemsen
+    //Implementering af AudioRecorder, AudioPlayer og kamerafunktionalitet:
     @Override
     public void onClick(View v) {
         ProgressDialog progressDialog;
@@ -409,15 +409,15 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
 
         if (v == cameraButton){
-            //Sender intent til at åbne kameraet og afventer resultatet. - Hemsen
+            //Sender intent til at åbne kameraet og afventer resultatet.
             ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
 
-            //Ny fil der kan laves til en Uri længere nede: - Hemsen
+            //Ny fil der kan laves til en Uri længere nede:
             imageFile = new File(imageFolder + "/" + fileName + ".jpg");
             currentPhotoPath = imageFile.getAbsolutePath();
             Uri imageURI = FileProvider.getUriForFile(this, "com.example.vikingesejllog.fileprovider", imageFile);
 
-            //Udskriver stien til mig i terminalen: - Hemsen
+            //Udskriver stien til mig i terminalen:
             Log.d(imageTAG, imageFile.getAbsolutePath());
 
 
