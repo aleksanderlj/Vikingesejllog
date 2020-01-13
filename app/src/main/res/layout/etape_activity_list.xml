@@ -13,22 +13,22 @@
 
         <Button
             android:id="@+id/nextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="20dp"
-            android:text="Next"
+            android:layout_width="20dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/andorid_arrow_right"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/note_viewpager" />
 
         <Button
             android:id="@+id/prevButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="1dp"
+            android:layout_width="20dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
             android:elevation="5dp"
-            android:text="Prev"
+            android:background="@drawable/andorid_arrow_left"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/note_viewpager" />
 
