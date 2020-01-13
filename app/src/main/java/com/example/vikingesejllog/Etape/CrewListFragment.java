@@ -20,6 +20,10 @@ public class CrewListFragment extends Fragment {
 
     public void setCrewName(String crewName){
         TextView textView = getView().findViewById(R.id.crewMemberName);
+
         //textView.setText();
     }
 }
+
+
+// bla bla
