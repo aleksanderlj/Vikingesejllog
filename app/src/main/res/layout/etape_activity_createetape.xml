@@ -20,6 +20,34 @@
         app:layout_constraintGuide_percent="0.92" />
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.10" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_middle_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_middle_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.90" />
+
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_middle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,10 +58,9 @@
         android:id="@+id/createEtapeSkipperBox"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginTop="100dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_top"
         app:srcCompat="@drawable/btn_create_note" />
 
     <EditText
@@ -53,11 +80,10 @@
     <ImageView
         android:id="@+id/createEtapeDepartureDestinationBox"
         android:layout_width="0dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="45dp"
+        android:layout_height="120dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/createEtapeSkipperBox"
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_middle_top"
         app:srcCompat="@drawable/btn_create_note" />
 
     <ImageView
@@ -126,8 +152,7 @@
         android:id="@+id/createEtapeCrewCountBox"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="45dp"
-        app:layout_constraintBottom_toTopOf="@+id/createEtapeAfbrydBtn"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_middle_bottom"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:srcCompat="@drawable/btn_create_note" />
@@ -136,11 +161,10 @@
         android:id="@+id/createEtapeAfbrydBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
         android:background="@drawable/btn_create_note_afbryd"
         android:text="Afbryd"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_bottom"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle"
         app:layout_constraintStart_toStartOf="@+id/guideline_left" />
 
