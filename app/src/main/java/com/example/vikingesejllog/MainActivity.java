@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 Note note = gson.fromJson(data.getStringExtra("myjson"), Note.class);
 
                 //note_activity_createnote test
-                TextView test = findViewById(R.id.textView);
+                TextView test = findViewById(R.id.windSpeedBtnText);
                 test.setText(note.getComment());
 
             }

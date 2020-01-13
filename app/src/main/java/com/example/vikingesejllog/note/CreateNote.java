@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -48,14 +49,15 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private static final String audioTAG = "TEST AF LYDOPTAGER";
     private static final String imageTAG = "TEST AF BILLEDEFUNKTION";
 
-    private EditText windSpeed, course, sailingSpeed, path, direction, rowers, commentText;
-    private TextView windSpeedBtnText, courseBtnText, sailingSpeedBtnText, pathBtnText,
-            directionBtnText, rowersBtnText, timeText, gpsText;
+    private Button windSpeed, course, sejlforing, sejlStilling, rowers;
+    private EditText commentText;
+    private TextView windSpeedBtnText, courseBtnText, sejlforingBtnText,
+            sejlStillingBtnText, rowersBtnText;
 
     private MyGPS gps;
 
-    private ImageButton micButton, cameraButton;
-    private ImageView takenPicture, savedPicture;
+    private Button micButton, cameraButton;
+    private ImageView savedPicture;
 
     //Media support:
     private AudioRecorder audioRecorder;
@@ -75,6 +77,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private boolean permissionToCamera;
     private boolean permissionToReadStorage;
     private boolean permissionToWriteStorage;
+    private String s;
 
     private String [] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -87,53 +90,57 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.note_activity_createnote);
 
         db = DatabaseBuilder.get(this);
-        windSpeed = findViewById(R.id.windspeedText);
-        windSpeedBtnText = findViewById(R.id.windspeedButtonText);
-        course = findViewById(R.id.courseText);
-        courseBtnText = findViewById(R.id.courseButtonText);
-        sailingSpeed = findViewById(R.id.sailingSpeed);
-        sailingSpeedBtnText = findViewById(R.id.sailingSpeedButtonText);
-        path = findViewById(R.id.pathText);
-        pathBtnText = findViewById(R.id.pathButtonText);
-        direction = findViewById(R.id.directionText);
-        directionBtnText = findViewById(R.id.directionButtonText);
-        rowers = findViewById(R.id.rowers);
-        rowersBtnText = findViewById(R.id.rowersButtonText);
-        timeText = findViewById(R.id.clockButtonText);
-        gpsText = findViewById(R.id.coordsButtonText);
-        commentText = findViewById(R.id.textComment);
 
+        windSpeedBtnText = findViewById(R.id.windSpeedBtnText);
+        windSpeed = findViewById(R.id.windspeedBtn);
 
+        course = findViewById(R.id.courseBtn);
+        courseBtnText = findViewById(R.id.courseBtnText);
 
-        micButton = findViewById(R.id.micButton);
+        sejlforing = findViewById(R.id.sailforingBtn);
+        sejlforingBtnText = findViewById(R.id.sejlfoeringBtnText);
+
+        sejlStilling = findViewById(R.id.sailStillingBtn);
+        sejlStillingBtnText = findViewById(R.id.sejlstillingBtnText);
+
+        rowers = findViewById(R.id.rowerCountBtn);
+        rowersBtnText = findViewById(R.id.rowersBtnText);
+
+        commentText = findViewById(R.id.commentEditText);
+
+        micButton = findViewById(R.id.createNoteMicBtn);
         micButton.setOnClickListener(this);
         audioRecorder = new AudioRecorder();
 
-        cameraButton = findViewById(R.id.cameraButton);
+        cameraButton = findViewById(R.id.createNoteCameraBtn);
         cameraButton.setOnClickListener(this);
 
-        takenPicture = findViewById(R.id.takenPicture);
         savedPicture = findViewById(R.id.savedPicture);
+        savedPicture.setVisibility(View.INVISIBLE);
 
-        micButton = findViewById(R.id.micButton);
+        micButton = findViewById(R.id.createNoteMicBtn);
         if(recordingDone){
-            micButton.setImageResource(android.R.drawable.ic_media_play);
+            //TODO ændre knap her til et nyt billede
+            // micButton.setImageResource(android.R.drawable.ic_media_play);
         }
 
-        takenPicture.setOnTouchListener(this);
         cameraButton.setOnClickListener(this);
         micButton.setOnClickListener(this);
 
         savedPicture.setImageAlpha(0);
 
-        gps = new MyGPS(this);
-        String s = "LAT: " + String.format(Locale.US, "%.2f", gps.getLocation().getLatitude()) + "\n" +
-                "LON: " + String.format(Locale.US, "%.2f", gps.getLocation().getLongitude());
-        System.out.println(s);
-        gpsText.setText(s);
 
-        MyTime time = new MyTime();
-        timeText.setText(time.getTime());
+        try {
+            gps = new MyGPS(this);
+             s = "LAT: " + String.format(Locale.US, "%.2f", gps.getLocation().getLatitude()) + "\n" +
+                    "LON: " + String.format(Locale.US, "%.2f", gps.getLocation().getLongitude());
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            s = "";
+        }
+
+
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm", Locale.getDefault());
         fileName = sdf.format(new Date());
@@ -215,72 +222,72 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         });
     }
 
-    public void setSailingSpeed(final View v) {
+//    public void setSailingSpeed(final View v) {
+//
+//        sailingSpeedBtnText.setVisibility(View.INVISIBLE);
+//
+//        sailingSpeed.setVisibility(View.VISIBLE);
+//
+//        sailingSpeed.requestFocus();
+//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+//
+//        sailingSpeed.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View view, boolean hasFocus) {
+//                if (!hasFocus) {
+//
+//                    sailingSpeedBtnText.setText(sailingSpeed.getText() + " kn");
+//                    sailingSpeedBtnText.setVisibility(View.VISIBLE);
+//                    sailingSpeed.setVisibility(View.INVISIBLE);
+//
+//                }
+//            }
+//        });
+//    }
 
-        sailingSpeedBtnText.setVisibility(View.INVISIBLE);
+    public void setSejlforing(final View v) {
 
-        sailingSpeed.setVisibility(View.VISIBLE);
+        sejlforingBtnText.setVisibility(View.INVISIBLE);
 
-        sailingSpeed.requestFocus();
+        sejlforing.setVisibility(View.VISIBLE);
+
+        sejlforing.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
-        sailingSpeed.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        sejlforing.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
 
-                    sailingSpeedBtnText.setText(sailingSpeed.getText() + " kn");
-                    sailingSpeedBtnText.setVisibility(View.VISIBLE);
-                    sailingSpeed.setVisibility(View.INVISIBLE);
+                    sejlforingBtnText.setText(sejlforing.getText());
+                    sejlforingBtnText.setVisibility(View.VISIBLE);
+                    sejlforing.setVisibility(View.INVISIBLE);
 
                 }
             }
         });
     }
 
-    public void setPath(final View v) {
+    public void setSejlStilling(final View v) {
 
-        pathBtnText.setVisibility(View.INVISIBLE);
+        sejlStillingBtnText.setVisibility(View.INVISIBLE);
 
-        path.setVisibility(View.VISIBLE);
+        sejlStilling.setVisibility(View.VISIBLE);
 
-        path.requestFocus();
+        sejlStilling.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
-        path.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        sejlStilling.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
 
-                    pathBtnText.setText(path.getText());
-                    pathBtnText.setVisibility(View.VISIBLE);
-                    path.setVisibility(View.INVISIBLE);
-
-                }
-            }
-        });
-    }
-
-    public void setDirection(final View v) {
-
-        directionBtnText.setVisibility(View.INVISIBLE);
-
-        direction.setVisibility(View.VISIBLE);
-
-        direction.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-        direction.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-
-                    directionBtnText.setText(direction.getText());
-                    directionBtnText.setVisibility(View.VISIBLE);
-                    direction.setVisibility(View.INVISIBLE);
+                    sejlStillingBtnText.setText(sejlStilling.getText());
+                    sejlStillingBtnText.setVisibility(View.VISIBLE);
+                    sejlStilling.setVisibility(View.INVISIBLE);
 
                 }
             }
@@ -289,36 +296,23 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     public void setRowers(final View v) {
 
-        //TODO Måske ændre PopupMenu til et PopupWindow som ser lidt pænere ud
-
-        PopupMenu popup = new PopupMenu(this, v);
-
-        popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
-
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                rowersBtnText.setText(item.getTitle());
-                rowersBtnText.setVisibility(View.VISIBLE);
-                rowers.setVisibility(View.INVISIBLE);
-                return true;
-            }
-        });
-
-        popup.show();
     }
 
     public void confirm(View v) {
 
-        Note note = new Note(getIntent().getLongExtra("etape_id", -1L), gps.getLocation().getLatitude() + String.valueOf(gps.getLocation().getLongitude()).substring(0, 8),
-                sailingSpeed.getText().toString(), windSpeed.getText().toString(), timeText.getText().toString(),
-                rowers.getText().toString(), path.getText().toString(), direction.getText().toString(), course.getText().toString(), commentText.getText().toString());
+        SimpleDateFormat clock = new SimpleDateFormat("HH.mm", Locale.getDefault());
+        String time = clock.format(new Date());
+
+        Note note = new Note(getIntent().getLongExtra("etape_id", -1L), s,
+                windSpeed.getText().toString(),time,
+                rowers.getText().toString(), sejlforing.getText().toString(), sejlStilling.getText().toString(), course.getText().toString(), commentText.getText().toString());
 
         Executors.newSingleThreadExecutor().execute(() -> {
             db.noteDAO().insert(note);
             setResult(Activity.RESULT_OK);
             finish();
         });
+
     }
 
 
@@ -361,7 +355,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 progressDialog.show();
 
                 //Skaber "PLAY"-knap.
-                micButton.setImageResource(android.R.drawable.ic_media_play);
+                //TODO ændre mic button til noget nyt
+                //micButton.setImageResource(android.R.drawable.ic_media_play);
         }
 
 
@@ -454,17 +449,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 break;}
         }}
 
-    /*Gemmer billede som bitmap:
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //Køres når der er et resultat fra kamera appen og gemmer det som et bitmap:
-        super.onActivityResult(REQUEST_IMAGE_CAPTURE, resultCode, data);
-
-        Bitmap bitmap = (Bitmap) Objects.requireNonNull(takePictureIntent.getExtras()).get("data");
-        //Skal evt. gemmes i noget sharedprefs med navn på note..
-        takenPicture.setImageBitmap(bitmap);
-        savedPicture.setImageBitmap(bitmap);
-    }*/
 
     //Zoom ind på billede bitmap ved at røre det:
     @Override

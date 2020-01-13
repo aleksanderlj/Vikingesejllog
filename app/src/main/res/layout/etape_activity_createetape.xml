@@ -124,7 +124,7 @@
         app:layout_constraintStart_toStartOf="@+id/createEtapeDepartureDestinationBox"
         app:srcCompat="@drawable/location_red" />
 
-    <TextView
+    <EditText
         android:id="@+id/createEtapeDepartureText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
         app:layout_constraintStart_toEndOf="@+id/createEtapeDepartureArrow"
         app:layout_constraintTop_toTopOf="@+id/createEtapeDepartureArrow" />
 
-    <TextView
+    <EditText
         android:id="@+id/createEtapeArrivalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

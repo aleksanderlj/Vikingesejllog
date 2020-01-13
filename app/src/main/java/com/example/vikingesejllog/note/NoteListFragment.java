@@ -53,9 +53,7 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
                         // Følgende kode henter variable fra note objektet der trykkes på, og sender dem til en NoteDetails aktivitet.
                         Intent intent = new Intent(getActivity(), NoteDetails.class);
                         Note note = etape.getNoteList().get(position);
-                        if (note.getBoatSpeed() != null){
-                            intent.putExtra("boatSpeed", note.getBoatSpeed());
-                        }
+
                         if (note.getWindSpeed() != null){
                             intent.putExtra("windSpeed", note.getWindSpeed());
                         }

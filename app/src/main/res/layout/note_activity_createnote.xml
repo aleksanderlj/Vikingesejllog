@@ -52,6 +52,7 @@
         app:layout_constraintTop_toBottomOf="@+id/rowerCountBtn" />
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="3dp"
         android:layout_marginTop="58dp"
@@ -74,6 +75,7 @@
         android:textAlignment="textStart"
         android:textSize="14sp"
         android:textAllCaps="false"
+        android:onClick="setRowers"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
@@ -122,8 +124,8 @@
         android:background="@drawable/btn_create_note"
         android:text="Vindhastighed"
         android:textAlignment="textStart"
-        android:textSize="14sp"
         android:textAllCaps="false"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toTopOf="parent" />
@@ -291,11 +293,72 @@
         android:layout_height="wrap_content"
         android:background="@drawable/btn_create_note_accepter"
         android:text="Accepter"
+        android:onClick="confirm"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/createNoteAfbrydBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle" />
+
+    <TextView
+        android:id="@+id/windSpeedBtnText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/windspeedBtn"
+        app:layout_constraintEnd_toEndOf="@+id/windspeedBtn"
+        app:layout_constraintStart_toStartOf="@+id/windspeedBtn"
+        app:layout_constraintTop_toTopOf="@+id/windspeedBtn" />
+
+    <TextView
+        android:id="@+id/rowersBtnText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/rowersUnderline"
+        app:layout_constraintEnd_toEndOf="@+id/rowerCountBtn"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="@+id/rowerCountBtn" />
+
+    <TextView
+        android:id="@+id/sejlfoeringBtnText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/sailForingUnderline"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintTop_toTopOf="@+id/sailforingBtn" />
+
+    <TextView
+        android:id="@+id/sejlstillingBtnText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/sailStillingUnderline"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintTop_toTopOf="@+id/sailStillingBtn" />
+
+    <TextView
+        android:id="@+id/courseBtnText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/courseUnderline"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="@+id/courseBtn" />
+
+    <ImageView
+        android:id="@+id/savedPicture"
+        android:layout_width="67dp"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toBottomOf="@+id/courseBtn"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintTop_toTopOf="@+id/courseBtn"
+        tools:srcCompat="@tools:sample/avatars" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
