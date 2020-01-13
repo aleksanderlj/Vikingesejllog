@@ -4,28 +4,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="300dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="200dp"
+    android:padding="16dp">
 
     <Button
         android:id="@+id/acceptNameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Godkend"
+        android:text="@string/godkend"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.828" />
 
-    <TextView
-        android:id="@+id/crewMemberName"
+    <EditText
+        android:hint="@string/skriv_navn_her"
+        android:id="@+id/crewMemberNameEditText"
         android:layout_width="210dp"
         android:layout_height="89dp"
-        android:text="Skriv navn her"
         app:layout_constraintBottom_toTopOf="@+id/acceptNameButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.889" />
+        app:layout_constraintVertical_bias="0.889"
+        android:inputType="text"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
