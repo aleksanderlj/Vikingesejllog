@@ -245,6 +245,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/rowerCountBtn"
         app:layout_constraintEnd_toEndOf="@+id/rowerCountBtn"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toTopOf="@+id/rowerCountBtn" />
@@ -254,6 +255,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sailforingBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
         app:layout_constraintTop_toTopOf="@+id/sailforingBtn" />
@@ -263,6 +265,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sailStillingBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
         app:layout_constraintTop_toTopOf="@+id/sailStillingBtn" />
@@ -272,6 +275,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/courseBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toTopOf="@+id/courseBtn" />
