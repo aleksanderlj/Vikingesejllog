@@ -10,245 +10,217 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.08" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
+        app:layout_constraintGuide_percent="0.92" />
 
-    <EditText
-        android:id="@+id/skipperNameButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/btn_round_corner"
-        android:fontFamily="@font/montserrat"
-        android:gravity="center"
-        android:hint="Skipper"
-        android:maxLines="1"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:textAllCaps="false"
-        android:textColor="@android:color/background_light"
-        android:textColorHint="@android:color/darker_gray"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/crewCountButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_round_corner"
-        android:fontFamily="@font/montserrat"
-        android:text="Besætningsmedlemmer"
-        android:textAllCaps="false"
-        android:textColor="@android:color/background_light"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/departureDateButton" />
-
-    <Button
-        android:id="@+id/departureDateButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_round_corner"
-        android:fontFamily="@font/montserrat"
-        android:textAllCaps="false"
-        android:textColor="@android:color/background_light"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/harborBoxImage" />
-
-    <TextView
-        android:id="@+id/dateOfDepartureText"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_middle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:elevation="5dp"
-        android:fontFamily="@font/montserrat"
-        android:text=" Afrejse dato"
-        android:textAllCaps="false"
-        android:textColor="@android:color/background_light"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/departureDateButton"
-        app:layout_constraintStart_toStartOf="@+id/departureDateButton"
-        app:layout_constraintTop_toTopOf="@+id/departureDateButton" />
-
-    <EditText
-        android:id="@+id/dateText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:elevation="5dp"
-        android:fontFamily="@font/montserrat"
-        android:text="xx/xx/xxxx"
-        android:textAllCaps="false"
-        android:textColor="@android:color/background_light"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/departureDateButton"
-        app:layout_constraintEnd_toStartOf="@+id/calendarImage"
-        app:layout_constraintStart_toEndOf="@+id/dateOfDepartureText"
-        app:layout_constraintTop_toTopOf="@+id/departureDateButton" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
 
     <ImageView
-        android:id="@+id/calendarImage"
+        android:id="@+id/createEtapeSkipperBox"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/btn_create_note" />
+
+    <LinearLayout
+        android:id="@+id/skipperUnderline"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="58dp"
+        android:background="#515151"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeSkipperBox"
+        app:layout_constraintEnd_toEndOf="@+id/createEtapeSkipperBox"
+        app:layout_constraintStart_toStartOf="@+id/createEtapeSkipperBox"
+        app:layout_constraintTop_toTopOf="@+id/createEtapeSkipperBox" />
+
+    <LinearLayout
+        android:id="@+id/crewCountUnderline"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="58dp"
+        android:background="#515151"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeCrewCountBox"
+        app:layout_constraintEnd_toEndOf="@+id/createEtapeCrewCountBox"
+        app:layout_constraintStart_toStartOf="@+id/createEtapeCrewCountBox"
+        app:layout_constraintTop_toTopOf="@+id/createEtapeCrewCountBox" />
+
+    <EditText
+        android:id="@+id/skipperNameEditText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:hint="Indtast navn på skipper"
+        android:inputType="textPersonName"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeSkipperBox"
+        app:layout_constraintEnd_toEndOf="@+id/createEtapeSkipperBox"
+        app:layout_constraintStart_toStartOf="@+id/createEtapeSkipperBox"
+        app:layout_constraintTop_toTopOf="@+id/createEtapeSkipperBox" />
+
+    <ImageView
+        android:id="@+id/createEtapeDepartureDestinationBox"
+        android:layout_width="0dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="45dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/createEtapeSkipperBox"
+        app:srcCompat="@drawable/btn_create_note" />
+
+    <LinearLayout
+        android:id="@+id/arrDestinUnderline"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="#515151"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDestinationBox"
+        app:layout_constraintEnd_toEndOf="@+id/createEtapeDepartureDestinationBox"
+        app:layout_constraintStart_toStartOf="@+id/createEtapeDepartureDestinationBox" />
+
+    <LinearLayout
+        android:id="@+id/departureDateUnderline"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="#515151"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDateBox"
+        app:layout_constraintEnd_toEndOf="@+id/createEtapeDepartureDateBox"
+        app:layout_constraintStart_toStartOf="@+id/createEtapeDepartureDateBox" />
+
+    <ImageView
+        android:id="@+id/createEtapeDepartureArrow"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="@+id/createEtapeDepartureDestinationBox"
+        app:layout_constraintTop_toTopOf="@+id/createEtapeDepartureDestinationBox"
+        app:srcCompat="@drawable/path_white" />
+
+    <ImageView
+        android:id="@+id/createEtapeDestinationPin"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDestinationBox"
+        app:layout_constraintStart_toStartOf="@+id/createEtapeDepartureDestinationBox"
+        app:srcCompat="@drawable/location_red" />
+
+    <EditText
+        android:id="@+id/createEtapeDepartureText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/departureDateButton"
-        app:layout_constraintEnd_toEndOf="@+id/departureDateButton"
-        app:layout_constraintTop_toTopOf="@+id/departureDateButton"
-        app:layout_constraintVertical_bias="0.541"
-        app:srcCompat="@drawable/calendar" />
+        android:layout_marginStart="24dp"
+        android:text="Nyborg"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureArrow"
+        app:layout_constraintStart_toEndOf="@+id/createEtapeDepartureArrow"
+        app:layout_constraintTop_toTopOf="@+id/createEtapeDepartureArrow" />
+
+    <EditText
+        android:id="@+id/createEtapeArrivalText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="Kerteminde"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDestinationPin"
+        app:layout_constraintStart_toEndOf="@+id/createEtapeDestinationPin"
+        app:layout_constraintTop_toTopOf="@+id/createEtapeDestinationPin" />
+
+    <ImageView
+        android:id="@+id/createEtapeDepartureDateBox"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/createEtapeCrewCountBox"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/createEtapeDepartureDestinationBox"
+        app:srcCompat="@drawable/btn_create_note" />
+
+    <TextView
+        android:id="@+id/createEtapeDepartureDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="18dp"
+        android:text="Afrejse dato"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDateBox"
+        app:layout_constraintStart_toStartOf="@+id/createEtapeDepartureDateBox"
+        app:layout_constraintTop_toTopOf="@+id/createEtapeDepartureDateBox" />
+
+    <ImageView
+        android:id="@+id/createEtapeCrewCountBox"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="45dp"
+        app:layout_constraintBottom_toTopOf="@+id/createEtapeAfbrydBtn"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:srcCompat="@drawable/btn_create_note" />
 
     <Button
-        android:id="@+id/confirmButton"
+        android:id="@+id/createEtapeAfbrydBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="84dp"
-        android:background="@drawable/btn_round"
-        android:backgroundTint="#46FF00"
-        android:fontFamily="@font/montserrat"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/btn_create_note_afbryd"
+        android:text="Afbryd"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_middle"
         app:layout_constraintStart_toStartOf="@+id/guideline_left" />
 
+    <Button
+        android:id="@+id/createEtapeAccepterBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_create_note_accepter"
+        android:text="Accepter"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeAfbrydBtn"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle" />
+
     <TextView
-        android:id="@+id/confirmText"
+        android:id="@+id/createEtapeCrewCountText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="5dp"
-        android:fontFamily="@font/montserrat"
-        android:text="Godkend"
-        android:textAllCaps="false"
-        android:textColor="#180B2C"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/confirmButton"
-        app:layout_constraintEnd_toEndOf="@+id/confirmButton"
-        app:layout_constraintStart_toStartOf="@+id/confirmButton"
-        app:layout_constraintTop_toTopOf="@+id/confirmButton" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="22dp"
+        android:text="Antal besætningsmedlemmer"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeCrewCountBox"
+        app:layout_constraintStart_toStartOf="@+id/createEtapeCrewCountBox"
+        app:layout_constraintTop_toTopOf="@+id/createEtapeCrewCountBox" />
 
     <ImageView
-        android:id="@+id/checkmarkImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/confirmButton"
-        app:layout_constraintEnd_toStartOf="@+id/confirmText"
-        app:layout_constraintTop_toTopOf="@+id/confirmButton"
-        app:srcCompat="@drawable/checkmark" />
-
-    <ImageView
-        android:id="@+id/harborBoxImage"
+        android:id="@+id/createEtapeDottedLine"
         android:layout_width="0dp"
-        android:layout_height="110dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/skipperNameButton"
-        app:srcCompat="@drawable/btn_round_corner" />
-
-    <ImageView
-        android:id="@+id/dotsImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/harborBoxImage"
-        app:layout_constraintStart_toStartOf="@+id/harborBoxImage"
-        app:layout_constraintTop_toTopOf="@+id/harborBoxImage"
-        app:srcCompat="@drawable/dots" />
-
-    <ImageView
-        android:id="@+id/navigationArrowImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/dotsImage"
-        app:layout_constraintEnd_toEndOf="@+id/dotsImage"
-        app:layout_constraintStart_toStartOf="@+id/dotsImage"
-        app:layout_constraintTop_toTopOf="@+id/harborBoxImage"
-        app:srcCompat="@drawable/navigation" />
-
-    <ImageView
-        android:id="@+id/destinationPinImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/harborBoxImage"
-        app:layout_constraintEnd_toEndOf="@+id/dotsImage"
-        app:layout_constraintStart_toStartOf="@+id/dotsImage"
-        app:layout_constraintTop_toBottomOf="@+id/dotsImage"
-        app:srcCompat="@drawable/destination" />
-
-    <ImageView
-        android:id="@+id/dottedLineImage"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="28dp"
-        android:tint="#ECEBED"
-        app:layout_constraintBottom_toBottomOf="@+id/harborBoxImage"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toEndOf="@+id/dotsImage"
-        app:layout_constraintTop_toTopOf="@+id/harborBoxImage"
+        android:layout_height="0dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDestinationBox"
+        app:layout_constraintEnd_toEndOf="@+id/createEtapeDepartureDestinationBox"
+        app:layout_constraintStart_toStartOf="@+id/createEtapeDepartureDestinationBox"
+        app:layout_constraintTop_toTopOf="@+id/createEtapeDepartureDestinationBox"
         app:srcCompat="@drawable/dotted_line" />
 
-    <EditText
-        android:id="@+id/journeyStartButton"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat"
-        android:hint="Start"
-        android:maxLines="1"
-        android:textAlignment="viewStart"
-        android:textAllCaps="false"
-        android:textColor="@android:color/background_light"
-        android:textColorHint="@android:color/darker_gray"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/dottedLineImage"
-        app:layout_constraintEnd_toEndOf="@+id/harborBoxImage"
-        app:layout_constraintStart_toEndOf="@+id/navigationArrowImage"
-        app:layout_constraintTop_toTopOf="@+id/harborBoxImage" />
-
-    <EditText
-        android:id="@+id/journeyEndButton"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat"
-        android:hint="Slut"
-        android:maxLines="1"
-        android:textAlignment="viewStart"
-        android:textAllCaps="false"
-        android:textColor="@android:color/background_light"
-        android:textColorHint="@android:color/darker_gray"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/harborBoxImage"
-        app:layout_constraintEnd_toEndOf="@+id/harborBoxImage"
-        app:layout_constraintStart_toEndOf="@+id/navigationArrowImage"
-        app:layout_constraintTop_toBottomOf="@+id/dottedLineImage" />
 </androidx.constraintlayout.widget.ConstraintLayout>

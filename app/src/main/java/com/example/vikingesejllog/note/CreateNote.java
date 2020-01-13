@@ -1,101 +1,175 @@
 package com.example.vikingesejllog.note;
 
 import android.Manifest;
-import android.app.AlertDialog;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import com.example.vikingesejllog.MainActivity;
+import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Note;
-import com.google.gson.Gson;
+import com.example.vikingesejllog.other.DatabaseBuilder;
 
-import java.io.IOException;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.Executors;
 
-public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener{
+public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
+
+
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+    private static final int REQUEST_CAMERA_PERMISSION = 300;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_READ_EXTERNAL_STORAGE_PERMISSION = 400;
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION = 500;
+
+    private static final String audioTAG = "TEST AF LYDOPTAGER";
+    private static final String imageTAG = "TEST AF BILLEDEFUNKTION";
+
+    private Button windSpeed, course, sejlforing, sejlStilling, rowers;
+    private EditText commentText;
+    private TextView windSpeedBtnText, courseBtnText, sejlforingBtnText,
+            sejlStillingBtnText, rowersBtnText;
 
     private MyGPS gps;
-    private EditText windSpeed;
-    private TextView windSpeedBtnText;
-    private EditText course;
-    private TextView courseBtnText;
-    private TextView sailingSpeedBtnText;
-    private EditText sailingSpeed;
-    private EditText path;
-    private TextView pathBtnText;
-    private EditText direction;
-    private TextView directionBtnText;
-    private EditText rowers;
-    private TextView rowersBtnText;
-    private TextView timeText;
-    private TextView gpsText;
-    private EditText commentText;
 
-    private ImageButton micButton;
-    private ImageButton cameraButton;
-    private ImageView takenPicture, savedPicture;
+    private Button micButton, cameraButton;
+    private ImageView savedPicture;
 
-    AudioRecorder audioRecorder;
+    //Media support:
+    private AudioRecorder audioRecorder;
+    private AudioPlayer audioPlayer;
+
+    private Intent takePictureIntent;
+
+    private File audioFolder, imageFolder;
+
+    private String fileName;
+
     private boolean recordingDone;
 
-    private int STORAGE_PERMISSION_CODE = 1;
+    private AppDatabase db;
+    // Permissions support:
+    private boolean permissionToRecordAccepted;
+    private boolean permissionToCamera;
+    private boolean permissionToReadStorage;
+    private boolean permissionToWriteStorage;
+    private String s;
+
+    private String [] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.note_activity_createnote);
 
-        windSpeed = findViewById(R.id.windspeedText);
-        windSpeedBtnText = findViewById(R.id.windspeedButtonText);
-        course = findViewById(R.id.courseText);
-        courseBtnText = findViewById(R.id.courseButtonText);
-        sailingSpeed = findViewById(R.id.sailingSpeed);
-        sailingSpeedBtnText = findViewById(R.id.sailingSpeedButtonText);
-        path = findViewById(R.id.pathText);
-        pathBtnText = findViewById(R.id.pathButtonText);
-        direction = findViewById(R.id.directionText);
-        directionBtnText = findViewById(R.id.directionButtonText);
-        rowers = findViewById(R.id.rowers);
-        rowersBtnText = findViewById(R.id.rowersButtonText);
-        timeText = findViewById(R.id.clockButtonText);
-        gpsText = findViewById(R.id.coordsButtonText);
-        commentText = findViewById(R.id.textComment);
-        gps = new MyGPS(this);
+        db = DatabaseBuilder.get(this);
 
+        windSpeedBtnText = findViewById(R.id.windSpeedBtnText);
+        windSpeed = findViewById(R.id.windspeedBtn);
 
-        micButton = findViewById(R.id.micButton);
+        course = findViewById(R.id.courseBtn);
+        courseBtnText = findViewById(R.id.courseBtnText);
+
+        sejlforing = findViewById(R.id.sailforingBtn);
+        sejlforingBtnText = findViewById(R.id.sejlfoeringBtnText);
+
+        sejlStilling = findViewById(R.id.sailStillingBtn);
+        sejlStillingBtnText = findViewById(R.id.sejlstillingBtnText);
+
+        rowers = findViewById(R.id.rowerCountBtn);
+        rowersBtnText = findViewById(R.id.rowersBtnText);
+
+        commentText = findViewById(R.id.commentEditText);
+
+        micButton = findViewById(R.id.createNoteMicBtn);
         micButton.setOnClickListener(this);
         audioRecorder = new AudioRecorder();
 
-        cameraButton= findViewById(R.id.cameraButton);
+        cameraButton = findViewById(R.id.createNoteCameraBtn);
         cameraButton.setOnClickListener(this);
 
-        takenPicture = findViewById(R.id.takenPicture);
-        takenPicture.setOnTouchListener(this);
-
         savedPicture = findViewById(R.id.savedPicture);
+        savedPicture.setVisibility(View.INVISIBLE);
+
+        micButton = findViewById(R.id.createNoteMicBtn);
+        if(recordingDone){
+            //TODO ændre knap her til et nyt billede
+            // micButton.setImageResource(android.R.drawable.ic_media_play);
+        }
+
+        cameraButton.setOnClickListener(this);
+        micButton.setOnClickListener(this);
+
         savedPicture.setImageAlpha(0);
 
 
+        try {
+            gps = new MyGPS(this);
+             s = "LAT: " + String.format(Locale.US, "%.2f", gps.getLocation().getLatitude()) + "\n" +
+                    "LON: " + String.format(Locale.US, "%.2f", gps.getLocation().getLongitude());
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            s = "";
+        }
+
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm", Locale.getDefault());
+        fileName = sdf.format(new Date());
+        Log.d("Aktuelle filnavn: ", fileName);
+
+
+
+        ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
+        //Opretter mappen for lydnoter:
+        audioFolder = new File("/sdcard/Download/" + "Lydnoter");
+        if (!audioFolder.exists()) {
+            try {
+                audioFolder.mkdirs();
+                audioFolder.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        //Opretter mappen for billeder:
+        imageFolder = new File("/sdcard/Download/" + "Billedenoter");
+        if (!imageFolder.exists()) {
+            try {
+                imageFolder.mkdirs();
+                imageFolder.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void setWindSpeed(final View v){
@@ -106,14 +180,14 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         windSpeed.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
         windSpeed.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
 
-                    windSpeedBtnText.setText(windSpeed.getText()+" m/s");
+                    windSpeedBtnText.setText(windSpeed.getText() + " m/s");
                     windSpeedBtnText.setVisibility(View.VISIBLE);
                     v.setVisibility(View.VISIBLE);
                     windSpeed.setVisibility(View.INVISIBLE);
@@ -123,7 +197,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         });
     }
 
-    public void setCourse(final View v){
+    public void setCourse(final View v) {
 
         courseBtnText.setVisibility(View.INVISIBLE);
 
@@ -131,7 +205,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         course.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
         course.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -148,220 +222,249 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         });
     }
 
-    public void setSailingSpeed(final View v){
+//    public void setSailingSpeed(final View v) {
+//
+//        sailingSpeedBtnText.setVisibility(View.INVISIBLE);
+//
+//        sailingSpeed.setVisibility(View.VISIBLE);
+//
+//        sailingSpeed.requestFocus();
+//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+//
+//        sailingSpeed.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View view, boolean hasFocus) {
+//                if (!hasFocus) {
+//
+//                    sailingSpeedBtnText.setText(sailingSpeed.getText() + " kn");
+//                    sailingSpeedBtnText.setVisibility(View.VISIBLE);
+//                    sailingSpeed.setVisibility(View.INVISIBLE);
+//
+//                }
+//            }
+//        });
+//    }
 
-        sailingSpeedBtnText.setVisibility(View.INVISIBLE);
+    public void setSejlforing(final View v) {
 
-        sailingSpeed.setVisibility(View.VISIBLE);
+        sejlforingBtnText.setVisibility(View.INVISIBLE);
 
-        sailingSpeed.requestFocus();
+        sejlforing.setVisibility(View.VISIBLE);
+
+        sejlforing.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
-        sailingSpeed.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        sejlforing.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
 
-                    sailingSpeedBtnText.setText(sailingSpeed.getText()+" kn");
-                    sailingSpeedBtnText.setVisibility(View.VISIBLE);
-                    sailingSpeed.setVisibility(View.INVISIBLE);
+                    sejlforingBtnText.setText(sejlforing.getText());
+                    sejlforingBtnText.setVisibility(View.VISIBLE);
+                    sejlforing.setVisibility(View.INVISIBLE);
 
                 }
             }
         });
     }
 
-    public void setPath(final View v){
+    public void setSejlStilling(final View v) {
 
-        pathBtnText.setVisibility(View.INVISIBLE);
+        sejlStillingBtnText.setVisibility(View.INVISIBLE);
 
-        path.setVisibility(View.VISIBLE);
+        sejlStilling.setVisibility(View.VISIBLE);
 
-        path.requestFocus();
+        sejlStilling.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
-        path.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        sejlStilling.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
 
-                    pathBtnText.setText(path.getText());
-                    pathBtnText.setVisibility(View.VISIBLE);
-                    path.setVisibility(View.INVISIBLE);
+                    sejlStillingBtnText.setText(sejlStilling.getText());
+                    sejlStillingBtnText.setVisibility(View.VISIBLE);
+                    sejlStilling.setVisibility(View.INVISIBLE);
 
                 }
             }
         });
     }
 
-    public void setDirection(final View v){
+    public void setRowers(final View v) {
 
-        directionBtnText.setVisibility(View.INVISIBLE);
+    }
 
-        direction.setVisibility(View.VISIBLE);
+    public void confirm(View v) {
 
-        direction.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+        SimpleDateFormat clock = new SimpleDateFormat("HH.mm", Locale.getDefault());
+        String time = clock.format(new Date());
 
-        direction.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
+        Note note = new Note(getIntent().getLongExtra("etape_id", -1L), s,
+                windSpeed.getText().toString(),time,
+                rowers.getText().toString(), sejlforing.getText().toString(), sejlStilling.getText().toString(), course.getText().toString(), commentText.getText().toString());
 
-                    directionBtnText.setText(direction.getText());
-                    directionBtnText.setVisibility(View.VISIBLE);
-                    direction.setVisibility(View.INVISIBLE);
-
-                }
-            }
+        Executors.newSingleThreadExecutor().execute(() -> {
+            db.noteDAO().insert(note);
+            setResult(Activity.RESULT_OK);
+            finish();
         });
+
     }
 
-    public void setRowers(final View v){
 
-        rowersBtnText.setVisibility(View.INVISIBLE);
+    //Implementering af AudioRecorder, AudioPlayer og kamerafunktionalitet:
+    @Override
+    public void onClick(View v) {
+        ProgressDialog progressDialog;
+        if (v == micButton && !recordingDone) {
+                ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
-        rowers.setVisibility(View.VISIBLE);
+                audioRecorder = new AudioRecorder();
 
-        rowers.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+                new AsyncTask() {
+                    @Override
+                    protected Object doInBackground(Object... arg0) {
+                        try {
+                            audioRecorder.setupAudioRecord(audioFolder + "/" + fileName + ".mp3");
+                            return Log.d(audioTAG, "Der gemmes en lydfil i: " + audioFolder + "/" + fileName + ".mp3");
+                        } catch (Exception e){
+                            e.printStackTrace();
+                            return Log.d(audioTAG, "Det virker IKKE: " + e);
+                        } }
 
-        rowers.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-
-                    rowersBtnText.setText(rowers.getText());
-                    rowersBtnText.setVisibility(View.VISIBLE);
-                    rowers.setVisibility(View.INVISIBLE);
-
-                }
-            }
-        });
-    }
-
-    public void setCoordinates(View v){
-        String s = "LAT: "+(gps.getLocation().getLatitude()+"\n"+"LON: "+(String.valueOf(gps.getLocation().getLongitude()).substring(0,8)));
-        gpsText.setText(s);
-    }
-
-    public void setTime(View v){
-        MyTime time = new MyTime();
-        timeText.setText(time.getTime());
-    }
-
-    public void confirm(View v){
-
-        Note note = new Note(gps.getLocation().getLatitude()+String.valueOf(gps.getLocation().getLongitude()).substring(0,8),
-                                    sailingSpeed.getText().toString(), windSpeed.getText().toString(), timeText.getText().toString(),
-                                    rowers.getText().toString(), path.getText().toString(), direction.getText().toString(),course.getText().toString(),commentText.getText().toString());
-
-        Gson gson = new Gson();
-        String myJson = gson.toJson(note);
-
-        Intent result = new Intent();
-        result.putExtra("note",myJson);
-        setResult(MainActivity.RESULT_OK,result);
-
-        finish();
-    }
-        @Override
-        public void onClick(View v) {
-            if (v == micButton && !recordingDone) {
-                try {
-                        audioRecorder.recordAudio("test");
-                        micButton.setImageResource(R.drawable.nem);
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    @Override
+                    protected void onPostExecute(Object obj){
+                        audioRecorder.startAudioRecord();
                     }
+                }.execute();
+
+                progressDialog = new ProgressDialog(CreateNote.this);
+                progressDialog.setMax(200);
+                progressDialog.setTitle("Optager lydnote...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        audioRecorder.stopAudioRecord();
+                        recordingDone = true;
+                    }});
+                progressDialog.show();
+
+                //Skaber "PLAY"-knap.
+                //TODO ændre mic button til noget nyt
+                //micButton.setImageResource(android.R.drawable.ic_media_play);
+        }
+
+
+        if (v == micButton && recordingDone){
+                ActivityCompat.requestPermissions(this, permissions, REQUEST_READ_EXTERNAL_STORAGE_PERMISSION);
+
+                audioPlayer = new AudioPlayer();
+
+
+                new AsyncTask() {
+                    @Override
+                    protected Object doInBackground(Object... arg0) {
+                        try {
+                            audioPlayer.setupAudioPlayer(audioFolder + "/" + fileName + ".mp3");
+                            return Log.d(audioTAG, "Følgende lydfil afspilles: " + audioFolder + "/" + fileName + ".mp3");
+                        } catch (Exception e){
+                            e.printStackTrace();
+                            return Log.d(audioTAG, "Det virker IKKE: " + audioFolder + "    " + fileName + e);
+                        }}
+
+                    @Override
+                    protected void onPostExecute(Object obj){
+                        audioPlayer.startAudioPlayer();
+                    }
+                }.execute();
+
+                progressDialog = new ProgressDialog(CreateNote.this);
+                progressDialog.setMax(200);
+                progressDialog.setTitle("Afspiller lydnote...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                   audioPlayer.stopAudioNote();
+                    }});
+                progressDialog.show();
+        }
+
+
+        if (v == cameraButton){
+            //Sender intent til at åbne kameraet og afventer resultatet.
+            ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
+
+            takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageFolder);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
-            if (v == micButton && recordingDone){
-                //Skal køres først, for at sikre, at brugeren har givet tilladelse til appen.
-                if (ContextCompat.checkSelfPermission(CreateNote.this,
-                        Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            /*new AsyncTask() {
+                @Override
+                protected Object doInBackground(Object... arg0) {
                     try {
-                        audioRecorder.playAudioNote("test");
-                    } catch (IOException e) {
+                        image = File.createTempFile(fileName, ".jpg", imageFolder);
+                        return Log.d(imageTAG, image.toString());
+                    } catch (Exception e){
                         e.printStackTrace();
-                    }
-                } else {
-                    //Hvis tilladelsen ikke allerede er givet, skal der spørges efter den.
-                    requestStoragePermission(); }
-            }
-            if (v == cameraButton){
-                //Sender intent til at åbne kameraet og afventer resultatet.
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePictureIntent, 0);
-            }
-        }
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-            //Køres når der er et resultat fra kamera appen og gemmer det som et bitmap:
-            super.onActivityResult(requestCode, resultCode, data);
-            Bitmap bitmap = (Bitmap)data.getExtras().get("data");
-            //Skal evt. gemmes i noget sharedprefs med navn på note..
-            takenPicture.setImageBitmap(bitmap);
-            savedPicture.setImageBitmap(bitmap);
-        }
+                        return Log.d(imageTAG, "Det virker IKKE: " + image + e);
+                    }}
 
-        @Override
-        public boolean onTouch(View takenPicture, MotionEvent event) {
-        /*Zoomer ind på billedet, hvis brugeren rør ved det, og zoomer ud igen,
-        hvis fingeren slippes
-         */
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    savedPicture.setImageAlpha(255);
-                    savedPicture.setElevation(100);
-                    return true;
-                }
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    savedPicture.setImageAlpha(0);
-                    return true;
-                }
-            return false;
-        }
+                @Override
+                protected void onPostExecute(Object obj){
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageFolder);
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    }}
+            }.execute();*/
+            //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageFolder + "/" + fileName + ".png");
+        }}
 
-
-        //Følgede to metoder beder brugeren om tilladelse til at tilgå enhedens lagerplads:
-    public void requestStoragePermission() {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)){
-
-                new AlertDialog.Builder(this)
-                        .setTitle("Tilladelse påkrævet!")
-                        .setMessage("Følgende tilladelsen kræves for at kunne afspille gemte lydnoter")
-                        .setPositiveButton("Godkend", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                {ActivityCompat.requestPermissions(CreateNote.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-                                }
-                            }})
-                        .setNegativeButton("Afvis", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .create().show();
-
-            }   else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-            }
-        }
-
+    //Checker om permissions er gemt.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-            if (requestCode == STORAGE_PERMISSION_CODE) {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Tilladelsen blev givet", Toast.LENGTH_SHORT).show();
-                } else{
-                    Toast.makeText(this, "Tilladelsen blev afvist", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case REQUEST_RECORD_AUDIO_PERMISSION:
+                if (!permissionToRecordAccepted){
+                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                break;}
+            case REQUEST_CAMERA_PERMISSION:
+                if (!permissionToCamera){
+                permissionToCamera = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                break;}
+            case REQUEST_READ_EXTERNAL_STORAGE_PERMISSION:
+                if (!permissionToReadStorage){
+                permissionToReadStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                break;}
+            case REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION:
+                if (!permissionToWriteStorage){
+                permissionToWriteStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                break;}
+        }}
 
+
+    //Zoom ind på billede bitmap ved at røre det:
+    @Override
+    public boolean onTouch(View takenPicture, MotionEvent event) {
+    /*Zoomer ind på billedet, hvis brugeren rør ved det, og zoomer ud igen,
+    hvis fingeren slippes
+     */
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                savedPicture.setImageAlpha(255);
+                savedPicture.setElevation(100);
+                return true;
+            }
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                savedPicture.setImageAlpha(0);
+                return true;
+            }
+        return false;
+    }
 }

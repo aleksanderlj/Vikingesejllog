@@ -1,8 +1,9 @@
 package com.example.vikingesejllog.togt;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -10,29 +11,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.TopMenu;
-import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Togt;
-import com.google.gson.Gson;
+import com.example.vikingesejllog.note.NoteList;
+import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class TogtList extends AppCompatActivity implements View.OnClickListener {
-	private SharedPreferences prefs;
     private RecyclerView recyclerView;
     private TogtListAdapter adapter;
-
     private List<Togt> togtList;
-
+    private AppDatabase db;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
         setContentView(R.layout.togt_activity_list);
+        db = DatabaseBuilder.get(this);
 
-        recyclerView = (RecyclerView) findViewById(R.id.journeyRecyclerView);
+        recyclerView = findViewById(R.id.journeyRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 		updateList();
@@ -40,47 +43,29 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
         TopMenu tm = (TopMenu) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
         tm.updateTextView("Liste over togter");
 
-        findViewById(R.id.newHarborButton).setOnClickListener(this);
+        findViewById(R.id.newTogtButton).setOnClickListener(this);
     }
 
     public void updateList(){
-		togtList = new ArrayList<>();
-		List<Etape> exampleEtapeList = new ArrayList<>();
-	
-	
-		// Test list items
-		Togt togt;
-		Gson gson = new Gson();
-		prefs = getSharedPreferences("togtList", MODE_PRIVATE);
-		Map<String,?> togtHash = prefs.getAll();
-		for (int i = 0; i<=togtHash.size(); i++){
-			String currTogt = (String) togtHash.get(Integer.toString(i));
-			if (currTogt != null) {
-				togt = gson.fromJson(currTogt, Togt.class);
-				togt = new Togt(togt.getDeparture() + " - " + togt.getDestination(), "04-06-2019 - 17-08-2019");
-				togtList.add(togt);
-			}
-			else
-				break;
-		}
-	
-	
+        togtList = new ArrayList<>();
+        Executors.newSingleThreadExecutor().execute(() -> {
+            togtList.addAll(db.togtDAO().getAll());
+            recyclerView.post(() -> adapter.notifyDataSetChanged());
+        });
 		adapter = new TogtListAdapter(togtList, this);
 		recyclerView.setAdapter(adapter);
-	
-		adapter.setOnItemClickListener(new TogtListAdapter.OnItemClickListener() {
-			@Override
-			public void onItemClick(int position) {
-				// Logik her til tryk af element i recyclerview. Husk position starter fra 0.
-			
-			}
-		});
+
+		adapter.setOnItemClickListener((int position) -> {
+            Intent noteList = new Intent(TogtList.this, NoteList.class);
+            noteList.putExtra("togt_id", togtList.get(position).getTogt_id());
+            startActivity(noteList);
+        });
 	}
     
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.newHarborButton:
+            case R.id.newTogtButton:
                 Intent i = new Intent(this, CreateTogt.class);
                 startActivityForResult(i, 1);
                 break;

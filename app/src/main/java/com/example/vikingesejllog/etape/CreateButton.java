@@ -14,6 +14,11 @@ import com.example.vikingesejllog.R;
 
 
 public class CreateButton extends Fragment implements View.OnClickListener {
+    long togt_id;
+
+    public CreateButton(long togt_id){
+        this.togt_id = togt_id;
+    }
 
     @Nullable
     @Override
@@ -28,6 +33,7 @@ public class CreateButton extends Fragment implements View.OnClickListener {
         switch(v.getId()){
             case R.id.new_etape:
                 Intent i = new Intent(getActivity(), CreateEtape.class);
+                i.putExtra("togt_id", togt_id);
                 getActivity().startActivityForResult(i, 1);
                 break;
         }
