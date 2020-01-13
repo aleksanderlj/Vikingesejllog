@@ -92,7 +92,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/createEtapeDottedLine"
         app:layout_constraintStart_toStartOf="@+id/createEtapeDepartureDestinationBox"
         app:layout_constraintTop_toTopOf="@+id/createEtapeDepartureDestinationBox"
         app:srcCompat="@drawable/path_white" />
@@ -102,32 +102,34 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="24dp"
-        android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDestinationBox"
         app:layout_constraintStart_toStartOf="@+id/createEtapeDepartureDestinationBox"
+        app:layout_constraintTop_toBottomOf="@+id/createEtapeDottedLine"
         app:srcCompat="@drawable/location_red" />
 
     <EditText
         android:id="@+id/createEtapeDepartureText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:text="Nyborg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
         android:background="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureArrow"
+        android:text="Nyborg"
+        app:layout_constraintBottom_toTopOf="@+id/createEtapeDottedLine"
+        app:layout_constraintEnd_toEndOf="@+id/createEtapeDottedLine"
         app:layout_constraintStart_toEndOf="@+id/createEtapeDepartureArrow"
-        app:layout_constraintTop_toTopOf="@+id/createEtapeDepartureArrow" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_middle_top" />
 
     <EditText
         android:id="@+id/createEtapeArrivalText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:text="Kerteminde"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
         android:background="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDestinationPin"
+        android:text="Kerteminde"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDestinationBox"
+        app:layout_constraintEnd_toEndOf="@+id/createEtapeDottedLine"
         app:layout_constraintStart_toEndOf="@+id/createEtapeDestinationPin"
-        app:layout_constraintTop_toTopOf="@+id/createEtapeDestinationPin" />
+        app:layout_constraintTop_toBottomOf="@+id/createEtapeDottedLine" />
 
     <ImageView
         android:id="@+id/createEtapeDepartureDateBox"
@@ -197,7 +199,7 @@
     <ImageView
         android:id="@+id/createEtapeDottedLine"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="5dp"
         android:layout_marginStart="28dp"
         android:layout_marginEnd="28dp"
         app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDestinationBox"
