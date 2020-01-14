@@ -7,18 +7,20 @@
     android:layout_height="300dp"
     android:layout_gravity="center_horizontal"
     android:layout_marginTop="200dp"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/crew_fragment_box">
 
     <EditText
         android:id="@+id/crewMemberNameEditText"
-        android:layout_width="233dp"
-        android:layout_height="113dp"
-        android:layout_marginTop="52dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:hint="@string/skriv_navn_her"
         android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_middle"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_middle"
@@ -41,18 +43,24 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.80" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
+
 
     <Button
         android:id="@+id/cancelNameButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:background="@drawable/btn_create_note_afbryd"
         android:text="Afbryd"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/crewMemberNameEditText" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_middle" />
 
     <Button
         android:id="@+id/acceptNameButton"
