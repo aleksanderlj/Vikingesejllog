@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -99,6 +100,12 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             runOnUiThread(() -> {
 				pager.setCurrentItem(etaper.size()-1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
 			});
+            pager.setCurrentItem(etaper.size()-1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
+
+            if(pager.getCurrentItem()<etaper.size()) {
+                String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
+                ((TextView) findViewById(R.id.pagecount)).setText(s);
+            }
         });
 
         pager.setAdapter(adapter);
@@ -116,6 +123,8 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                     getSupportFragmentManager().beginTransaction().show(f).commit();
                     f.setAll(etaper.get(pager.getCurrentItem()), pager.getCurrentItem(), etaper.size());
                     dotNavigation.setViewPager2(pager);
+                    String s = "" + (pager.getCurrentItem()+1) + "/" + (etaper.size());
+                    ((TextView)findViewById(R.id.pagecount)).setText(s);
                 } else {
                     getSupportFragmentManager().beginTransaction().hide(f).commit();
                     // TODO top fragment needs to change when it reaches the end of viewpager
@@ -125,8 +134,10 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
 						prevButton.setEnabled(false);
 					else
 						prevButton.setEnabled(true);
-					if (pager.getAdapter().getItemCount()-1 == pager.getCurrentItem())
+					if (pager.getAdapter().getItemCount()-1 == pager.getCurrentItem()) {
 						nextButton.setEnabled(false);
+						((TextView) findViewById(R.id.pagecount)).setText("");
+					}
 					else
 						nextButton.setEnabled(true);
 				});
