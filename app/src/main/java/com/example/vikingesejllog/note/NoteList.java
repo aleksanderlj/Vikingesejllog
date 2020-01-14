@@ -96,6 +96,11 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             etaper.addAll(newEtaper);
             pager.post(() -> adapter.notifyDataSetChanged());
             pager.setCurrentItem(etaper.size()-1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
+
+            if(pager.getCurrentItem()<etaper.size()) {
+                String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
+                ((TextView) findViewById(R.id.pagecount)).setText(s);
+            }
         });
 
         pager.setAdapter(adapter);
@@ -122,8 +127,10 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                     prevButton.setEnabled(false);
                 else
                     prevButton.setEnabled(true);
-                if (pager.getAdapter().getItemCount()-1 == pager.getCurrentItem())
+                if (pager.getAdapter().getItemCount()-1 == pager.getCurrentItem()) {
                     nextButton.setEnabled(false);
+                    ((TextView)findViewById(R.id.pagecount)).setText("");
+                }
                 else
                     nextButton.setEnabled(true);
             }
