@@ -84,7 +84,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private String fileName;
 
     private boolean recordingDone;
-    private boolean imageTaken = false;
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private ImageView savedPicture, savedPictureZoomed;
@@ -353,12 +352,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             case R.id.createNoteCameraBtn:
                 ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
 
-                //Hvis der allerede er taget et billede:
-                if (imageTaken){
-                    Toast.makeText(CreateNote.this, "Der kan kun gemmes et billede pr. note!", Toast.LENGTH_SHORT).show();
-                }
-
-                if (!imageTaken){ //Så kun et billede kan gemmes i noten!
                 //Ny fil der kan laves til en Uri efterfølgende:
                 imageFile = new File(imageFolder + "/" + fileName + ".jpg");
                 Uri imageURI = FileProvider.getUriForFile(this, "com.example.vikingesejllog.fileprovider", imageFile);
@@ -370,9 +363,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 //Tjekker om mobilen har et kamera:
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    imageTaken = true; //Så kun et billede kan gemmes pr. note!
+                    //imageTaken = true; //Så kun et billede kan gemmes pr. note!
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI);
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);}}
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);}
                 break;
 
             case R.id.createNoteAccepterBtn:
@@ -425,8 +418,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         super.onActivityResult(REQUEST_IMAGE_CAPTURE, resultCode, data);
 
         Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_SHORT).show();
-
-        cameraButton.setAlpha((float) 0.3);
 
         //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
         Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
