@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -16,11 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
-import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.other.DatabaseBuilder;
-import com.google.gson.Gson;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,6 +28,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
     ArrayList<String> crew;
     AppDatabase db;
     Date departure;
+    ImageView crewButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,11 +42,11 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         crew.add("Alek");
         crew.add("Freddy Fazbear");
          */
-
         findViewById(R.id.createEtapeDepartureDateBox).setOnClickListener(this);
         findViewById(R.id.createEtapeCrewCountBox).setOnClickListener(this);
         findViewById(R.id.createEtapeAccepterBtn).setOnClickListener(this);
         findViewById(R.id.createEtapeAfbrydBtn).setOnClickListener(this);
+
     }
 
     @Override
@@ -90,6 +88,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.createEtapeAfbrydBtn:
                 finish();
+
 
         }
     }
