@@ -73,7 +73,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private AppDatabase db;
 
     private final int WIND_FIELD = 0, ROWERS_FIELD = 1, SAILFORING_FIELD = 2, SAILDIRECTION_FIELD = 3, COURSE_FIELD = 4;
-    private ImageView savedPicture;
+    private ImageView savedPicture, savedPictureZoomed;
 
 
     //AUDIO OG IMAGE VARIABLER:
@@ -82,8 +82,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     private AudioRecorder audioRecorder;
     private AudioPlayer audioPlayer;
-
-    private ProgressDialog progressDialog;
 
     private File audioFolder, imageFolder, imageFile;
 
@@ -142,6 +140,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         savedPicture = findViewById(R.id.savedPicture);
         //Et eller andet med if(!imageTaken) så er det usynligt:
         savedPicture.setVisibility(View.INVISIBLE);
+
+        //savedPictureZoomed er et større ImageView gemt bagerst, der bliver visible,
+        // når brugeren holder fingeren nede på savedPicture som en slags zoom-funktion
+        savedPictureZoomed = findViewById(R.id.savedPictureZoomed);
+        savedPictureZoomed.setVisibility(View.INVISIBLE);
 
         // Vigtigt at der her er noget, der aflæser om noten har en lydoptagelse
         // gemt sammen med dens database objekt vha. recordingDone, således at det bliver muligt,
@@ -269,6 +272,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     //Implementering af AudioRecorder, AudioPlayer og kamerafunktionalitet:
     @Override
     public void onClick(View v) {
+        ProgressDialog progressDialog;
         switch (v.getId()){
             case R.id.windspeedBtn:
                 setWindSpeed();
@@ -294,6 +298,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 confirm();
                 break;
             case R.id.createNoteMicBtn:
+
                 if (!recordingDone) {
                     ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
                     audioRecorder = new AudioRecorder();
@@ -417,11 +422,15 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         imageTaken = true; //Så vi kan tjekke med databasen senere!
         Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_LONG).show();
 
+        //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
         Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
         savedPicture.setImageBitmap(bitmap);
         savedPicture.setRotation(90);
         savedPicture.setVisibility(View.VISIBLE);
         savedPicture.setOnTouchListener(this);
+
+        savedPictureZoomed.setImageBitmap(bitmap);
+        savedPictureZoomed.setRotation(90);
     }
 
     //Zoom ind på billede bitmap ved at røre det:
@@ -431,13 +440,15 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     hvis fingeren slippes
      */
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                savedPicture.setElevation(100);
-                savedPicture.setMinimumHeight(1000);
-                savedPicture.setMinimumWidth(1000);
+                savedPictureZoomed.setElevation(100);
+                savedPictureZoomed.setVisibility(View.VISIBLE);
+                savedPicture.setVisibility(View.INVISIBLE);
                 return true;
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                savedPicture.setElevation(1);
+                savedPicture.setElevation(-1);
+                savedPictureZoomed.setVisibility(View.INVISIBLE);
+                savedPicture.setVisibility(View.VISIBLE);
                 return true;
             }
         return false;

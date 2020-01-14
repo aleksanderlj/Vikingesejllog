@@ -350,5 +350,18 @@
         app:layout_constraintStart_toStartOf="@+id/commentBox"
         app:srcCompat="@android:color/black" />
 
+    <ImageView
+        android:id="@+id/savedPictureZoomed"
+        android:layout_width="408dp"
+        android:layout_height="615dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="10dp"
+        android:elevation="-1dp"
+        app:layout_constraintBottom_toTopOf="@+id/createNoteAfbrydBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:color/transparent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
