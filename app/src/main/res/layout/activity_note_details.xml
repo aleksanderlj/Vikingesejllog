@@ -100,7 +100,7 @@
         app:srcCompat="@drawable/camera" />
 
     <ImageButton
-        android:id="@+id/micButton"
+        android:id="@+id/playButton"
         android:layout_width="68dp"
         android:layout_height="68dp"
         android:layout_marginStart="100dp"
@@ -109,7 +109,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/noteField"
         app:layout_constraintStart_toStartOf="@+id/noteField"
-        app:srcCompat="@drawable/mic" />
+        app:srcCompat="@drawable/play" />
 
     <TextView
         android:id="@+id/hastighedBox"
