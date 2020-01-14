@@ -306,7 +306,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             //Skaber "PLAY"-knap.
                             ((ImageView) findViewById(R.id.createNoteMic)).setImageResource(R.drawable.play);
 
-                            Toast.makeText(CreateNote.this, "Lydnoten blev gemt i mappen: " + audioFolder, Toast.LENGTH_LONG).show();
+                            Toast.makeText(CreateNote.this, "Lydnoten blev gemt i mappen: " + audioFolder, Toast.LENGTH_SHORT).show();
                         }
                     });
                     progressDialog.show();
@@ -347,6 +347,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             case R.id.createNoteCameraBtn:
                 ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
 
+                //Hvis der allerede er taget et billede:
+                if (imageTaken){
+                    Toast.makeText(CreateNote.this, "Der kan kun gemmes et billede pr. note!", Toast.LENGTH_SHORT).show();
+                }
+
                 if (!imageTaken){ //Så kun et billede kan gemmes i noten!
                 //Ny fil der kan laves til en Uri efterfølgende:
                 imageFile = new File(imageFolder + "/" + fileName + ".jpg");
@@ -359,14 +364,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 //Tjekker om mobilen har et kamera:
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    imageTaken = true; //Så kun et billede kan gemmes pr. note!
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI);
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);}}
-
-                //Hvis der allerede er taget et billede:
-                if (imageTaken){
-                    Toast.makeText(CreateNote.this, "Der kan kun gemmes et billede!", Toast.LENGTH_SHORT).show();
-                }
-
                 break;
 
             case R.id.createNoteAccepterBtn:
@@ -418,8 +418,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //Køres når der er et resultat fra kamera appen og gemmer det som et bitmap:
         super.onActivityResult(REQUEST_IMAGE_CAPTURE, resultCode, data);
 
-        Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_LONG).show();
-        imageTaken = true; //Så kun et billede kan gemmes pr. note!
+        Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_SHORT).show();
+
         cameraButton.setAlpha((float) 0.3);
 
         //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
