@@ -38,13 +38,13 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // test at crewListItems går ind i recyclerView
+        /*
         for (int i=0; i<10; i++){
             CrewListItem crewListItem = new CrewListItem("crew "+(i+1));
             crewListItems.add(crewListItem);
-
         }
-
-        listAdapter = new CrewListAdapter(crewListItems,this);
+        */
+        listAdapter = new CrewListAdapter(crewListItems, this);
         recyclerView.setAdapter(listAdapter);
 
         newCrewButton = findViewById(R.id.newCrewButton);
@@ -56,16 +56,19 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
-            case R.id.newCrewButton:
-                getSupportFragmentManager().beginTransaction()
-                .replace(R.id.addNewCrew, new AddCrewFragment());
-
+        if (v == newCrewButton) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.crewNameFragment, new AddCrewFragment())
+                    .addToBackStack(null)
+                    .commit();
 
         }
     }
+
     @Override
     public void onMemberSelected(String member) {
-        edittextCrewName.setText(member);
+        CrewListItem crewListItem = new CrewListItem(member);
+        crewListItems.add(crewListItem);
+        listAdapter.notifyItemInserted(crewListItems.size() - 1);
     }
 }
