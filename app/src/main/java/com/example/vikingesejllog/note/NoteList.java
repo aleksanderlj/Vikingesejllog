@@ -99,13 +99,12 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             pager.post(() -> adapter.notifyDataSetChanged());
             runOnUiThread(() -> {
 				pager.setCurrentItem(etaper.size()-1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
+				
+				if(pager.getCurrentItem()<etaper.size()) {
+					String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
+					((TextView) findViewById(R.id.pagecount)).setText(s);
+				}
 			});
-            pager.setCurrentItem(etaper.size()-1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
-
-            if(pager.getCurrentItem()<etaper.size()) {
-                String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
-                ((TextView) findViewById(R.id.pagecount)).setText(s);
-            }
         });
 
         pager.setAdapter(adapter);
