@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.vikingesejllog.R;
 
@@ -17,7 +17,7 @@ public class AddCrewFragment extends Fragment implements View.OnClickListener{
     private Button acceptNameButton, cancelButton;
     private EditText crewMemberName;
     private View rod;
-    FragmentManager fragmentManager;
+    CrewListener callback;
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState){
         rod = i.inflate(R.layout.addcrew_fragment, container, false);
@@ -37,20 +37,30 @@ public class AddCrewFragment extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.acceptNameButton:
-                Bundle bundle = new Bundle();
-                bundle.putString("name", crewMemberName.getText().toString());
+
+                if(!crewMemberName.getText().toString().isEmpty()) {
+                    callback.onMemberSelected(crewMemberName.getText().toString());
+                }else{
+                    Toast toast = Toast.makeText(getActivity(), "Indtast et navn",Toast.LENGTH_SHORT);
+                    toast.show();
+                }
 
                 break;
             case R.id.cancelNameButton:
-                try {
-                    getActivity().getSupportFragmentManager().popBackStack();
-                }catch (NullPointerException npe){
-                    npe.printStackTrace();
-                }
+
                break;
-
-
         }
 
+        try {
+            getActivity().getSupportFragmentManager().popBackStack();
+        }catch (NullPointerException npe){
+            npe.printStackTrace();
+        }
     }
+
+    public void setCrewListener(CrewListener callback){
+        this.callback = callback;
+    }
+
+
 }

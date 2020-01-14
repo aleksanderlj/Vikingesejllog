@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,8 +37,8 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
 
         // test at crewListItems går ind i recyclerView
 
-        for (int i=0; i<10; i++){
-            CrewListItem crewListItem = new CrewListItem("crew "+(i+1));
+        for (int i = 0; i < 10; i++) {
+            CrewListItem crewListItem = new CrewListItem("crew " + (i + 1));
             crewListItems.add(crewListItem);
         }
 
@@ -66,5 +68,14 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
         CrewListItem crewListItem = new CrewListItem(member);
         crewListItems.add(crewListItem);
         listAdapter.notifyItemInserted(crewListItems.size() - 1);
+    }
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment fragment) {
+        if (fragment instanceof AddCrewFragment) {
+            AddCrewFragment addCrewFragment = (AddCrewFragment) fragment;
+            ((AddCrewFragment) fragment).setCrewListener(this);
+
+        }
     }
 }
