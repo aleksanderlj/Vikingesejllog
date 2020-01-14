@@ -180,7 +180,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         @Override
         public Fragment createFragment(int position) {
             if (position < etaper.size()) {
-                NoteListFragment f = new NoteListFragment(etaper.get(position));
+                NoteListFragment f = new NoteListFragment(etaper.get(position), togt.getTogt_id());
                 return f;
             } else {
                 CreateButton createEtape = new CreateButton(togt.getTogt_id());

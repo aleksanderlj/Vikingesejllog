@@ -14,11 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
+import com.example.vikingesejllog.etape.CreateEtape;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.other.DatabaseBuilder;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +28,14 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
     private RecyclerView recyclerView;
     private NoteListAdapter adapter;
     private EtapeWithNotes etape;
+    private long togt_id;
 
     public NoteListFragment() {
     }
 
-    public NoteListFragment(EtapeWithNotes etape) {
+    public NoteListFragment(EtapeWithNotes etape, long togt_id) {
         this.etape = etape;
+        this.togt_id = togt_id;
     }
 
     @Nullable
@@ -86,8 +88,9 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
         });
 
         view.findViewById(R.id.newHarborButton).setOnClickListener(this);
-        FloatingActionsMenu menu = view.findViewById(R.id.newHarborButton);
-
+        view.findViewById(R.id.floatmenu_togt).setOnClickListener(this);
+        view.findViewById(R.id.floatmenu_etape).setOnClickListener(this);
+        view.findViewById(R.id.floatmenu_note).setOnClickListener(this);
         return view;
     }
 
@@ -95,9 +98,23 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.newHarborButton:
-                Intent i = new Intent(getActivity(), CreateNote.class);
-                i.putExtra("etape_id", etape.etape.getEtape_id());
-                getActivity().startActivityForResult(i, 2);
+
+                break;
+
+            case R.id.floatmenu_togt:
+
+                break;
+
+            case R.id.floatmenu_etape:
+                Intent createetape = new Intent(getActivity(), CreateEtape.class);
+                createetape.putExtra("togt_id", togt_id);
+                getActivity().startActivityForResult(createetape, 1);
+                break;
+
+            case R.id.floatmenu_note:
+                Intent createnote = new Intent(getActivity(), CreateNote.class);
+                createnote.putExtra("etape_id", etape.etape.getEtape_id());
+                getActivity().startActivityForResult(createnote, 2);
                 break;
         }
     }

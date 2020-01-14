@@ -70,7 +70,7 @@
             android:id="@+id/dotNavigator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="40dp"
             app:dotsColor="#030831"
             app:dotsCornerRadius="8dp"
             app:dotsSize="10dp"

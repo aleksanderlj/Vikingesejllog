@@ -5,34 +5,52 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
+    <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/newHarborButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         android:elevation="5dp"
-        app:fab_addButtonColorNormal="#180B2C"
-        app:fab_addButtonColorPressed="#120722"
-        app:fab_labelStyle="@style/menu_label"
-        app:fab_labelsPosition="left"
+        app:menu_colorNormal="#180B2C"
+        app:menu_colorPressed="#120722"
+        app:menu_labels_style="@style/menu_label"
+        app:menu_labels_position="left"
+        app:menu_labels_showShadow="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent" >
 
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/floatmenu_togt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_title="Nummer 1" />
+            app:fab_size="mini"
+            app:fab_label="Togt"
+            app:fab_colorNormal="#2D1552"
+            app:fab_colorPressed="#34195E"
+            android:src="@drawable/plus"/>
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/floatmenu_etape"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:fab_size="mini"
+            app:fab_label="Etape"
+            app:fab_colorNormal="#2D1552"
+            app:fab_colorPressed="#34195E"
+            android:src="@drawable/plus"/>
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/floatmenu_note"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+            android:layout_height="wrap_content"
+            app:fab_size="mini"
+            app:fab_label="Note"
+            app:fab_colorNormal="#2D1552"
+            app:fab_colorPressed="#34195E"
+            android:src="@drawable/plus" />
+    </com.github.clans.fab.FloatingActionMenu>
 
 
 
@@ -55,7 +73,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="40dp"
-        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
