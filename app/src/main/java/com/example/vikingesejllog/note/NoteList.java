@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,7 +44,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     private RecyclerView recyclerView;
     private TogtListAdapter togtAdapter;
     private ArrayList<Togt> togt_list;
-    private Button nextButton, prevButton;
+    private ImageButton nextButton, prevButton;
     private ArrayList<EtapeWithNotes> etaper;
     private Togt togt;
     private AppDatabase db;
@@ -94,13 +95,19 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             etaper.clear();
             etaper.addAll(newEtaper);
             pager.post(() -> adapter.notifyDataSetChanged());
-            pager.setCurrentItem(etaper.size()-1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    pager.setCurrentItem(etaper.size()-1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
+                }
+            });
         });
 
         pager.setAdapter(adapter);
+        
+        // Create navigation buttons.
         WormDotsIndicator dotNavigation = findViewById(R.id.dotNavigator);
         dotNavigation.setViewPager2(pager);
-        
         
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -115,14 +122,19 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                     getSupportFragmentManager().beginTransaction().hide(f).commit();
                     // TODO top fragment needs to change when it reaches the end of viewpager
                 }
-                if (pager.getCurrentItem() == 0)
-                    prevButton.setEnabled(false);
-                else
-                    prevButton.setEnabled(true);
-                if (pager.getAdapter().getItemCount()-1 == pager.getCurrentItem())
-                    nextButton.setEnabled(false);
-                else
-                    nextButton.setEnabled(true);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (pager.getCurrentItem() == 0)
+                            prevButton.setEnabled(false);
+                        else
+                            prevButton.setEnabled(true);
+                        if (pager.getAdapter().getItemCount()-1 == pager.getCurrentItem())
+                            nextButton.setEnabled(false);
+                        else
+                            nextButton.setEnabled(true);
+                    }
+                });
             }
         });
     }

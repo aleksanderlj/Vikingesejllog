@@ -11,26 +11,31 @@
     <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
+        <ImageButton
             android:id="@+id/nextButton"
-            android:layout_width="20dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="60dp"
             android:layout_marginEnd="40dp"
-            android:background="@drawable/andorid_arrow_right"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/note_viewpager" />
-
-        <Button
-            android:id="@+id/prevButton"
-            android:layout_width="20dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="10dp"
+            android:src="@drawable/andorid_arrow_right"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
             android:elevation="5dp"
-            android:background="@drawable/andorid_arrow_left"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/prevButton"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="60dp"
+            android:src="@drawable/andorid_arrow_left"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:elevation="5dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/note_viewpager" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <fragment
         android:id="@+id/topMenuFragment"
