@@ -234,8 +234,14 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         String time = clock.format(new Date());
 
         Note note = new Note(getIntent().getLongExtra("etape_id", -1L), gpsData,
-                windSpeed.getText().toString(),time,
-                rowers.getText().toString(), sejlforing.getText().toString(), sejlStilling.getText().toString(), course.getText().toString(), commentText.getText().toString(), fileName);
+                windSpeedBtnText.getText().toString(),
+                time,
+                rowersBtnText.getText().toString(),
+                sejlforingBtnText.getText().toString(),
+                sejlStillingBtnText.getText().toString(),
+                courseBtnText.getText().toString(),
+                commentText.getText().toString(),
+                fileName);
 
         Executors.newSingleThreadExecutor().execute(() -> {
             db.noteDAO().insert(note);

@@ -50,38 +50,19 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
         adapter.setOnItemClickListener(new NoteListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                        // Følgende kode henter variable fra note objektet der trykkes på, og sender dem til en NoteDetails aktivitet.
-                        Intent intent = new Intent(getActivity(), NoteDetails.class);
-                        Note note = etape.getNoteList().get(position);
+                // Følgende kode henter variable fra note objektet der trykkes på, og sender dem til en NoteDetails aktivitet.
+                Intent intent = new Intent(getActivity(), NoteDetails.class);
+                Note note = etape.getNoteList().get(position);
+                try {
+                    intent.putExtra("noteId", note.getNote_id());
+                    intent.putExtra("noteNumber", (position + 1));
+                    intent.putExtra("noteCount", etape.getNoteList().size());
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
 
-                        if (note.getWindSpeed() != null){
-                            intent.putExtra("windSpeed", note.getWindSpeed());
-                        }
-                        if (note.getGpsLoc() != null){
-                            intent.putExtra("gpsLoc", note.getGpsLoc());
-                        }
-                        if (note.getTime() != null){
-                            intent.putExtra("time", note.getTime());
-                        }
-                        if (note.getRowers() != null){
-                            intent.putExtra("rowers", note.getRowers());
-                        }
-                        if (note.getSailForing() != null){
-                            intent.putExtra("sailForing", note.getSailForing());
-                        }
-                        if (note.getSailStilling() != null){
-                            intent.putExtra("sailStilling", note.getSailStilling());
-                        }
-                        if (note.getCourse() != null){
-                        intent.putExtra("course", note.getCourse());
-                        }
-                        if (note.getComment() != null){
-                        intent.putExtra("comment", note.getComment());
-                        }
-                        intent.putExtra("noteNumber", (position+1));
-                        intent.putExtra("noteCount", etape.getNoteList().size());
-                startActivity(intent);
-            }
+            startActivity(intent);
+        }
         });
 
         view.findViewById(R.id.newHarborButton).setOnClickListener(this);

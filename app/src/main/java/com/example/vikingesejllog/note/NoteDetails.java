@@ -1,5 +1,6 @@
 package com.example.vikingesejllog.note;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,7 +10,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
+import com.example.vikingesejllog.model.Note;
+import com.example.vikingesejllog.other.DatabaseBuilder;
+
+import java.util.concurrent.Executors;
 
 public class NoteDetails extends AppCompatActivity implements View.OnClickListener {
 
@@ -18,7 +24,10 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
             antalRoerBox, sejlfoeringBox, sejlStillingBox, kursBox, noteField;
     private int noteNumber, totalNotes;
 
+    private AppDatabase db;
+
     private String fileName;
+    private Note note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,21 +45,34 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
         kursBox = findViewById(R.id.kursBox);
         noteField = findViewById(R.id.noteField);
 
-        Intent intent = getIntent();
-        hastighedBox.setText(intent.getStringExtra("boatSpeed"));
-        vindBox.setText(intent.getStringExtra("windSpeed"));
+        db = DatabaseBuilder.get(this);
 
-        GPSBox.setText(intent.getStringExtra("gpsLoc"));
-        clockBox.setText(intent.getStringExtra("time"));
-        antalRoerBox.setText(intent.getStringExtra("rowers"));
-        sejlfoeringBox.setText(intent.getStringExtra("sailForing"));
-        sejlStillingBox.setText(intent.getStringExtra("sailStilling"));
-        kursBox.setText(intent.getStringExtra("course"));
-        noteField.setText(intent.getStringExtra("comment"));
+        Intent intent = getIntent();
+        long noteId = intent.getLongExtra("noteId", 0);
+        if (noteId == 0){
+            Toast.makeText(this, "FEJL: Kunne ikke hente note fra liste", Toast.LENGTH_SHORT).show();
+            onBackPressed();
+        }
+
+
+        Executors.newSingleThreadExecutor().execute(() -> {
+            note = db.noteDAO().getById(noteId);
+            runOnUiThread(() -> {
+                vindBox.setText(note.getWindSpeed());
+                GPSBox.setText(note.getGpsLoc());
+                clockBox.setText(note.getTime());
+                antalRoerBox.setText(note.getRowers());
+                sejlfoeringBox.setText(note.getSailForing());
+                sejlStillingBox.setText(note.getSailStilling());
+                kursBox.setText(note.getCourse());
+                noteField.setText(note.getComment());
+                fileName = note.getFileName();
+            });
+        });
+
         noteNumber = intent.getIntExtra("noteNumber", 0);
         totalNotes = intent.getIntExtra("noteCount", 0);
 
-        fileName = intent.getStringExtra("fileName");
         micButton.setOnClickListener(this);
 
 
