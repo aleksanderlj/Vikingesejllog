@@ -16,21 +16,22 @@ public class AddCrewFragment extends Fragment implements View.OnClickListener{
 
     private Button acceptNameButton, cancelButton;
     private EditText crewMemberName;
-    private View rod;
+    private View crewView;
     CrewListener callback;
+    
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState){
-        rod = i.inflate(R.layout.addcrew_fragment, container, false);
+        crewView = i.inflate(R.layout.addcrew_fragment, container, false);
 
-        crewMemberName = rod.findViewById(R.id.crewMemberNameEditText);
+        crewMemberName = crewView.findViewById(R.id.crewMemberNameEditText);
 
-        acceptNameButton = rod.findViewById(R.id.acceptNameButton);
-        cancelButton = rod.findViewById(R.id.cancelNameButton);
+        acceptNameButton = crewView.findViewById(R.id.acceptNameButton);
+        cancelButton = crewView.findViewById(R.id.cancelNameButton);
 
         acceptNameButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
 
-        return rod;
+        return crewView;
     }
 
     @Override

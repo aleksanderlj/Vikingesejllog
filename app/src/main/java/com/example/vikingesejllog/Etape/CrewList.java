@@ -35,13 +35,6 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // test at crewListItems går ind i recyclerView
-
-        for (int i = 0; i < 10; i++) {
-            CrewListItem crewListItem = new CrewListItem("crew " + (i + 1));
-            crewListItems.add(crewListItem);
-        }
-
         listAdapter = new CrewListAdapter(crewListItems, this);
         recyclerView.setAdapter(listAdapter);
 
@@ -59,7 +52,6 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
                     .replace(R.id.crewNameFragment, new AddCrewFragment())
                     .addToBackStack(null)
                     .commit();
-
         }
     }
 
