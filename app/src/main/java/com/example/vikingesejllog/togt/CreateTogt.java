@@ -1,5 +1,6 @@
 package com.example.vikingesejllog.togt;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -39,10 +40,12 @@ public class CreateTogt extends AppCompatActivity implements View.OnClickListene
 				AppDatabase db = DatabaseBuilder.get(this);
 				Executors.newSingleThreadExecutor().execute(() -> {
 					db.togtDAO().insert(togt);
+					setResult(Activity.RESULT_OK);
 					finish();
 				});
 				break;
 			case R.id.createTogtAfbrydBtn:
+				setResult(Activity.RESULT_CANCELED);
 				finish();
 		}
 

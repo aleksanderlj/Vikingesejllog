@@ -17,6 +17,10 @@ import java.util.List;
 public interface TogtDAO {
 
     @Transaction
+    @Query ("SELECT * FROM Togt ORDER BY togt_id DESC LIMIT 1")
+    Togt getLatestTogt();
+
+    @Transaction
     @Query("SELECT * FROM Togt")
     List<Togt> getAll();
 

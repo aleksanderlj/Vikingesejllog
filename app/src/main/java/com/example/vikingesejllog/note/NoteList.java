@@ -52,6 +52,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     private AppDatabase db;
     private final int ETAPE_CODE = 1;
     private final int NOTE_CODE = 2;
+    private final int FIRST_TOGT = 3;
     private int savedPos;
 
     @Override
@@ -96,12 +97,23 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
 
         Intent i = getIntent();
         Executors.newSingleThreadExecutor().execute(() -> {
-            togt = db.togtDAO().getById(i.getLongExtra("togt_id", -1L));
-            List<EtapeWithNotes> newEtaper = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
-            etaper.clear();
-            etaper.addAll(newEtaper);
-            pager.post(() -> adapter.notifyDataSetChanged());
-            pager.setCurrentItem(etaper.size()-1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
+            if (i.getLongExtra("togt_id", -1L) != -1L) {
+                togt = db.togtDAO().getById(i.getLongExtra("togt_id", -1L));
+            } else {
+                togt = db.togtDAO().getLatestTogt();
+            }
+            if(togt != null) {
+                List<EtapeWithNotes> newEtaper = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
+                etaper.clear();
+                etaper.addAll(newEtaper);
+                pager.post(() -> adapter.notifyDataSetChanged());
+                pager.setCurrentItem(etaper.size()-1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
+            } else{
+                togt = new Togt();
+                togt.setTogt_id(1L);
+                Intent newIntent = new Intent(this,CreateTogt.class);
+                startActivityForResult(newIntent, FIRST_TOGT);
+            }
         });
 
         pager.setAdapter(adapter);
@@ -152,6 +164,16 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Executors.newSingleThreadExecutor().execute(() -> {
+            togt_list.clear();
+            togt_list.addAll(db.togtDAO().getAll());
+        });
+        togtAdapter.notifyDataSetChanged();
+    }
+
     @SuppressLint("WrongConstant")
     @Override
     public void onClick(View v) {
@@ -160,6 +182,12 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
 				mDrawerLayout.openDrawer(Gravity.END);
                 newTogt = findViewById(R.id.addNewTogt);
                 newTogt.setOnClickListener(this);
+                Executors.newSingleThreadExecutor().execute(() -> {
+                    togt_list.clear();
+                    togt_list.addAll(db.togtDAO().getAll());
+                });
+                togtAdapter.notifyDataSetChanged();
+
 				break;
             case R.id.prevButton:
                 pager.setCurrentItem(pager.getCurrentItem() - 1, true);
@@ -170,6 +198,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             case R.id.addNewTogt:
                 Intent newIntent = new Intent(this, CreateTogt.class);
                 startActivity(newIntent);
+
 
         }
     }
@@ -215,7 +244,23 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                 });
                 //pager.post(() -> adapter.notifyDataSetChanged());
             });
+        } else if (requestCode == FIRST_TOGT && resultCode == Activity.RESULT_OK){
+            Executors.newSingleThreadExecutor().execute(() -> {
+                togt = db.togtDAO().getLatestTogt();
+                List<EtapeWithNotes> newEtaper = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
+                etaper.clear();
+                etaper.addAll(newEtaper);
+                pager.post(() -> adapter.notifyDataSetChanged());
+                runOnUiThread(() -> {
+                    pager.setAdapter(adapter);
+                    pager.setCurrentItem(etaper.size()-1, false);
+                });
+            });
+        } else if (requestCode == FIRST_TOGT && resultCode == Activity.RESULT_CANCELED){
+            Intent newIntent = new Intent(this,CreateTogt.class);
+            startActivityForResult(newIntent, FIRST_TOGT);
         }
+
     }
 
     @Override
