@@ -17,7 +17,7 @@
         android:layout_marginBottom="16dp"
         android:hint="@string/skriv_navn_her"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_middle"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left" />
@@ -44,7 +44,7 @@
         app:layout_constraintGuide_percent="0.80" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_middle"
+        android:id="@+id/guideline_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -60,7 +60,7 @@
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_middle" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal" />
 
     <Button
         android:id="@+id/acceptNameButton"
