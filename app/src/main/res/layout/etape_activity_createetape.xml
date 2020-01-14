@@ -27,7 +27,7 @@
         app:layout_constraintGuide_percent="0.10" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_middle_top"
+        android:id="@+id/guideline_field1_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -84,7 +84,7 @@
         android:layout_height="120dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_middle_top"
+        app:layout_constraintTop_toTopOf="@+id/guideline_field1_bottom"
         app:srcCompat="@drawable/btn_create_note" />
 
     <ImageView
@@ -117,7 +117,7 @@
         app:layout_constraintBottom_toTopOf="@+id/createEtapeDottedLine"
         app:layout_constraintEnd_toEndOf="@+id/createEtapeDottedLine"
         app:layout_constraintStart_toEndOf="@+id/createEtapeDepartureArrow"
-        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_middle_top" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_field1_bottom" />
 
     <EditText
         android:id="@+id/createEtapeArrivalText"
