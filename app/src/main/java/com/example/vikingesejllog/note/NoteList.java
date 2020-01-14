@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,7 +48,8 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     private RecyclerView recyclerView;
     private TogtListAdapter togtAdapter;
     private ArrayList<Togt> togt_list;
-    private Button nextButton, prevButton, newTogt;
+    private Button  newTogt;
+    private ImageButton nextButton, prevButton;
     private ArrayList<EtapeWithNotes> etaper;
     private Togt togt;
     private AppDatabase db;
@@ -61,6 +63,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.etape_activity_list);
+
         db = DatabaseBuilder.get(this);
         ImageView button = findViewById(R.id.menu_button);
         prevButton = findViewById(R.id.prevButton);
@@ -72,6 +75,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         togt_list = new ArrayList<>();
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         recyclerView = findViewById(R.id.togt_list);
         recyclerView.setHasFixedSize(true);
@@ -117,10 +121,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                 Intent newIntent = new Intent(this,CreateTogt.class);
                 startActivityForResult(newIntent, FIRST_TOGT);
             }
-            togt = db.togtDAO().getById(i.getLongExtra("togt_id", -1L));
-            List<EtapeWithNotes> newEtaper = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
-            etaper.clear();
-            etaper.addAll(newEtaper);
             pager.post(() -> adapter.notifyDataSetChanged());
             runOnUiThread(() -> {
 				pager.setCurrentItem(etaper.size()-1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
