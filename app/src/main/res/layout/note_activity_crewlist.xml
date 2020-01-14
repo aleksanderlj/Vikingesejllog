@@ -72,5 +72,15 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <fragment
+        android:id="@+id/crewNameFragment"
+        android:name="com.example.vikingesejllog.etape.AddCrewFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/crewRecyclerView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
