@@ -18,6 +18,7 @@ import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.other.DatabaseBuilder;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +86,8 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
         });
 
         view.findViewById(R.id.newHarborButton).setOnClickListener(this);
+        FloatingActionsMenu menu = view.findViewById(R.id.newHarborButton);
+
         return view;
     }
 
