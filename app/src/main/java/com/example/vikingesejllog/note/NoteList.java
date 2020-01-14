@@ -51,6 +51,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     private final int ETAPE_CODE = 1;
     private final int NOTE_CODE = 2;
     private int savedPos;
+    private WormDotsIndicator dotNavigation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,18 +96,15 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             etaper.clear();
             etaper.addAll(newEtaper);
             pager.post(() -> adapter.notifyDataSetChanged());
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    pager.setCurrentItem(etaper.size()-1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
-                }
-            });
+            runOnUiThread(() -> {
+				pager.setCurrentItem(etaper.size()-1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
+			});
         });
 
         pager.setAdapter(adapter);
         
         // Create navigation buttons.
-        WormDotsIndicator dotNavigation = findViewById(R.id.dotNavigator);
+        dotNavigation = findViewById(R.id.dotNavigator);
         dotNavigation.setViewPager2(pager);
         
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -122,19 +120,16 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                     getSupportFragmentManager().beginTransaction().hide(f).commit();
                     // TODO top fragment needs to change when it reaches the end of viewpager
                 }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (pager.getCurrentItem() == 0)
-                            prevButton.setEnabled(false);
-                        else
-                            prevButton.setEnabled(true);
-                        if (pager.getAdapter().getItemCount()-1 == pager.getCurrentItem())
-                            nextButton.setEnabled(false);
-                        else
-                            nextButton.setEnabled(true);
-                    }
-                });
+                runOnUiThread(() -> {
+					if (pager.getCurrentItem() == 0)
+						prevButton.setEnabled(false);
+					else
+						prevButton.setEnabled(true);
+					if (pager.getAdapter().getItemCount()-1 == pager.getCurrentItem())
+						nextButton.setEnabled(false);
+					else
+						nextButton.setEnabled(true);
+				});
             }
         });
     }
