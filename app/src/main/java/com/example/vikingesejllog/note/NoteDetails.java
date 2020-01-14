@@ -1,22 +1,24 @@
 package com.example.vikingesejllog.note;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vikingesejllog.R;
 
-import java.text.DecimalFormat;
-
-public class NoteDetails extends AppCompatActivity {
+public class NoteDetails extends AppCompatActivity implements View.OnClickListener {
 
     private ImageButton cameraButton, micButton;
     private TextView hastighedBox, vindBox, GPSBox, clockBox,
             antalRoerBox, sejlfoeringBox, sejlStillingBox, kursBox, noteField;
     private int noteNumber, totalNotes;
+
+    private String fileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +50,22 @@ public class NoteDetails extends AppCompatActivity {
         noteNumber = intent.getIntExtra("noteNumber", 0);
         totalNotes = intent.getIntExtra("noteCount", 0);
 
+        fileName = intent.getStringExtra("fileName");
+        micButton.setOnClickListener(this);
+
+
         NoteDetailsTopFragment topFragment = (NoteDetailsTopFragment) getSupportFragmentManager().findFragmentById(R.id.noteDetailsTopFragment);
         topFragment.updateTextView("Note " + noteNumber + "/" + totalNotes);
 
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v == micButton){
+                Toast.makeText(NoteDetails.this, "Test af fileName: " + fileName, Toast.LENGTH_SHORT).show();
+        }
+        if (v == cameraButton){
+            Toast.makeText(NoteDetails.this, "Test af fileName: " + fileName, Toast.LENGTH_SHORT).show();
+        }
+    }
 }

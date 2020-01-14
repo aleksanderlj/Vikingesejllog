@@ -8,7 +8,8 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -54,6 +55,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     private final int NOTE_CODE = 2;
     private final int FIRST_TOGT = 3;
     private int savedPos;
+    private WormDotsIndicator dotNavigation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         button.setOnClickListener(this);
         prevButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
-
         
         togt_list = new ArrayList<>();
 
@@ -86,6 +87,8 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             });
 
         recyclerView.setAdapter(togtAdapter);
+
+
 
         ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},123);
 
@@ -114,13 +117,27 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                 Intent newIntent = new Intent(this,CreateTogt.class);
                 startActivityForResult(newIntent, FIRST_TOGT);
             }
+            togt = db.togtDAO().getById(i.getLongExtra("togt_id", -1L));
+            List<EtapeWithNotes> newEtaper = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
+            etaper.clear();
+            etaper.addAll(newEtaper);
+            pager.post(() -> adapter.notifyDataSetChanged());
+            runOnUiThread(() -> {
+				pager.setCurrentItem(etaper.size()-1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
+
+				if(pager.getCurrentItem()<etaper.size()) {
+					String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
+					((TextView) findViewById(R.id.pagecount)).setText(s);
+				}
+			});
         });
 
         pager.setAdapter(adapter);
-        WormDotsIndicator dotNavigation = findViewById(R.id.dotNavigator);
+
+        // Create navigation buttons.
+        dotNavigation = findViewById(R.id.dotNavigator);
         dotNavigation.setViewPager2(pager);
-        
-        
+
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -130,18 +147,24 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                     getSupportFragmentManager().beginTransaction().show(f).commit();
                     f.setAll(etaper.get(pager.getCurrentItem()), pager.getCurrentItem(), etaper.size());
                     dotNavigation.setViewPager2(pager);
+                    String s = "" + (pager.getCurrentItem()+1) + "/" + (etaper.size());
+                    ((TextView)findViewById(R.id.pagecount)).setText(s);
                 } else {
                     getSupportFragmentManager().beginTransaction().hide(f).commit();
                     // TODO top fragment needs to change when it reaches the end of viewpager
                 }
-                if (pager.getCurrentItem() == 0)
-                    prevButton.setEnabled(false);
-                else
-                    prevButton.setEnabled(true);
-                if (pager.getAdapter().getItemCount()-1 == pager.getCurrentItem())
-                    nextButton.setEnabled(false);
-                else
-                    nextButton.setEnabled(true);
+                runOnUiThread(() -> {
+					if (pager.getCurrentItem() == 0)
+						prevButton.setEnabled(false);
+					else
+						prevButton.setEnabled(true);
+					if (pager.getAdapter().getItemCount()-1 == pager.getCurrentItem()) {
+						nextButton.setEnabled(false);
+						((TextView) findViewById(R.id.pagecount)).setText("");
+					}
+					else
+						nextButton.setEnabled(true);
+				});
             }
         });
 
@@ -260,7 +283,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             Intent newIntent = new Intent(this,CreateTogt.class);
             startActivityForResult(newIntent, FIRST_TOGT);
         }
-
     }
 
     @Override

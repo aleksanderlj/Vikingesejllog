@@ -20,6 +20,34 @@
         app:layout_constraintGuide_percent="0.92" />
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.10" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_middle_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_middle_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.90" />
+
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_middle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,10 +58,9 @@
         android:id="@+id/createEtapeSkipperBox"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginTop="100dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_top"
         app:srcCompat="@drawable/btn_create_note" />
 
     <EditText
@@ -45,6 +72,7 @@
         android:hint="Indtast navn på skipper"
         android:inputType="textPersonName"
         android:text=""
+        android:background="@null"
         app:layout_constraintBottom_toBottomOf="@+id/createEtapeSkipperBox"
         app:layout_constraintEnd_toEndOf="@+id/createEtapeSkipperBox"
         app:layout_constraintStart_toStartOf="@+id/createEtapeSkipperBox"
@@ -53,11 +81,10 @@
     <ImageView
         android:id="@+id/createEtapeDepartureDestinationBox"
         android:layout_width="0dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="45dp"
+        android:layout_height="120dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/createEtapeSkipperBox"
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_middle_top"
         app:srcCompat="@drawable/btn_create_note" />
 
     <ImageView
@@ -65,7 +92,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/createEtapeDottedLine"
         app:layout_constraintStart_toStartOf="@+id/createEtapeDepartureDestinationBox"
         app:layout_constraintTop_toTopOf="@+id/createEtapeDepartureDestinationBox"
         app:srcCompat="@drawable/path_white" />
@@ -75,30 +102,34 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="24dp"
-        android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDestinationBox"
         app:layout_constraintStart_toStartOf="@+id/createEtapeDepartureDestinationBox"
+        app:layout_constraintTop_toBottomOf="@+id/createEtapeDottedLine"
         app:srcCompat="@drawable/location_red" />
 
     <EditText
         android:id="@+id/createEtapeDepartureText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:text="Nyborg"
-        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureArrow"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:background="@null"
+        android:hint="Afrejse"
+        app:layout_constraintBottom_toTopOf="@+id/createEtapeDottedLine"
+        app:layout_constraintEnd_toEndOf="@+id/createEtapeDottedLine"
         app:layout_constraintStart_toEndOf="@+id/createEtapeDepartureArrow"
-        app:layout_constraintTop_toTopOf="@+id/createEtapeDepartureArrow" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_middle_top" />
 
     <EditText
         android:id="@+id/createEtapeArrivalText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:text="Kerteminde"
-        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDestinationPin"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:background="@null"
+        android:hint="Ankomst"
+        app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDestinationBox"
+        app:layout_constraintEnd_toEndOf="@+id/createEtapeDottedLine"
         app:layout_constraintStart_toEndOf="@+id/createEtapeDestinationPin"
-        app:layout_constraintTop_toTopOf="@+id/createEtapeDestinationPin" />
+        app:layout_constraintTop_toBottomOf="@+id/createEtapeDottedLine" />
 
     <ImageView
         android:id="@+id/createEtapeDepartureDateBox"
@@ -126,8 +157,7 @@
         android:id="@+id/createEtapeCrewCountBox"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="45dp"
-        app:layout_constraintBottom_toTopOf="@+id/createEtapeAfbrydBtn"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_middle_bottom"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:srcCompat="@drawable/btn_create_note" />
@@ -136,11 +166,10 @@
         android:id="@+id/createEtapeAfbrydBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
         android:background="@drawable/btn_create_note_afbryd"
         android:text="Afbryd"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_bottom"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle"
         app:layout_constraintStart_toStartOf="@+id/guideline_left" />
 
@@ -162,7 +191,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="22dp"
-        android:text="Antal besætningsmedlemmer"
+        android:text="Tilføj besætningsmedlemmer"
         app:layout_constraintBottom_toBottomOf="@+id/createEtapeCrewCountBox"
         app:layout_constraintStart_toStartOf="@+id/createEtapeCrewCountBox"
         app:layout_constraintTop_toTopOf="@+id/createEtapeCrewCountBox" />
@@ -170,7 +199,7 @@
     <ImageView
         android:id="@+id/createEtapeDottedLine"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="5dp"
         android:layout_marginStart="28dp"
         android:layout_marginEnd="28dp"
         app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDestinationBox"

@@ -50,10 +50,13 @@ public class Note {
     @ColumnInfo(name = "mic_image")
     private int micImageResource;
 
+    @ColumnInfo(name = "media_filename")
+    private String fileName;
+
     public Note(){}
 
     @Ignore
-    public Note(long etape_id, String gpsLoc, String windSpeed, String time, String rowers, String sailForing, String sailStilling, String course, String comment) {
+    public Note(long etape_id, String gpsLoc, String windSpeed, String time, String rowers, String sailForing, String sailStilling, String course, String comment, String fileName) {
         this.etape_id = etape_id;
         this.gpsLoc = gpsLoc;
         this.windSpeed = windSpeed;
@@ -66,6 +69,7 @@ public class Note {
         this.pencilImageResource = R.drawable.pencil_black;
         this.cameraImageResource = R.drawable.camera_black;
         this.micImageResource = R.drawable.mic_black;
+        this.fileName = fileName;
     }
 
     public String getGpsLoc() {
@@ -192,6 +196,14 @@ public class Note {
 
     public void setEtape_id(long etape_id) {
         this.etape_id = etape_id;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }
 

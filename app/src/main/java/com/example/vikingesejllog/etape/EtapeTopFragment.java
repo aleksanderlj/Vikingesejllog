@@ -33,14 +33,14 @@ public class EtapeTopFragment extends Fragment {
     }
 
     public void setEtape(int id, int max){
-        TextView tv = getView().findViewById(R.id.etape_nr);
+        //TextView tv = getView().findViewById(R.id.etape_nr);
         String s = "" + (id+1) + "/" + max;
-        tv.setText(s);
+        //tv.setText(s);
     }
 
     public void setAll(EtapeWithNotes etape, int id, int max){
         setCrew(etape.etape.getSkipper(), etape.etape.getCrew().size());
         setDestination(etape.etape.getStart(), etape.etape.getEnd());
-        setEtape(id, max);
+        //setEtape(id, max);
     }
 }
