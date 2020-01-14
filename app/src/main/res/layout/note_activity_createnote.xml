@@ -6,402 +6,334 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/micButton"
-        android:layout_width="68dp"
-        android:layout_height="68dp"
-        android:layout_marginBottom="40dp"
-        android:backgroundTint="#180B2C"
-        app:layout_constraintBottom_toTopOf="@+id/confirmButton"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:srcCompat="@drawable/mic" />
 
-    <TextView
-        android:id="@+id/pathButtonText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/montserrat"
-        android:text="Sejlføring"
-        android:textColor="@android:color/black"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/pathButton"
-        app:layout_constraintEnd_toEndOf="@+id/pathButton"
-        app:layout_constraintStart_toStartOf="@+id/pathButton"
-        app:layout_constraintTop_toTopOf="@+id/pathButton" />
-
-    <TextView
-        android:id="@+id/directionButtonText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:fontFamily="@font/montserrat"
+    <Button
+        android:id="@+id/sailStillingBtn"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_create_note"
         android:text="Sejlstilling"
-        android:textColor="@android:color/black"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/directionButton"
-        app:layout_constraintEnd_toEndOf="@+id/directionButton"
-        app:layout_constraintStart_toStartOf="@+id/directionButton"
-        app:layout_constraintTop_toTopOf="@+id/directionButton" />
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintTop_toBottomOf="@+id/sailforingBtn" />
 
-    <TextView
-        android:id="@+id/courseButtonText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:fontFamily="@font/montserrat"
+    <Button
+        android:id="@+id/sailforingBtn"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_create_note"
+        android:text="Sejlføring"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/windspeedBtn"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintTop_toTopOf="@+id/windspeedBtn" />
+
+    <Button
+        android:id="@+id/courseBtn"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_create_note"
         android:text="Kurs"
-        android:textColor="@android:color/black"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/courseButton"
-        app:layout_constraintEnd_toEndOf="@+id/courseButton"
-        app:layout_constraintStart_toStartOf="@+id/courseButton"
-        app:layout_constraintTop_toTopOf="@+id/courseButton" />
-
-    <TextView
-        android:id="@+id/windspeedButtonText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:fontFamily="@font/montserrat"
-        android:text="x m/s"
-        android:textColor="@android:color/black"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/windspeedButton"
-        app:layout_constraintEnd_toEndOf="@+id/windspeedButton"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
-        app:layout_constraintStart_toStartOf="@+id/windspeedButton"
-        app:layout_constraintTop_toTopOf="@+id/windspeedButton" />
-
-    <TextView
-        android:id="@+id/coordsButtonText"
-        android:layout_width="116dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="36dp"
-        android:fontFamily="@font/montserrat"
-        android:text="41° 54′ 8″ N 012° 27′ 12″ Ø"
-        android:textColor="@android:color/black"
-        android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@+id/coordsButton"
-        app:layout_constraintEnd_toEndOf="@+id/coordsButton"
-        app:layout_constraintStart_toStartOf="@+id/coordsButton"
-        app:layout_constraintTop_toTopOf="@+id/coordsButton" />
-
-    <TextView
-        android:id="@+id/clockButtonText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:fontFamily="@font/montserrat"
-        android:text="xx:xx"
-        android:textColor="@android:color/black"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/clockButton"
-        app:layout_constraintEnd_toEndOf="@+id/clockButton"
-        app:layout_constraintStart_toStartOf="@+id/clockButton"
-        app:layout_constraintTop_toTopOf="@+id/clockButton" />
-
-    <TextView
-        android:id="@+id/rowersButtonText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/montserrat"
-        android:text="Antal roere"
-        android:textColor="@android:color/black"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/rowersButton"
-        app:layout_constraintEnd_toEndOf="@+id/rowersButton"
-        app:layout_constraintStart_toStartOf="@+id/rowersButton"
-        app:layout_constraintTop_toTopOf="@+id/rowersButton" />
-
-    <TextView
-        android:id="@+id/sailingSpeedButtonText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:fontFamily="@font/montserrat"
-        android:text="x kn"
-        android:textColor="@android:color/black"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/sailingSpeedButton"
-        app:layout_constraintEnd_toEndOf="@+id/sailingSpeedButton"
-        app:layout_constraintStart_toStartOf="@+id/sailingSpeedButton"
-        app:layout_constraintTop_toTopOf="@+id/sailingSpeedButton" />
-
-    <Button
-        android:id="@+id/courseButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="10dp"
-        android:backgroundTint="#319B60FB"
-        android:drawableLeft="@drawable/course"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toBottomOf="@+id/directionButton"
-        android:onClick="setCourse"/>
-
-    <Button
-        android:id="@+id/directionButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="10dp"
-        android:backgroundTint="#319B60FB"
-        android:drawableLeft="@drawable/direction"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toBottomOf="@+id/pathButton"
-        android:onClick="setDirection"/>
-
-    <Button
-        android:id="@+id/pathButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="10dp"
-        android:backgroundTint="#319B60FB"
-        android:drawableLeft="@drawable/path"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toBottomOf="@+id/rowersButton"
-        android:onClick="setPath"/>
-
-    <Button
-        android:id="@+id/windspeedButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="36dp"
-        android:backgroundTint="#319B60FB"
-        android:drawableLeft="@drawable/windspeed"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/sailingSpeedButton"
-        android:onClick="setWindSpeed"/>
-
-    <EditText
-        android:id="@+id/pathText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/pathButton"
-        app:layout_constraintEnd_toEndOf="@+id/pathButton"
-        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toTopOf="@+id/pathButton" />
-
-    <EditText
-        android:id="@+id/windspeedText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/windspeedButtonText"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
-        app:layout_constraintStart_toStartOf="@+id/windspeedButton"
-        app:layout_constraintTop_toTopOf="@+id/windspeedButton"
-        app:layout_constraintVertical_bias="0.0"
-        android:visibility="gone"/>
-
-    <EditText
-        android:id="@+id/courseText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/courseButton"
-        app:layout_constraintEnd_toEndOf="@+id/courseButton"
-        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toTopOf="@+id/courseButton" />
-
-    <EditText
-        android:id="@+id/directionText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/directionButton"
-        app:layout_constraintEnd_toEndOf="@+id/directionButton"
-        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toTopOf="@+id/directionButton" />
-
-    <EditText
-        android:id="@+id/rowers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/rowersButton"
-        app:layout_constraintEnd_toEndOf="@+id/rowersButton"
-        app:layout_constraintStart_toStartOf="@+id/rowersButton"
-        app:layout_constraintTop_toTopOf="@+id/rowersButton" />
-
-    <EditText
-        android:id="@+id/sailingSpeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/sailingSpeedButton"
-        app:layout_constraintEnd_toEndOf="@+id/sailingSpeedButton"
-        app:layout_constraintStart_toStartOf="@+id/sailingSpeedButton"
-        app:layout_constraintTop_toTopOf="@+id/sailingSpeedButton" />
+        app:layout_constraintTop_toBottomOf="@+id/rowerCountBtn" />
 
     <Button
-        android:id="@+id/coordsButton"
+        android:id="@+id/rowerCountBtn"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="36dp"
-        android:backgroundTint="#319B60FB"
-        android:drawableLeft="@drawable/place"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_create_note"
+        android:onClick="setRowers"
+        android:text="Antal Roere"
+        android:textAlignment="textStart"
         android:textAllCaps="false"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/windspeedButton"
-        android:onClick="setCoordinates"/>
-
-    <Button
-        android:id="@+id/clockButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="36dp"
-        android:backgroundTint="#319B60FB"
-        android:drawableLeft="@drawable/clock"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/coordsButton"
-        android:onClick="setTime"/>
-
+        app:layout_constraintTop_toBottomOf="@+id/windspeedBtn" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.06" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
+        app:layout_constraintGuide_percent="0.94" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_middle_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.45" />
+        app:layout_constraintGuide_percent="0.48" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_middle_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.55" />
+        app:layout_constraintGuide_percent="0.52" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.10" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.90" />
 
     <Button
-        android:id="@+id/confirmButton"
+        android:id="@+id/windspeedBtn"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:background="@drawable/btn_round"
-        android:backgroundTint="#46FF00"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_create_note"
+        android:text="Vindhastighed"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_top" />
+
+    <Button
+        android:id="@+id/createNoteMicBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="50dp"
+        android:background="@drawable/btn_create_note_round"
+        app:layout_constraintBottom_toTopOf="@+id/commentBox"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/courseBtn" />
+
+    <Button
+        android:id="@+id/createNoteCameraBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/btn_create_note_round"
+        app:layout_constraintBottom_toBottomOf="@+id/createNoteMicBtn"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintTop_toTopOf="@+id/createNoteMicBtn" />
+
+    <ImageView
+        android:id="@+id/createNoteMic"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createNoteMicBtn"
+        app:layout_constraintEnd_toEndOf="@+id/createNoteMicBtn"
+        app:layout_constraintStart_toStartOf="@+id/createNoteMicBtn"
+        app:layout_constraintTop_toTopOf="@+id/createNoteMicBtn"
+        app:srcCompat="@drawable/mic" />
+
+    <ImageView
+        android:id="@+id/createNoteCamera"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createNoteCameraBtn"
+        app:layout_constraintEnd_toEndOf="@+id/createNoteCameraBtn"
+        app:layout_constraintStart_toStartOf="@+id/createNoteCameraBtn"
+        app:layout_constraintTop_toTopOf="@+id/createNoteCameraBtn"
+        app:srcCompat="@drawable/camera" />
+
+    <ImageView
+        android:id="@+id/commentBox"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/createNoteAccepterBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        android:onClick="confirm"/>
+        app:srcCompat="@drawable/btn_create_note" />
+
+    <EditText
+        android:id="@+id/commentEditText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:hint="Tilføj kommentar"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/commentBox"
+        app:layout_constraintEnd_toEndOf="@+id/commentBox"
+        app:layout_constraintStart_toStartOf="@+id/commentBox"
+        app:layout_constraintTop_toTopOf="@+id/commentBox" />
+
+    <Button
+        android:id="@+id/createNoteAfbrydBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_create_note_afbryd"
+        android:text="Afbryd"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_middle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left" />
+
+    <Button
+        android:id="@+id/createNoteAccepterBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_create_note_accepter"
+        android:text="Accepter"
+        android:onClick="confirm"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/createNoteAfbrydBtn"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle" />
 
     <TextView
-        android:id="@+id/confirmText"
+        android:id="@+id/windSpeedBtnText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"
-        android:fontFamily="@font/montserrat"
-        android:text="Godkend"
-        android:textAllCaps="false"
-        android:textColor="#180B2C"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/confirmButton"
-        app:layout_constraintEnd_toEndOf="@+id/confirmButton"
-        app:layout_constraintStart_toStartOf="@+id/confirmButton"
-        app:layout_constraintTop_toTopOf="@+id/confirmButton" />
+        app:layout_constraintBottom_toBottomOf="@+id/windspeedBtn"
+        app:layout_constraintEnd_toEndOf="@+id/windspeedBtn"
+        app:layout_constraintStart_toStartOf="@+id/windspeedBtn"
+        app:layout_constraintTop_toTopOf="@+id/windspeedBtn" />
 
-
-    <Button
-        android:id="@+id/sailingSpeedButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:backgroundTint="#319B60FB"
-        android:drawableLeft="@drawable/boat"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="setSailingSpeed"/>
-
-    <Button
-        android:id="@+id/rowersButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:backgroundTint="#319B60FB"
-        android:drawableLeft="@drawable/roere"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="setRowers"/>
-
-    <ImageButton
-        android:id="@+id/cameraButton"
-        android:layout_width="68dp"
-        android:layout_height="68dp"
-        android:layout_marginBottom="40dp"
-        android:backgroundTint="#180B2C"
-        app:layout_constraintBottom_toTopOf="@+id/confirmButton"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:srcCompat="@drawable/camera" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textComment"
+    <TextView
+        android:id="@+id/rowersBtnText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Tilføj kommentar"
-        app:layout_constraintBottom_toTopOf="@+id/cameraButton"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        android:elevation="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/rowerCountBtn"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/clockButton"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" />
+        app:layout_constraintTop_toTopOf="@+id/rowerCountBtn" />
 
-    <ImageView
-        android:id="@+id/takenPicture"
-        android:layout_width="75dp"
-        android:layout_height="66dp"
-        android:layout_marginBottom="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/confirmButton"
-        app:layout_constraintEnd_toStartOf="@+id/micButton"
-        app:layout_constraintStart_toEndOf="@+id/cameraButton"
-        app:srcCompat="?attr/colorControlHighlight" />
+    <TextView
+        android:id="@+id/sejlfoeringBtnText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintTop_toTopOf="@+id/sailforingBtn" />
+
+    <TextView
+        android:id="@+id/sejlstillingBtnText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintTop_toTopOf="@+id/sailStillingBtn" />
+
+    <TextView
+        android:id="@+id/courseBtnText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="@+id/courseBtn" />
 
     <ImageView
         android:id="@+id/savedPicture"
-        android:layout_width="347dp"
-        android:layout_height="457dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@color/cast_expanded_controller_ad_container_white_stripe_color" />
+        android:layout_width="67dp"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toBottomOf="@+id/courseBtn"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintTop_toTopOf="@+id/courseBtn"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/windspeedUnderline"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/windspeedBtn"
+        app:layout_constraintEnd_toEndOf="@+id/windspeedBtn"
+        app:layout_constraintStart_toStartOf="@+id/windspeedBtn"
+        app:srcCompat="@android:color/black" />
+
+    <ImageView
+        android:id="@+id/sailForingUnderline"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sailforingBtn"
+        app:layout_constraintEnd_toEndOf="@+id/sailforingBtn"
+        app:layout_constraintStart_toStartOf="@+id/sailforingBtn"
+        app:srcCompat="@android:color/black" />
+
+    <ImageView
+        android:id="@+id/rowerCountUnderline"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/rowerCountBtn"
+        app:layout_constraintEnd_toEndOf="@+id/rowerCountBtn"
+        app:layout_constraintStart_toStartOf="@+id/rowerCountBtn"
+        app:srcCompat="@android:color/black" />
+
+    <ImageView
+        android:id="@+id/sailStillingUnderline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/sailStillingBtn"
+        app:layout_constraintEnd_toEndOf="@+id/sailStillingBtn"
+        app:layout_constraintStart_toStartOf="@+id/sailStillingBtn"
+        app:srcCompat="@android:color/black" />
+
+    <ImageView
+        android:id="@+id/courseUnderline"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/courseBtn"
+        app:layout_constraintEnd_toEndOf="@+id/courseBtn"
+        app:layout_constraintStart_toStartOf="@+id/courseBtn"
+        app:srcCompat="@android:color/black" />
+
+    <ImageView
+        android:id="@+id/commentUnderline"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/commentBox"
+        app:layout_constraintEnd_toEndOf="@+id/commentBox"
+        app:layout_constraintStart_toStartOf="@+id/commentBox"
+        app:srcCompat="@android:color/black" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

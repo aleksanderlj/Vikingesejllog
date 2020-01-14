@@ -1,19 +1,46 @@
 package com.example.vikingesejllog.model;
 
+import androidx.annotation.RequiresPermission;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
+import androidx.room.Relation;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity
 public class Etape {
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "etape_id")
+    private long etape_id;
+
+    @ColumnInfo(name = "togt_parent_id")
+    private long togt_id;
+
+    @ColumnInfo(name = "skipper")
     private String skipper;
-    private ArrayList<String> crew;
-    private ArrayList<Note> noteList;
+
+    @ColumnInfo(name = "crew")
+    private List<String> crew;
+
+    @ColumnInfo(name = "start")
     private String start;
+
+    @ColumnInfo(name = "end")
     private String end;
+
+    @ColumnInfo(name = "departure")
     private Date departure;
 
     public Etape(){
         crew = new ArrayList<>();
-        noteList = new ArrayList<>();
     }
 
     public String getSkipper() {
@@ -24,20 +51,12 @@ public class Etape {
         this.skipper = skipper;
     }
 
-    public ArrayList<String> getCrew() {
+    public List<String> getCrew() {
         return crew;
     }
 
-    public void setCrew(ArrayList<String> crew) {
+    public void setCrew(List<String> crew) {
         this.crew = crew;
-    }
-
-    public ArrayList<Note> getNoteList() {
-        return noteList;
-    }
-
-    public void setNoteList(ArrayList<Note> noteList) {
-        this.noteList = noteList;
     }
 
     public String getStart() {
@@ -62,5 +81,21 @@ public class Etape {
 
     public void setDeparture(Date departure) {
         this.departure = departure;
+    }
+
+    public long getEtape_id() {
+        return etape_id;
+    }
+
+    public void setEtape_id(long etape_id) {
+        this.etape_id = etape_id;
+    }
+
+    public long getTogt_id() {
+        return togt_id;
+    }
+
+    public void setTogt_id(long togt_id) {
+        this.togt_id = togt_id;
     }
 }

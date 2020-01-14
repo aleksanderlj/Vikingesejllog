@@ -16,20 +16,55 @@
         android:layout_marginTop="52dp"
         android:hint="@string/skriv_navn_her"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:background="@drawable/btn_fragment_accept"
-        android:id="@+id/acceptNameButton"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_middle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.80" />
+
+
+    <Button
+        android:id="@+id/cancelNameButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/btn_create_note_afbryd"
+        android:text="Afbryd"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_middle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/crewMemberNameEditText" />
+
+    <Button
+        android:id="@+id/acceptNameButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_create_note_accepter"
         android:text="Accepter"
         android:textColor="@android:color/white"
-        android:textAllCaps="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/crewMemberNameEditText" />
+        app:layout_constraintBottom_toBottomOf="@+id/cancelNameButton"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle"
+        app:layout_constraintTop_toTopOf="@+id/cancelNameButton" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,7 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -14,25 +15,28 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/helgeask_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/helgeask_logo_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".etape.CrewList"></activity>
-        <activity android:name=".togt.TogtList" />
-        <activity android:name=".togt.CreateTogt" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".note.CreateNote" />
-        <activity android:name=".note.NoteList">
+        <activity android:name=".note.NoteDetails" />
+        <activity android:name=".togt.TogtList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".togt.CreateTogt" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".note.CreateNote" />
+        <activity android:name=".etape.CrewList" />
+        <activity android:name=".note.NoteList" />
         <activity android:name=".etape.CreateEtape" />
+        <activity android:name=".note.AudioPlayer" />
+        <activity android:name=".note.AudioRecorder" />
 
         <meta-data
             android:name="preloaded_fonts"

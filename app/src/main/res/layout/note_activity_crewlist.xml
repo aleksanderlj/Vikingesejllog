@@ -64,32 +64,23 @@
         android:id="@+id/crewRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/newCrewButton"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="@+id/addCrewFragment">
+        app:layout_constraintTop_toTopOf="parent">
 
     </androidx.recyclerview.widget.RecyclerView>
 
-
-    <FrameLayout
-        android:id="@+id/addCrewFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <fragment
-            android:id="@+id/fragment"
-            android:name="com.example.vikingesejllog.etape.AddCrewFragment"
-            android:layout_width="match_parent"
-            android:layout_height="232dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="235dp"
-            />
-
-    </FrameLayout>
+    <fragment
+        android:id="@+id/crewNameFragment"
+        android:name="com.example.vikingesejllog.etape.AddCrewFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/crewRecyclerView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
