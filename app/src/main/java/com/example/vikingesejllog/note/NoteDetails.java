@@ -28,26 +28,25 @@ import java.util.concurrent.Executors;
 public class NoteDetails extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
 
     private ImageButton cameraButton, playButton;
-    private TextView hastighedBox, vindBox, GPSBox, clockBox,
+    private TextView vindBox, GPSBox, clockBox,
             antalRoerBox, sejlfoeringBox, sejlStillingBox, kursBox, noteField;
     private int noteNumber, totalNotes;
 
     private AppDatabase db;
 
+    private Note note;
+
+    //MEDIA SUPPORT:
     private AudioPlayer audioPlayer;
-
     private ProgressDialog progressDialog;
-
     private File audioFolder, imageFolder, audioFile, imageFile;
 
-    private Note note;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_details);
-
-        hastighedBox = findViewById(R.id.hastighedBox);
         vindBox = findViewById(R.id.vindBox);
         GPSBox = findViewById(R.id.GPSBox);
         clockBox = findViewById(R.id.klokkeslætBox);
@@ -61,7 +60,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
 
         Intent intent = getIntent();
         long noteId = intent.getLongExtra("noteId", 0);
-        if (noteId == 0){
+        if (noteId == 0) {
             Toast.makeText(this, "FEJL: Kunne ikke hente note fra liste", Toast.LENGTH_SHORT).show();
             onBackPressed();
         }
@@ -84,6 +83,11 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
         noteNumber = intent.getIntExtra("noteNumber", 0);
         totalNotes = intent.getIntExtra("noteCount", 0);
 
+        NoteDetailsTopFragment topFragment = (NoteDetailsTopFragment) getSupportFragmentManager().findFragmentById(R.id.noteDetailsTopFragment);
+        topFragment.updateTextView("Note " + noteNumber + "/" + totalNotes);
+
+
+        //MEDIA SUPPORT:
         imageFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Billedenoter/");
         audioFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Lydnoter/");
 
@@ -91,9 +95,10 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
         cameraButton.setOnClickListener(this);
         //Sætter det gemt billede som ikon, hvis det findes:
         imageFile = new File(imageFolder + "/" + note.getFileName() + ".jpg");
-            if (imageFile.exists()){
+        if (imageFile.exists()) {
             Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
-            cameraButton.setImageBitmap(bitmap);}
+            cameraButton.setImageBitmap(bitmap);
+        }
 
 
         playButton = findViewById(R.id.playButton);
@@ -101,11 +106,6 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
         audioFile = new File(audioFolder + "/" + note.getFileName() + ".mp3");
 
         Log.d("TEST", (audioFile.exists() + "   " + imageFile + "   " + audioFile + note.getFileName()));
-
-
-        NoteDetailsTopFragment topFragment = (NoteDetailsTopFragment) getSupportFragmentManager().findFragmentById(R.id.noteDetailsTopFragment);
-        topFragment.updateTextView("Note " + noteNumber + "/" + totalNotes);
-
     }
 
     @Override
@@ -158,7 +158,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public boolean onTouch(View cameraButton, MotionEvent event) {
-        if (imageFile.exists()){
+        if (imageFile.exists()) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 cameraButton.setRotation(90);
                 return true;
@@ -167,5 +167,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                 cameraButton.setRotation(0);
                 return true;
             }
-        }return false;
-}}
+        }
+        return false;
+    }
+}
