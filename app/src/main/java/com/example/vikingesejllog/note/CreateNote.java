@@ -48,17 +48,14 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     //Permissions support:
     private boolean permissionToRecordAccepted;
     private boolean permissionToCamera;
-    private boolean permissionToReadStorage;
     private boolean permissionToWriteStorage;
 
     private String [] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA,
-            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-    private static final int REQUEST_CAMERA_PERMISSION = 300;
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int REQUEST_READ_EXTERNAL_STORAGE_PERMISSION = 400;
-    private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION = 500;
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 100;
+    private static final int REQUEST_CAMERA_PERMISSION = 200;
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION = 300;
 
 
     //ALLE VARIABLE TIL SELVE NOTEN:
@@ -73,7 +70,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private AppDatabase db;
 
     private final int WIND_FIELD = 0, ROWERS_FIELD = 1, SAILFORING_FIELD = 2, SAILDIRECTION_FIELD = 3, COURSE_FIELD = 4;
-    private ImageView savedPicture, savedPictureZoomed;
 
 
     //AUDIO OG IMAGE VARIABLER:
@@ -87,9 +83,10 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     private String fileName;
 
-    private boolean recordingDone, imageTaken;
+    private boolean recordingDone;
 
-
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private ImageView savedPicture, savedPictureZoomed;
 
 
     @Override
@@ -151,10 +148,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         // at bestemme om micButton skal være med "Play" eller "Mikrofon"-ikon.
         micButton = findViewById(R.id.createNoteMicBtn);
         micButton.setOnClickListener(this);
-        if(recordingDone){
-            //TODO ændre knap her til et nyt billede
-            ((ImageView)findViewById(R.id.createNoteMic)).setImageResource(android.R.drawable.ic_media_play);
-        }
 
 
         //Her skal der tjekkes for en instans af fileName inde i databasen, således at hvis der
@@ -165,29 +158,12 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         Log.d("Aktuelle filnavn: ", fileName);
 
 
+        //Gør mappen for lydnoter klar:
+        audioFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Lydnoter/");
+        //Gør mappen for billeder klar:
+        imageFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Billedenoter/");
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
-        //Opretter mappen for lydnoter:
-        audioFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Lydnoter/");
-        if (!audioFolder.exists()) {
-            try {
-                audioFolder.mkdirs();
-                audioFolder.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        //Opretter mappen for billeder:
-        imageFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Billedenoter/");
-        if (!imageFolder.exists()) {
-            try {
-                imageFolder.mkdirs();
-                imageFolder.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void setWindSpeed() {
@@ -259,7 +235,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         Note note = new Note(getIntent().getLongExtra("etape_id", -1L), gpsData,
                 windSpeed.getText().toString(),time,
-                rowers.getText().toString(), sejlforing.getText().toString(), sejlStilling.getText().toString(), course.getText().toString(), commentText.getText().toString());
+                rowers.getText().toString(), sejlforing.getText().toString(), sejlStilling.getText().toString(), course.getText().toString(), commentText.getText().toString(), fileName);
 
         Executors.newSingleThreadExecutor().execute(() -> {
             db.noteDAO().insert(note);
@@ -298,9 +274,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 confirm();
                 break;
             case R.id.createNoteMicBtn:
-
                 if (!recordingDone) {
                     ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
+
                     audioRecorder = new AudioRecorder();
                     new AsyncTask() {
                         @Override
@@ -330,7 +306,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             audioRecorder.stopAudioRecord();
                             recordingDone = true;
                             //Skaber "PLAY"-knap.
-                            ((ImageView) findViewById(R.id.createNoteMic)).setImageResource(android.R.drawable.ic_media_play);
+                            ((ImageView) findViewById(R.id.createNoteMic)).setImageResource(R.drawable.play);
 
                             Toast.makeText(CreateNote.this, "Lydnoten blev gemt i mappen: " + audioFolder, Toast.LENGTH_LONG).show();
                         }
@@ -338,8 +314,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     progressDialog.show();
 
                 } else if (recordingDone){
-                    ActivityCompat.requestPermissions(this, permissions, REQUEST_READ_EXTERNAL_STORAGE_PERMISSION);
-
                     audioPlayer = new AudioPlayer();
                     new AsyncTask() {
                         @Override
@@ -402,14 +376,28 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 if (!permissionToCamera){
                 permissionToCamera = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 break;}
-            case REQUEST_READ_EXTERNAL_STORAGE_PERMISSION:
-                if (!permissionToReadStorage){
-                permissionToReadStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;}
             case REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION:
                 if (!permissionToWriteStorage){
-                permissionToWriteStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;}
+                permissionToWriteStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;}
+
+                //Opretter mapperne på telefonen, når brugeren godkender denne permission!
+                if (!audioFolder.exists()) {
+                        try {
+                            audioFolder.mkdirs();
+                            audioFolder.createNewFile();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                if (!imageFolder.exists()) {
+                    try {
+                        imageFolder.mkdirs();
+                        imageFolder.createNewFile();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
         }}
 
     //Først EFTER kameraet har kørt oprettes, der et BitmapFactory, der omdanner den gemte billedefil
@@ -419,7 +407,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //Køres når der er et resultat fra kamera appen og gemmer det som et bitmap:
         super.onActivityResult(REQUEST_IMAGE_CAPTURE, resultCode, data);
 
-        imageTaken = true; //Så vi kan tjekke med databasen senere!
         Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_LONG).show();
 
         //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
