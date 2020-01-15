@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".note.NoteDetails">
 
+    <ImageView
+        android:id="@+id/savedPictureZoomed2"
+        android:layout_width="483dp"
+        android:layout_height="673dp"
+        android:layout_marginBottom="10dp"
+        android:elevation="-1dp"
+        app:layout_constraintBottom_toTopOf="@+id/createNoteAfbrydBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:color/transparent" />
+
     <TextView
         android:id="@+id/antalRoereBox"
         android:layout_width="0dp"
@@ -246,7 +259,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="4dp"
-        android:text="Tidspunkt"
+        android:text="Tidspunkt:"
         android:textColor="#4A4A4A"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"

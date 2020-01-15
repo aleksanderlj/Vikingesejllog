@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import java.util.concurrent.Executors;
 public class NoteDetails extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
 
     private ImageButton cameraButton, playButton;
+    private ImageView savedPictureZoomed2;
     private TextView vindBox, GPSBox, clockBox,
             antalRoerBox, sejlfoeringBox, sejlStillingBox, kursBox, noteField;
     private int noteNumber, totalNotes;
@@ -93,14 +95,21 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
         audioFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Lydnoter/");
 
         cameraButton = findViewById(R.id.cameraButton);
-        cameraButton.setOnClickListener(this);
-        //Sætter det gemt billede som ikon, hvis det findes:
+        cameraButton.setOnTouchListener(this);
+
+        //Sætter det gemte billede som ikon, hvis det findes:
         imageFile = new File(imageFolder + "/" + note.getFileName() + ".jpg");
         if (imageFile.exists()) {
+            //Gem billede for zoom funktionalitet i baggrunden, hvis det findes:
+            savedPictureZoomed2 = findViewById(R.id.savedPictureZoomed2);
+            savedPictureZoomed2.setVisibility(View.INVISIBLE);
+
             Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
             cameraButton.setImageBitmap(bitmap);
+            savedPictureZoomed2.setImageBitmap(bitmap);
+            cameraButton.setRotation(90);
+            savedPictureZoomed2.setRotation(90);
         }
-
 
         playButton = findViewById(R.id.playButton);
         playButton.setOnClickListener(this);
@@ -151,24 +160,27 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                 Toast.makeText(NoteDetails.this, "Der er ingen gemt lydnote!", Toast.LENGTH_SHORT).show();
             }
         }
-
-        if (v == cameraButton && !imageFile.exists()) {
-            Toast.makeText(NoteDetails.this, "Der er intet gemt billede!", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
-    public boolean onTouch(View cameraButton, MotionEvent event) {
-        if (imageFile.exists()) {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                cameraButton.setRotation(90);
+    public boolean onTouch(View v, MotionEvent event) {
+        if (v == cameraButton && imageFile.exists()){ //"ZOOM"-FUNKTION
+            {if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                cameraButton.setVisibility(View.INVISIBLE);
+                savedPictureZoomed2.setVisibility(View.VISIBLE);
+                savedPictureZoomed2.setElevation(100);
                 return true;
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                cameraButton.setRotation(0);
+                cameraButton.setVisibility(View.VISIBLE);
+                savedPictureZoomed2.setVisibility(View.INVISIBLE);
+                savedPictureZoomed2.setElevation(-1);
+                return true;
+            }}}
+        else if (v == cameraButton && !imageFile.exists()) { //Hvis billedet ikke findes:
+                Toast.makeText(NoteDetails.this, "Der er intet gemt billede!", Toast.LENGTH_SHORT).show();
                 return true;
             }
-        }
         return false;
     }
 }
