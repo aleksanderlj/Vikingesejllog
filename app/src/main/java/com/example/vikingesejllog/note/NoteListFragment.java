@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
+import com.example.vikingesejllog.etape.CreateEtape;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.model.Note;
@@ -22,7 +23,7 @@ import com.example.vikingesejllog.other.DatabaseBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NoteListFragment extends Fragment implements View.OnClickListener {
+public class NoteListFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private NoteListAdapter adapter;
@@ -66,18 +67,6 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
         }
         });
 
-        view.findViewById(R.id.newHarborButton).setOnClickListener(this);
         return view;
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.newHarborButton:
-                Intent i = new Intent(getActivity(), CreateNote.class);
-                i.putExtra("etape_id", etape.etape.getEtape_id());
-                getActivity().startActivityForResult(i, 2);
-                break;
-        }
     }
 }

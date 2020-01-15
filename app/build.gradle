@@ -44,5 +44,6 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
+    implementation 'com.github.clans:fab:1.6.4'
 
 }

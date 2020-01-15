@@ -174,6 +174,8 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             finish();
             startActivity(noteList);
         });
+
+        findViewById(R.id.newHarborButton).setOnClickListener(this);
     }
 
     // if navigation drawer is open backbutton will close it
@@ -223,6 +225,11 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                 startActivity(newIntent);
 
 
+            case R.id.newHarborButton:
+                Intent createnote = new Intent(this, CreateNote.class);
+                createnote.putExtra("etape_id", etaper.get(pager.getCurrentItem()).etape.getEtape_id());
+                this.startActivityForResult(createnote, NOTE_CODE);
+                break;
         }
     }
 
