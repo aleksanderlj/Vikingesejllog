@@ -23,19 +23,17 @@ import com.example.vikingesejllog.other.DatabaseBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NoteListFragment extends Fragment implements View.OnClickListener {
+public class NoteListFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private NoteListAdapter adapter;
     private EtapeWithNotes etape;
-    private long togt_id;
 
     public NoteListFragment() {
     }
 
-    public NoteListFragment(EtapeWithNotes etape, long togt_id) {
+    public NoteListFragment(EtapeWithNotes etape) {
         this.etape = etape;
-        this.togt_id = togt_id;
     }
 
     @Nullable
@@ -87,35 +85,6 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        view.findViewById(R.id.newHarborButton).setOnClickListener(this);
-        view.findViewById(R.id.floatmenu_togt).setOnClickListener(this);
-        view.findViewById(R.id.floatmenu_etape).setOnClickListener(this);
-        view.findViewById(R.id.floatmenu_note).setOnClickListener(this);
         return view;
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.newHarborButton:
-
-                break;
-
-            case R.id.floatmenu_togt:
-
-                break;
-
-            case R.id.floatmenu_etape:
-                Intent createetape = new Intent(getActivity(), CreateEtape.class);
-                createetape.putExtra("togt_id", togt_id);
-                getActivity().startActivityForResult(createetape, 1);
-                break;
-
-            case R.id.floatmenu_note:
-                Intent createnote = new Intent(getActivity(), CreateNote.class);
-                createnote.putExtra("etape_id", etape.etape.getEtape_id());
-                getActivity().startActivityForResult(createnote, 2);
-                break;
-        }
     }
 }
