@@ -167,7 +167,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
     public void setWindSpeed() {
-        String[] s1 = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
+        String[] s1 = {"N", "NNØ", "NØ", "ØNØ", "Ø", "ØSØ", "SØ", "SSØ", "S", "SSV", "SV", "VSV", "V", "VNV", "NV", "NNV"};
 
         int range = 33;
         String[] s2 = new String[range + 1];

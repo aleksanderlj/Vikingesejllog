@@ -30,8 +30,9 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
 
     private ImageButton cameraButton, playButton;
     private ImageView savedPictureZoomed2;
-    private TextView vindBox, GPSBox, clockBox,
-            antalRoerBox, sejlfoeringBox, sejlStillingBox, kursBox, noteField;
+    private TextView vindBox, GPSBox, clockBox, clockBoxText,
+            antalRoerBox, sejlfoeringBox, sejlStillingBox,
+            kursBox, noteField;
     private int noteNumber, totalNotes;
 
     private AppDatabase db;
@@ -44,6 +45,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
     private File audioFolder, imageFolder, audioFile, imageFile;
 
     private String fileName;
+    private String dato;
 
 
 
@@ -59,6 +61,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
         sejlStillingBox = findViewById(R.id.sejlstillingBox);
         kursBox = findViewById(R.id.kursBox);
         noteField = findViewById(R.id.noteField);
+        clockBoxText = findViewById(R.id.clockBoxText);
 
         db = DatabaseBuilder.get(this);
 
@@ -88,6 +91,9 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
         noteNumber = intent.getIntExtra("noteNumber", 0);
         totalNotes = intent.getIntExtra("noteCount", 0);
         fileName = intent.getStringExtra("fileName");
+        String[] datoSplit = fileName.split("\\.");
+        dato = datoSplit[0] + "/" + datoSplit[1] + "-" + datoSplit[2];
+        clockBoxText.setText(dato);
 
         NoteDetailsTopFragment topFragment = (NoteDetailsTopFragment) getSupportFragmentManager().findFragmentById(R.id.noteDetailsTopFragment);
         topFragment.updateTextView("Note " + noteNumber + "/" + totalNotes);
