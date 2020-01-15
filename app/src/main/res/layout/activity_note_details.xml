@@ -24,7 +24,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/border"
-        android:elevation="6dp"
         android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
@@ -39,7 +38,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/border"
-        android:elevation="6dp"
         android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
@@ -103,7 +101,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/border"
-        android:elevation="6dp"
         android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
@@ -118,7 +115,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/border"
-        android:elevation="6dp"
         android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
@@ -133,7 +129,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/border"
-        android:elevation="6dp"
         android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
@@ -148,7 +143,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/border"
-        android:elevation="6dp"
         android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
@@ -244,9 +238,7 @@
         android:id="@+id/clockBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
         android:layout_marginTop="3dp"
-        android:layout_marginEnd="1dp"
         android:text="15:36"
         android:textAlignment="center"
         android:textColor="@android:color/black"
@@ -266,12 +258,13 @@
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_top" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/blueClock"
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="5dp"
         android:elevation="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/clockBox"
+        app:layout_constraintBottom_toBottomOf="@+id/clockBoxText"
         app:layout_constraintEnd_toStartOf="@+id/clockBoxText"
         app:layout_constraintTop_toTopOf="@+id/clockBoxText"
         app:srcCompat="@drawable/lightblueclock" />
@@ -370,6 +363,60 @@
         app:layout_constraintStart_toStartOf="@+id/clockBoxText"
         app:layout_constraintTop_toBottomOf="@+id/clockBoxText"
         app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/underline_darkgray" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/vindBox"
+        app:layout_constraintEnd_toEndOf="@+id/vindBox"
+        app:layout_constraintStart_toStartOf="@+id/vindBox"
+        app:srcCompat="@drawable/underline_darkgray" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sejlføringBox"
+        app:layout_constraintEnd_toEndOf="@+id/sejlføringBox"
+        app:layout_constraintStart_toStartOf="@+id/sejlføringBox"
+        app:srcCompat="@drawable/underline_darkgray" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/GPSBox"
+        app:layout_constraintEnd_toEndOf="@+id/GPSBox"
+        app:layout_constraintStart_toStartOf="@+id/GPSBox"
+        app:srcCompat="@drawable/underline_darkgray" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sejlstillingBox"
+        app:layout_constraintEnd_toEndOf="@+id/sejlstillingBox"
+        app:layout_constraintStart_toStartOf="@+id/sejlstillingBox"
+        app:srcCompat="@drawable/underline_darkgray" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/antalRoereBox"
+        app:layout_constraintEnd_toEndOf="@+id/antalRoereBox"
+        app:layout_constraintStart_toStartOf="@+id/antalRoereBox"
+        app:srcCompat="@drawable/underline_darkgray" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/kursBox"
+        app:layout_constraintEnd_toEndOf="@+id/kursBox"
+        app:layout_constraintStart_toStartOf="@+id/kursBox"
         app:srcCompat="@drawable/underline_darkgray" />
 
 
