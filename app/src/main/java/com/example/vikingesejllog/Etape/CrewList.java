@@ -7,6 +7,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +41,7 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
         newCrewButton = findViewById(R.id.newCrewButton);
         newCrewButton.setOnClickListener(this);
 
-       /* new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT| ItemTouchHelper.RIGHT ) {
+        ItemTouchHelper.SimpleCallback itemTouchHelper = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT| ItemTouchHelper.RIGHT ) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
@@ -49,10 +50,12 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
-                recyclerView.
+                removeCrewItem(viewHolder.getAdapterPosition());
+                listAdapter.notifyDataSetChanged();
             }
-        })
-          */
+        };
+
+        new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(recyclerView);
 
     }
 
@@ -82,5 +85,9 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
             ((AddCrewFragment) fragment).setCrewListener(this);
 
         }
+    }
+
+    public void removeCrewItem(int postion){
+                crewListItems.remove(postion);
     }
 }
