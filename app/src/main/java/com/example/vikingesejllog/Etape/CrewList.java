@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vikingesejllog.R;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
     private RecyclerView recyclerView;
     private CrewListAdapter listAdapter;
     ArrayList<CrewListItem> crewListItems;
-
+    ArrayList<String> stringCrewListItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,10 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
         };
 
         new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(recyclerView);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(crewListItems);
+
 
     }
 
