@@ -43,7 +43,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
     private ProgressDialog progressDialog;
     private File audioFolder, imageFolder, audioFile, imageFile;
 
-    private String fileName, deviceName;
+    private String fileName;
 
 
 
@@ -92,10 +92,6 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
         NoteDetailsTopFragment topFragment = (NoteDetailsTopFragment) getSupportFragmentManager().findFragmentById(R.id.noteDetailsTopFragment);
         topFragment.updateTextView("Note " + noteNumber + "/" + totalNotes);
 
-        //Skal bruges, da billederne roteres 90 grader på Samsung-telefoner,
-        // da de åbentbart er helt væk..
-        deviceName = android.os.Build.BRAND;
-
         //MEDIA SUPPORT:
         imageFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Billedenoter/");
         audioFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Lydnoter/");
@@ -113,10 +109,11 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
             Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
             cameraButton.setImageBitmap(bitmap);
             savedPictureZoomed2.setImageBitmap(bitmap);
-            if (deviceName.equals("samsung")) {//Da Samsung er mærkelige!
-                cameraButton.setRotation(90);
-                savedPictureZoomed2.setRotation(90);
-            }
+                //Er nødvendigt da nogen telefoner roterer billedet forkert.. som f.eks. Samsung zzz
+                if (bitmap.getHeight() < bitmap.getWidth()){
+                    cameraButton.setRotation(90);
+                    savedPictureZoomed2.setRotation(90);
+                }
         }
 
         playButton = findViewById(R.id.playButton);

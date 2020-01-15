@@ -81,7 +81,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     private File audioFolder, imageFolder, imageFile;
 
-    private String fileName, deviceName;
+    private String fileName;
 
     private boolean recordingDone;
 
@@ -156,11 +156,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss", Locale.getDefault());
         fileName = sdf.format(new Date());
 
-        //Skal bruges, da billederne roteres 90 grader på Samsung-telefoner,
-        // da de åbentbart er helt væk..
-        deviceName = android.os.Build.BRAND;
-
-        Log.d("Aktuelle filnavn: ", fileName + "   " + deviceName);
+        Log.d("Aktuelle filnavn: ", fileName);
 
 
         //Gør mappen for lydnoter klar:
@@ -427,9 +423,10 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
         Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
         savedPicture.setImageBitmap(bitmap);
-                if (deviceName.equals("samsung")){ //Da Samsung er mærkelige!
-                savedPicture.setRotation(90);
-                savedPictureZoomed.setRotation(90);}
+            //Er nødvendigt da nogen telefoner roterer billedet forkert.. som f.eks. Samsung zzz
+            if (bitmap.getHeight() < bitmap.getWidth()){
+                    savedPicture.setRotation(90);
+                    savedPictureZoomed.setRotation(90);}
         savedPicture.setVisibility(View.VISIBLE);
         savedPicture.setOnTouchListener(this);
 
