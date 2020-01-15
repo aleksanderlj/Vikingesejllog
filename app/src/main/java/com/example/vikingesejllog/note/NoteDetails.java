@@ -33,7 +33,6 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
     private TextView vindBox, GPSBox, clockBox, clockBoxText,
             antalRoerBox, sejlfoeringBox, sejlStillingBox,
             kursBox, noteField;
-    private int noteNumber, totalNotes;
 
     private AppDatabase db;
 
@@ -45,7 +44,6 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
     private File audioFolder, imageFolder, audioFile, imageFile;
 
     private String fileName;
-    private String dato;
 
 
 
@@ -65,6 +63,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
 
         db = DatabaseBuilder.get(this);
 
+        // Hent note ID fra intent, med lille (unødvendig?) fejlsikring
         Intent intent = getIntent();
         long noteId = intent.getLongExtra("noteId", 0);
         if (noteId == 0) {
@@ -72,7 +71,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
             onBackPressed();
         }
 
-
+        // Hent note detaljer fra database og opdater TextViews
         Executors.newSingleThreadExecutor().execute(() -> {
             note = db.noteDAO().getById(noteId);
             runOnUiThread(() -> {
@@ -87,14 +86,15 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
             });
         });
 
-
-        noteNumber = intent.getIntExtra("noteNumber", 0);
-        totalNotes = intent.getIntExtra("noteCount", 0);
+        // Hent dato fra file name og indsæt i TextView over klokkeslæt
         fileName = intent.getStringExtra("fileName");
         String[] datoSplit = fileName.split("\\.");
-        dato = datoSplit[0] + "/" + datoSplit[1] + "-" + datoSplit[2];
+        String dato = datoSplit[0] + "/" + datoSplit[1] + "-" + datoSplit[2];
         clockBoxText.setText(dato);
 
+        // Tilføj note nr. og total antal af noter til top fragment
+        int noteNumber = intent.getIntExtra("noteNumber", 0);
+        int totalNotes = intent.getIntExtra("noteCount", 0);
         NoteDetailsTopFragment topFragment = (NoteDetailsTopFragment) getSupportFragmentManager().findFragmentById(R.id.noteDetailsTopFragment);
         topFragment.updateTextView("Note " + noteNumber + "/" + totalNotes);
 
