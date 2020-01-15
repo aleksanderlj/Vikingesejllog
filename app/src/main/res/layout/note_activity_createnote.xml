@@ -310,9 +310,7 @@
         app:layout_constraintBottom_toTopOf="@+id/commentBox"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/rowerCountBtn"
-        app:srcCompat="@drawable/logo"
-        tools:srcCompat="@drawable/logo" />
+        app:layout_constraintTop_toBottomOf="@+id/rowerCountBtn" />
 
     <ImageView
         android:id="@+id/windspeedUnderline"

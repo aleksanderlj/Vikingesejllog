@@ -120,11 +120,20 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                     cameraButton.setRotation(90);
                     savedPictureZoomed2.setRotation(90);
                 }
+        } else {
+            cameraButton.setVisibility(View.INVISIBLE);
+            cameraButton.setEnabled(false);
         }
 
         playButton = findViewById(R.id.playButton);
         playButton.setOnClickListener(this);
+
         audioFile = new File(audioFolder + "/" + fileName + ".mp3");
+
+        if(!audioFile.exists()){
+            playButton.setEnabled(false);
+            playButton.setVisibility(View.INVISIBLE);
+        }
 
         Log.d("TEST", (audioFile.exists() + "   " + imageFile + "   " + audioFile + "   " + fileName));
     }
@@ -165,11 +174,6 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                 });
                 progressDialog.show();
             }
-
-            //Hvis der ikke er en gemt lydfil tilknyttet noten:
-            else if (!audioFile.exists()) {
-                Toast.makeText(NoteDetails.this, "Der er ingen gemt lydnote!", Toast.LENGTH_SHORT).show();
-            }
         }
     }
 
@@ -186,10 +190,6 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                 savedPictureZoomed2.setElevation(-1);
                 return true;
             }}}
-        else if (v == cameraButton && !imageFile.exists()) { //Hvis billedet ikke findes:
-                Toast.makeText(NoteDetails.this, "Der er intet gemt billede!", Toast.LENGTH_SHORT).show();
-                return true;
-            }
         return false;
     }
 }

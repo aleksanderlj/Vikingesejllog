@@ -39,9 +39,6 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 		updateList();
-        
-        TopMenu tm = (TopMenu) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
-        tm.updateTextView("Liste over togter");
 
         findViewById(R.id.newTogtButton).setOnClickListener(this);
     }
