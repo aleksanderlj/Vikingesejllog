@@ -8,15 +8,13 @@
 
     <ImageView
         android:id="@+id/savedPictureZoomed2"
-        android:layout_width="483dp"
-        android:layout_height="673dp"
-        android:layout_marginBottom="10dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:elevation="-1dp"
-        app:layout_constraintBottom_toTopOf="@+id/createNoteAfbrydBtn"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@android:color/transparent" />
 
     <TextView
