@@ -155,6 +155,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //at det bliver muligt, at finde tidligere gemte billeder og lydfiler i telefonens hukommelse.
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss", Locale.getDefault());
         fileName = sdf.format(new Date());
+
         Log.d("Aktuelle filnavn: ", fileName);
 
 
@@ -422,12 +423,14 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
         Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
         savedPicture.setImageBitmap(bitmap);
-        savedPicture.setRotation(90);
+            //Er nødvendigt da nogen telefoner roterer billedet forkert.. som f.eks. Samsung zzz
+            if (bitmap.getHeight() < bitmap.getWidth()){
+                    savedPicture.setRotation(90);
+                    savedPictureZoomed.setRotation(90);}
         savedPicture.setVisibility(View.VISIBLE);
         savedPicture.setOnTouchListener(this);
 
         savedPictureZoomed.setImageBitmap(bitmap);
-        savedPictureZoomed.setRotation(90);
     }
 
     //Zoom ind på billede bitmap ved at røre det:
