@@ -18,7 +18,6 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
 
     private Button newCrewButton;
 
-
     private RecyclerView recyclerView;
     private CrewListAdapter listAdapter;
     ArrayList<CrewListItem> crewListItems;
@@ -41,6 +40,19 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
         newCrewButton = findViewById(R.id.newCrewButton);
         newCrewButton.setOnClickListener(this);
 
+       /* new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT| ItemTouchHelper.RIGHT ) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+                recyclerView.
+            }
+        })
+          */
 
     }
 
@@ -52,6 +64,7 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
                     .replace(R.id.crewNameFragment, new AddCrewFragment())
                     .addToBackStack(null)
                     .commit();
+
         }
     }
 

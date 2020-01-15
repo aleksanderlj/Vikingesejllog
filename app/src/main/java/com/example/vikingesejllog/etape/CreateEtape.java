@@ -21,11 +21,12 @@ import com.example.vikingesejllog.other.DatabaseBuilder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.Executors;
 
 public class CreateEtape extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
-    ArrayList<String> crew;
+    List<String> crew;
     AppDatabase db;
     Date departure;
     ImageView crewButton;
@@ -33,6 +34,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        crew = new ArrayList<>();
         db = DatabaseBuilder.get(this);
         setContentView(R.layout.etape_activity_createetape);
         departure = new Date();
@@ -77,6 +79,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
                 e.setStart(start.getText().toString());
                 e.setEnd(end.getText().toString());
                 e.setDeparture(departure);
+                e.setCrew(crew);
                 e.setTogt_id(getIntent().getLongExtra("togt_id", -1L));
 
                 setResult(Activity.RESULT_OK);

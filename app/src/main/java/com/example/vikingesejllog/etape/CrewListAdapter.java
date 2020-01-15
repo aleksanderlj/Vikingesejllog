@@ -41,8 +41,6 @@ public class CrewListAdapter extends RecyclerView.Adapter<CrewListAdapter.CrewVi
     public CrewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_item_crewitem, parent,false);
         return new CrewViewHolder(view);
-
-
     }
 
     @Override
@@ -57,6 +55,10 @@ public class CrewListAdapter extends RecyclerView.Adapter<CrewListAdapter.CrewVi
         return crewList.size();
     }
 
+    public CrewListItem getItemAt(int posistion){
+        return crewList.get(posistion);
+    }
+
 
     public class CrewViewHolder extends RecyclerView.ViewHolder{
         private TextView crewMember;
@@ -64,7 +66,19 @@ public class CrewListAdapter extends RecyclerView.Adapter<CrewListAdapter.CrewVi
         public CrewViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            crewMember = (TextView) itemView.findViewById(R.id.crewMember);
+            crewMember = itemView.findViewById(R.id.crewMember);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   if (listener != null){
+                       int position = getAdapterPosition();
+                       if (position != RecyclerView.NO_POSITION){
+                           listener.onItemClick(position);
+                       }
+                   }
+                }
+            });
 
         }
     }
