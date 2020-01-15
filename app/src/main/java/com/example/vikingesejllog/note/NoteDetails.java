@@ -177,13 +177,11 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
     public boolean onTouch(View v, MotionEvent event) {
         if (v == cameraButton && imageFile.exists()){ //"ZOOM"-FUNKTION
             {if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                cameraButton.setVisibility(View.INVISIBLE);
                 savedPictureZoomed2.setVisibility(View.VISIBLE);
                 savedPictureZoomed2.setElevation(100);
                 return true;
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                cameraButton.setVisibility(View.VISIBLE);
                 savedPictureZoomed2.setVisibility(View.INVISIBLE);
                 savedPictureZoomed2.setElevation(-1);
                 return true;
