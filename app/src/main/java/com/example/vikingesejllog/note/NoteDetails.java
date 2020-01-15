@@ -43,6 +43,8 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
     private ProgressDialog progressDialog;
     private File audioFolder, imageFolder, audioFile, imageFile;
 
+    private String fileName;
+
 
 
     @Override
@@ -85,6 +87,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
 
         noteNumber = intent.getIntExtra("noteNumber", 0);
         totalNotes = intent.getIntExtra("noteCount", 0);
+        fileName = intent.getStringExtra("fileName");
 
         NoteDetailsTopFragment topFragment = (NoteDetailsTopFragment) getSupportFragmentManager().findFragmentById(R.id.noteDetailsTopFragment);
         topFragment.updateTextView("Note " + noteNumber + "/" + totalNotes);
@@ -98,7 +101,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
         cameraButton.setOnTouchListener(this);
 
         //Sætter det gemte billede som ikon, hvis det findes:
-        imageFile = new File(imageFolder + "/" + note.getFileName() + ".jpg");
+        imageFile = new File(imageFolder + "/" + fileName + ".jpg");
         if (imageFile.exists()) {
             //Gem billede for zoom funktionalitet i baggrunden, hvis det findes:
             savedPictureZoomed2 = findViewById(R.id.savedPictureZoomed2);
@@ -113,9 +116,9 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
 
         playButton = findViewById(R.id.playButton);
         playButton.setOnClickListener(this);
-        audioFile = new File(audioFolder + "/" + note.getFileName() + ".mp3");
+        audioFile = new File(audioFolder + "/" + fileName + ".mp3");
 
-        Log.d("TEST", (audioFile.exists() + "   " + imageFile + "   " + audioFile + note.getFileName()));
+        Log.d("TEST", (audioFile.exists() + "   " + imageFile + "   " + audioFile + "   " + fileName));
     }
 
     @Override
@@ -127,12 +130,12 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                     @Override
                     protected Object doInBackground(Object... arg0) {
                         try {
-                            audioPlayer.setupAudioPlayer(audioFolder + "/" + note.getFileName() + ".mp3");
-                            return Log.d("Afspiller", "Følgende lydfil afspilles: " + audioFolder + "/" + note.getFileName() + ".mp3");
+                            audioPlayer.setupAudioPlayer(audioFolder + "/" + fileName + ".mp3");
+                            return Log.d("Afspiller", "Følgende lydfil afspilles: " + audioFolder + "/" + fileName + ".mp3");
                         } catch (Exception e) {
                             Toast.makeText(NoteDetails.this, "Indlæsning fejlede - prøv igen", Toast.LENGTH_LONG).show();
                             progressDialog.dismiss();
-                            return Log.d("ERROR", "Det virker IKKE: " + audioFolder + "    " + note.getFileName() + e);
+                            return Log.d("ERROR", "Det virker IKKE: " + audioFolder + "    " + fileName + e);
                         }
                     }
 

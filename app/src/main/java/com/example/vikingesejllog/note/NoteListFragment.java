@@ -55,6 +55,7 @@ public class NoteListFragment extends Fragment implements View.OnClickListener {
                 Note note = etape.getNoteList().get(position);
                 try {
                     intent.putExtra("noteId", note.getNote_id());
+                    intent.putExtra("fileName", note.getFileName());
                     intent.putExtra("noteNumber", (position + 1));
                     intent.putExtra("noteCount", etape.getNoteList().size());
                 } catch (Exception e){
