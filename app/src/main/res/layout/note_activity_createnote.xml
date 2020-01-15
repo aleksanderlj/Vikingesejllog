@@ -59,10 +59,9 @@
         android:textAlignment="textStart"
         android:textAllCaps="false"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/rowerCountBtn" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintTop_toBottomOf="@+id/sailStillingBtn" />
 
     <Button
         android:id="@+id/rowerCountBtn"
@@ -113,7 +112,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.27" />
+        app:layout_constraintGuide_percent="0.73" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_middle"
@@ -156,7 +155,7 @@
         android:background="@drawable/btn_create_note_round"
         app:layout_constraintBottom_toTopOf="@+id/commentBox"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left_left"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
         app:layout_constraintTop_toBottomOf="@+id/courseBtn" />
 
     <Button
@@ -165,9 +164,10 @@
         android:layout_height="60dp"
         android:background="@drawable/btn_create_note_round"
         app:layout_constraintBottom_toBottomOf="@+id/createNoteMicBtn"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_left_left"
-        app:layout_constraintTop_toTopOf="@+id/createNoteMicBtn" />
+        app:layout_constraintTop_toTopOf="@+id/createNoteMicBtn"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/createNoteMic"
@@ -237,8 +237,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_create_note_accepter"
-        android:text="Accepter"
         android:onClick="confirm"
+        android:text="Acceptér"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/createNoteAfbrydBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
@@ -249,6 +249,7 @@
         android:id="@+id/windSpeedBtnText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
         android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/windspeedBtn"
         app:layout_constraintEnd_toEndOf="@+id/windspeedBtn"
@@ -259,6 +260,7 @@
         android:id="@+id/rowersBtnText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
         android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/rowerCountBtn"
         app:layout_constraintEnd_toEndOf="@+id/rowerCountBtn"
@@ -269,6 +271,7 @@
         android:id="@+id/sejlfoeringBtnText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
         android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/sailforingBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
@@ -279,6 +282,7 @@
         android:id="@+id/sejlstillingBtnText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
         android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/sailStillingBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
@@ -289,25 +293,27 @@
         android:id="@+id/courseBtnText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
         android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/courseBtn"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
         app:layout_constraintTop_toTopOf="@+id/courseBtn" />
 
     <ImageView
         android:id="@+id/savedPicture"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="2dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="1dp"
         app:layout_constraintBottom_toTopOf="@+id/commentBox"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toBottomOf="@+id/sailStillingBtn"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/rowerCountBtn"
+        tools:srcCompat="@drawable/logo" />
 
     <ImageView
         android:id="@+id/windspeedUnderline"

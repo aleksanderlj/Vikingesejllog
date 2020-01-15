@@ -252,7 +252,7 @@
         android:layout_height="wrap_content"
         android:elevation="4dp"
         android:text="Tidspunkt:"
-        android:textColor="#4A4A4A"
+        android:textColor="@android:color/black"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_top" />

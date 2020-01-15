@@ -85,7 +85,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_create_note_accepter"
-        android:text="Accepter"
+        android:text="Acceptér"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/createTogtAfbrydBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"

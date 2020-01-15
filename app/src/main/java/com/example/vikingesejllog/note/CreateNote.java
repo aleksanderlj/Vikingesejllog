@@ -136,7 +136,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         savedPicture = findViewById(R.id.savedPicture);
         //Et eller andet med if(!imageTaken) så er det usynligt:
-        savedPicture.setVisibility(View.INVISIBLE);
+//        savedPicture.setVisibility(View.INVISIBLE);
 
         //savedPictureZoomed er et større ImageView gemt bagerst, der bliver visible,
         // når brugeren holder fingeren nede på savedPicture som en slags zoom-funktion
