@@ -58,13 +58,15 @@
 
     <EditText
         android:id="@+id/createTogtDepatureEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:hint="Afrejse lokation"
-        app:layout_constraintBottom_toBottomOf="@+id/createTogtDepartureArrow"
+        android:background="@null"
+        android:hint="Afrejse"
+        app:layout_constraintBottom_toTopOf="@+id/createTogtDottedLine"
+        app:layout_constraintEnd_toEndOf="@+id/createTogtDottedLine"
         app:layout_constraintStart_toEndOf="@+id/createTogtDepartureArrow"
-        app:layout_constraintTop_toTopOf="@+id/createTogtDepartureArrow" />
+        app:layout_constraintTop_toTopOf="@+id/createTogtArrDestinBox" />
 
     <Button
         android:id="@+id/createTogtAfbrydBtn"
@@ -91,18 +93,20 @@
 
     <EditText
         android:id="@+id/createTogtArrivalEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:hint="Ankomst lokation"
-        app:layout_constraintBottom_toBottomOf="@+id/createTogtDestinationPin"
+        android:background="@null"
+        android:hint="Ankomst"
+        app:layout_constraintBottom_toBottomOf="@+id/createTogtArrDestinBox"
+        app:layout_constraintEnd_toEndOf="@+id/createTogtDottedLine"
         app:layout_constraintStart_toEndOf="@+id/createTogtDestinationPin"
-        app:layout_constraintTop_toTopOf="@+id/createTogtDestinationPin" />
+        app:layout_constraintTop_toBottomOf="@+id/createTogtDottedLine" />
 
     <ImageView
         android:id="@+id/createTogtDottedLine"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="5dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/createTogtArrDestinBox"

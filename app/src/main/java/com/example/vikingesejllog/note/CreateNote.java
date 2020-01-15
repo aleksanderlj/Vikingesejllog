@@ -2,37 +2,37 @@ package com.example.vikingesejllog.note;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.note.dialogs.NoteDialog;
-import com.example.vikingesejllog.note.dialogs.NoteDialogNumberPicker;
 import com.example.vikingesejllog.note.dialogs.NoteDialogListener;
+import com.example.vikingesejllog.note.dialogs.NoteDialogNumberPicker;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.io.File;
@@ -45,50 +45,48 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     // TODO ryd op i alle findByViewID() declarations (vi behøver ikke finde dem alle fra start)
 
-    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-    private static final int REQUEST_CAMERA_PERMISSION = 300;
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int REQUEST_READ_EXTERNAL_STORAGE_PERMISSION = 400;
-    private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION = 500;
+    //Permissions support:
+    private boolean permissionToRecordAccepted;
+    private boolean permissionToCamera;
+    private boolean permissionToWriteStorage;
 
-    private static final String audioTAG = "TEST AF LYDOPTAGER";
-    private static final String imageTAG = "TEST AF BILLEDEFUNKTION";
+    private String [] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-    private Button windSpeed, course, sejlforing, sejlStilling, rowers;
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 100;
+    private static final int REQUEST_CAMERA_PERMISSION = 200;
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION = 300;
+
+
+    //ALLE VARIABLE TIL SELVE NOTEN:
+    private Button windSpeed, course, sejlforing, sejlStilling, rowers, micButton, cameraButton;
     private EditText commentText;
     private TextView windSpeedBtnText, courseBtnText, sejlforingBtnText,
             sejlStillingBtnText, rowersBtnText;
 
     private MyGPS gps;
+    private String gpsData;
 
-    private Button micButton, cameraButton;
-    private ImageView savedPicture;
+    private AppDatabase db;
 
-    //Media support:
+    private final int WIND_FIELD = 0, ROWERS_FIELD = 1, SAILFORING_FIELD = 2, SAILDIRECTION_FIELD = 3, COURSE_FIELD = 4;
+
+
+    //AUDIO OG IMAGE VARIABLER:
+    private static final String audioTAG = "TEST AF LYDOPTAGER";
+    private static final String imageTAG = "TEST AF BILLEDEFUNKTION";
+
     private AudioRecorder audioRecorder;
     private AudioPlayer audioPlayer;
 
-    private Intent takePictureIntent;
-
-    private File audioFolder, imageFolder;
+    private File audioFolder, imageFolder, imageFile;
 
     private String fileName;
 
     private boolean recordingDone;
 
-    private AppDatabase db;
-    // Permissions support:
-    private boolean permissionToRecordAccepted;
-    private boolean permissionToCamera;
-    private boolean permissionToReadStorage;
-    private boolean permissionToWriteStorage;
-    private String s;
-
-    private String [] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA,
-            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-    private final int STORAGE_PERMISSION_CODE = 1;
-    private final int WIND_FIELD = 0, ROWERS_FIELD = 1, SAILFORING_FIELD = 2, SAILDIRECTION_FIELD = 3, COURSE_FIELD = 4;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private ImageView savedPicture, savedPictureZoomed;
 
 
     @Override
@@ -98,92 +96,74 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         db = DatabaseBuilder.get(this);
 
+        findViewById(R.id.createNoteAccepterBtn).setOnClickListener(this);
+
         windSpeedBtnText = findViewById(R.id.windSpeedBtnText);
         windSpeed = findViewById(R.id.windspeedBtn);
+        windSpeed.setOnClickListener(this);
 
         course = findViewById(R.id.courseBtn);
         courseBtnText = findViewById(R.id.courseBtnText);
+        course.setOnClickListener(this);
 
         sejlforing = findViewById(R.id.sailforingBtn);
         sejlforingBtnText = findViewById(R.id.sejlfoeringBtnText);
+        sejlforing.setOnClickListener(this);
 
         sejlStilling = findViewById(R.id.sailStillingBtn);
         sejlStillingBtnText = findViewById(R.id.sejlstillingBtnText);
+        sejlStilling.setOnClickListener(this);
 
         rowers = findViewById(R.id.rowerCountBtn);
         rowersBtnText = findViewById(R.id.rowersBtnText);
+        rowers.setOnClickListener(this);
 
         commentText = findViewById(R.id.commentEditText);
 
-        micButton = findViewById(R.id.createNoteMicBtn);
-        micButton.setOnClickListener(this);
-        audioRecorder = new AudioRecorder();
+        gps = new MyGPS(this);
+        gpsData = "LAT: " + String.format(Locale.US, "%.2f", gps.getLocation().getLatitude()) + "\n" +
+                "LON: " + String.format(Locale.US, "%.2f", gps.getLocation().getLongitude());
+        System.out.println(gpsData);
 
+
+
+
+        // Vigtigt at der her er noget, der aflæser om noten har et billede
+        // gemt sammen med dens database objekt, således at det bliver muligt, at bestemme
+        // om cameraButton skal være med "Kamera"-ikon eller bitmap af det gemte billede.
         cameraButton = findViewById(R.id.createNoteCameraBtn);
         cameraButton.setOnClickListener(this);
 
         savedPicture = findViewById(R.id.savedPicture);
+        //Et eller andet med if(!imageTaken) så er det usynligt:
         savedPicture.setVisibility(View.INVISIBLE);
 
-        micButton = findViewById(R.id.createNoteMicBtn);
-        if(recordingDone){
-            //TODO ændre knap her til et nyt billede
-            // micButton.setImageResource(android.R.drawable.ic_media_play);
-        }
+        //savedPictureZoomed er et større ImageView gemt bagerst, der bliver visible,
+        // når brugeren holder fingeren nede på savedPicture som en slags zoom-funktion
+        savedPictureZoomed = findViewById(R.id.savedPictureZoomed);
+        savedPictureZoomed.setVisibility(View.INVISIBLE);
 
-        cameraButton.setOnClickListener(this);
+        // Vigtigt at der her er noget, der aflæser om noten har en lydoptagelse
+        // gemt sammen med dens database objekt vha. recordingDone, således at det bliver muligt,
+        // at bestemme om micButton skal være med "Play" eller "Mikrofon"-ikon.
+        micButton = findViewById(R.id.createNoteMicBtn);
         micButton.setOnClickListener(this);
 
-        savedPicture.setImageAlpha(0);
 
-
-        try {
-            gps = new MyGPS(this);
-             s = "LAT: " + String.format(Locale.US, "%.2f", gps.getLocation().getLatitude()) + "\n" +
-                    "LON: " + String.format(Locale.US, "%.2f", gps.getLocation().getLongitude());
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-            s = "";
-        }
-
-
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm", Locale.getDefault());
+        //Her skal der tjekkes for en instans af fileName inde i databasen, således at hvis der
+        //allerede findes en fileName, skal denne bruges i stedet for at oprette et nyt, således
+        //at det bliver muligt, at finde tidligere gemte billeder og lydfiler i telefonens hukommelse.
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss", Locale.getDefault());
         fileName = sdf.format(new Date());
         Log.d("Aktuelle filnavn: ", fileName);
 
 
+        //Gør mappen for lydnoter klar:
+        audioFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Lydnoter/");
+        //Gør mappen for billeder klar:
+        imageFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Billedenoter/");
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
-        //Opretter mappen for lydnoter:
-        audioFolder = new File("/sdcard/Download/" + "Lydnoter");
-        if (!audioFolder.exists()) {
-            try {
-                audioFolder.mkdirs();
-                audioFolder.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        //Opretter mappen for billeder:
-        imageFolder = new File("/sdcard/Download/" + "Billedenoter");
-        if (!imageFolder.exists()) {
-            try {
-                imageFolder.mkdirs();
-                imageFolder.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        windSpeed.setOnClickListener(this);
-        course.setOnClickListener(this);
-        sejlforing.setOnClickListener(this);
-        sejlStilling.setOnClickListener(this);
-        rowers.setOnClickListener(this);
-        findViewById(R.id.createNoteAccepterBtn).setOnClickListener(this);
     }
 
     public void setWindSpeed() {
@@ -192,7 +172,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         int range = 33;
         String[] s2 = new String[range + 1];
         for (int n = 0; n < range; n++) {
-            s2[n] = String.valueOf(n) + " m/s";
+            s2[n] = n + " m/s";
         }
         s2[s2.length - 1] = "33+";
 
@@ -249,13 +229,18 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
     public void confirm() {
-
         SimpleDateFormat clock = new SimpleDateFormat("HH.mm", Locale.getDefault());
         String time = clock.format(new Date());
 
-        Note note = new Note(getIntent().getLongExtra("etape_id", -1L), s,
-                windSpeed.getText().toString(),time,
-                rowers.getText().toString(), sejlforing.getText().toString(), sejlStilling.getText().toString(), course.getText().toString(), commentText.getText().toString());
+        Note note = new Note(getIntent().getLongExtra("etape_id", -1L), gpsData,
+                windSpeedBtnText.getText().toString(),
+                time,
+                rowersBtnText.getText().toString(),
+                sejlforingBtnText.getText().toString(),
+                sejlStillingBtnText.getText().toString(),
+                courseBtnText.getText().toString(),
+                commentText.getText().toString(),
+                fileName);
 
         Executors.newSingleThreadExecutor().execute(() -> {
             db.noteDAO().insert(note);
@@ -268,6 +253,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     //Implementering af AudioRecorder, AudioPlayer og kamerafunktionalitet:
     @Override
     public void onClick(View v) {
+        ProgressDialog progressDialog;
         switch (v.getId()){
             case R.id.windspeedBtn:
                 setWindSpeed();
@@ -289,116 +275,102 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 setCourse();
                 break;
 
+            case R.id.createNoteMicBtn:
+                if (!recordingDone) {
+                    ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
+
+                    //Gør lydoptageren klar:
+                    audioRecorder = new AudioRecorder();
+                    new AsyncTask() {
+                        @Override
+                        protected Object doInBackground(Object... arg0) {
+                            try {
+                                audioRecorder.setupAudioRecord(audioFolder + "/" + fileName + ".mp3");
+                                return Log.d(audioTAG, "Der gemmes en lydfil i: " + audioFolder + "/" + fileName + ".mp3");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return Log.d(audioTAG, "Det virker IKKE: " + e);
+                            }
+                        }
+
+                        @Override
+                        protected void onPostExecute(Object obj) {
+                            audioRecorder.startAudioRecord();
+                        }
+                    }.execute();
+
+                    progressDialog = new ProgressDialog(CreateNote.this);
+                    progressDialog.setMax(200);
+                    progressDialog.setTitle("Optager lydnote...");
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            audioRecorder.stopAudioRecord();
+                            recordingDone = true;
+                            //Skaber "PLAY"-knap.
+                            ((ImageView) findViewById(R.id.createNoteMic)).setImageResource(R.drawable.play);
+
+                            Toast.makeText(CreateNote.this, "Lydnoten blev gemt i mappen: " + audioFolder, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    progressDialog.show();
+
+                } if (recordingDone){
+                    //Gør lydafspilleren klar:
+                    audioPlayer = new AudioPlayer();
+                    new AsyncTask() {
+                        @Override
+                        protected Object doInBackground(Object... arg0) {
+                            try {
+                                audioPlayer.setupAudioPlayer(audioFolder + "/" + fileName + ".mp3");
+                                return Log.d(audioTAG, "Følgende lydfil afspilles: " + audioFolder + "/" + fileName + ".mp3");
+                            } catch (Exception e){
+                                e.printStackTrace();
+                                return Log.d(audioTAG, "Det virker IKKE: " + audioFolder + "    " + fileName + e);
+                            }}
+
+                        @Override
+                        protected void onPostExecute(Object obj){
+                            audioPlayer.startAudioPlayer();
+                        }
+                    }.execute();
+
+                    progressDialog = new ProgressDialog(CreateNote.this);
+                    progressDialog.setMax(200);
+                    progressDialog.setTitle("Afspiller lydnote...");
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            audioPlayer.stopAudioNote();
+                        }});
+                    progressDialog.show();
+                }
+                break;
+
+            case R.id.createNoteCameraBtn:
+                ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
+
+                //Ny fil der kan laves til en Uri efterfølgende:
+                imageFile = new File(imageFolder + "/" + fileName + ".jpg");
+                Uri imageURI = FileProvider.getUriForFile(this, "com.example.vikingesejllog.fileprovider", imageFile);
+
+                //Udskriver stien til mig i terminalen:
+                Log.d(imageTAG, imageFile.getAbsolutePath());
+
+                //Sender intent til at åbne kameraet og afventer resultatet.
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                //Tjekker om mobilen har et kamera:
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    //imageTaken = true; //Så kun et billede kan gemmes pr. note!
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI);
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);}
+                break;
+
             case R.id.createNoteAccepterBtn:
                 confirm();
                 break;
-        }
-
-        ProgressDialog progressDialog;
-        if (v == micButton && !recordingDone) {
-                ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-
-                audioRecorder = new AudioRecorder();
-
-                new AsyncTask() {
-                    @Override
-                    protected Object doInBackground(Object... arg0) {
-                        try {
-                            audioRecorder.setupAudioRecord(audioFolder + "/" + fileName + ".mp3");
-                            return Log.d(audioTAG, "Der gemmes en lydfil i: " + audioFolder + "/" + fileName + ".mp3");
-                        } catch (Exception e){
-                            e.printStackTrace();
-                            return Log.d(audioTAG, "Det virker IKKE: " + e);
-                        } }
-
-                    @Override
-                    protected void onPostExecute(Object obj){
-                        audioRecorder.startAudioRecord();
-                    }
-                }.execute();
-
-                progressDialog = new ProgressDialog(CreateNote.this);
-                progressDialog.setMax(200);
-                progressDialog.setTitle("Optager lydnote...");
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        audioRecorder.stopAudioRecord();
-                        recordingDone = true;
-                    }});
-                progressDialog.show();
-
-                //Skaber "PLAY"-knap.
-                //TODO ændre mic button til noget nyt
-                //micButton.setImageResource(android.R.drawable.ic_media_play);
-        }
-
-
-        if (v == micButton && recordingDone){
-                ActivityCompat.requestPermissions(this, permissions, REQUEST_READ_EXTERNAL_STORAGE_PERMISSION);
-
-                audioPlayer = new AudioPlayer();
-
-
-                new AsyncTask() {
-                    @Override
-                    protected Object doInBackground(Object... arg0) {
-                        try {
-                            audioPlayer.setupAudioPlayer(audioFolder + "/" + fileName + ".mp3");
-                            return Log.d(audioTAG, "Følgende lydfil afspilles: " + audioFolder + "/" + fileName + ".mp3");
-                        } catch (Exception e){
-                            e.printStackTrace();
-                            return Log.d(audioTAG, "Det virker IKKE: " + audioFolder + "    " + fileName + e);
-                        }}
-
-                    @Override
-                    protected void onPostExecute(Object obj){
-                        audioPlayer.startAudioPlayer();
-                    }
-                }.execute();
-
-                progressDialog = new ProgressDialog(CreateNote.this);
-                progressDialog.setMax(200);
-                progressDialog.setTitle("Afspiller lydnote...");
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                   audioPlayer.stopAudioNote();
-                    }});
-                progressDialog.show();
-        }
-
-
-        if (v == cameraButton){
-            //Sender intent til at åbne kameraet og afventer resultatet.
-            ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
-
-            takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageFolder);
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            }
-            /*new AsyncTask() {
-                @Override
-                protected Object doInBackground(Object... arg0) {
-                    try {
-                        image = File.createTempFile(fileName, ".jpg", imageFolder);
-                        return Log.d(imageTAG, image.toString());
-                    } catch (Exception e){
-                        e.printStackTrace();
-                        return Log.d(imageTAG, "Det virker IKKE: " + image + e);
-                    }}
-
-                @Override
-                protected void onPostExecute(Object obj){
-                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageFolder);
-                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                    }}
-            }.execute();*/
-            //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageFolder + "/" + fileName + ".png");
         }}
 
     //Checker om permissions er gemt.
@@ -414,35 +386,72 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 if (!permissionToCamera){
                 permissionToCamera = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 break;}
-            case REQUEST_READ_EXTERNAL_STORAGE_PERMISSION:
-                if (!permissionToReadStorage){
-                permissionToReadStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;}
             case REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION:
                 if (!permissionToWriteStorage){
-                permissionToWriteStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;}
+                permissionToWriteStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;}
+
+                //Opretter mapperne på telefonen, når brugeren godkender denne permission!
+                if (!audioFolder.exists()) {
+                        try {
+                            audioFolder.mkdirs();
+                            audioFolder.createNewFile();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                if (!imageFolder.exists()) {
+                    try {
+                        imageFolder.mkdirs();
+                        imageFolder.createNewFile();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
         }}
 
+    //Først EFTER kameraet har kørt, oprettes der et BitmapFactory, der omdanner den gemte billedefil
+    // til et bitmap, der kan vise en miniature udgave af billedet inde i noten:
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //Køres når der er et resultat fra kamera appen og gemmer det som et bitmap:
+        super.onActivityResult(REQUEST_IMAGE_CAPTURE, resultCode, data);
+
+        Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_SHORT).show();
+
+        //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
+        Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
+        savedPicture.setImageBitmap(bitmap);
+        savedPicture.setRotation(90);
+        savedPicture.setVisibility(View.VISIBLE);
+        savedPicture.setOnTouchListener(this);
+
+        savedPictureZoomed.setImageBitmap(bitmap);
+        savedPictureZoomed.setRotation(90);
+    }
 
     //Zoom ind på billede bitmap ved at røre det:
     @Override
-    public boolean onTouch(View takenPicture, MotionEvent event) {
+    public boolean onTouch(View savedPicture, MotionEvent event) {
     /*Zoomer ind på billedet, hvis brugeren rør ved det, og zoomer ud igen,
     hvis fingeren slippes
      */
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                savedPicture.setImageAlpha(255);
-                savedPicture.setElevation(100);
+                savedPictureZoomed.setElevation(100);
+                savedPictureZoomed.setVisibility(View.VISIBLE);
+                savedPicture.setVisibility(View.INVISIBLE);
                 return true;
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                savedPicture.setImageAlpha(0);
+                savedPicture.setElevation(-1);
+                savedPictureZoomed.setVisibility(View.INVISIBLE);
+                savedPicture.setVisibility(View.VISIBLE);
                 return true;
             }
         return false;
     }
 
+    //Til valg af værdi på notefelterne:
     @Override
     public void onNumberPickerSelected(String[] values, int field) {
         String s;

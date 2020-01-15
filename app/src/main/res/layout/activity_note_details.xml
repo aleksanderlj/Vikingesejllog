@@ -8,63 +8,47 @@
 
     <TextView
         android:id="@+id/antalRoereBox"
-        android:layout_width="130dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="32dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/border"
-        android:elevation="5dp"
-        android:text="TextView"
+        android:elevation="6dp"
         android:gravity="center"
+        android:text="TextView"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        app:layout_constraintEnd_toEndOf="@+id/darkblueBackground"
-        app:layout_constraintTop_toTopOf="@+id/darkblueBackground" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline_field3_bottom"
+        app:layout_constraintEnd_toEndOf="@+id/GPSBox"
+        app:layout_constraintStart_toStartOf="@+id/GPSBox"
+        app:layout_constraintTop_toTopOf="@+id/guideline_field3_top" />
 
     <TextView
         android:id="@+id/GPSBox"
-        android:layout_width="130dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="22dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/border"
-        android:elevation="5dp"
-        android:text="TextView"
+        android:elevation="6dp"
         android:gravity="center"
+        android:text="TextView"
         android:textAlignment="center"
         android:textColor="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_field2_bottom"
+        app:layout_constraintEnd_toEndOf="@+id/vindBox"
         app:layout_constraintStart_toStartOf="@+id/vindBox"
-        app:layout_constraintTop_toBottomOf="@+id/vindBox" />
-
-    <TextView
-        android:id="@+id/klokkeslætBox"
-        android:layout_width="130dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="22dp"
-        android:background="@drawable/border"
-        android:elevation="5dp"
-        android:text="TextView"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        app:layout_constraintStart_toStartOf="@+id/GPSBox"
-        app:layout_constraintTop_toBottomOf="@+id/GPSBox" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_field2_top" />
 
     <TextView
         android:id="@+id/noteField"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="10dp"
         android:layout_marginBottom="16dp"
-        android:background="#FFF2AB"
-        android:backgroundTint="#FFF2AB"
+        android:background="@drawable/note_details_comment_box"
+        android:elevation="5dp"
         android:text="TextView"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/cameraButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/darkblueBackground" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_middle" />
 
     <fragment
         android:id="@+id/noteDetailsTopFragment"
@@ -75,125 +59,100 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/darkblueBackground"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/btn_round_corner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/noteDetailsTopFragment" />
-
     <ImageButton
         android:id="@+id/cameraButton"
         android:layout_width="68dp"
         android:layout_height="68dp"
         android:layout_marginEnd="100dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="#180B2C"
+        android:background="@drawable/btn_create_note_round"
+        android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/noteField"
         app:layout_constraintStart_toStartOf="@+id/noteField"
         app:srcCompat="@drawable/camera" />
 
     <ImageButton
-        android:id="@+id/micButton"
+        android:id="@+id/playButton"
         android:layout_width="68dp"
         android:layout_height="68dp"
         android:layout_marginStart="100dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="#180B2C"
+        android:background="@drawable/btn_create_note_round"
+        android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/noteField"
         app:layout_constraintStart_toStartOf="@+id/noteField"
-        app:srcCompat="@drawable/mic" />
-
-    <TextView
-        android:id="@+id/hastighedBox"
-        android:layout_width="130dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/border"
-        android:elevation="5dp"
-        android:text="TextView"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        app:layout_constraintStart_toStartOf="@+id/darkblueBackground"
-        app:layout_constraintTop_toTopOf="@+id/darkblueBackground" />
+        app:srcCompat="@drawable/play" />
 
     <TextView
         android:id="@+id/vindBox"
-        android:layout_width="130dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="22dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/border"
-        android:text="TextView"
+        android:elevation="6dp"
         android:gravity="center"
+        android:text="TextView"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        app:layout_constraintStart_toStartOf="@+id/hastighedBox"
-        app:layout_constraintTop_toBottomOf="@+id/hastighedBox" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline_field1_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="@+id/guideline_field1_top" />
 
     <TextView
         android:id="@+id/sejlføringBox"
-        android:layout_width="130dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="22dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/border"
-        android:text="TextView"
+        android:elevation="6dp"
         android:gravity="center"
+        android:text="TextView"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        app:layout_constraintStart_toStartOf="@+id/antalRoereBox"
-        app:layout_constraintTop_toBottomOf="@+id/antalRoereBox" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline_field1_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintTop_toTopOf="@+id/guideline_field1_top" />
 
     <TextView
         android:id="@+id/sejlstillingBox"
-        android:layout_width="130dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="22dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/border"
-        android:text="TextView"
+        android:elevation="6dp"
         android:gravity="center"
+        android:text="TextView"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        app:layout_constraintStart_toStartOf="@+id/sejlføringBox"
-        app:layout_constraintTop_toBottomOf="@+id/sejlføringBox" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline_field2_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintTop_toTopOf="@+id/guideline_field2_top" />
 
     <TextView
         android:id="@+id/kursBox"
-        android:layout_width="130dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="22dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/border"
-        android:text="TextView"
+        android:elevation="6dp"
         android:gravity="center"
+        android:text="TextView"
         android:textAlignment="center"
         android:textColor="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_field3_bottom"
+        app:layout_constraintEnd_toEndOf="@+id/sejlstillingBox"
         app:layout_constraintStart_toStartOf="@+id/sejlstillingBox"
-        app:layout_constraintTop_toBottomOf="@+id/sejlstillingBox" />
-
-    <TextView
-        android:id="@+id/hastighedText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hastighed"
-        android:textColor="@color/design_default_color_background"
-        app:layout_constraintBottom_toTopOf="@+id/hastighedBox"
-        app:layout_constraintEnd_toEndOf="@+id/hastighedBox"
-        app:layout_constraintStart_toStartOf="@+id/hastighedBox" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_field3_top" />
 
     <TextView
         android:id="@+id/vindText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="4dp"
         android:text="Vindhastighed"
-        android:textColor="@color/design_default_color_on_primary"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/vindBox"
         app:layout_constraintEnd_toEndOf="@+id/vindBox"
         app:layout_constraintStart_toStartOf="@+id/vindBox" />
@@ -202,28 +161,22 @@
         android:id="@+id/geocoordText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="4dp"
         android:text="Geo-lokation"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/GPSBox"
         app:layout_constraintEnd_toEndOf="@+id/GPSBox"
         app:layout_constraintStart_toStartOf="@+id/GPSBox" />
 
     <TextView
-        android:id="@+id/klokkeslætText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Klokkeslæt"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/klokkeslætBox"
-        app:layout_constraintEnd_toEndOf="@+id/klokkeslætBox"
-        app:layout_constraintStart_toStartOf="@+id/klokkeslætBox" />
-
-    <TextView
         android:id="@+id/antalRoereText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="4dp"
         android:text="Antal Roere"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/antalRoereBox"
         app:layout_constraintEnd_toEndOf="@+id/antalRoereBox"
         app:layout_constraintStart_toStartOf="@+id/antalRoereBox" />
@@ -232,8 +185,10 @@
         android:id="@+id/sejlføringText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="4dp"
         android:text="Sejlføring"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/sejlføringBox"
         app:layout_constraintEnd_toEndOf="@+id/sejlføringBox"
         app:layout_constraintStart_toStartOf="@+id/sejlføringBox" />
@@ -242,8 +197,10 @@
         android:id="@+id/sejlstillingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="4dp"
         android:text="Sejlstilling"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/sejlstillingBox"
         app:layout_constraintEnd_toEndOf="@+id/sejlstillingBox"
         app:layout_constraintStart_toStartOf="@+id/sejlstillingBox" />
@@ -252,10 +209,155 @@
         android:id="@+id/kursText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="4dp"
         android:text="Kurs"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/kursBox"
         app:layout_constraintEnd_toEndOf="@+id/kursBox"
         app:layout_constraintStart_toStartOf="@+id/kursBox" />
+
+    <ImageView
+        android:id="@+id/commentBoxUnderline"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/noteField"
+        app:layout_constraintEnd_toEndOf="@+id/noteField"
+        app:layout_constraintStart_toStartOf="@+id/noteField"
+        app:srcCompat="@android:color/black" />
+
+    <TextView
+        android:id="@+id/clockBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="1dp"
+        android:text="15:36"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="@+id/imageView5"
+        app:layout_constraintStart_toStartOf="@+id/imageView5"
+        app:layout_constraintTop_toTopOf="@+id/imageView5" />
+
+    <TextView
+        android:id="@+id/clockBoxText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:text="Tidspunkt"
+        android:textColor="#4A4A4A"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_top" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="5dp"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/clockBox"
+        app:layout_constraintEnd_toStartOf="@+id/clockBoxText"
+        app:layout_constraintTop_toTopOf="@+id/clockBoxText"
+        app:srcCompat="@drawable/lightblueclock" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.10" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.90" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_middle_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.46" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_middle_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.54" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_field1_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.27" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.12" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_field1_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_field2_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.39" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_field2_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.47" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_field3_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.51" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_field3_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.59" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.63" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/clockBoxText"
+        app:layout_constraintEnd_toEndOf="@+id/clockBoxText"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/clockBoxText"
+        app:layout_constraintTop_toBottomOf="@+id/clockBoxText"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/underline_darkgray" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

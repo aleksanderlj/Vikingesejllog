@@ -7,6 +7,19 @@
     android:layout_height="match_parent">
 
 
+    <ImageView
+        android:id="@+id/savedPictureZoomed"
+        android:layout_width="483dp"
+        android:layout_height="673dp"
+        android:layout_marginBottom="10dp"
+        android:elevation="-1dp"
+        app:layout_constraintBottom_toTopOf="@+id/createNoteAfbrydBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:color/transparent" />
+
     <Button
         android:id="@+id/sailStillingBtn"
         android:layout_width="0dp"
@@ -96,6 +109,13 @@
         app:layout_constraintGuide_percent="0.52" />
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_middle_left_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.27" />
+
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_middle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -133,10 +153,9 @@
         android:id="@+id/createNoteMicBtn"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginStart="50dp"
         android:background="@drawable/btn_create_note_round"
         app:layout_constraintBottom_toTopOf="@+id/commentBox"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/courseBtn" />
 
@@ -144,11 +163,10 @@
         android:id="@+id/createNoteCameraBtn"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginEnd="50dp"
         android:background="@drawable/btn_create_note_round"
         app:layout_constraintBottom_toBottomOf="@+id/createNoteMicBtn"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_left_left"
         app:layout_constraintTop_toTopOf="@+id/createNoteMicBtn" />
 
     <ImageView
@@ -160,8 +178,10 @@
         android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/createNoteMicBtn"
         app:layout_constraintEnd_toEndOf="@+id/createNoteMicBtn"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/createNoteMicBtn"
         app:layout_constraintTop_toTopOf="@+id/createNoteMicBtn"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/mic" />
 
     <ImageView
@@ -240,6 +260,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/rowerCountBtn"
         app:layout_constraintEnd_toEndOf="@+id/rowerCountBtn"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toTopOf="@+id/rowerCountBtn" />
@@ -249,6 +270,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sailforingBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
         app:layout_constraintTop_toTopOf="@+id/sailforingBtn" />
@@ -258,6 +280,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sailStillingBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
         app:layout_constraintTop_toTopOf="@+id/sailStillingBtn" />
@@ -267,24 +290,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/courseBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toTopOf="@+id/courseBtn" />
 
     <ImageView
         android:id="@+id/savedPicture"
-        android:layout_width="67dp"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="@+id/courseBtn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/commentBox"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
-        app:layout_constraintTop_toTopOf="@+id/courseBtn"
+        app:layout_constraintTop_toBottomOf="@+id/sailStillingBtn"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
         android:id="@+id/windspeedUnderline"
         android:layout_width="0dp"
         android:layout_height="2dp"
+        android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/windspeedBtn"
         app:layout_constraintEnd_toEndOf="@+id/windspeedBtn"
         app:layout_constraintStart_toStartOf="@+id/windspeedBtn"
@@ -294,6 +319,7 @@
         android:id="@+id/sailForingUnderline"
         android:layout_width="0dp"
         android:layout_height="2dp"
+        android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/sailforingBtn"
         app:layout_constraintEnd_toEndOf="@+id/sailforingBtn"
         app:layout_constraintStart_toStartOf="@+id/sailforingBtn"
@@ -303,6 +329,7 @@
         android:id="@+id/rowerCountUnderline"
         android:layout_width="0dp"
         android:layout_height="2dp"
+        android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/rowerCountBtn"
         app:layout_constraintEnd_toEndOf="@+id/rowerCountBtn"
         app:layout_constraintStart_toStartOf="@+id/rowerCountBtn"
@@ -311,7 +338,8 @@
     <ImageView
         android:id="@+id/sailStillingUnderline"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="2dp"
+        android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/sailStillingBtn"
         app:layout_constraintEnd_toEndOf="@+id/sailStillingBtn"
         app:layout_constraintStart_toStartOf="@+id/sailStillingBtn"
@@ -321,6 +349,7 @@
         android:id="@+id/courseUnderline"
         android:layout_width="0dp"
         android:layout_height="2dp"
+        android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/courseBtn"
         app:layout_constraintEnd_toEndOf="@+id/courseBtn"
         app:layout_constraintStart_toStartOf="@+id/courseBtn"
@@ -330,6 +359,7 @@
         android:id="@+id/commentUnderline"
         android:layout_width="0dp"
         android:layout_height="2dp"
+        android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/commentBox"
         app:layout_constraintEnd_toEndOf="@+id/commentBox"
         app:layout_constraintStart_toStartOf="@+id/commentBox"

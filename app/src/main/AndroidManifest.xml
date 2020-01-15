@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature
@@ -22,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".note.NoteDetails" />
-        <activity android:name=".togt.TogtList">
+        <activity android:name=".note.NoteList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,14 +32,19 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".note.CreateNote" />
         <activity android:name=".etape.CrewList" />
-        <activity android:name=".note.NoteList" />
+        <activity android:name=".togt.TogtList" />
         <activity android:name=".etape.CreateEtape" />
         <activity android:name=".note.AudioPlayer" />
         <activity android:name=".note.AudioRecorder" />
 
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.vikingesejllog.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
-
 </manifest>
