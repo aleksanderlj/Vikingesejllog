@@ -242,9 +242,9 @@
         android:text="15:36"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        app:layout_constraintEnd_toEndOf="@+id/imageView5"
-        app:layout_constraintStart_toStartOf="@+id/imageView5"
-        app:layout_constraintTop_toTopOf="@+id/imageView5" />
+        app:layout_constraintEnd_toEndOf="@+id/tidspunktUnderline"
+        app:layout_constraintStart_toStartOf="@+id/tidspunktUnderline"
+        app:layout_constraintTop_toTopOf="@+id/tidspunktUnderline" />
 
     <TextView
         android:id="@+id/clockBoxText"
@@ -354,7 +354,7 @@
         app:layout_constraintGuide_percent="0.63" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/tidspunktUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/clockBoxText"
@@ -366,7 +366,7 @@
         app:srcCompat="@drawable/underline_darkgray" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/windspeedUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/vindBox"
@@ -375,7 +375,7 @@
         app:srcCompat="@drawable/underline_darkgray" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/sailForingUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/sejlføringBox"
@@ -384,7 +384,7 @@
         app:srcCompat="@drawable/underline_darkgray" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/gpsUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/GPSBox"
@@ -393,7 +393,7 @@
         app:srcCompat="@drawable/underline_darkgray" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/sailStillingUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/sejlstillingBox"
@@ -402,7 +402,7 @@
         app:srcCompat="@drawable/underline_darkgray" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/rowersUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/antalRoereBox"
@@ -411,7 +411,7 @@
         app:srcCompat="@drawable/underline_darkgray" />
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/courseUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/kursBox"
