@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -17,21 +18,23 @@ import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.Executors;
 
 public class CreateEtape extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
-    ArrayList<String> crew;
+    List<String> crew;
     AppDatabase db;
     Date departure;
+    ImageView crewButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        crew = new ArrayList<>();
         db = DatabaseBuilder.get(this);
         setContentView(R.layout.etape_activity_createetape);
         departure = new Date();
@@ -41,11 +44,11 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         crew.add("Alek");
         crew.add("Freddy Fazbear");
          */
-
         findViewById(R.id.createEtapeDepartureDateBox).setOnClickListener(this);
         findViewById(R.id.createEtapeCrewCountBox).setOnClickListener(this);
         findViewById(R.id.createEtapeAccepterBtn).setOnClickListener(this);
         findViewById(R.id.createEtapeAfbrydBtn).setOnClickListener(this);
+
     }
 
     @Override
@@ -76,6 +79,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
                 e.setStart(start.getText().toString());
                 e.setEnd(end.getText().toString());
                 e.setDeparture(departure);
+                e.setCrew(crew);
                 e.setTogt_id(getIntent().getLongExtra("togt_id", -1L));
 
                 setResult(Activity.RESULT_OK);
@@ -87,6 +91,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.createEtapeAfbrydBtn:
                 finish();
+
 
         }
     }
