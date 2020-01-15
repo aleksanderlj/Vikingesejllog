@@ -222,16 +222,6 @@
         app:layout_constraintEnd_toEndOf="@+id/kursBox"
         app:layout_constraintStart_toStartOf="@+id/kursBox" />
 
-    <ImageView
-        android:id="@+id/commentBoxUnderline"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/noteField"
-        app:layout_constraintEnd_toEndOf="@+id/noteField"
-        app:layout_constraintStart_toStartOf="@+id/noteField"
-        app:srcCompat="@android:color/black" />
-
     <TextView
         android:id="@+id/clockBox"
         android:layout_width="0dp"
@@ -415,6 +405,17 @@
         app:layout_constraintBottom_toBottomOf="@+id/kursBox"
         app:layout_constraintEnd_toEndOf="@+id/kursBox"
         app:layout_constraintStart_toStartOf="@+id/kursBox"
+        app:srcCompat="@drawable/underline_darkgray" />
+
+    <ImageView
+        android:id="@+id/commentBoxUnderline"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/noteField"
+        app:layout_constraintEnd_toEndOf="@+id/noteField"
+        app:layout_constraintStart_toStartOf="@+id/noteField"
+        app:layout_constraintTop_toBottomOf="@+id/noteField"
         app:srcCompat="@drawable/underline_darkgray" />
 
 
