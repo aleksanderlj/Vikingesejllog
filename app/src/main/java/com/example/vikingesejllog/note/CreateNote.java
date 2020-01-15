@@ -97,6 +97,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         db = DatabaseBuilder.get(this);
 
         findViewById(R.id.createNoteAccepterBtn).setOnClickListener(this);
+        findViewById(R.id.createNoteAfbrydBtn).setOnClickListener(this);
 
         windSpeedBtnText = findViewById(R.id.windSpeedBtnText);
         windSpeed = findViewById(R.id.windspeedBtn);
@@ -371,6 +372,10 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
             case R.id.createNoteAccepterBtn:
                 confirm();
+                break;
+
+            case R.id.createNoteAfbrydBtn:
+                finish();
                 break;
         }}
 

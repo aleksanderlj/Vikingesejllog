@@ -9,5 +9,5 @@
         android:top="4dp"
         android:bottom="4dp"/>
 
-    <corners android:radius="5dp"/>
+    <corners android:radius="4dp"/>
 </shape>
