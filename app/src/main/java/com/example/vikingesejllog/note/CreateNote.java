@@ -1,3 +1,4 @@
+
 package com.example.vikingesejllog.note;
 
 import android.Manifest;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -41,6 +43,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 
+import im.delight.android.location.SimpleLocation;
+
 public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, NoteDialogListener {
 
     // TODO ryd op i alle findByViewID() declarations (vi behøver ikke finde dem alle fra start)
@@ -64,7 +68,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private TextView windSpeedBtnText, courseBtnText, sejlforingBtnText,
             sejlStillingBtnText, rowersBtnText;
 
-    private MyGPS gps;
+    private MyNewGPS gps;
     private String gpsData;
 
     private AppDatabase db;
@@ -89,6 +93,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private ImageView savedPicture, savedPictureZoomed;
 
+    private SimpleLocation location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,11 +127,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         commentText = findViewById(R.id.commentEditText);
 
-        gps = new MyGPS(this);
-        gpsData = "LAT: " + String.format(Locale.US, "%.2f", gps.getLocation().getLatitude()) + "\n" +
-                "LON: " + String.format(Locale.US, "%.2f", gps.getLocation().getLongitude());
-        System.out.println(gpsData);
-
+        gps = new MyNewGPS(this);
+        location = gps.getLocation();
+        location.beginUpdates();
 
 
         //Gør lydoptageren og lydafspilleren klar:
@@ -169,7 +172,19 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //Gør mappen for billeder klar:
         imageFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Billedenoter/");
 
-        ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
+        //ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        location.beginUpdates();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        location.endUpdates();
     }
 
     public void setWindSpeed() {
@@ -235,6 +250,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
     public void confirm() {
+        location = gps.getLocation();
+
+        gpsData = "LAT: " + String.format(Locale.US, "%.2f", location.getLatitude()) + "\n" +
+                "LON: " + String.format(Locale.US, "%.2f", location.getLongitude());
+
         SimpleDateFormat clock = new SimpleDateFormat("HH.mm", Locale.getDefault());
         String time = clock.format(new Date());
 
@@ -328,7 +348,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                                         return Log.d(audioTAG, "Følgende lydfil klargøres: " + audioFolder + "/" + fileName + ".mp3");
                                     } catch (Exception e){
                                         e.printStackTrace();
-                                        return Log.d(audioTAG, "Fejl i afspiller: " + audioFolder + "    " + fileName + e);
+                                        return Log.d(audioTAG, "Det virker IKKE: " + audioFolder + "    " + fileName + e);
                                     }}
 
                                 @Override
@@ -344,20 +364,20 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     progressDialogOptager.show();
 
                 } if (recordingDone){
-                    //Starter afspilleren:
-                    audioPlayer.startAudioPlayer();
+                //Starter afspilleren:
+                audioPlayer.startAudioPlayer();
 
-                    progressDialogAfspiller = new ProgressDialog(CreateNote.this);
-                    progressDialogAfspiller.setMax(audioDurationInt);
-                    progressDialogAfspiller.setTitle("Afspiller på repeat...");
-                    progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString + " lang");
-                    progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            audioPlayer.stopAudioNote();
-                        }});
-                    progressDialogAfspiller.show();}
+                progressDialogAfspiller = new ProgressDialog(CreateNote.this);
+                progressDialogAfspiller.setMax(audioDurationInt);
+                progressDialogAfspiller.setTitle("Afspiller lydnote...");
+                progressDialogAfspiller.setMessage("Afspiller lydfil af længde: " + audioDurationString);
+                progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        audioPlayer.stopAudioNote();
+                    }});
+                progressDialogAfspiller.show();}
                 break;
 
 
@@ -398,25 +418,25 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         switch (requestCode){
             case REQUEST_RECORD_AUDIO_PERMISSION:
                 if (!permissionToRecordAccepted){
-                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;}
+                    permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    break;}
             case REQUEST_CAMERA_PERMISSION:
                 if (!permissionToCamera){
-                permissionToCamera = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;}
+                    permissionToCamera = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    break;}
             case REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION:
                 if (!permissionToWriteStorage){
-                permissionToWriteStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;}
+                    permissionToWriteStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;}
 
                 //Opretter mapperne på telefonen, når brugeren godkender denne permission!
                 if (!audioFolder.exists()) {
-                        try {
-                            audioFolder.mkdirs();
-                            audioFolder.createNewFile();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    try {
+                        audioFolder.mkdirs();
+                        audioFolder.createNewFile();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+                }
                 if (!imageFolder.exists()) {
                     try {
                         imageFolder.mkdirs();
@@ -440,10 +460,10 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
         Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
         savedPicture.setImageBitmap(bitmap);
-            //Er nødvendigt da nogen telefoner roterer billedet forkert.. som f.eks. Samsung zzz
-            if (bitmap.getHeight() < bitmap.getWidth()){
-                    savedPicture.setRotation(90);
-                    savedPictureZoomed.setRotation(90);}
+        //Er nødvendigt da nogen telefoner roterer billedet forkert.. som f.eks. Samsung zzz
+        if (bitmap.getHeight() < bitmap.getWidth()){
+            savedPicture.setRotation(90);
+            savedPictureZoomed.setRotation(90);}
         savedPicture.setVisibility(View.VISIBLE);
         savedPicture.setOnTouchListener(this);
 
@@ -456,16 +476,18 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     /*Zoomer ind på billedet, hvis brugeren rør ved det, og zoomer ud igen,
     hvis fingeren slippes
      */
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                savedPictureZoomed.setElevation(100);
-                savedPictureZoomed.setVisibility(View.VISIBLE);
-                return true;
-            }
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                savedPicture.setElevation(-1);
-                savedPictureZoomed.setVisibility(View.INVISIBLE);
-                return true;
-            }
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            savedPictureZoomed.setElevation(100);
+            savedPictureZoomed.setVisibility(View.VISIBLE);
+            savedPicture.setVisibility(View.INVISIBLE);
+            return true;
+        }
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            savedPicture.setElevation(-1);
+            savedPictureZoomed.setVisibility(View.INVISIBLE);
+            savedPicture.setVisibility(View.VISIBLE);
+            return true;
+        }
         return false;
     }
 
