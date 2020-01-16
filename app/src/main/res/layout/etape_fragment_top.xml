@@ -34,6 +34,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:text="16-01-2020"
             android:textColor="@android:color/white" />
 
@@ -41,7 +43,7 @@
             android:id="@+id/etape_from_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
+            android:layout_marginEnd="10dp"
             android:text="Fra"
             android:textColor="@android:color/white" />
 
@@ -73,7 +75,7 @@
             android:layout_alignParentTop="true"
             android:layout_toStartOf="@+id/etape_date"
             android:layout_toEndOf="@+id/etape_from_title"
-            android:layout_below="@id/imageView2"
+            android:layout_below="@id/etape_from_title"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
