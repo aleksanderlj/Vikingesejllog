@@ -130,19 +130,13 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
         playButton.setOnClickListener(this);
 
         audioFile = new File(audioFolder + "/" + fileName + ".mp3");
+            if(!audioFile.exists()){ //Hvis filen ikke eksisterer så ingen knap:
+                playButton.setEnabled(false);
+                playButton.setVisibility(View.INVISIBLE);}
 
-        if(!audioFile.exists()){
-            playButton.setEnabled(false);
-            playButton.setVisibility(View.INVISIBLE);
-        }
-
-        Log.d("TEST", (audioFile.exists() + "   " + imageFile + "   " + audioFile + "   " + fileName));
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v == playButton) {
-            if (audioFile.exists()) {
+            else if (audioFile.exists()){
+                //Hvis den eksisterer gøres afspilleren klar allerede her,
+                // så progressDialogAfspiller kan opdateres med længde på lydfilen:
                 audioPlayer = new AudioPlayer();
                 new AsyncTask() {
                     @Override
@@ -152,7 +146,6 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                             return Log.d("Afspiller", "Følgende lydfil afspilles: " + audioFolder + "/" + fileName + ".mp3");
                         } catch (Exception e) {
                             Toast.makeText(NoteDetails.this, "Indlæsning fejlede - prøv igen", Toast.LENGTH_LONG).show();
-                            progressDialogAfspiller.dismiss();
                             return Log.d("ERROR", "Det virker IKKE: " + audioFolder + "    " + fileName + e);
                         }
                     }
@@ -161,23 +154,30 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                     protected void onPostExecute(Object obj) {
                         audioDurationString = audioPlayer.returnDurationString(); //Gemmer længden på filen der skal afspilles
                         audioDurationInt = audioPlayer.returnDurationInt(); //Til progressdialogAfspiller.setMax
-                        audioPlayer.startAudioPlayer();
                     }
                 }.execute();
-
-                progressDialogAfspiller = new ProgressDialog(NoteDetails.this);
-                progressDialogAfspiller.setMax(audioDurationInt);
-                progressDialogAfspiller.setTitle("Afspiller lydnote...");
-                progressDialogAfspiller.setMessage("Afspiller lydfil af længde: " + audioDurationString);
-                progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        audioPlayer.stopAudioNote();
-                    }
-                });
-                progressDialogAfspiller.show();
             }
+
+        Log.d("TEST", (audioFile.exists() + "   " + imageFile + "   " + audioFile + "   " + fileName));
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == playButton) {
+            audioPlayer.startAudioPlayer();
+
+            progressDialogAfspiller = new ProgressDialog(NoteDetails.this);
+            progressDialogAfspiller.setMax(audioDurationInt);
+            progressDialogAfspiller.setTitle("Afspiller lydnote...");
+            progressDialogAfspiller.setMessage("Afspiller lydfil af længde: " + audioDurationString);
+            progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    audioPlayer.stopAudioNote();
+                }
+            });
+            progressDialogAfspiller.show();
         }
     }
 
