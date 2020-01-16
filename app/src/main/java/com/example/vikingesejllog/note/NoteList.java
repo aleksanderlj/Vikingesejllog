@@ -48,7 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-public class NoteList extends AppCompatActivity implements View.OnClickListener {
+public class NoteList extends AppCompatActivity implements View.OnClickListener, EtapeTopFragment.UpdateEtapeTopFrag {
     private ViewPager2 pager;
     private RecyclerView.Adapter adapter;
     private DrawerLayout mDrawerLayout;
@@ -64,12 +64,12 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     private WormDotsIndicator dotNavigation;
     private NavigationView navigationView;
     private Context c;
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.etape_activity_list);
-
+        
         db = DatabaseBuilder.get(this);
         c = this;
         ImageView button = findViewById(R.id.menu_button);
@@ -78,19 +78,19 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         button.setOnClickListener(this);
         prevButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
-
+        
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         navigationView = findViewById(R.id.nav_view);
-
+        
         ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
-
+        
         etaper = new ArrayList<>();
         ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
-
+        
         pager = findViewById(R.id.note_viewpager);
         adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle());
-
+        
         Intent i = getIntent();
         Executors.newSingleThreadExecutor().execute(() -> {
             if (i.getLongExtra("togt_id", -1L) != -1L) {
@@ -113,34 +113,34 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             pager.post(() -> adapter.notifyDataSetChanged());
             runOnUiThread(() -> {
                 pager.setCurrentItem(etaper.size() - 1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
-
+                
                 if (pager.getCurrentItem() < etaper.size()) {
                     String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
                     ((TextView) findViewById(R.id.pagecount)).setText(s);
                 }
             });
         });
-
+        
         setOnClickListenerNavigationDrawer();
-
+        
         pager.setAdapter(adapter);
-
+        
         // Create navigation buttons.
         dotNavigation = findViewById(R.id.dotNavigator);
         dotNavigation.setViewPager2(pager);
-
+        
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 EtapeTopFragment f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
-
+                
                 f.setAll(etaper.get(pager.getCurrentItem()), pager.getCurrentItem(), etaper.size());
                 dotNavigation.setViewPager2(pager);
                 String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
                 ((TextView) findViewById(R.id.pagecount)).setText(s);
-
-
+                
+                
                 runOnUiThread(() -> {
                     if (pager.getCurrentItem() == 0) {
                         prevButton.setEnabled(false);
@@ -149,7 +149,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                         prevButton.setEnabled(true);
                         prevButton.setVisibility(View.VISIBLE);
                     }
-
+                    
                     if (pager.getAdapter().getItemCount() - 1 == pager.getCurrentItem()) {
                         nextButton.setEnabled(false);
                         nextButton.setVisibility(View.INVISIBLE);
@@ -161,7 +161,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             }
         });
     }
-
+    
     public void setOnClickListenerNavigationDrawer() {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -183,12 +183,12 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                 mDrawerLayout.closeDrawer(GravityCompat.END);
                 return true;
             }
-
+            
         });
-
+        
         findViewById(R.id.newHarborButton).setOnClickListener(this);
     }
-
+    
     // if navigation drawer is open backbutton will close it
     @SuppressLint("WrongConstant")
     @Override
@@ -199,7 +199,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             super.onBackPressed();
         }
     }
-
+    
     @SuppressLint("WrongConstant")
     @Override
     public void onClick(View v) {
@@ -213,8 +213,8 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             case R.id.nextButton:
                 pager.setCurrentItem(pager.getCurrentItem() + 1, true);
                 break;
-
-
+            
+            
             case R.id.newHarborButton:
                 Intent createnote = new Intent(this, CreateNote.class);
                 createnote.putExtra("etape_id", etaper.get(pager.getCurrentItem()).etape.getEtape_id());
@@ -222,25 +222,25 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                 break;
         }
     }
-
+    
     private class NotePagerAdapter extends FragmentStateAdapter {
         public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
         }
-
+        
         @NonNull
         @Override
         public Fragment createFragment(int position) {
             NoteListFragment f = new NoteListFragment(etaper.get(position));
             return f;
         }
-
+        
         @Override
         public int getItemCount() {
             return etaper.size();
         }
     }
-
+    
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -276,10 +276,23 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             startActivityForResult(newIntent, FIRST_TOGT);
         }
     }
-
+    
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
         savedPos = pager.getCurrentItem();
         super.startActivityForResult(intent, requestCode);
+    }
+    
+    @Override
+    public void onAttachFragment(@NonNull Fragment fragment) {
+        if (fragment instanceof EtapeTopFragment){
+            EtapeTopFragment etapeTopFragment = (EtapeTopFragment) fragment;
+            etapeTopFragment.setUpdateEtapeTopFrag(this);
+        }
+    }
+    
+    @Override
+    public void onSpinnerItemSelected(int position) {
+    
     }
 }

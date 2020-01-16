@@ -22,15 +22,18 @@
         android:textColor="@android:color/background_light"
         android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/destination"
+    <Spinner
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.64"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:id="@+id/destination"
         android:gravity="center"
-        android:text="xxxxx - xxxxx"
-        android:textColor="@android:color/background_light"
-        android:textSize="14sp" />
+        android:textSize="10sp"
+        android:dropDownWidth="300dp"
+        android:overlapAnchor="false"
+        android:spinnerMode="dialog"
+        android:background="@null"/>
 
     <ImageView
         android:id="@+id/menu_button"
