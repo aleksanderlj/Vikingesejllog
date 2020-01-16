@@ -90,6 +90,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
                 });
                 break;
             case R.id.createEtapeAfbrydBtn:
+                setResult(Activity.RESULT_OK);
                 finish();
 
 

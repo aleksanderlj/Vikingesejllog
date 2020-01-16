@@ -6,11 +6,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,7 +28,6 @@ import com.example.vikingesejllog.etape.CreateEtape;
 import com.example.vikingesejllog.etape.EtapeTopFragment;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Togt;
-import com.example.vikingesejllog.togt.CreateTogt;
 import com.example.vikingesejllog.togt.TogtList;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.other.DatabaseBuilder;
@@ -135,8 +131,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                     mDrawerLayout.closeDrawer(GravityCompat.END);
                     return true;
                 case R.id.togt_oversigt:
-                    Intent newTogtOversigtIntent = new Intent(NoteList.this, TogtList.class);
-                    startActivity(newTogtOversigtIntent);
+                    finish();
                     return true;
                 case R.id.exporter_csv:
                     // TODO do dis
@@ -199,9 +194,8 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             return etaper.size();
         }
 
-        public void notifyNoteDatasetChanged(){
-            notifyDataSetChanged();
-            fragments.get(pager.getCurrentItem()).getAdapter().notifyDataSetChanged();
+        public void notifyNoteDataSetChanged(int pos){
+            fragments.get(pos).getAdapter().notifyDataSetChanged();
         }
     }
 
@@ -214,6 +208,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                     updateEtapeList(etaper.size());
                 } else {
                     updateEtapeList(savedPos);
+                    ((NotePagerAdapter) adapter).notifyNoteDataSetChanged(pager.getCurrentItem());
                 }
             });
         }
@@ -221,17 +216,23 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
 
     private void updateEtapeList(int startPos) {
         List<EtapeWithNotes> newEtaper = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
-        etaper.clear();
-        etaper.addAll(newEtaper);
-        pager.post(() -> ((NotePagerAdapter) adapter).notifyNoteDatasetChanged());
-        runOnUiThread(() -> {
-            pager.setAdapter(adapter);
-            pager.setCurrentItem(startPos, false); // Pageren klarer selv out of bounds exceptions
+        if (newEtaper.size() != 0) {
+            etaper.clear();
+            etaper.addAll(newEtaper);
+            pager.post(() -> adapter.notifyDataSetChanged());
+            runOnUiThread(() -> {
+                pager.setAdapter(adapter);
+                pager.setCurrentItem(startPos, false); // Pageren klarer selv out of bounds exceptions
 
-            String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
-            ((TextView) findViewById(R.id.pagecount)).setText(s);
-            updateNavButtons();
-        });
+                String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
+                ((TextView) findViewById(R.id.pagecount)).setText(s);
+                updateNavButtons();
+            });
+        } else {
+            Intent i = new Intent(this, CreateEtape.class);
+            i.putExtra("togt_id", togt.getTogt_id());
+            startActivityForResult(i, ETAPE_CODE);
+        }
     }
 
     @Override
