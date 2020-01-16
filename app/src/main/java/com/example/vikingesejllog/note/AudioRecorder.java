@@ -37,6 +37,8 @@ public class AudioRecorder extends AppCompatActivity {
         audioRecorder.start();
     }
 
+
+
     public void stopAudioRecord(){
         //Stopper optagelsen og frigiver objektet til garbage-collector
     audioRecorder.stop();

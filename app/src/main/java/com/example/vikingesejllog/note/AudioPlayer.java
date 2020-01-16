@@ -35,6 +35,10 @@ public class AudioPlayer extends AppCompatActivity {
         audioPlayer.start();
     }
 
+    public int returnDuration(){
+        return audioPlayer.getDuration();
+    }
+
     public void stopAudioNote(){
         //Stopper afspilningen af noten og frigiver objekt
         audioPlayer.stop();

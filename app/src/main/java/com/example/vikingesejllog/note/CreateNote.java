@@ -81,6 +81,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     private File audioFolder, imageFolder, imageFile;
 
+    private int audioDuration;
+
     private String fileName;
 
     private boolean recordingDone;
@@ -255,6 +257,10 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         ProgressDialog progressDialog;
+        //Gør lydoptageren og lydafspilleren klar:
+        audioRecorder = new AudioRecorder();
+        audioPlayer = new AudioPlayer();
+
         switch (v.getId()){
             case R.id.windspeedBtn:
                 setWindSpeed();
@@ -280,8 +286,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 if (!recordingDone) {
                     ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
-                    //Gør lydoptageren klar:
-                    audioRecorder = new AudioRecorder();
                     new AsyncTask() {
                         @Override
                         protected Object doInBackground(Object... arg0) {
@@ -312,41 +316,45 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             //Skaber "PLAY"-knap.
                             ((ImageView) findViewById(R.id.createNoteMic)).setImageResource(R.drawable.play);
 
+                            //Er nødvendigt at gøre AudioPlayer klar her, da progressdialog ellers ikke opdateres med duration på filen!
+                            new AsyncTask() {
+                                @Override
+                                protected Object doInBackground(Object... arg0) {
+                                    try {
+                                        audioPlayer.setupAudioPlayer(audioFolder + "/" + fileName + ".mp3");
+                                        return Log.d(audioTAG, "Følgende lydfil afspilles: " + audioFolder + "/" + fileName + ".mp3");
+                                    } catch (Exception e){
+                                        e.printStackTrace();
+                                        return Log.d(audioTAG, "Det virker IKKE: " + audioFolder + "    " + fileName + e);
+                                    }}
+
+                                @Override
+                                protected void onPostExecute(Object obj){
+                                    audioDuration = audioPlayer.returnDuration();
+                                }
+                            }.execute();
+
                             Toast.makeText(CreateNote.this, "Lydnoten blev gemt i mappen: " + audioFolder, Toast.LENGTH_SHORT).show();
                         }
                     });
                     progressDialog.show();
 
                 } if (recordingDone){
-                    //Gør lydafspilleren klar:
-                    audioPlayer = new AudioPlayer();
-                    new AsyncTask() {
-                        @Override
-                        protected Object doInBackground(Object... arg0) {
-                            try {
-                                audioPlayer.setupAudioPlayer(audioFolder + "/" + fileName + ".mp3");
-                                return Log.d(audioTAG, "Følgende lydfil afspilles: " + audioFolder + "/" + fileName + ".mp3");
-                            } catch (Exception e){
-                                e.printStackTrace();
-                                return Log.d(audioTAG, "Det virker IKKE: " + audioFolder + "    " + fileName + e);
-                            }}
-
-                        @Override
-                        protected void onPostExecute(Object obj){
-                            audioPlayer.startAudioPlayer();
-                        }
-                    }.execute();
+                    //Starter afspilleren:
+                    audioPlayer.startAudioPlayer();
 
                     progressDialog = new ProgressDialog(CreateNote.this);
                     progressDialog.setMax(200);
                     progressDialog.setTitle("Afspiller lydnote...");
+                    progressDialog.setMessage("Afspiller lydfil af længde: " + audioDuration);
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             audioPlayer.stopAudioNote();
                         }});
-                    progressDialog.show();
+
+                progressDialog.show();
                 }
                 break;
 
@@ -371,6 +379,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
             case R.id.createNoteAccepterBtn:
                 confirm();
+                audioPlayer.stopAudioNote();
+                audioRecorder.stopAudioRecord();
                 break;
         }}
 
