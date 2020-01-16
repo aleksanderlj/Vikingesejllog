@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-public class EtapeTopFragment extends Fragment implements OnItemSelectedListener {
+public class EtapeTopFragment extends Fragment {
     private AppDatabase db;
     private List<EtapeWithNotes> etapeList;
     private ArrayAdapter adapter;
@@ -65,6 +65,16 @@ public class EtapeTopFragment extends Fragment implements OnItemSelectedListener
         };
         spinner.setAdapter(adapter);
         
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                callback.onSpinnerItemSelected(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+        
+            }
+        });
         return view;
     }
     
@@ -90,15 +100,5 @@ public class EtapeTopFragment extends Fragment implements OnItemSelectedListener
     
     public void setUpdateEtapeTopFrag(UpdateEtapeTopFrag callback){
         this.callback = callback;
-    }
-    
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        callback.onSpinnerItemSelected(position);
-    }
-    
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-    
     }
 }
