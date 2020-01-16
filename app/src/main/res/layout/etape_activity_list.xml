@@ -92,7 +92,7 @@
             android:layout_marginBottom="24dp"
             android:elevation="5dp"
             android:src="@drawable/plus"
-            app:fab_colorNormal="#180B2C"
+            app:fab_colorNormal="@color/colorDarkBlue"
             app:fab_colorPressed="#120722"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
