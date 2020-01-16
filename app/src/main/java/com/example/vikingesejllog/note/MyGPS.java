@@ -1,73 +1,27 @@
 package com.example.vikingesejllog.note;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
 
-import androidx.core.content.ContextCompat;
+import im.delight.android.location.SimpleLocation;
+
+public class MyGPS {
+
+    private Context context;
+    private SimpleLocation location;
 
 
-public class MyGPS implements LocationListener {
-
-    private Context mContext;
-
-    public MyGPS(Context mContext) {
-        this.mContext = mContext;
+    public MyGPS(Context context){
+        this.context = context;
     }
 
-    public Location getLocation(){
+    public SimpleLocation getLocation(){
 
-        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            return null;
-        }
+        location = new SimpleLocation(context);
 
-        LocationManager locationManager = (LocationManager)mContext.getSystemService(Context.LOCATION_SERVICE);
-        boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (isGPSEnabled){
-            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,this,null);
-            return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (!location.hasLocationEnabled())
+            SimpleLocation.openSettings(context);
 
-        }
-        return null;
+     return location;
     }
 
-
-    public String getSpeed() {
-        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return null;
-        }
-
-        LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (isGPSEnabled) {
-            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
-            return String.valueOf(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getSpeed());
-
-        }
-        return null;
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
 }

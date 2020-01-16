@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -68,7 +67,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private TextView windSpeedBtnText, courseBtnText, sejlforingBtnText,
             sejlStillingBtnText, rowersBtnText;
 
-    private MyNewGPS gps;
+    private MyGPS gps;
     private String gpsData;
 
     private AppDatabase db;
@@ -127,7 +126,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         commentText = findViewById(R.id.commentEditText);
 
-        gps = new MyNewGPS(this);
+        gps = new MyGPS(this);
         location = gps.getLocation();
         location.beginUpdates();
 
