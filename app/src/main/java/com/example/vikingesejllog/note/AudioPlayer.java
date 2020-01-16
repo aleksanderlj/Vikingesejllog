@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class AudioPlayer extends AppCompatActivity {
      /*
@@ -35,9 +36,27 @@ public class AudioPlayer extends AppCompatActivity {
         audioPlayer.start();
     }
 
+    public String returnDurationString(){
+        //Formaterer længden på optagelsen:
+        int audioDurationMilliseconds = audioPlayer.getDuration();
+        String audioDuration = String.format("%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(audioDurationMilliseconds),
+                TimeUnit.MILLISECONDS.toSeconds(audioDurationMilliseconds) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(audioDurationMilliseconds)));
+        return audioDuration;
+    }
+
+    public int returnDurationInt(){
+        return audioPlayer.getDuration();
+    }
+
     public void stopAudioNote(){
         //Stopper afspilningen af noten og frigiver objekt
         audioPlayer.stop();
+
+    }
+
+    public void releaseAudioPlayer(){
         audioPlayer.reset();
         audioPlayer.release();
         audioPlayer = null;
