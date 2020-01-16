@@ -26,6 +26,8 @@ public class CreateTogt extends AppCompatActivity implements View.OnClickListene
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.togt_activity_createtogt);
+		departureDate = new Date(0L);
+
 		departure = findViewById(R.id.createTogtDepartureEditText);
 		name = findViewById(R.id.createTogtNameEditText);
 		findViewById(R.id.createTogtDepartureDateBox).setOnClickListener(this);

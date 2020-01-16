@@ -37,13 +37,8 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         crew = new ArrayList<>();
         db = DatabaseBuilder.get(this);
         setContentView(R.layout.etape_activity_createetape);
-        departure = new Date();
-        /*TODO tests
-        crew = new ArrayList<>();
-        crew.add("Max");
-        crew.add("Alek");
-        crew.add("Freddy Fazbear");
-         */
+        departure = new Date(0L);
+
         findViewById(R.id.createEtapeDepartureDateBox).setOnClickListener(this);
         findViewById(R.id.createEtapeCrewCountBox).setOnClickListener(this);
         findViewById(R.id.createEtapeAccepterBtn).setOnClickListener(this);

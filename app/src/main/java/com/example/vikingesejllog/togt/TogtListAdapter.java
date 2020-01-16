@@ -15,6 +15,7 @@ import com.example.vikingesejllog.model.Togt;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class TogtListAdapter extends RecyclerView.Adapter<TogtListAdapter.ViewHolder> {
@@ -43,7 +44,6 @@ public class TogtListAdapter extends RecyclerView.Adapter<TogtListAdapter.ViewHo
         return new ViewHolder(v);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Togt togt = togtList.get(position);
@@ -51,13 +51,15 @@ public class TogtListAdapter extends RecyclerView.Adapter<TogtListAdapter.ViewHo
         holder.departure.setText(togt.getDeparture());
         holder.name.setText(togt.getName());
 
-        Calendar c = Calendar.getInstance();
-        c.setTime(togt.getDepartureDate());
+        Date d = togt.getDepartureDate();
 
-        holder.togtDate.setText(c.get(Calendar.DAY_OF_MONTH) + "-" + c.get(Calendar.MONTH)+1 + "-" + c.get(Calendar.YEAR));
+        if (d.getTime() != 0L) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(togt.getDepartureDate());
 
-        // TODO If there are two, set a line between them
-        // TODO Get time from etape
+            String s = c.get(Calendar.DAY_OF_MONTH) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.YEAR);
+            holder.togtDate.setText(s);
+        }
     }
 
     @Override
