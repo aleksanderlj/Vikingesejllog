@@ -93,7 +93,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                 super.onPageSelected(position);
                 EtapeTopFragment f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
 
-                f.setAll(etaper.get(pager.getCurrentItem()), pager.getCurrentItem(), etaper.size());
+                f.setAll(etaper.get(pager.getCurrentItem()));
                 String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
                 ((TextView) findViewById(R.id.pagecount)).setText(s);
 
