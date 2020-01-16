@@ -328,7 +328,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                                         return Log.d(audioTAG, "Følgende lydfil klargøres: " + audioFolder + "/" + fileName + ".mp3");
                                     } catch (Exception e){
                                         e.printStackTrace();
-                                        return Log.d(audioTAG, "Det virker IKKE: " + audioFolder + "    " + fileName + e);
+                                        return Log.d(audioTAG, "Fejl i afspiller: " + audioFolder + "    " + fileName + e);
                                     }}
 
                                 @Override
@@ -349,8 +349,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
                     progressDialogAfspiller = new ProgressDialog(CreateNote.this);
                     progressDialogAfspiller.setMax(audioDurationInt);
-                    progressDialogAfspiller.setTitle("Afspiller lydnote...");
-                    progressDialogAfspiller.setMessage("Afspiller lydfil af længde: " + audioDurationString);
+                    progressDialogAfspiller.setTitle("Afspiller på repeat...");
+                    progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString + " lang");
                     progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
                         @Override
@@ -459,13 +459,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 savedPictureZoomed.setElevation(100);
                 savedPictureZoomed.setVisibility(View.VISIBLE);
-                savedPicture.setVisibility(View.INVISIBLE);
                 return true;
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 savedPicture.setElevation(-1);
                 savedPictureZoomed.setVisibility(View.INVISIBLE);
-                savedPicture.setVisibility(View.VISIBLE);
                 return true;
             }
         return false;
