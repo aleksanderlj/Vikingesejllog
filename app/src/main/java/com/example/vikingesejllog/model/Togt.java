@@ -2,16 +2,10 @@ package com.example.vikingesejllog.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Ignore;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import androidx.room.Relation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static androidx.room.ForeignKey.CASCADE;
+import java.util.Date;
 
 @Entity
 public class Togt {
@@ -23,15 +17,18 @@ public class Togt {
     @ColumnInfo(name = "departure")
     private String departure;
 
-    @ColumnInfo(name = "destination")
-    private String destination;
+    @ColumnInfo(name = "name")
+    private String name;
+
+    @ColumnInfo(name = "departureDate")
+    private Date departureDate;
 
     public Togt(){}
 
     @Ignore
     public Togt(String departure, String destination){
         this.departure = departure;
-        this.destination = destination;
+        this.name = destination;
     }
 
     public String getDeparture() {
@@ -42,12 +39,20 @@ public class Togt {
         this.departure = departure;
     }
 
-    public String getDestination() {
-        return destination;
+    public String getName() {
+        return name;
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Date getDepartureDate() {
+        return departureDate;
+    }
+
+    public void setDepartureDate(Date departureDate) {
+        this.departureDate = departureDate;
     }
 
     public long getTogt_id() {
