@@ -3,17 +3,11 @@ package com.example.vikingesejllog.note;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,7 +19,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -33,12 +26,9 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.etape.CreateEtape;
 import com.example.vikingesejllog.etape.EtapeTopFragment;
-import com.example.vikingesejllog.etape.CreateButton;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Togt;
-import com.example.vikingesejllog.togt.CreateTogt;
 import com.example.vikingesejllog.togt.TogtList;
-import com.example.vikingesejllog.togt.TogtListAdapter;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 import com.google.android.material.navigation.NavigationView;
@@ -52,18 +42,14 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     private ViewPager2 pager;
     private RecyclerView.Adapter adapter;
     private DrawerLayout mDrawerLayout;
-    private Button newTogt;
     private ImageButton nextButton, prevButton;
     private ArrayList<EtapeWithNotes> etaper;
     private Togt togt;
     private AppDatabase db;
-    private final int ETAPE_CODE = 1;
-    private final int NOTE_CODE = 2;
-    private final int FIRST_TOGT = 3;
+    private final int ETAPE_CODE = 1, NOTE_CODE = 2;
     private int savedPos;
     private WormDotsIndicator dotNavigation;
     private NavigationView navigationView;
-    private Context c;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,59 +57,31 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.etape_activity_list);
 
         db = DatabaseBuilder.get(this);
-        c = this;
-        ImageView button = findViewById(R.id.menu_button);
+        ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
+
+        navigationView = findViewById(R.id.nav_view);
         prevButton = findViewById(R.id.prevButton);
         nextButton = findViewById(R.id.nextButton);
-        button.setOnClickListener(this);
         prevButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
+        findViewById(R.id.menu_button).setOnClickListener(this);
+        findViewById(R.id.newHarborButton).setOnClickListener(this);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        navigationView = findViewById(R.id.nav_view);
-
-        ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
+        setOnClickListenerNavigationDrawer();
 
         etaper = new ArrayList<>();
-        ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
-
-        pager = findViewById(R.id.note_viewpager);
         adapter = new NotePagerAdapter(getSupportFragmentManager(), getLifecycle());
+        pager = findViewById(R.id.note_viewpager);
+        pager.setAdapter(adapter);
 
         Intent i = getIntent();
         Executors.newSingleThreadExecutor().execute(() -> {
-            if (i.getLongExtra("togt_id", -1L) != -1L) {
-                togt = db.togtDAO().getById(i.getLongExtra("togt_id", -1L));
-            } else {
-                togt = db.togtDAO().getLatestTogt();
-            }
-            if (togt != null) {
-                List<EtapeWithNotes> newEtaper = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
-                etaper.clear();
-                etaper.addAll(newEtaper);
-                pager.post(() -> adapter.notifyDataSetChanged());
-                pager.setCurrentItem(etaper.size() - 1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
-            } else {
-                togt = new Togt();
-                togt.setTogt_id(1L);
-                Intent newIntent = new Intent(this, CreateTogt.class);
-                startActivityForResult(newIntent, FIRST_TOGT);
-            }
-            pager.post(() -> adapter.notifyDataSetChanged());
-            runOnUiThread(() -> {
-                pager.setCurrentItem(etaper.size() - 1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
-
-                if (pager.getCurrentItem() < etaper.size()) {
-                    String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
-                    ((TextView) findViewById(R.id.pagecount)).setText(s);
-                }
-            });
+            togt = db.togtDAO().getById(i.getLongExtra("togt_id", -1L));
+            updateEtapeList(etaper.size());
         });
 
-        setOnClickListenerNavigationDrawer();
-
-        pager.setAdapter(adapter);
 
         // Create navigation buttons.
         dotNavigation = findViewById(R.id.dotNavigator);
@@ -136,57 +94,52 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                 EtapeTopFragment f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
 
                 f.setAll(etaper.get(pager.getCurrentItem()), pager.getCurrentItem(), etaper.size());
-                dotNavigation.setViewPager2(pager);
                 String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
                 ((TextView) findViewById(R.id.pagecount)).setText(s);
 
-
                 runOnUiThread(() -> {
-                    if (pager.getCurrentItem() == 0) {
-                        prevButton.setEnabled(false);
-                        prevButton.setVisibility(View.INVISIBLE);
-                    } else {
-                        prevButton.setEnabled(true);
-                        prevButton.setVisibility(View.VISIBLE);
-                    }
-
-                    if (pager.getAdapter().getItemCount() - 1 == pager.getCurrentItem()) {
-                        nextButton.setEnabled(false);
-                        nextButton.setVisibility(View.INVISIBLE);
-                    } else {
-                        nextButton.setEnabled(true);
-                        nextButton.setVisibility(View.VISIBLE);
-                    }
+                    updateNavButtons();
                 });
             }
         });
     }
 
+    private void updateNavButtons(){
+        if (pager.getCurrentItem() == 0) {
+            prevButton.setEnabled(false);
+            prevButton.setVisibility(View.INVISIBLE);
+        } else {
+            prevButton.setEnabled(true);
+            prevButton.setVisibility(View.VISIBLE);
+        }
+        if (pager.getAdapter().getItemCount() - 1 == pager.getCurrentItem()) {
+            nextButton.setEnabled(false);
+            nextButton.setVisibility(View.INVISIBLE);
+        } else {
+            nextButton.setEnabled(true);
+            nextButton.setVisibility(View.VISIBLE);
+        }
+    }
+
     public void setOnClickListenerNavigationDrawer() {
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.ny_etape:
-                        Intent newEtapeIntent = new Intent(c, CreateEtape.class);
-                        newEtapeIntent.putExtra("togt_id", togt.getTogt_id());
-                        startActivityForResult(newEtapeIntent, 1);
-                        mDrawerLayout.closeDrawer(GravityCompat.END);
-                        return true;
-                    case R.id.togt_oversigt:
-                        Intent newTogtOversigtIntent = new Intent(c, TogtList.class);
-                        startActivity(newTogtOversigtIntent);
-                        return true;
-                    case R.id.exporter_csv:
-                        return true;
-                }
-                mDrawerLayout.closeDrawer(GravityCompat.END);
-                return true;
+        navigationView.setNavigationItemSelectedListener((item) -> {
+            switch (item.getItemId()) {
+                case R.id.ny_etape:
+                    Intent newEtapeIntent = new Intent(NoteList.this, CreateEtape.class);
+                    newEtapeIntent.putExtra("togt_id", togt.getTogt_id());
+                    startActivityForResult(newEtapeIntent, ETAPE_CODE);
+                    mDrawerLayout.closeDrawer(GravityCompat.END);
+                    return true;
+                case R.id.togt_oversigt:
+                    finish();
+                    return true;
+                case R.id.exporter_csv:
+                    // TODO do dis
+                    return true;
             }
-
+            mDrawerLayout.closeDrawer(GravityCompat.END);
+            return true;
         });
-
-        findViewById(R.id.newHarborButton).setOnClickListener(this);
     }
 
     // if navigation drawer is open backbutton will close it
@@ -213,8 +166,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             case R.id.nextButton:
                 pager.setCurrentItem(pager.getCurrentItem() + 1, true);
                 break;
-
-
             case R.id.newHarborButton:
                 Intent createnote = new Intent(this, CreateNote.class);
                 createnote.putExtra("etape_id", etaper.get(pager.getCurrentItem()).etape.getEtape_id());
@@ -224,6 +175,8 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     }
 
     private class NotePagerAdapter extends FragmentStateAdapter {
+        List<NoteListFragment> fragments = new ArrayList<>();
+
         public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
         }
@@ -232,12 +185,17 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         @Override
         public Fragment createFragment(int position) {
             NoteListFragment f = new NoteListFragment(etaper.get(position));
+            fragments.add(f);
             return f;
         }
 
         @Override
         public int getItemCount() {
             return etaper.size();
+        }
+
+        public void notifyNoteDataSetChanged(int pos){
+            fragments.get(pos).getAdapter().notifyDataSetChanged();
         }
     }
 
@@ -246,34 +204,34 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         super.onActivityResult(requestCode, resultCode, data);
         if ((requestCode == ETAPE_CODE || requestCode == NOTE_CODE) && resultCode == Activity.RESULT_OK) {
             Executors.newSingleThreadExecutor().execute(() -> {
-                List<EtapeWithNotes> newEtaper = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
-                etaper.clear();
-                etaper.addAll(newEtaper);
-                pager.post(() -> {
-                    pager.setAdapter(adapter);
-                    if (requestCode == ETAPE_CODE) {
-                        pager.setCurrentItem(etaper.size() - 1, false);
-                    } else {
-                        pager.setCurrentItem(savedPos, false);
-                    }
-                });
-                //pager.post(() -> adapter.notifyDataSetChanged());
+                if (requestCode == ETAPE_CODE) {
+                    updateEtapeList(etaper.size());
+                } else {
+                    updateEtapeList(savedPos);
+                    ((NotePagerAdapter) adapter).notifyNoteDataSetChanged(pager.getCurrentItem());
+                }
             });
-        } else if (requestCode == FIRST_TOGT && resultCode == Activity.RESULT_OK) {
-            Executors.newSingleThreadExecutor().execute(() -> {
-                togt = db.togtDAO().getLatestTogt();
-                List<EtapeWithNotes> newEtaper = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
-                etaper.clear();
-                etaper.addAll(newEtaper);
-                pager.post(() -> adapter.notifyDataSetChanged());
-                runOnUiThread(() -> {
-                    pager.setAdapter(adapter);
-                    pager.setCurrentItem(etaper.size() - 1, false);
-                });
+        }
+    }
+
+    private void updateEtapeList(int startPos) {
+        List<EtapeWithNotes> newEtaper = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
+        if (newEtaper.size() != 0) {
+            etaper.clear();
+            etaper.addAll(newEtaper);
+            pager.post(() -> adapter.notifyDataSetChanged());
+            runOnUiThread(() -> {
+                pager.setAdapter(adapter);
+                pager.setCurrentItem(startPos, false); // Pageren klarer selv out of bounds exceptions
+
+                String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
+                ((TextView) findViewById(R.id.pagecount)).setText(s);
+                updateNavButtons();
             });
-        } else if (requestCode == FIRST_TOGT && resultCode == Activity.RESULT_CANCELED) {
-            Intent newIntent = new Intent(this, CreateTogt.class);
-            startActivityForResult(newIntent, FIRST_TOGT);
+        } else {
+            Intent i = new Intent(this, CreateEtape.class);
+            i.putExtra("togt_id", togt.getTogt_id());
+            startActivityForResult(i, ETAPE_CODE);
         }
     }
 

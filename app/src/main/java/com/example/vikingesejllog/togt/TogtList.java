@@ -41,21 +41,22 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
 		updateList();
 
         findViewById(R.id.newTogtButton).setOnClickListener(this);
+        findViewById(R.id.delete_db).setOnClickListener(this);
     }
 
     public void updateList(){
         togtList = new ArrayList<>();
+        adapter = new TogtListAdapter(togtList, this);
+        recyclerView.setAdapter(adapter);
+
         Executors.newSingleThreadExecutor().execute(() -> {
             togtList.addAll(db.togtDAO().getAll());
             recyclerView.post(() -> adapter.notifyDataSetChanged());
         });
-		adapter = new TogtListAdapter(togtList, this);
-		recyclerView.setAdapter(adapter);
 
 		adapter.setOnItemClickListener((int position) -> {
             Intent noteList = new Intent(TogtList.this, NoteList.class);
             noteList.putExtra("togt_id", togtList.get(position).getTogt_id());
-            noteList.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(noteList);
 
         });
@@ -67,6 +68,10 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
             case R.id.newTogtButton:
                 Intent i = new Intent(this, CreateTogt.class);
                 startActivityForResult(i, 1);
+                break;
+
+            case R.id.delete_db:
+                Executors.newSingleThreadExecutor().execute(() -> db.clearAllTables());
                 break;
         }
     }
