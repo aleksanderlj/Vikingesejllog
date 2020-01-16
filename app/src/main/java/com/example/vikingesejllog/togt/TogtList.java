@@ -39,9 +39,6 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 		updateList();
-        
-        TopMenu tm = (TopMenu) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
-        tm.updateTextView("Liste over togter");
 
         findViewById(R.id.newTogtButton).setOnClickListener(this);
     }
@@ -58,7 +55,9 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
 		adapter.setOnItemClickListener((int position) -> {
             Intent noteList = new Intent(TogtList.this, NoteList.class);
             noteList.putExtra("togt_id", togtList.get(position).getTogt_id());
+            noteList.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(noteList);
+
         });
 	}
     

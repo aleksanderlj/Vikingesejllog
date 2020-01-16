@@ -46,6 +46,9 @@ public class TogtListAdapter extends RecyclerView.Adapter<TogtListAdapter.ViewHo
 
         holder.departure.setText(togt.getDeparture());
         holder.destination.setText(togt.getDestination());
+
+        // TODO If there are two, set a line between them
+        // TODO Get time from etape
     }
 
     @Override

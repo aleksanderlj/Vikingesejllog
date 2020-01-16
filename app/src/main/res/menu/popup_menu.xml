@@ -1,39 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/one"
-        android:title="1" />
+        android:id="@+id/ny_etape"
+        android:title="Opret ny etape"
+        />
     <item
-        android:id="@+id/two"
-        android:title="2"/>
+        android:id="@+id/togt_oversigt"
+        android:title="Oversigt over togter"/>
     <item
-        android:id="@+id/three"
-        android:title="3"/>
-    <item
-        android:id="@+id/four"
-        android:title="4" />
-    <item
-        android:id="@+id/five"
-        android:title="5"/>
-    <item
-        android:id="@+id/six"
-        android:title="6"/>
-    <item
-        android:id="@+id/seven"
-        android:title="7" />
-    <item
-        android:id="@+id/eight"
-        android:title="8"/>
-    <item
-        android:id="@+id/nine"
-        android:title="9"/>
-    <item
-        android:id="@+id/ten"
-        android:title="10" />
-    <item
-        android:id="@+id/eleven"
-        android:title="11"/>
-    <item
-        android:id="@+id/twelve"
-        android:title="12"/>
+        android:id="@+id/exporter_csv"
+        android:title="Exporter csv"
+        />
 </menu>

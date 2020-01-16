@@ -12,7 +12,7 @@
         android:fontFamily="@font/montserrat"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
-        android:text="TextView"
+        android:text="Togt oversigt"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@android:color/background_light"

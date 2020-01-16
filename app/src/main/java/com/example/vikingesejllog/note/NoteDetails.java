@@ -33,7 +33,6 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
     private TextView vindBox, GPSBox, clockBox, clockBoxText,
             antalRoerBox, sejlfoeringBox, sejlStillingBox,
             kursBox, noteField;
-    private int noteNumber, totalNotes;
 
     private AppDatabase db;
 
@@ -45,7 +44,6 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
     private File audioFolder, imageFolder, audioFile, imageFile;
 
     private String fileName;
-    private String dato;
 
 
 
@@ -65,6 +63,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
 
         db = DatabaseBuilder.get(this);
 
+        // Hent note ID fra intent, med lille (unødvendig?) fejlsikring
         Intent intent = getIntent();
         long noteId = intent.getLongExtra("noteId", 0);
         if (noteId == 0) {
@@ -72,7 +71,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
             onBackPressed();
         }
 
-
+        // Hent note detaljer fra database og opdater TextViews
         Executors.newSingleThreadExecutor().execute(() -> {
             note = db.noteDAO().getById(noteId);
             runOnUiThread(() -> {
@@ -87,14 +86,15 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
             });
         });
 
-
-        noteNumber = intent.getIntExtra("noteNumber", 0);
-        totalNotes = intent.getIntExtra("noteCount", 0);
+        // Hent dato fra file name og indsæt i TextView over klokkeslæt
         fileName = intent.getStringExtra("fileName");
         String[] datoSplit = fileName.split("\\.");
-        dato = datoSplit[0] + "/" + datoSplit[1] + "-" + datoSplit[2];
+        String dato = datoSplit[0] + "/" + datoSplit[1] + "-" + datoSplit[2];
         clockBoxText.setText(dato);
 
+        // Tilføj note nr. og total antal af noter til top fragment
+        int noteNumber = intent.getIntExtra("noteNumber", 0);
+        int totalNotes = intent.getIntExtra("noteCount", 0);
         NoteDetailsTopFragment topFragment = (NoteDetailsTopFragment) getSupportFragmentManager().findFragmentById(R.id.noteDetailsTopFragment);
         topFragment.updateTextView("Note " + noteNumber + "/" + totalNotes);
 
@@ -120,11 +120,20 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                     cameraButton.setRotation(90);
                     savedPictureZoomed2.setRotation(90);
                 }
+        } else {
+            cameraButton.setVisibility(View.INVISIBLE);
+            cameraButton.setEnabled(false);
         }
 
         playButton = findViewById(R.id.playButton);
         playButton.setOnClickListener(this);
+
         audioFile = new File(audioFolder + "/" + fileName + ".mp3");
+
+        if(!audioFile.exists()){
+            playButton.setEnabled(false);
+            playButton.setVisibility(View.INVISIBLE);
+        }
 
         Log.d("TEST", (audioFile.exists() + "   " + imageFile + "   " + audioFile + "   " + fileName));
     }
@@ -165,11 +174,6 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                 });
                 progressDialog.show();
             }
-
-            //Hvis der ikke er en gemt lydfil tilknyttet noten:
-            else if (!audioFile.exists()) {
-                Toast.makeText(NoteDetails.this, "Der er ingen gemt lydnote!", Toast.LENGTH_SHORT).show();
-            }
         }
     }
 
@@ -186,10 +190,6 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                 savedPictureZoomed2.setElevation(-1);
                 return true;
             }}}
-        else if (v == cameraButton && !imageFile.exists()) { //Hvis billedet ikke findes:
-                Toast.makeText(NoteDetails.this, "Der er intet gemt billede!", Toast.LENGTH_SHORT).show();
-                return true;
-            }
         return false;
     }
 }

@@ -44,11 +44,20 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Note noteListItem = noteListItems.get(position);
-        holder.noteName.setText(noteListItem.getTime());
-        holder.noteDate.setText(noteListItem.getTime());
-        holder.pencil.setImageResource(noteListItem.getPencilImageResource());
-        holder.camera.setImageResource(noteListItem.getCameraImageResource());
-        holder.mic.setImageResource(noteListItem.getMicImageResource());
+
+        holder.time.setText(noteListItem.getTime());
+        bindView(noteListItem.getWindSpeed(), holder.wind, holder.wind_text);
+        bindView(noteListItem.getCourse(), holder.course, holder.course_text);
+        bindView(noteListItem.getRowers(), holder.rowers, holder.rowers_text);
+        bindView(noteListItem.getSailStilling(), holder.sailstilling, holder.sailstilling_text);
+        bindView(noteListItem.getSailForing(), holder.sailforing, holder.sailforing_text);
+
+    }
+
+    private void bindView(String text, TextView info, TextView title){
+        if(text.compareTo("") == 0)
+            title.setVisibility(View.INVISIBLE);
+        info.setText(text);
     }
 
     @Override
@@ -58,20 +67,34 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView noteName;
-        public TextView noteDate;
-        public ImageView pencil;
-        public ImageView camera;
-        public ImageView mic;
+        public TextView time;
+        public TextView wind;
+        public TextView course;
+        public TextView rowers;
+        public TextView sailstilling;
+        public TextView sailforing;
+
+        public TextView wind_text;
+        public TextView course_text;
+        public TextView rowers_text;
+        public TextView sailstilling_text;
+        public TextView sailforing_text;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            noteName = (TextView) itemView.findViewById(R.id.noteName);
-            noteDate = (TextView) itemView.findViewById(R.id.noteDate);
-            pencil = (ImageView) itemView.findViewById(R.id.notePencil);
-            camera = (ImageView) itemView.findViewById(R.id.noteCamera);
-            mic = (ImageView) itemView.findViewById(R.id.noteMic);
+            time = itemView.findViewById(R.id.note_time);
+            wind = itemView.findViewById(R.id.note_wind);
+            course = itemView.findViewById(R.id.note_course);
+            rowers = itemView.findViewById(R.id.note_rowers);
+            sailstilling = itemView.findViewById(R.id.note_sailstilling);
+            sailforing = itemView.findViewById(R.id.note_sailforing);
+
+            wind_text = itemView.findViewById(R.id.note_wind_text);
+            course_text = itemView.findViewById(R.id.note_course_text);
+            rowers_text = itemView.findViewById(R.id.note_rowers_text);
+            sailstilling_text = itemView.findViewById(R.id.note_sailstilling_text);
+            sailforing_text = itemView.findViewById(R.id.note_sailforing_text);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

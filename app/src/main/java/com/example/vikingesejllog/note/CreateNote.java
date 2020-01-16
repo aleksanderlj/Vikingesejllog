@@ -97,6 +97,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         db = DatabaseBuilder.get(this);
 
         findViewById(R.id.createNoteAccepterBtn).setOnClickListener(this);
+        findViewById(R.id.createNoteAfbrydBtn).setOnClickListener(this);
 
         windSpeedBtnText = findViewById(R.id.windSpeedBtnText);
         windSpeed = findViewById(R.id.windspeedBtn);
@@ -312,7 +313,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             //Skaber "PLAY"-knap.
                             ((ImageView) findViewById(R.id.createNoteMic)).setImageResource(R.drawable.play);
 
-                            Toast.makeText(CreateNote.this, "Lydnoten blev gemt i mappen: " + audioFolder, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(CreateNote.this, "Lydnoten blev gemt i mappen: " + audioFolder, Toast.LENGTH_SHORT).show();
                         }
                     });
                     progressDialog.show();
@@ -372,6 +373,10 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             case R.id.createNoteAccepterBtn:
                 confirm();
                 break;
+
+            case R.id.createNoteAfbrydBtn:
+                finish();
+                break;
         }}
 
     //Checker om permissions er gemt.
@@ -418,7 +423,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //Køres når der er et resultat fra kamera appen og gemmer det som et bitmap:
         super.onActivityResult(REQUEST_IMAGE_CAPTURE, resultCode, data);
 
-        Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_SHORT).show();
 
         //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
         Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());

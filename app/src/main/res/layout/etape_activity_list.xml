@@ -6,6 +6,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F0F0F0"
     android:fitsSystemWindows="true">
 
 
@@ -105,21 +106,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_layout">
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="140dp">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/togt_list"
-                android:layout_marginTop="30dp"
-                android:layout_width="280dp"
-                android:layout_height="wrap_content">
-
-            </androidx.recyclerview.widget.RecyclerView>
-        </RelativeLayout>
+        app:headerLayout="@layout/nav_header_layout"
+        app:menu="@menu/popup_menu">
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

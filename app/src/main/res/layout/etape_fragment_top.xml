@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_margin="5dp"
-        android:layout_weight="1"
+        android:layout_weight="0.33"
         android:background="@drawable/thin_border"
         android:maxLines="2"
         android:paddingStart="5dp"
@@ -26,19 +26,9 @@
         android:id="@+id/destination"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="0.64"
         android:gravity="center"
         android:text="xxxxx - xxxxx"
-        android:textColor="@android:color/background_light"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/etape_nr"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="Etape: x"
         android:textColor="@android:color/background_light"
         android:textSize="14sp" />
 
@@ -47,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:layout_weight="0.1"
+        android:layout_weight="0.03"
         android:background="#180B2C"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/menubutton" />
