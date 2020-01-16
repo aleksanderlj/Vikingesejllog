@@ -65,7 +65,7 @@ public class AddCrewFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onDestroy() {
-        callback.enableButton();
+        callback.enableButtons();
         super.onDestroy();
     }
 }
