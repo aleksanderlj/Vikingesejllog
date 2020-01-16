@@ -81,7 +81,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     private File audioFolder, imageFolder, imageFile;
 
-    private String fileName, audioDuration;
+    private String fileName, audioDurationString;
+    private int audioDurationInt;
 
     private boolean recordingDone;
 
@@ -331,7 +332,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
                                 @Override
                                 protected void onPostExecute(Object obj){
-                                    audioDuration = audioPlayer.returnDuration(); //Gemmer længden på filen der skal afspilles
+                                    audioDurationString = audioPlayer.returnDurationString(); //Gemmer længden på filen der skal afspilles
+                                    audioDurationInt = audioPlayer.returnDurationInt(); //Til progressdialogAfspiller.setMax
                                 }
                             }.execute();
 
@@ -345,9 +347,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     audioPlayer.startAudioPlayer();
 
                     progressDialogAfspiller = new ProgressDialog(CreateNote.this);
-                    progressDialogAfspiller.setMax(200);
+                    progressDialogAfspiller.setMax(audioDurationInt);
                     progressDialogAfspiller.setTitle("Afspiller lydnote...");
-                    progressDialogAfspiller.setMessage("Afspiller lydfil af længde: " + audioDuration);
+                    progressDialogAfspiller.setMessage("Afspiller lydfil af længde: " + audioDurationString);
                     progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
                         @Override

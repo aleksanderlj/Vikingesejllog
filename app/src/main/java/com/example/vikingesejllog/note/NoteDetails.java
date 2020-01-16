@@ -40,10 +40,11 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
 
     //MEDIA SUPPORT:
     private AudioPlayer audioPlayer;
-    private ProgressDialog progressDialog;
+    private ProgressDialog progressDialogAfspiller;
     private File audioFolder, imageFolder, audioFile, imageFile;
 
-    private String fileName;
+    private String fileName, audioDurationString;
+    private int audioDurationInt;
 
 
 
@@ -136,28 +137,31 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                             return Log.d("Afspiller", "Følgende lydfil afspilles: " + audioFolder + "/" + fileName + ".mp3");
                         } catch (Exception e) {
                             Toast.makeText(NoteDetails.this, "Indlæsning fejlede - prøv igen", Toast.LENGTH_LONG).show();
-                            progressDialog.dismiss();
+                            progressDialogAfspiller.dismiss();
                             return Log.d("ERROR", "Det virker IKKE: " + audioFolder + "    " + fileName + e);
                         }
                     }
 
                     @Override
                     protected void onPostExecute(Object obj) {
+                        audioDurationString = audioPlayer.returnDurationString(); //Gemmer længden på filen der skal afspilles
+                        audioDurationInt = audioPlayer.returnDurationInt(); //Til progressdialogAfspiller.setMax
                         audioPlayer.startAudioPlayer();
                     }
                 }.execute();
 
-                progressDialog = new ProgressDialog(NoteDetails.this);
-                progressDialog.setMax(200);
-                progressDialog.setTitle("Afspiller lydnote...");
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
+                progressDialogAfspiller = new ProgressDialog(NoteDetails.this);
+                progressDialogAfspiller.setMax(audioDurationInt);
+                progressDialogAfspiller.setTitle("Afspiller lydnote...");
+                progressDialogAfspiller.setMessage("Afspiller lydfil af længde: " + audioDurationString);
+                progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         audioPlayer.stopAudioNote();
                     }
                 });
-                progressDialog.show();
+                progressDialogAfspiller.show();
             }
 
             //Hvis der ikke er en gemt lydfil tilknyttet noten:
