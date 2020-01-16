@@ -129,10 +129,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
 
 
-        //Gør lydoptageren og lydafspilleren klar:
-        audioRecorder = new AudioRecorder();
-        audioPlayer = new AudioPlayer();
-
         // Vigtigt at der her er noget, der aflæser om noten har et billede
         // gemt sammen med dens database objekt, således at det bliver muligt, at bestemme
         // om cameraButton skal være med "Kamera"-ikon eller bitmap af det gemte billede.
@@ -287,6 +283,10 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             case R.id.createNoteMicBtn:
                 ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
+                //Gør lydoptageren og lydafspilleren klar:
+                audioRecorder = new AudioRecorder();
+                audioPlayer = new AudioPlayer();
+
                 if (!recordingDone) {
                     new AsyncTask() {
                         @Override
@@ -309,6 +309,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     progressDialogOptager = new ProgressDialog(CreateNote.this);
                     progressDialogOptager.setMax(200);
                     progressDialogOptager.setTitle("Optager lydnote...");
+                    progressDialogOptager.setCancelable(false);
                     progressDialogOptager.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialogOptager.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
                         @Override
@@ -350,7 +351,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     progressDialogAfspiller = new ProgressDialog(CreateNote.this);
                     progressDialogAfspiller.setMax(audioDurationInt);
                     progressDialogAfspiller.setTitle("Afspiller på repeat...");
-                    progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString + " lang");
+                    progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString);
+                    progressDialogAfspiller.setCancelable(false);
                     progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
                         @Override
@@ -381,12 +383,14 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.createNoteAccepterBtn:
-                audioPlayer.releaseAudioPlayer();
+                if(audioPlayer != null){
+                    audioPlayer.releaseAudioPlayer();}
                 confirm();
                 break;
 
             case R.id.createNoteAfbrydBtn:
-                audioPlayer.releaseAudioPlayer();
+                if(audioPlayer != null){
+                    audioPlayer.releaseAudioPlayer();}
                 finish();
                 break;
         }}

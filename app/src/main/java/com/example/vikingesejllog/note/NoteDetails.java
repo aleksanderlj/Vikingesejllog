@@ -170,7 +170,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
             progressDialogAfspiller = new ProgressDialog(NoteDetails.this);
             progressDialogAfspiller.setMax(audioDurationInt);
             progressDialogAfspiller.setTitle("Afspiller på repeat...");
-            progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString + " lang");
+            progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString);
             progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
                 @Override
