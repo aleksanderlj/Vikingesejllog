@@ -41,15 +41,7 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        Intent i = getIntent();
-        String crewJson = i.getStringExtra("crew");
-
-        if (crewJson != null ){
-            Gson gson = new Gson();
-            Type type = new TypeToken<ArrayList<CrewListItem>>() {
-            }.getType();
-            crewListItems = gson.fromJson(crewJson, type);
-        }
+        getCrewFromJson();
 
         listAdapter = new CrewListAdapter(crewListItems, this);
         recyclerView.setAdapter(listAdapter);
@@ -121,6 +113,18 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
         newCrewButton.setClickable(false);
         acceptCrewButton.setPressed(true);
         acceptCrewButton.setClickable(false);
+    }
+
+    private void getCrewFromJson(){
+        Intent i = getIntent();
+        String crewJson = i.getStringExtra("crew");
+
+        if (crewJson != null ){
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<CrewListItem>>() {
+            }.getType();
+            crewListItems = gson.fromJson(crewJson, type);
+        }
     }
 
     @Override
