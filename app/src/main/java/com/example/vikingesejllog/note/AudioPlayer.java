@@ -56,8 +56,10 @@ public class AudioPlayer extends AppCompatActivity {
     }
 
     public void releaseAudioPlayer(){
-        audioPlayer.reset();
-        audioPlayer.release();
-        audioPlayer = null;
+        if (audioPlayer != null) {
+            audioPlayer.reset();
+            audioPlayer.release();
+            audioPlayer = null;
+        }
     }
 }
