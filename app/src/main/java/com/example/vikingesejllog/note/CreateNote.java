@@ -41,6 +41,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 
+import im.delight.android.location.SimpleLocation;
+
 public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, NoteDialogListener {
 
     // TODO ryd op i alle findByViewID() declarations (vi behøver ikke finde dem alle fra start)
@@ -89,6 +91,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private ImageView savedPicture, savedPictureZoomed;
 
+    private SimpleLocation location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,10 +126,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         commentText = findViewById(R.id.commentEditText);
 
         gps = new MyGPS(this);
-        gpsData = "LAT: " + String.format(Locale.US, "%.2f", gps.getLocation().getLatitude()) + "\n" +
-                "LON: " + String.format(Locale.US, "%.2f", gps.getLocation().getLongitude());
-        System.out.println(gpsData);
-
+        location = gps.getLocation();
+        location.beginUpdates();
 
 
         // Vigtigt at der her er noget, der aflæser om noten har et billede
@@ -165,7 +166,19 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //Gør mappen for billeder klar:
         imageFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Billedenoter/");
 
-        ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
+        //ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        location.beginUpdates();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        location.endUpdates();
     }
 
     public void setWindSpeed() {
@@ -231,6 +244,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
     public void confirm() {
+        location = gps.getLocation();
+
+        gpsData = "LAT: " + String.format(Locale.US, "%.2f", location.getLatitude()) + "\n" +
+                "LON: " + String.format(Locale.US, "%.2f", location.getLongitude());
+
         SimpleDateFormat clock = new SimpleDateFormat("HH.mm", Locale.getDefault());
         String time = clock.format(new Date());
 
