@@ -293,6 +293,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
     
     @Override
     public void onSpinnerItemSelected(int position) {
-    
+        pager.setCurrentItem(position, true);
     }
 }

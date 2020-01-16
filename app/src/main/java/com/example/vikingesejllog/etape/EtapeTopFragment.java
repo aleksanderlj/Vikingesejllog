@@ -94,7 +94,7 @@ public class EtapeTopFragment extends Fragment implements OnItemSelectedListener
     
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-    
+        callback.onSpinnerItemSelected(position);
     }
     
     @Override
