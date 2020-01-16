@@ -9,12 +9,10 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class AudioPlayer extends AppCompatActivity {
-     /*
-    Denne klasse har til formål at styre logikken bag lydafspilning inde i "MakeNoteActivity". Herved
+    /*Denne klasse har til formål at styre logikken bag lydafspilning inde i "MakeNoteActivity". Herved
     kan optagelsen, der er knyttet til den specifikke note afspilles igen.
     Filnavnet defineres ud fra hvilken note, der oprettes, således
-    at hvert filnavn er unikt. Der mangler databasefunktionalitet!
-     */
+    at hvert filnavn er unikt baseret på dato og tid.*/
 
     MediaPlayer audioPlayer;
 
@@ -25,6 +23,7 @@ public class AudioPlayer extends AppCompatActivity {
             audioPlayer = new MediaPlayer();
             audioPlayer.setDataSource(fileDestination);
             audioPlayer.setVolume(100,100);
+            audioPlayer.setLooping(true);
             audioPlayer.prepare();
         } catch (IOException e) {
             Log.d("INDLÆSNINGSFEJL", "Filen blev ikke indlæst" + fileDestination);
@@ -39,7 +38,7 @@ public class AudioPlayer extends AppCompatActivity {
     public String returnDurationString(){
         //Formaterer længden på optagelsen:
         int audioDurationMilliseconds = audioPlayer.getDuration();
-        String audioDuration = String.format("%02d:%02d",
+        String audioDuration = String.format("%02dm og %02ds",
                 TimeUnit.MILLISECONDS.toMinutes(audioDurationMilliseconds),
                 TimeUnit.MILLISECONDS.toSeconds(audioDurationMilliseconds) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(audioDurationMilliseconds)));

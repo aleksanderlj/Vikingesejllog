@@ -9,11 +9,10 @@ import java.io.IOException;
 
 
 public class AudioRecorder extends AppCompatActivity {
-    /*
-    Denne klasse har til formål at styre logikken bag lydoptagelsen inde i "MakeNoteActivity". Herved
+
+    /*Denne klasse har til formål at styre logikken bag lydoptagelsen inde i "MakeNoteActivity". Herved
     gemmes noten som en .3gp fil. Filnavnet defineres ud fra hvilken note, der oprettes, således
-    at hvert filnavn er unikt. Der mangler databasefunktionalitet!
-     */
+    at hvert filnavn er unikt baseret på dato og tid.*/
 
 
     MediaRecorder audioRecorder;

@@ -349,8 +349,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
                     progressDialogAfspiller = new ProgressDialog(CreateNote.this);
                     progressDialogAfspiller.setMax(audioDurationInt);
-                    progressDialogAfspiller.setTitle("Afspiller lydnote...");
-                    progressDialogAfspiller.setMessage("Afspiller lydfil af længde: " + audioDurationString);
+                    progressDialogAfspiller.setTitle("Afspiller på repeat...");
+                    progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString + " lang");
                     progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
                         @Override

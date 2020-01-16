@@ -142,7 +142,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                     @Override
                     protected Object doInBackground(Object... arg0) {
                         try {
-                            audioPlayer.setupAudioPlayer(audioFolder + "/" + fileName + ".mp3");
+                            //audioPlayer.setupAudioPlayer(audioFolder + "/" + fileName + ".mp3");
                             return Log.d("Afspiller", "Følgende lydfil afspilles: " + audioFolder + "/" + fileName + ".mp3");
                         } catch (Exception e) {
                             Toast.makeText(NoteDetails.this, "Indlæsning fejlede - prøv igen", Toast.LENGTH_LONG).show();
@@ -164,12 +164,13 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (v == playButton) {
+
             audioPlayer.startAudioPlayer();
 
             progressDialogAfspiller = new ProgressDialog(NoteDetails.this);
             progressDialogAfspiller.setMax(audioDurationInt);
-            progressDialogAfspiller.setTitle("Afspiller lydnote...");
-            progressDialogAfspiller.setMessage("Afspiller lydfil af længde: " + audioDurationString);
+            progressDialogAfspiller.setTitle("Afspiller på repeat...");
+            progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString + " lang");
             progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
                 @Override
