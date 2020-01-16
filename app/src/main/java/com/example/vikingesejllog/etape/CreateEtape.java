@@ -24,12 +24,12 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.Executors;
 
 public class CreateEtape extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
-    List<String> crew;
+    ArrayList<CrewListItem> crew;
+    ArrayList<String> crewNames;
     AppDatabase db;
     Date departure;
     ImageView crewButton;
@@ -78,11 +78,13 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
                 EditText end = findViewById(R.id.createEtapeArrivalText);
 //                EditText date = findViewById(R.id.createEtapeDepartureDateBox);
 
+                crewNames = crewItemsToString(crew);
+
                 e.setSkipper(skipper.getText().toString());
                 e.setStart(start.getText().toString());
                 e.setEnd(end.getText().toString());
                 e.setDeparture(departure);
-                e.setCrew(crew);
+                e.setCrew(crewNames);
                 e.setTogt_id(getIntent().getLongExtra("togt_id", -1L));
 
                 setResult(Activity.RESULT_OK);
@@ -124,5 +126,13 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
                 crew = gson.fromJson(json, type);
             }
         }
+    }
+
+    private ArrayList<String> crewItemsToString(ArrayList<CrewListItem> crewListItems){
+        ArrayList<String> crewNames = new ArrayList<>();
+        for (int i = 0; i < crewListItems.size(); i++){
+            crewNames.add(crewListItems.get(i).getCrewMember());
+        }
+        return crewNames;
     }
 }
