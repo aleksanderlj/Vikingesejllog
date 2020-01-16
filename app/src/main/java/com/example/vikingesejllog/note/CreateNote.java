@@ -81,9 +81,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
     private File audioFolder, imageFolder, imageFile;
 
-    private int audioDuration;
-
-    private String fileName;
+    private String fileName, audioDuration;
 
     private boolean recordingDone;
 
@@ -129,6 +127,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
 
 
+        //Gør lydoptageren og lydafspilleren klar:
+        audioRecorder = new AudioRecorder();
+        audioPlayer = new AudioPlayer();
 
         // Vigtigt at der her er noget, der aflæser om noten har et billede
         // gemt sammen med dens database objekt, således at det bliver muligt, at bestemme
@@ -256,10 +257,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     //Implementering af AudioRecorder, AudioPlayer og kamerafunktionalitet:
     @Override
     public void onClick(View v) {
-        ProgressDialog progressDialog;
-        //Gør lydoptageren og lydafspilleren klar:
-        audioRecorder = new AudioRecorder();
-        audioPlayer = new AudioPlayer();
+        ProgressDialog progressDialogOptager;
+        ProgressDialog progressDialogAfspiller;
 
         switch (v.getId()){
             case R.id.windspeedBtn:
@@ -282,10 +281,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 setCourse();
                 break;
 
-            case R.id.createNoteMicBtn:
-                if (!recordingDone) {
-                    ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
+            case R.id.createNoteMicBtn:
+                ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
+
+                if (!recordingDone) {
                     new AsyncTask() {
                         @Override
                         protected Object doInBackground(Object... arg0) {
@@ -304,25 +304,26 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                         }
                     }.execute();
 
-                    progressDialog = new ProgressDialog(CreateNote.this);
-                    progressDialog.setMax(200);
-                    progressDialog.setTitle("Optager lydnote...");
-                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
+                    progressDialogOptager = new ProgressDialog(CreateNote.this);
+                    progressDialogOptager.setMax(200);
+                    progressDialogOptager.setTitle("Optager lydnote...");
+                    progressDialogOptager.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialogOptager.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             audioRecorder.stopAudioRecord();
                             recordingDone = true;
-                            //Skaber "PLAY"-knap.
+                            //Skifter ikon til "PLAY"-knap.
                             ((ImageView) findViewById(R.id.createNoteMic)).setImageResource(R.drawable.play);
 
-                            //Er nødvendigt at gøre AudioPlayer klar her, da progressdialog ellers ikke opdateres med duration på filen!
+                            //Er nødvendigt at gøre AudioPlayer klar her, da progressdialog ellers
+                            // ikke opdateres med duration på filen, når den afspilles første gang!
                             new AsyncTask() {
                                 @Override
                                 protected Object doInBackground(Object... arg0) {
                                     try {
                                         audioPlayer.setupAudioPlayer(audioFolder + "/" + fileName + ".mp3");
-                                        return Log.d(audioTAG, "Følgende lydfil afspilles: " + audioFolder + "/" + fileName + ".mp3");
+                                        return Log.d(audioTAG, "Følgende lydfil klargøres: " + audioFolder + "/" + fileName + ".mp3");
                                     } catch (Exception e){
                                         e.printStackTrace();
                                         return Log.d(audioTAG, "Det virker IKKE: " + audioFolder + "    " + fileName + e);
@@ -330,33 +331,32 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
                                 @Override
                                 protected void onPostExecute(Object obj){
-                                    audioDuration = audioPlayer.returnDuration();
+                                    audioDuration = audioPlayer.returnDuration(); //Gemmer længden på filen der skal afspilles
                                 }
                             }.execute();
 
                             Toast.makeText(CreateNote.this, "Lydnoten blev gemt i mappen: " + audioFolder, Toast.LENGTH_SHORT).show();
                         }
                     });
-                    progressDialog.show();
+                    progressDialogOptager.show();
 
                 } if (recordingDone){
                     //Starter afspilleren:
                     audioPlayer.startAudioPlayer();
 
-                    progressDialog = new ProgressDialog(CreateNote.this);
-                    progressDialog.setMax(200);
-                    progressDialog.setTitle("Afspiller lydnote...");
-                    progressDialog.setMessage("Afspiller lydfil af længde: " + audioDuration);
-                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
+                    progressDialogAfspiller = new ProgressDialog(CreateNote.this);
+                    progressDialogAfspiller.setMax(200);
+                    progressDialogAfspiller.setTitle("Afspiller lydnote...");
+                    progressDialogAfspiller.setMessage("Afspiller lydfil af længde: " + audioDuration);
+                    progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             audioPlayer.stopAudioNote();
                         }});
-
-                progressDialog.show();
-                }
+                    progressDialogAfspiller.show();}
                 break;
+
 
             case R.id.createNoteCameraBtn:
                 ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
@@ -378,9 +378,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.createNoteAccepterBtn:
+                audioPlayer.releaseAudioPlayer();
                 confirm();
-                audioPlayer.stopAudioNote();
-                audioRecorder.stopAudioRecord();
                 break;
         }}
 
