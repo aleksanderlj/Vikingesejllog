@@ -68,6 +68,8 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
     public void onClick(View v) {
 
         if (v == newCrewButton) {
+            newCrewButton.setPressed(true);
+            newCrewButton.setClickable(false);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.crewNameFragment, new AddCrewFragment())
                     .addToBackStack(null)
@@ -81,6 +83,12 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
         CrewListItem crewListItem = new CrewListItem(member);
         crewListItems.add(crewListItem);
         listAdapter.notifyItemInserted(crewListItems.size() - 1);
+    }
+
+    @Override
+    public void enableButton() {
+        newCrewButton.setPressed(false);
+        newCrewButton.setClickable(true);
     }
 
     @Override

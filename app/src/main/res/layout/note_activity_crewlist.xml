@@ -74,11 +74,11 @@
 
     <FrameLayout
         android:id="@+id/crewNameFragment"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="@+id/crewRecyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/crewRecyclerView"
         app:layout_constraintTop_toTopOf="@+id/crewRecyclerView">
 
     </FrameLayout>
