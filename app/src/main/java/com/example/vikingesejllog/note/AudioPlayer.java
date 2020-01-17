@@ -29,10 +29,23 @@ public class AudioPlayer extends AppCompatActivity {
             e.printStackTrace();
         }}
 
+
     public void startAudioPlayer(){
         //Starter afspilning
         audioPlayer.start();
     }
+
+
+    public void stopAudioPlayer(){//Gør audioPlayer klar til at spille igen
+        audioPlayer.pause();
+        audioPlayer.seekTo(0);
+    }
+
+
+    public boolean isAudioPlaying(){
+        return audioPlayer.isPlaying();
+    }
+
 
     public String returnDurationString(){
         //Formaterer længden på optagelsen:
@@ -44,14 +57,11 @@ public class AudioPlayer extends AppCompatActivity {
         return audioDuration;
     }
 
+
     public int returnDurationInt(){
         return audioPlayer.getDuration();
     }
 
-    public void stopAudioNote(){//Gør audioPlayer klar til at spille igen
-        audioPlayer.pause();
-        audioPlayer.seekTo(0);
-    }
 
     public void releaseAudioPlayer(){
         if (audioPlayer != null) {

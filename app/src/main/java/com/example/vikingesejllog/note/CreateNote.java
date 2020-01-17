@@ -364,9 +364,10 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     });
                     progressDialogOptager.show(); }
 
-                if (recordingDone){
+                if (recordingDone) {
                     //Starter afspilleren:
                     audioPlayer.startAudioPlayer();
+
 
                     progressDialogAfspiller = new ProgressDialog(CreateNote.this);
                     progressDialogAfspiller.setMax(audioDurationInt);
@@ -377,9 +378,19 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            audioPlayer.stopAudioNote();
-                        }});
-                    progressDialogAfspiller.show();}
+                            audioPlayer.stopAudioPlayer();
+                        }
+                    });
+                    progressDialogAfspiller.show();
+
+                    Log.d(audioTAG, audioPlayer.isAudioPlaying() + "");
+
+                    /*while (!audioPlayer.isAudioPlaying()){
+                        progressDialogAfspiller.dismiss();
+                        audioPlayer.stopAudioPlayer();
+                        Log.d("TEST BOOLEAN", audioPlayer.isAudioPlaying() +"");
+                    }*/
+                }
                 break;
 
 
