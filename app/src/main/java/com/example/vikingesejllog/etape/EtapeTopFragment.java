@@ -42,13 +42,15 @@ public class EtapeTopFragment extends Fragment {
     }
 
     public void setTime(Date date){
+        TextView tv = getView().findViewById(R.id.etape_date);
 
         if(date.getTime() != 0L){
-            TextView tv = getView().findViewById(R.id.etape_date);
             Calendar c = Calendar.getInstance();
             c.setTime(date);
             String s = c.get(Calendar.DAY_OF_MONTH) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.YEAR);
             tv.setText(s);
+        } else {
+            tv.setText("");
         }
     }
 
