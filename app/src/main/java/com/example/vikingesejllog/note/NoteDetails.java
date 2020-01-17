@@ -44,7 +44,6 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
     private File audioFolder, imageFolder, audioFile, imageFile;
 
     private String fileName, audioDurationString;
-    private int audioDurationInt;
 
 
 
@@ -155,8 +154,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
 
                     @Override
                     protected void onPostExecute(Object obj) {
-                        audioDurationString = audioPlayer.returnDurationString(); //Gemmer længden på filen der skal afspilles
-                        audioDurationInt = audioPlayer.returnDurationInt(); //Til progressdialogAfspiller.setMax
+                        audioDurationString = audioPlayer.returnDurationString(); //Gemmer længden på filen der skal afspilles, så den kan vises til brugeren senere
                     }
                 }.execute();
             }
@@ -171,8 +169,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
             audioPlayer.startAudioPlayer();
 
             progressDialogAfspiller = new ProgressDialog(NoteDetails.this);
-            progressDialogAfspiller.setMax(audioDurationInt);
-            progressDialogAfspiller.setTitle("Afspiller på repeat...");
+            progressDialogAfspiller.setTitle("Afspiller lydnote...");
             progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString);
             progressDialogAfspiller.setCancelable(false);
             progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -183,6 +180,25 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                 }
             });
             progressDialogAfspiller.show();
+
+            new AsyncTask() {
+                @Override
+                protected Object doInBackground(Object... arg0) {
+                    try {
+                        while (audioPlayer.isAudioPlaying());
+                        return Log.d("Test af lydafspiller: ", audioPlayer.isAudioPlaying() + "");
+                    } catch (Exception e){
+                        e.printStackTrace();
+                        return Log.d("Test af lydafspiller: ", "ProgressDialog kunne ikke lukkes " + audioPlayer.isAudioPlaying() + "  " + e);
+                    }}
+
+                @Override
+                protected void onPostExecute(Object obj){
+                    if (!audioPlayer.isAudioPlaying()){
+                        audioPlayer.stopAudioPlayer();
+                        progressDialogAfspiller.dismiss();}
+                }
+            }.execute();
         }
     }
 

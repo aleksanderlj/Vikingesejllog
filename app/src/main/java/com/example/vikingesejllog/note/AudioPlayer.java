@@ -58,11 +58,6 @@ public class AudioPlayer extends AppCompatActivity {
     }
 
 
-    public int returnDurationInt(){
-        return audioPlayer.getDuration();
-    }
-
-
     public void releaseAudioPlayer(){
         if (audioPlayer != null) {
             audioPlayer.stop();
