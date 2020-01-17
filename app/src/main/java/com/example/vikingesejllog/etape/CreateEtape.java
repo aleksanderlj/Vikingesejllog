@@ -116,22 +116,20 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1) {
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
 
-            if (resultCode == Activity.RESULT_OK) {
 
-                String json = data.getStringExtra("crewList");
-                Gson gson = new Gson();
-                Type type = new TypeToken<ArrayList<CrewListItem>>() {
-                }.getType();
-                crew = gson.fromJson(json, type);
-            }
+            String json = data.getStringExtra("crewList");
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<CrewListItem>>() {
+            }.getType();
+            crew = gson.fromJson(json, type);
         }
     }
 
-    private ArrayList<String> crewItemsToString(ArrayList<CrewListItem> crewListItems){
+    private ArrayList<String> crewItemsToString(ArrayList<CrewListItem> crewListItems) {
         ArrayList<String> crewNames = new ArrayList<>();
-        for (int i = 0; i < crewListItems.size(); i++){
+        for (int i = 0; i < crewListItems.size(); i++) {
             crewNames.add(crewListItems.get(i).getCrewMember());
         }
         return crewNames;
