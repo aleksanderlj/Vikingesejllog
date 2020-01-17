@@ -131,6 +131,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         location.beginUpdates();
 
 
+        //Gør lydoptageren og lydafspilleren klar:
+        audioRecorder = new AudioRecorder();
+        audioPlayer = new AudioPlayer();
+
+
         // Vigtigt at der her er noget, der aflæser om noten har et billede
         // gemt sammen med dens database objekt, således at det bliver muligt, at bestemme
         // om cameraButton skal være med "Kamera"-ikon eller bitmap af det gemte billede.
@@ -166,10 +171,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         audioFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Lydnoter/");
         //Gør mappen for billeder klar:
         imageFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Billedenoter/");
-
-        //Gør lydoptageren og lydafspilleren klar:
-        audioRecorder = new AudioRecorder();
-        audioPlayer = new AudioPlayer();
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
     }
@@ -506,7 +507,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     hvis fingeren slippes
      */
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                savedPictureZoomed.setElevation(100);
+                savedPictureZoomed.setElevation(1000);
                 savedPictureZoomed.setVisibility(View.VISIBLE);
                 return true;
             }
