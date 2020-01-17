@@ -34,7 +34,6 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
     Date departure;
     ImageView crewButton;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +46,6 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         findViewById(R.id.createEtapeCrewCountBox).setOnClickListener(this);
         findViewById(R.id.createEtapeAccepterBtn).setOnClickListener(this);
         findViewById(R.id.createEtapeAfbrydBtn).setOnClickListener(this);
-
     }
 
     @Override
@@ -97,8 +95,6 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.createEtapeAfbrydBtn:
                 finish();
-
-
         }
     }
 

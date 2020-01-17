@@ -2,6 +2,7 @@ package com.example.vikingesejllog.etape;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -98,6 +99,7 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
     @Override
     public void enableButtons() {
 
+        //newCrewButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorLightBlue)));
         newCrewButton.setPressed(false);
         newCrewButton.setClickable(true);
 
@@ -109,8 +111,7 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
 
     private void disableButtons(){
 
-        //newCrewButton.(getResources().getColor(R.color.colorDarkGreyBlue));
-
+        //newCrewButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorDarkGreyBlue)));
         newCrewButton.setPressed(true);
         newCrewButton.setClickable(false);
 
