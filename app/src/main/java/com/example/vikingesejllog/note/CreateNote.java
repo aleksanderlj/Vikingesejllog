@@ -166,7 +166,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //Gør mappen for billeder klar:
         imageFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Billedenoter/");
 
-        //ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
+        //Gør lydoptageren og lydafspilleren klar:
+        audioRecorder = new AudioRecorder();
+        audioPlayer = new AudioPlayer();
+
+        ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
     }
 
     @Override
@@ -300,10 +304,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
             case R.id.createNoteMicBtn:
                 ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-
-                //Gør lydoptageren og lydafspilleren klar:
-                audioRecorder = new AudioRecorder();
-                audioPlayer = new AudioPlayer();
 
                 if (!recordingDone) {
                     new AsyncTask() {
@@ -461,6 +461,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
         Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
+        if (bitmap != null){
         savedPicture.setImageBitmap(bitmap);
             //Er nødvendigt da nogen telefoner roterer billedet forkert.. som f.eks. Samsung zzz
             if (bitmap.getHeight() < bitmap.getWidth()){
@@ -469,7 +470,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         savedPicture.setVisibility(View.VISIBLE);
         savedPicture.setOnTouchListener(this);
 
-        savedPictureZoomed.setImageBitmap(bitmap);
+        savedPictureZoomed.setImageBitmap(bitmap); }
     }
 
     //Zoom ind på billede bitmap ved at røre det:
