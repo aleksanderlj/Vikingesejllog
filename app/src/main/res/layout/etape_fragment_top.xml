@@ -1,44 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#180B2C">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#180B2C"
+    android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/crew"
-        android:layout_width="0dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        android:layout_weight="0.33"
-        android:background="@drawable/thin_border"
-        android:maxLines="2"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:text="Skipper: xxx\nBesætning: xx"
-        android:textAlignment="viewStart"
-        android:textAllCaps="false"
-        android:textColor="@android:color/background_light"
-        android:textSize="12sp" />
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp">
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.64"
-        android:gravity="center"
-        android:text="xxxxx - xxxxx"
-        android:textColor="@android:color/background_light"
-        android:textSize="14sp" />
+        <ImageView
+            android:id="@+id/menu_button"
+            android:layout_width="28dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
 
-    <ImageView
-        android:id="@+id/menu_button"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:layout_weight="0.03"
-        android:background="#180B2C"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/menubutton" />
+            android:layout_marginBottom="10dp"
+            android:background="#180B2C"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/menubutton" />
+
+        <TextView
+            android:id="@+id/etape_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/etape_from_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="Fra"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/etape_to_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etape_from_title"
+            android:text="Til"
+            android:textColor="@android:color/white" />
+
+        <ImageView
+            android:id="@+id/etape_crewinfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toStartOf="@+id/menu_button"
+            android:tint="@android:color/white"
+            app:srcCompat="@drawable/group" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/etape_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etape_from_title"
+            android:layout_alignBottom="@+id/guideline2"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/etape_date"
+            android:layout_toEndOf="@+id/etape_from_title"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:textStyle="normal"
+            app:autoSizeMaxTextSize="16sp"
+            app:autoSizeMinTextSize="12sp"
+            app:autoSizeTextType="uniform" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/etape_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/guideline3"
+            android:layout_below="@+id/etape_from_title"
+            android:layout_toStartOf="@+id/etape_date"
+            android:layout_toEndOf="@+id/etape_from_title"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:textStyle="normal"
+            app:autoSizeMaxTextSize="16sp"
+            app:autoSizeMinTextSize="12sp"
+            app:autoSizeTextType="uniform" />
+
+        <ImageView
+            android:id="@+id/guideline1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/etape_from_title"
+            android:visibility="invisible"
+            app:srcCompat="@android:color/white" />
+
+        <ImageView
+            android:id="@+id/guideline2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/etape_from_title"
+            android:visibility="invisible"
+            app:srcCompat="@android:color/white" />
+
+        <ImageView
+            android:id="@+id/guideline3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etape_to_title"
+            android:visibility="invisible"
+            app:srcCompat="@android:color/white" />
+
+    </RelativeLayout>
 </LinearLayout>

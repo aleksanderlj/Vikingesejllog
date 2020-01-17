@@ -12,6 +12,11 @@ import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 
+import org.w3c.dom.Text;
+
+import java.util.Calendar;
+import java.util.Date;
+
 public class EtapeTopFragment extends Fragment {
     public EtapeTopFragment(){}
 
@@ -20,16 +25,33 @@ public class EtapeTopFragment extends Fragment {
         return inflater.inflate(R.layout.etape_fragment_top, container, false);
     }
 
+    /*
     public void setCrew(String skipper, int crew){
         TextView tv = getView().findViewById(R.id.crew);
         String s = "Skipper: " + skipper + "\nBesætning: " + crew;
         tv.setText(s);
     }
 
+     */
+
     public void setDestination(String from, String to){
-        TextView tv = getView().findViewById(R.id.name);
-        String s = from + " - " + to;
-        tv.setText(s);
+        TextView fromTV = getView().findViewById(R.id.etape_from);
+        TextView toTV = getView().findViewById(R.id.etape_to);
+        fromTV.setText(from);
+        toTV.setText(to);
+    }
+
+    public void setTime(Date date){
+        TextView tv = getView().findViewById(R.id.etape_date);
+
+        if(date.getTime() != 0L){
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            String s = c.get(Calendar.DAY_OF_MONTH) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.YEAR);
+            tv.setText(s);
+        } else {
+            tv.setText("");
+        }
     }
 
     public void setEtape(int id, int max){
@@ -38,9 +60,10 @@ public class EtapeTopFragment extends Fragment {
         //tv.setText(s);
     }
 
-    public void setAll(EtapeWithNotes etape, int id, int max){
-        setCrew(etape.etape.getSkipper(), etape.etape.getCrew().size());
+    public void setAll(EtapeWithNotes etape){
+        //setCrew(etape.etape.getSkipper(), etape.etape.getCrew().size());
         setDestination(etape.etape.getStart(), etape.etape.getEnd());
+        setTime(etape.etape.getDeparture());
         //setEtape(id, max);
     }
 }
