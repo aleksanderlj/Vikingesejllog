@@ -32,9 +32,12 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.etape.CreateEtape;
+import com.example.vikingesejllog.etape.CrewList;
+import com.example.vikingesejllog.etape.CrewListItem;
 import com.example.vikingesejllog.etape.EtapeTopFragment;
 import com.example.vikingesejllog.etape.CreateButton;
 import com.example.vikingesejllog.R;
+import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.togt.CreateTogt;
 import com.example.vikingesejllog.togt.TogtList;
@@ -42,6 +45,7 @@ import com.example.vikingesejllog.togt.TogtListAdapter;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 import java.util.ArrayList;
@@ -52,7 +56,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     private ViewPager2 pager;
     private RecyclerView.Adapter adapter;
     private DrawerLayout mDrawerLayout;
-    private Button newTogt;
+    private Button newTogt, crewButton;
     private ImageButton nextButton, prevButton;
     private ArrayList<EtapeWithNotes> etaper;
     private Togt togt;
@@ -75,9 +79,11 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         ImageView button = findViewById(R.id.menu_button);
         prevButton = findViewById(R.id.prevButton);
         nextButton = findViewById(R.id.nextButton);
+        crewButton = findViewById(R.id.crew);
         button.setOnClickListener(this);
         prevButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
+        crewButton.setOnClickListener(this);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -213,12 +219,20 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             case R.id.nextButton:
                 pager.setCurrentItem(pager.getCurrentItem() + 1, true);
                 break;
-
+            case R.id.crew:
+                if (!etaper.isEmpty()){
+                    Intent showCrew = new Intent(this, CrewList.class);
+                    showCrew.putExtra("crew", convertCrewListToJson());
+                    startActivity(showCrew);
+                }
+                break;
 
             case R.id.newHarborButton:
-                Intent createnote = new Intent(this, CreateNote.class);
-                createnote.putExtra("etape_id", etaper.get(pager.getCurrentItem()).etape.getEtape_id());
-                this.startActivityForResult(createnote, NOTE_CODE);
+                if (!etaper.isEmpty()){
+                    Intent createnote = new Intent(this, CreateNote.class);
+                    createnote.putExtra("etape_id", etaper.get(pager.getCurrentItem()).etape.getEtape_id());
+                    this.startActivityForResult(createnote, NOTE_CODE);
+                }
                 break;
         }
     }
@@ -281,5 +295,27 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     public void startActivityForResult(Intent intent, int requestCode) {
         savedPos = pager.getCurrentItem();
         super.startActivityForResult(intent, requestCode);
+    }
+
+    private Etape getEtape(){
+        EtapeWithNotes etapeWithNotes = etaper.get(pager.getCurrentItem());
+        return etapeWithNotes.getEtape();
+    }
+
+    private ArrayList<CrewListItem> convertCrewToListItems(){
+        ArrayList<CrewListItem> crewListItems = new ArrayList<>();
+        List<String> crewNames;
+        crewNames = getEtape().getCrew();
+        for (int i = 0; i < crewNames.size(); i++){
+            CrewListItem crewListItem = new CrewListItem(crewNames.get(i));
+            crewListItems.add(crewListItem);
+        }
+        return crewListItems;
+    }
+
+    private String convertCrewListToJson(){
+        ArrayList<CrewListItem> crewListItems = convertCrewToListItems();
+        Gson gson = new Gson();
+        return gson.toJson(crewListItems);
     }
 }

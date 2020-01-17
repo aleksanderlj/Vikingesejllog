@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.etape.CreateEtape;
+import com.example.vikingesejllog.etape.CrewListItem;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.other.DatabaseBuilder;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
