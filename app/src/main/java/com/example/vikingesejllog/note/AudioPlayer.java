@@ -23,7 +23,6 @@ public class AudioPlayer extends AppCompatActivity {
             audioPlayer = new MediaPlayer();
             audioPlayer.setDataSource(fileDestination);
             audioPlayer.setVolume(100,100);
-            audioPlayer.setLooping(true);
             audioPlayer.prepare();
         } catch (IOException e) {
             Log.d("INDLÆSNINGSFEJL", "Filen blev ikke indlæst" + fileDestination);
@@ -49,14 +48,14 @@ public class AudioPlayer extends AppCompatActivity {
         return audioPlayer.getDuration();
     }
 
-    public void stopAudioNote(){
-        //Stopper afspilningen af noten og frigiver objekt
-        audioPlayer.stop();
-
+    public void stopAudioNote(){//Gør audioPlayer klar til at spille igen
+        audioPlayer.pause();
+        audioPlayer.seekTo(0);
     }
 
     public void releaseAudioPlayer(){
         if (audioPlayer != null) {
+            audioPlayer.stop();
             audioPlayer.reset();
             audioPlayer.release();
             audioPlayer = null;
