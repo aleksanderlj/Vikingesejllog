@@ -26,48 +26,16 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.50" />
 
-    <ImageView
-        android:id="@+id/createTogtArrDestinBox"
-        android:layout_width="0dp"
-        android:layout_height="140dp"
-        android:layout_marginTop="100dp"
+    <TextView
+        android:id="@+id/createTogtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Opret togt"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/createTogtNameBox"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/btn_create_note" />
-
-    <ImageView
-        android:id="@+id/createTogtDepartureArrow"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="26dp"
-        app:layout_constraintStart_toStartOf="@+id/createTogtArrDestinBox"
-        app:layout_constraintTop_toTopOf="@+id/createTogtArrDestinBox"
-        app:srcCompat="@drawable/path_white" />
-
-    <ImageView
-        android:id="@+id/createTogtDestinationPin"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="26dp"
-        app:layout_constraintBottom_toBottomOf="@+id/createTogtArrDestinBox"
-        app:layout_constraintStart_toStartOf="@+id/createTogtArrDestinBox"
-        app:srcCompat="@drawable/location_red" />
-
-    <EditText
-        android:id="@+id/createTogtDepatureEditText"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:background="@null"
-        android:hint="Afrejse"
-        android:singleLine="true"
-        app:layout_constraintBottom_toTopOf="@+id/createTogtDottedLine"
-        app:layout_constraintEnd_toEndOf="@+id/createTogtDottedLine"
-        app:layout_constraintStart_toEndOf="@+id/createTogtDepartureArrow"
-        app:layout_constraintTop_toTopOf="@+id/createTogtArrDestinBox" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/createTogtAfbrydBtn"
@@ -93,49 +61,105 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle" />
 
-    <EditText
-        android:id="@+id/createTogtArrivalEditText"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:background="@null"
-        android:hint="Ankomst"
-        android:singleLine="true"
-        app:layout_constraintBottom_toBottomOf="@+id/createTogtArrDestinBox"
-        app:layout_constraintEnd_toEndOf="@+id/createTogtDottedLine"
-        app:layout_constraintStart_toEndOf="@+id/createTogtDestinationPin"
-        app:layout_constraintTop_toBottomOf="@+id/createTogtDottedLine" />
+
 
     <ImageView
-        android:id="@+id/createTogtDottedLine"
+        android:id="@+id/createTogtNameBox"
         android:layout_width="0dp"
-        android:layout_height="5dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintBottom_toBottomOf="@+id/createTogtArrDestinBox"
-        app:layout_constraintEnd_toEndOf="@+id/createTogtArrDestinBox"
-        app:layout_constraintStart_toStartOf="@+id/createTogtArrDestinBox"
-        app:layout_constraintTop_toTopOf="@+id/createTogtArrDestinBox"
-        app:srcCompat="@drawable/dotted_line" />
-
-    <TextView
-        android:id="@+id/createTogtTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Opret togt"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/createTogtArrDestinBox"
+        android:layout_height="60dp"
+        android:layout_marginTop="150dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/btn_create_note" />
 
     <ImageView
-        android:id="@+id/createTogtUnderline"
+        android:id="@+id/createTogtNameUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/createTogtArrDestinBox"
-        app:layout_constraintStart_toStartOf="@+id/createTogtArrDestinBox"
-        app:layout_constraintTop_toBottomOf="@+id/createTogtArrDestinBox"
+        app:layout_constraintEnd_toEndOf="@+id/createTogtNameBox"
+        app:layout_constraintStart_toStartOf="@+id/createTogtNameBox"
+        app:layout_constraintTop_toBottomOf="@+id/createTogtNameBox"
         app:srcCompat="@drawable/underline_darkgray" />
+
+    <EditText
+        android:id="@+id/createTogtNameEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:background="@null"
+        android:hint="Indtast togt navn"
+        android:inputType="textPersonName"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/createTogtNameBox"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="@+id/createTogtNameBox" />
+
+
+    <ImageView
+        android:id="@+id/createTogtDepartureBox"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/createTogtNameUnderline"
+        app:srcCompat="@drawable/btn_create_note" />
+
+    <ImageView
+        android:id="@+id/createTogtDepatureUnderline"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/createTogtDepartureBox"
+        app:layout_constraintStart_toStartOf="@+id/createTogtDepartureBox"
+        app:layout_constraintTop_toBottomOf="@+id/createTogtDepartureBox"
+        app:srcCompat="@drawable/underline_darkgray" />
+
+    <EditText
+        android:id="@+id/createTogtDepartureEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:background="@null"
+        android:hint="Indtast start name"
+        android:inputType="textPersonName"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/createTogtDepartureBox"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="@+id/createTogtDepartureBox" />
+
+
+
+
+    <ImageView
+        android:id="@+id/createTogtDepartureDateBox"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/createTogtDepatureUnderline"
+        app:srcCompat="@drawable/btn_create_note" />
+
+    <TextView
+        android:id="@+id/createTogtDepartureDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Afrejse dato"
+        app:layout_constraintBottom_toBottomOf="@+id/createTogtDepartureDateBox"
+        app:layout_constraintEnd_toEndOf="@+id/createTogtDepartureDateBox"
+        app:layout_constraintStart_toStartOf="@+id/createTogtDepartureDateBox"
+        app:layout_constraintTop_toTopOf="@+id/createTogtDepartureDateBox" />
+
+    <ImageView
+        android:id="@+id/createTogtDepatureDateUnderline"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/createTogtDepartureDateBox"
+        app:layout_constraintStart_toStartOf="@+id/createTogtDepartureDateBox"
+        app:layout_constraintTop_toBottomOf="@+id/createTogtDepartureDateBox"
+        app:srcCompat="@drawable/underline_darkgray" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

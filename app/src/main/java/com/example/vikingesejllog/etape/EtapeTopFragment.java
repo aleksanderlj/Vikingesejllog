@@ -27,7 +27,7 @@ public class EtapeTopFragment extends Fragment {
     }
 
     public void setDestination(String from, String to){
-        TextView tv = getView().findViewById(R.id.destination);
+        TextView tv = getView().findViewById(R.id.name);
         String s = from + " - " + to;
         tv.setText(s);
     }

@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 
+import im.delight.android.location.SimpleLocation;
+
 public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, NoteDialogListener {
 
     // TODO ryd op i alle findByViewID() declarations (vi behøver ikke finde dem alle fra start)
@@ -59,10 +62,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
 
     //ALLE VARIABLE TIL SELVE NOTEN:
-    private Button windSpeed, course, sejlforing, sejlStilling, rowers, micButton, cameraButton;
+    private Button windSpeed, course, sejlforing, sejlStilling, rowers;
     private EditText commentText;
     private TextView windSpeedBtnText, courseBtnText, sejlforingBtnText,
             sejlStillingBtnText, rowersBtnText;
+    private ImageButton micButton, cameraButton;
 
     private MyGPS gps;
     private String gpsData;
@@ -89,6 +93,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private ImageView savedPicture, savedPictureZoomed;
 
+    private SimpleLocation location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,15 +128,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         commentText = findViewById(R.id.commentEditText);
 
         gps = new MyGPS(this);
-        gpsData = "LAT: " + String.format(Locale.US, "%.2f", gps.getLocation().getLatitude()) + "\n" +
-                "LON: " + String.format(Locale.US, "%.2f", gps.getLocation().getLongitude());
-        System.out.println(gpsData);
+        location = gps.getLocation();
+        location.beginUpdates();
 
-
-
-        //Gør lydoptageren og lydafspilleren klar:
-        audioRecorder = new AudioRecorder();
-        audioPlayer = new AudioPlayer();
 
         // Vigtigt at der her er noget, der aflæser om noten har et billede
         // gemt sammen med dens database objekt, således at det bliver muligt, at bestemme
@@ -169,7 +168,23 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //Gør mappen for billeder klar:
         imageFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Billedenoter/");
 
+        //Gør lydoptageren og lydafspilleren klar:
+        audioRecorder = new AudioRecorder();
+        audioPlayer = new AudioPlayer();
+
         ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        location.beginUpdates();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        location.endUpdates();
     }
 
     public void setWindSpeed() {
@@ -235,6 +250,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
     public void confirm() {
+        location = gps.getLocation();
+
+        gpsData = "LAT: " + String.format(Locale.US, "%.2f", location.getLatitude()) + "\n" +
+                "LON: " + String.format(Locale.US, "%.2f", location.getLongitude());
+
         SimpleDateFormat clock = new SimpleDateFormat("HH.mm", Locale.getDefault());
         String time = clock.format(new Date());
 
@@ -309,6 +329,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     progressDialogOptager = new ProgressDialog(CreateNote.this);
                     progressDialogOptager.setMax(200);
                     progressDialogOptager.setTitle("Optager lydnote...");
+                    progressDialogOptager.setCancelable(false);
                     progressDialogOptager.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialogOptager.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
                         @Override
@@ -316,7 +337,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             audioRecorder.stopAudioRecord();
                             recordingDone = true;
                             //Skifter ikon til "PLAY"-knap.
-                            ((ImageView) findViewById(R.id.createNoteMic)).setImageResource(R.drawable.play);
+                            ((ImageView) findViewById(R.id.createNoteMicBtn)).setImageResource(R.drawable.play);
 
                             //Er nødvendigt at gøre AudioPlayer klar her, da progressdialog ellers
                             // ikke opdateres med duration på filen, når den afspilles første gang!
@@ -341,16 +362,17 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             Toast.makeText(CreateNote.this, "Lydnoten blev gemt i mappen: " + audioFolder, Toast.LENGTH_SHORT).show();
                         }
                     });
-                    progressDialogOptager.show();
+                    progressDialogOptager.show(); }
 
-                } if (recordingDone){
+                if (recordingDone){
                     //Starter afspilleren:
                     audioPlayer.startAudioPlayer();
 
                     progressDialogAfspiller = new ProgressDialog(CreateNote.this);
                     progressDialogAfspiller.setMax(audioDurationInt);
                     progressDialogAfspiller.setTitle("Afspiller på repeat...");
-                    progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString + " lang");
+                    progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString);
+                    progressDialogAfspiller.setCancelable(false);
                     progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
                         @Override
@@ -381,12 +403,14 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.createNoteAccepterBtn:
-                audioPlayer.releaseAudioPlayer();
+                if(audioPlayer != null){
+                    audioPlayer.releaseAudioPlayer();}
                 confirm();
                 break;
 
             case R.id.createNoteAfbrydBtn:
-                audioPlayer.releaseAudioPlayer();
+                if(audioPlayer != null){
+                    audioPlayer.releaseAudioPlayer();}
                 finish();
                 break;
         }}
@@ -435,19 +459,23 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //Køres når der er et resultat fra kamera appen og gemmer det som et bitmap:
         super.onActivityResult(REQUEST_IMAGE_CAPTURE, resultCode, data);
 
-        Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_SHORT).show();
+        if (resultCode == RESULT_OK) { //Så billedet kun vises, hvis brugeren trykke OK og ikke bare back-button
+            Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_SHORT).show();
 
-        //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
-        Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
-        savedPicture.setImageBitmap(bitmap);
-            //Er nødvendigt da nogen telefoner roterer billedet forkert.. som f.eks. Samsung zzz
-            if (bitmap.getHeight() < bitmap.getWidth()){
-                    savedPicture.setRotation(90);
-                    savedPictureZoomed.setRotation(90);}
-        savedPicture.setVisibility(View.VISIBLE);
-        savedPicture.setOnTouchListener(this);
-
-        savedPictureZoomed.setImageBitmap(bitmap);
+            //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
+            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
+            if (bitmap != null) {
+                savedPicture.setImageBitmap(bitmap);
+                    //Er nødvendigt da nogen telefoner roterer billedet forkert.. som f.eks. Samsung....
+                    if (bitmap.getHeight() < bitmap.getWidth()) {
+                        savedPicture.setRotation(90);
+                        savedPictureZoomed.setRotation(90);
+                    }
+                savedPicture.setVisibility(View.VISIBLE);
+                savedPicture.setOnTouchListener(this);
+                savedPictureZoomed.setImageBitmap(bitmap);
+            }
+        }
     }
 
     //Zoom ind på billede bitmap ved at røre det:

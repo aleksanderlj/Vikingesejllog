@@ -114,7 +114,8 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
             savedPictureZoomed2.setVisibility(View.INVISIBLE);
 
             Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
-            cameraButton.setImageBitmap(bitmap);
+            Bitmap thumbnail = Bitmap.createScaledBitmap(bitmap, 275, 275, true);
+            cameraButton.setImageBitmap(thumbnail);
             savedPictureZoomed2.setImageBitmap(bitmap);
                 //Er nødvendigt da nogen telefoner roterer billedet forkert.. som f.eks. Samsung zzz
                 if (bitmap.getHeight() < bitmap.getWidth()){
@@ -131,6 +132,8 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
 
         audioFile = new File(audioFolder + "/" + fileName + ".mp3");
             if(!audioFile.exists()){ //Hvis filen ikke eksisterer så ingen knap:
+                playButton = findViewById(R.id.playButton);
+                playButton.setOnClickListener(this);
                 playButton.setEnabled(false);
                 playButton.setVisibility(View.INVISIBLE);}
 
@@ -170,7 +173,8 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
             progressDialogAfspiller = new ProgressDialog(NoteDetails.this);
             progressDialogAfspiller.setMax(audioDurationInt);
             progressDialogAfspiller.setTitle("Afspiller på repeat...");
-            progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString + " lang");
+            progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString);
+            progressDialogAfspiller.setCancelable(false);
             progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
                 @Override

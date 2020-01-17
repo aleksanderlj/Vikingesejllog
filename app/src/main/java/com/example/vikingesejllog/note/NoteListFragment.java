@@ -69,4 +69,8 @@ public class NoteListFragment extends Fragment {
 
         return view;
     }
+
+    public NoteListAdapter getAdapter() {
+        return adapter;
+    }
 }

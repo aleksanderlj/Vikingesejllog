@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.vikingesejllog">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -19,20 +20,22 @@
         android:roundIcon="@mipmap/helgeask_logo_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".note.NoteDetails" />
-        <activity android:name=".note.NoteList">
+        <activity android:name=".note.NoteList"/>
+        <activity android:name=".togt.CreateTogt" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".note.CreateNote" />
+        <activity android:name=".etape.CrewList" />
+        <activity android:name=".togt.TogtList" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".togt.CreateTogt" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".note.CreateNote" />
-        <activity android:name=".etape.CrewList" />
-        <activity android:name=".togt.TogtList" />
+
         <activity android:name=".etape.CreateEtape" />
         <activity android:name=".note.AudioPlayer" />
         <activity android:name=".note.AudioRecorder" />
