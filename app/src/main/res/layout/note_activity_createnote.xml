@@ -146,54 +146,32 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_top" />
 
-    <Button
+    <ImageButton
         android:id="@+id/createNoteMicBtn"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
         android:background="@drawable/btn_create_note_round"
+        android:elevation="10dp"
+        android:src="@drawable/mic"
+        android:translationZ="20dp"
         app:layout_constraintBottom_toTopOf="@+id/commentBox"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
         app:layout_constraintTop_toBottomOf="@+id/courseBtn" />
 
-    <Button
+    <ImageButton
         android:id="@+id/createNoteCameraBtn"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
         android:background="@drawable/btn_create_note_round"
+        android:elevation="10dp"
+        android:src="@drawable/camera"
+        android:translationZ="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/createNoteMicBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_left_left"
         app:layout_constraintTop_toTopOf="@+id/createNoteMicBtn"
         app:layout_constraintVertical_bias="0.0" />
-
-    <ImageView
-        android:id="@+id/createNoteMic"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/createNoteMicBtn"
-        app:layout_constraintEnd_toEndOf="@+id/createNoteMicBtn"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/createNoteMicBtn"
-        app:layout_constraintTop_toTopOf="@+id/createNoteMicBtn"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/mic" />
-
-    <ImageView
-        android:id="@+id/createNoteCamera"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/createNoteCameraBtn"
-        app:layout_constraintEnd_toEndOf="@+id/createNoteCameraBtn"
-        app:layout_constraintStart_toStartOf="@+id/createNoteCameraBtn"
-        app:layout_constraintTop_toTopOf="@+id/createNoteCameraBtn"
-        app:srcCompat="@drawable/camera" />
 
     <ImageView
         android:id="@+id/commentBox"

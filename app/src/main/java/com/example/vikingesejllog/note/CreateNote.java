@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,10 +62,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
 
     //ALLE VARIABLE TIL SELVE NOTEN:
-    private Button windSpeed, course, sejlforing, sejlStilling, rowers, micButton, cameraButton;
+    private Button windSpeed, course, sejlforing, sejlStilling, rowers;
     private EditText commentText;
     private TextView windSpeedBtnText, courseBtnText, sejlforingBtnText,
             sejlStillingBtnText, rowersBtnText;
+    private ImageButton micButton, cameraButton;
 
     private MyGPS gps;
     private String gpsData;
@@ -335,7 +337,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             audioRecorder.stopAudioRecord();
                             recordingDone = true;
                             //Skifter ikon til "PLAY"-knap.
-                            ((ImageView) findViewById(R.id.createNoteMic)).setImageResource(R.drawable.play);
+                            ((ImageView) findViewById(R.id.createNoteMicBtn)).setImageResource(R.drawable.play);
 
                             //Er nødvendigt at gøre AudioPlayer klar her, da progressdialog ellers
                             // ikke opdateres med duration på filen, når den afspilles første gang!
