@@ -64,6 +64,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
     private WormDotsIndicator dotNavigation;
     private NavigationView navigationView;
     private Context c;
+    private EtapeTopFragment f;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,6 +111,9 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                 Intent newIntent = new Intent(this, CreateTogt.class);
                 startActivityForResult(newIntent, FIRST_TOGT);
             }
+            f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
+            f.setTogt(togt.getTogt_id());
+            
             pager.post(() -> adapter.notifyDataSetChanged());
             runOnUiThread(() -> {
                 pager.setCurrentItem(etaper.size() - 1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
@@ -133,9 +137,9 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                EtapeTopFragment f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
-                
-                f.setAll(etaper.get(pager.getCurrentItem()), pager.getCurrentItem(), etaper.size());
+    
+                f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
+                f.setAll(etaper.get(pager.getCurrentItem()), position);
                 dotNavigation.setViewPager2(pager);
                 String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
                 ((TextView) findViewById(R.id.pagecount)).setText(s);

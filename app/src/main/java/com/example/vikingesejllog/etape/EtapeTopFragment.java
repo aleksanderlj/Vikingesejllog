@@ -17,6 +17,7 @@ import androidx.room.Update;
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.EtapeWithNotes;
+import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.util.ArrayList;
@@ -28,6 +29,10 @@ public class EtapeTopFragment extends Fragment {
     private List<EtapeWithNotes> etapeList;
     private ArrayAdapter adapter;
     private UpdateEtapeTopFrag callback;
+    private int currPosition;
+    private long togt_id;
+    private Togt togt;
+    private Spinner spinner;
     
     public EtapeTopFragment(){}
     
@@ -40,13 +45,13 @@ public class EtapeTopFragment extends Fragment {
         //adapter.setlist(etapeList);
         
         Executors.newSingleThreadExecutor().execute(()->{
-            List<EtapeWithNotes> newList = db.etapeDAO().getAll();
+            List<EtapeWithNotes> newList = db.etapeDAO().getAllByTogtId(togt_id);
             //List<EtapeWithNotes> newList = db.etapeDAO().getAllByTogtId();
             etapeList.clear();
             etapeList.addAll(newList);
             //adapter.notifyDataSetChanged();
         });
-        Spinner spinner = view.findViewById(R.id.destination);
+        spinner = view.findViewById(R.id.destination);
         String[] etapeDeparture = new String[etapeList.size()];
         for (int i = 0; i < etapeDeparture.length; i++)
             etapeDeparture[i] = etapeList.get(i).etape.getStart() + " - " + etapeList.get(i).etape.getEnd();
@@ -65,12 +70,13 @@ public class EtapeTopFragment extends Fragment {
             }
         };
         spinner.setAdapter(adapter);
-        spinner.setSelection(etapeDeparture.length - 1 );
+        spinner.setSelection(currPosition);
         
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 callback.onSpinnerItemSelected(position);
+                currPosition = position;
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -86,18 +92,25 @@ public class EtapeTopFragment extends Fragment {
         tv.setText(s);
     }
 
-    /*public void setDestination(String from, String to, List<EtapeWithNotes> etapeList){
+    public void setTogt(long togt_id){
+        this.togt_id = togt_id;
+    }
     
-    }*/
+    public void setEtape(int position){
+        this.currPosition = position;
+        if (spinner != null)
+            spinner.setSelection(position);
+    }
     
-    public void setAll(EtapeWithNotes etape, int id, int max){
+    public void setAll(EtapeWithNotes etape, int currPosition){
         setCrew(etape.etape.getSkipper(), etape.etape.getCrew().size());
         //setDestination(etape.etape.getStart(), etape.etape.getEnd(), etapeList);
-        //setEtape(id, max);
+        setEtape(currPosition);
     }
     
     public interface UpdateEtapeTopFrag{
         void onSpinnerItemSelected(int position);
+        
     }
     
     public void setUpdateEtapeTopFrag(UpdateEtapeTopFrag callback){
