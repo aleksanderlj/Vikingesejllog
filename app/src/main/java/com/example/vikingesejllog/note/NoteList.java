@@ -195,7 +195,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         }
 
         public void notifyNoteDataSetChanged(int pos){
-            fragments.get(pos).getAdapter().notifyDataSetChanged();
+            runOnUiThread(() -> fragments.get(pos).getAdapter().notifyDataSetChanged());
         }
     }
 
