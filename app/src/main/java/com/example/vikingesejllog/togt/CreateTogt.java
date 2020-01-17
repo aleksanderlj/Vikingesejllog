@@ -52,6 +52,7 @@ public class CreateTogt extends AppCompatActivity implements View.OnClickListene
 			case R.id.createTogtAfbrydBtn:
 				setResult(Activity.RESULT_CANCELED);
 				finish();
+				break;
 			case R.id.createTogtDepartureDateBox:
 				Calendar c = Calendar.getInstance();
 				DatePickerDialog dp = new DatePickerDialog(this, this,
