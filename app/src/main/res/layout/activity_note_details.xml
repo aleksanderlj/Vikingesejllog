@@ -76,6 +76,7 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/btn_create_note_round"
         android:elevation="5dp"
+        android:hapticFeedbackEnabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/noteField"
         app:layout_constraintStart_toStartOf="@+id/noteField"
