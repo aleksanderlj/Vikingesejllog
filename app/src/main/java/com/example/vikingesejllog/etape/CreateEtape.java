@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
+import com.example.vikingesejllog.note.NoteList;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.util.ArrayList;
@@ -79,15 +80,25 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
 
                 setResult(Activity.RESULT_OK);
 
-                Executors.newSingleThreadExecutor().execute(() -> {
-                    db.etapeDAO().insert(e);
-                    finish();
-                });
+                if (getIntent().getIntExtra("from_togt",0) == 1) {
+                    Executors.newSingleThreadExecutor().execute(() -> {
+                        db.etapeDAO().insert(e);
+                        Intent noteList = new Intent(this, NoteList.class);
+                        noteList.putExtra("togt_id",getIntent().getLongExtra("togt_id",-1L));
+                        startActivityForResult(noteList, 1);
+                        finish();
+                    });
+                }else {
+                    Executors.newSingleThreadExecutor().execute(() -> {
+                        db.etapeDAO().insert(e);
+                        finish();
+                    });
+                }
                 break;
             case R.id.createEtapeAfbrydBtn:
-                setResult(Activity.RESULT_OK);
+                setResult(Activity.RESULT_CANCELED);
                 finish();
-
+                break;
 
         }
     }

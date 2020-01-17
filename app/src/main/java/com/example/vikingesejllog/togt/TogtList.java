@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.TopMenu;
+import com.example.vikingesejllog.etape.CreateEtape;
 import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.note.NoteList;
 import com.example.vikingesejllog.other.DatabaseBuilder;
@@ -52,12 +54,26 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
         Executors.newSingleThreadExecutor().execute(() -> {
             togtList.addAll(db.togtDAO().getAll());
             recyclerView.post(() -> adapter.notifyDataSetChanged());
+
         });
 
 		adapter.setOnItemClickListener((int position) -> {
-            Intent noteList = new Intent(TogtList.this, NoteList.class);
-            noteList.putExtra("togt_id", togtList.get(position).getTogt_id());
-            startActivity(noteList);
+		    Executors.newSingleThreadExecutor().execute(() ->{
+                        if (db.etapeDAO().getAllByTogtId(togtList.get(position).getTogt_id()).size() == 0){
+                            Intent newEtapeIntent = new Intent(TogtList.this, CreateEtape.class);
+                            newEtapeIntent.putExtra("togt_id", togtList.get(position).getTogt_id());
+                            newEtapeIntent.putExtra("from_togt",1);
+                            startActivityForResult(newEtapeIntent, 1);
+
+                        }else{
+                            Intent noteList = new Intent(this, NoteList.class);
+                            noteList.putExtra("togt_id", togtList.get(position).getTogt_id());
+                            startActivity(noteList);
+                        }
+                    });
+//                Intent noteList = new Intent(this, NoteList.class);
+//                noteList.putExtra("togt_id", togtList.get(position).getTogt_id());
+//                startActivity(noteList);
 
         });
 	}
@@ -68,6 +84,7 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
             case R.id.newTogtButton:
                 Intent i = new Intent(this, CreateTogt.class);
                 startActivityForResult(i, 1);
+
                 break;
 
             case R.id.delete_db:
