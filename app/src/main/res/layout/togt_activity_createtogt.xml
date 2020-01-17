@@ -26,6 +26,14 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.50" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.20" />
+
+
     <TextView
         android:id="@+id/createTogtTitle"
         android:layout_width="wrap_content"
@@ -62,16 +70,14 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_middle" />
 
 
-
     <ImageView
         android:id="@+id/createTogtNameBox"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginTop="150dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/btn_create_note" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_top"
+        app:srcCompat="@drawable/note_details_comment_box" />
 
     <ImageView
         android:id="@+id/createTogtNameUnderline"
@@ -90,6 +96,7 @@
         android:hint="Indtast togt navn"
         android:inputType="textPersonName"
         android:text=""
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/createTogtNameBox"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
@@ -105,7 +112,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/createTogtNameUnderline"
-        app:srcCompat="@drawable/btn_create_note" />
+        app:srcCompat="@drawable/note_details_comment_box" />
 
     <ImageView
         android:id="@+id/createTogtDepatureUnderline"
@@ -124,12 +131,11 @@
         android:hint="Indtast start name"
         android:inputType="textPersonName"
         android:text=""
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/createTogtDepartureBox"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toTopOf="@+id/createTogtDepartureBox" />
-
-
 
 
     <ImageView
@@ -140,7 +146,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/createTogtDepatureUnderline"
-        app:srcCompat="@drawable/btn_create_note" />
+        app:srcCompat="@drawable/note_details_comment_box" />
 
     <TextView
         android:id="@+id/createTogtDepartureDateText"
