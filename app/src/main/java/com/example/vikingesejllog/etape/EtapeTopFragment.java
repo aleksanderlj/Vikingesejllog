@@ -6,18 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.UiThread;
 import androidx.fragment.app.Fragment;
-import androidx.room.Update;
 
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.EtapeWithNotes;
-import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.util.ArrayList;
@@ -27,12 +25,11 @@ import java.util.concurrent.Executors;
 public class EtapeTopFragment extends Fragment {
     private AppDatabase db;
     private List<EtapeWithNotes> etapeList;
+    private List<String> etapeStringList;
     private ArrayAdapter adapter;
     private UpdateEtapeTopFrag callback;
     private int currPosition;
-    private long togt_id;
-    private Togt togt;
-    private Spinner spinner;
+	private Spinner spinner;
     
     public EtapeTopFragment(){}
     
@@ -41,37 +38,27 @@ public class EtapeTopFragment extends Fragment {
         View view = inflater.inflate(R.layout.etape_fragment_top, container, false);
         db = DatabaseBuilder.get(getContext());
         etapeList = new ArrayList<>();
-        
-        //adapter.setlist(etapeList);
-        
-        Executors.newSingleThreadExecutor().execute(()->{
-            List<EtapeWithNotes> newList = db.etapeDAO().getAllByTogtId(togt_id);
-            //List<EtapeWithNotes> newList = db.etapeDAO().getAllByTogtId();
-            etapeList.clear();
-            etapeList.addAll(newList);
-            //adapter.notifyDataSetChanged();
-        });
+		
+        etapeStringList = new ArrayList<>();
+		for (int i = 0; i < etapeList.size(); i++)
+			etapeStringList.add(etapeList.get(i).etape.getStart() + " - " + etapeList.get(i).etape.getEnd());
+	
+		adapter = new ArrayAdapter(getContext(), R.layout.etape_spinner_list_elements, R.id.departure, etapeStringList){
+			@Override
+			public View getView(int position, View cachedView, ViewGroup parent){
+				View view = super.getView(position, cachedView, parent);
+			
+			
+				TextView departure = view.findViewById(R.id.departure);
+				departure.setTextColor(Color.parseColor("#FFFFFF"));
+				String s = etapeList.get(position).getEtape().getStart() + " -\n" + etapeList.get(position).getEtape().getEnd();
+				departure.setText(s);
+				return view;
+			}
+		};
+		
         spinner = view.findViewById(R.id.destination);
-        String[] etapeDeparture = new String[etapeList.size()];
-        for (int i = 0; i < etapeDeparture.length; i++)
-            etapeDeparture[i] = etapeList.get(i).etape.getStart() + " - " + etapeList.get(i).etape.getEnd();
-        
-        adapter = new ArrayAdapter(getContext(), R.layout.etape_spinner_list_elements, R.id.departure, etapeDeparture){
-            @Override
-            public View getView(int position, View cachedView, ViewGroup parent){
-                View view = super.getView(position, cachedView, parent);
-                
-                
-                TextView departure = view.findViewById(R.id.departure);
-                departure.setTextColor(Color.parseColor("#FFFFFF"));
-                String s = etapeList.get(position).getEtape().getStart() + " -\n" + etapeList.get(position).getEtape().getEnd();
-                departure.setText(s);
-                return view;
-            }
-        };
         spinner.setAdapter(adapter);
-        spinner.setSelection(currPosition);
-        
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -92,20 +79,37 @@ public class EtapeTopFragment extends Fragment {
         tv.setText(s);
     }
 
-    public void setTogt(long togt_id){
-        this.togt_id = togt_id;
+    public void giveTogtId(long togt_id){
+		Executors.newSingleThreadExecutor().execute(() -> {
+			etapeList.clear();
+			etapeList.addAll(db.etapeDAO().getAllByTogtId(togt_id));
+			//System.out.println(etapeList.toString());
+			etapeStringList = new ArrayList<>();
+			for (int i = 0; i < etapeList.size(); i++)
+				etapeStringList.add(etapeList.get(i).etape.getStart() + " - " + etapeList.get(i).etape.getEnd());
+			getActivity().runOnUiThread(()->{
+				System.out.println("For addAll");
+				adapter.clear();
+				adapter.addAll(etapeStringList);
+				spinner.setSelection(currPosition);
+				System.out.println("Efter addAll");
+			});
+
+		});
     }
     
     public void setEtape(int position){
         this.currPosition = position;
-        if (spinner != null)
-            spinner.setSelection(position);
+        if (spinner != null) {
+			
+			spinner.setSelection(position);
+		}
     }
     
-    public void setAll(EtapeWithNotes etape, int currPosition){
+    public void setAll(EtapeWithNotes etape){
         setCrew(etape.etape.getSkipper(), etape.etape.getCrew().size());
         //setDestination(etape.etape.getStart(), etape.etape.getEnd(), etapeList);
-        setEtape(currPosition);
+        //setEtape(currPosition);
     }
     
     public interface UpdateEtapeTopFrag{

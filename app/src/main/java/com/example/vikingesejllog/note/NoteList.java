@@ -112,10 +112,11 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                 startActivityForResult(newIntent, FIRST_TOGT);
             }
             f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
-            f.setTogt(togt.getTogt_id());
             
+    
             pager.post(() -> adapter.notifyDataSetChanged());
             runOnUiThread(() -> {
+                f.giveTogtId(togt.getTogt_id());
                 pager.setCurrentItem(etaper.size() - 1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
                 
                 if (pager.getCurrentItem() < etaper.size()) {
@@ -139,13 +140,19 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                 super.onPageSelected(position);
     
                 f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
-                f.setAll(etaper.get(pager.getCurrentItem()), position);
+                
+                //f.setEtape(position);
                 dotNavigation.setViewPager2(pager);
                 String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
-                ((TextView) findViewById(R.id.pagecount)).setText(s);
+                
                 
                 
                 runOnUiThread(() -> {
+                    System.out.println("Før set");
+                    f.setAll(etaper.get(pager.getCurrentItem()));
+                    f.setEtape(position);
+                    ((TextView) findViewById(R.id.pagecount)).setText(s);
+                    System.out.println("Efter set");
                     if (pager.getCurrentItem() == 0) {
                         prevButton.setEnabled(false);
                         prevButton.setVisibility(View.INVISIBLE);
