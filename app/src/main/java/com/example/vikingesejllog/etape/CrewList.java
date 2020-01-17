@@ -68,11 +68,8 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
                 listAdapter.notifyDataSetChanged();
             }
         };
-
         new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(recyclerView);
-
     }
-
     @Override
     public void onClick(View v) {
 
@@ -92,25 +89,33 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
             finish();
         }
     }
-
     @Override
     public void onMemberSelected(String member) {
         CrewListItem crewListItem = new CrewListItem(member);
         crewListItems.add(crewListItem);
         listAdapter.notifyItemInserted(crewListItems.size() - 1);
     }
-
     @Override
     public void enableButtons() {
+
         newCrewButton.setPressed(false);
         newCrewButton.setClickable(true);
+
+        acceptCrewButton.setBackground(getResources().getDrawable(R.drawable.btn_crew_accept));
+        acceptCrewButton.setTextColor(getResources().getColor(R.color.colorTextWhite));
         acceptCrewButton.setPressed(false);
         acceptCrewButton.setClickable(true);
     }
 
     private void disableButtons(){
+
+        //newCrewButton.(getResources().getColor(R.color.colorDarkGreyBlue));
+
         newCrewButton.setPressed(true);
         newCrewButton.setClickable(false);
+
+        acceptCrewButton.setBackground(getResources().getDrawable(R.drawable.btn_crew_accept_disabled));
+        acceptCrewButton.setTextColor(getResources().getColor(R.color.colorDarkGray));
         acceptCrewButton.setPressed(true);
         acceptCrewButton.setClickable(false);
     }
