@@ -360,9 +360,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             Toast.makeText(CreateNote.this, "Lydnoten blev gemt i mappen: " + audioFolder, Toast.LENGTH_SHORT).show();
                         }
                     });
-                    progressDialogOptager.show();
+                    progressDialogOptager.show(); }
 
-                } if (recordingDone){
+                if (recordingDone){
                     //Starter afspilleren:
                     audioPlayer.startAudioPlayer();
 
@@ -457,20 +457,23 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //Køres når der er et resultat fra kamera appen og gemmer det som et bitmap:
         super.onActivityResult(REQUEST_IMAGE_CAPTURE, resultCode, data);
 
-        Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_SHORT).show();
+        if (resultCode == RESULT_OK) { //Så billedet kun vises, hvis brugeren trykke OK og ikke bare back-button
+            Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_SHORT).show();
 
-        //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
-        Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
-        if (bitmap != null){
-        savedPicture.setImageBitmap(bitmap);
-            //Er nødvendigt da nogen telefoner roterer billedet forkert.. som f.eks. Samsung zzz
-            if (bitmap.getHeight() < bitmap.getWidth()){
-                    savedPicture.setRotation(90);
-                    savedPictureZoomed.setRotation(90);}
-        savedPicture.setVisibility(View.VISIBLE);
-        savedPicture.setOnTouchListener(this);
-
-        savedPictureZoomed.setImageBitmap(bitmap); }
+            //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
+            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
+            if (bitmap != null) {
+                savedPicture.setImageBitmap(bitmap);
+                    //Er nødvendigt da nogen telefoner roterer billedet forkert.. som f.eks. Samsung....
+                    if (bitmap.getHeight() < bitmap.getWidth()) {
+                        savedPicture.setRotation(90);
+                        savedPictureZoomed.setRotation(90);
+                    }
+                savedPicture.setVisibility(View.VISIBLE);
+                savedPicture.setOnTouchListener(this);
+                savedPictureZoomed.setImageBitmap(bitmap);
+            }
+        }
     }
 
     //Zoom ind på billede bitmap ved at røre det:
