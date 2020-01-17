@@ -56,6 +56,7 @@ public class EtapeTopFragment extends Fragment {
             public View getView(int position, View cachedView, ViewGroup parent){
                 View view = super.getView(position, cachedView, parent);
                 
+                
                 TextView departure = view.findViewById(R.id.departure);
                 departure.setTextColor(Color.parseColor("#FFFFFF"));
                 String s = etapeList.get(position).getEtape().getStart() + " -\n" + etapeList.get(position).getEtape().getEnd();
@@ -64,6 +65,7 @@ public class EtapeTopFragment extends Fragment {
             }
         };
         spinner.setAdapter(adapter);
+        spinner.setSelection(etapeDeparture.length - 1 );
         
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
