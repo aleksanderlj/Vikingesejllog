@@ -32,6 +32,7 @@ import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.note.dialogs.NoteDialog;
+import com.example.vikingesejllog.note.dialogs.NoteDialogComment;
 import com.example.vikingesejllog.note.dialogs.NoteDialogListener;
 import com.example.vikingesejllog.note.dialogs.NoteDialogNumberPicker;
 import com.example.vikingesejllog.other.DatabaseBuilder;
@@ -62,10 +63,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
 
     //ALLE VARIABLE TIL SELVE NOTEN:
-    private Button windSpeed, course, sejlforing, sejlStilling, rowers;
-    private EditText commentText;
+    private Button windSpeed, course, sejlforing, sejlStilling, rowers, comment;
     private TextView windSpeedBtnText, courseBtnText, sejlforingBtnText,
-            sejlStillingBtnText, rowersBtnText;
+            sejlStillingBtnText, rowersBtnText, commentText;
     private ImageButton micButton, cameraButton;
 
     private MyGPS gps;
@@ -124,7 +124,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         rowersBtnText = findViewById(R.id.rowersBtnText);
         rowers.setOnClickListener(this);
 
-        commentText = findViewById(R.id.commentEditText);
+        comment = findViewById(R.id.commentButton);
+        commentText = findViewById(R.id.commentText);
+        comment.setOnClickListener(this);
 
         gps = new MyGPS(this);
         location = gps.getLocation();
@@ -249,6 +251,12 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         df.show(getSupportFragmentManager().beginTransaction(), "rowers");
     }
 
+    public void setComment(){
+        NoteDialog cd = new NoteDialogComment(commentText.getText().toString());
+        cd.setNoteDialogListener(this);
+        cd.show(getSupportFragmentManager().beginTransaction(), "comment");
+    }
+
     public void confirm() {
         location = gps.getLocation();
 
@@ -303,6 +311,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 setCourse();
                 break;
 
+            case R.id.commentButton:
+                setComment();
+                break;
 
             case R.id.createNoteMicBtn:
                 ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
@@ -549,5 +560,10 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 break;
         }
 
+    }
+
+    @Override
+    public void onCommentSelected(String comment) {
+        commentText.setText(comment);
     }
 }
