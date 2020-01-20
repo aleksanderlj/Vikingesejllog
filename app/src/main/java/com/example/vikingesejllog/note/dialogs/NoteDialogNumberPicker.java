@@ -73,6 +73,10 @@ public class NoteDialogNumberPicker extends NoteDialog {
             dialog.cancel();
         });
 
+        builder.setNeutralButton("Slet", (dialog, which) -> {
+            getCallback().onNumberPickerDelete(field);
+        });
+
         builder.setView(v);
 
         return builder.create();

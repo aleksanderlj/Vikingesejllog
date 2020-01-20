@@ -563,6 +563,31 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
     @Override
+    public void onNumberPickerDelete(int field) {
+        switch (field) {
+            case ROWERS_FIELD:
+                rowersBtnText.setText("");
+                break;
+
+            case SAILFORING_FIELD:
+                sejlforingBtnText.setText("");
+                break;
+
+            case WIND_FIELD:
+                windSpeedBtnText.setText("");
+                break;
+
+            case SAILDIRECTION_FIELD:
+                sejlStillingBtnText.setText("");
+                break;
+
+            case COURSE_FIELD:
+                courseBtnText.setText("");
+                break;
+        }
+    }
+
+    @Override
     public void onCommentSelected(String comment) {
         commentText.setText(comment);
     }
