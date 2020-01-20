@@ -22,13 +22,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".note.NoteDetails" />
-        <activity android:name=".note.NoteList"/>
-        <activity android:name=".togt.CreateTogt" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".note.CreateNote" />
-        <activity android:name=".etape.CrewList" />
-        <activity android:name=".togt.TogtList" >
+        <activity android:name=".note.NoteDetails"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".note.NoteList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".togt.CreateTogt"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".note.CreateNote"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".etape.CrewList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".togt.TogtList"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,9 +43,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".etape.CreateEtape" />
-        <activity android:name=".note.AudioPlayer" />
-        <activity android:name=".note.AudioRecorder" />
+        <activity android:name=".etape.CreateEtape"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".note.AudioPlayer"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".note.AudioRecorder"
+            android:screenOrientation="portrait"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
