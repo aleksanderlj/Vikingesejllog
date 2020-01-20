@@ -266,6 +266,23 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         SimpleDateFormat clock = new SimpleDateFormat("HH.mm", Locale.getDefault());
         String time = clock.format(new Date());
 
+        boolean hasComment = false, hasImage = false, hasAudio = false;
+
+        if(!commentText.getText().toString().equals("")){
+            hasComment = true;
+        }
+
+        File a = new File(audioFolder + "/" + fileName + ".mp3");
+        if(a.exists()){
+            hasAudio = true;
+        }
+
+        File i = new File(imageFolder + "/" + fileName + ".jpg");
+        if(i.exists()){
+            hasImage = true;
+        }
+
+
         Note note = new Note(getIntent().getLongExtra("etape_id", -1L), gpsData,
                 windSpeedBtnText.getText().toString(),
                 time,
@@ -274,6 +291,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 sejlStillingBtnText.getText().toString(),
                 courseBtnText.getText().toString(),
                 commentText.getText().toString(),
+                hasComment,
+                hasImage,
+                hasAudio,
                 fileName);
 
         Executors.newSingleThreadExecutor().execute(() -> {

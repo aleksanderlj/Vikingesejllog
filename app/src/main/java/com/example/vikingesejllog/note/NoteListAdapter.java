@@ -52,6 +52,19 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
         bindView(noteListItem.getSailStilling(), holder.sailstilling, holder.sailstilling_text);
         bindView(noteListItem.getSailForing(), holder.sailforing, holder.sailforing_text);
 
+        if(!noteListItem.isHasImage()){
+            holder.picImage.setVisibility(View.INVISIBLE);
+        }
+
+        if(!noteListItem.isHasAudio()){
+            holder.audioImage.setVisibility(View.INVISIBLE);
+        }
+
+        if(!noteListItem.isHasComment()){
+            holder.commentImage.setVisibility(View.INVISIBLE);
+        }
+
+
     }
 
     private void bindView(String text, TextView info, TextView title){
@@ -80,6 +93,10 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
         public TextView sailstilling_text;
         public TextView sailforing_text;
 
+        ImageView commentImage;
+        ImageView picImage;
+        ImageView audioImage;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -95,6 +112,10 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
             rowers_text = itemView.findViewById(R.id.note_rowers_text);
             sailstilling_text = itemView.findViewById(R.id.note_sailstilling_text);
             sailforing_text = itemView.findViewById(R.id.note_sailforing_text);
+
+            commentImage = itemView.findViewById(R.id.comment_image);
+            picImage = itemView.findViewById(R.id.camera_image);
+            audioImage = itemView.findViewById(R.id.audio_image);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

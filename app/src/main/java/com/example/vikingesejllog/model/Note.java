@@ -41,14 +41,14 @@ public class Note {
     @ColumnInfo(name = "comment")
     private String comment;
 
-    @ColumnInfo(name = "pencil_image")
-    private int pencilImageResource;
+    @ColumnInfo(name = "contains_comment")
+    private boolean hasComment;
 
-    @ColumnInfo(name = "camera_image")
-    private int cameraImageResource;
+    @ColumnInfo(name = "contains_image")
+    private boolean hasImage;
 
-    @ColumnInfo(name = "mic_image")
-    private int micImageResource;
+    @ColumnInfo(name = "contains_audio")
+    private boolean hasAudio;
 
     @ColumnInfo(name = "media_filename")
     private String fileName;
@@ -56,7 +56,7 @@ public class Note {
     public Note(){}
 
     @Ignore
-    public Note(long etape_id, String gpsLoc, String windSpeed, String time, String rowers, String sailForing, String sailStilling, String course, String comment, String fileName) {
+    public Note(long etape_id, String gpsLoc, String windSpeed, String time, String rowers, String sailForing, String sailStilling, String course, String comment, boolean hasComment, boolean hasImage, boolean hasAudio, String fileName) {
         this.etape_id = etape_id;
         this.gpsLoc = gpsLoc;
         this.windSpeed = windSpeed;
@@ -66,9 +66,9 @@ public class Note {
         this.sailStilling = sailStilling;
         this.course = course;
         this.comment = comment;
-        this.pencilImageResource = R.drawable.pencil_black;
-        this.cameraImageResource = R.drawable.camera_black;
-        this.micImageResource = R.drawable.mic_black;
+        this.hasComment = hasComment;
+        this.hasImage = hasImage;
+        this.hasAudio = hasAudio;
         this.fileName = fileName;
     }
 
@@ -128,52 +128,6 @@ public class Note {
         this.course = course;
     }
 
-    public int getPencilImageResource() {
-        return pencilImageResource;
-    }
-
-    public int getCameraImageResource() {
-        return cameraImageResource;
-    }
-
-    public int getMicImageResource() {
-        return micImageResource;
-    }
-
-    public void setPencilImageResource(int pencilImageResource) {
-        this.pencilImageResource = pencilImageResource;
-    }
-
-    public void setCameraImageResource(int cameraImageResource) {
-        this.cameraImageResource = cameraImageResource;
-    }
-
-    public void setMicImageResource(int micImageResource) {
-        this.micImageResource = micImageResource;
-    }
-
-    public void hidePencil(boolean hidden){
-        if(hidden == true){
-            this.pencilImageResource = 0;
-        } else {
-            this.pencilImageResource = R.drawable.pencil_black;
-        }
-    }
-    public void hideCamera(boolean hidden){
-        if(hidden == true){
-            this.cameraImageResource = 0;
-        } else {
-            this.cameraImageResource = R.drawable.camera_black;
-        }
-    }
-    public void hideMic(boolean hidden){
-        if(hidden == true){
-            this.micImageResource = 0;
-        } else {
-            this.micImageResource = R.drawable.mic_black;
-        }
-    }
-
     public long getNote_id() {
         return note_id;
     }
@@ -204,6 +158,30 @@ public class Note {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public boolean isHasComment() {
+        return hasComment;
+    }
+
+    public void setHasComment(boolean hasComment) {
+        this.hasComment = hasComment;
+    }
+
+    public boolean isHasImage() {
+        return hasImage;
+    }
+
+    public void setHasImage(boolean hasImage) {
+        this.hasImage = hasImage;
+    }
+
+    public boolean isHasAudio() {
+        return hasAudio;
+    }
+
+    public void setHasAudio(boolean hasAudio) {
+        this.hasAudio = hasAudio;
     }
 }
 
