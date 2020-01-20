@@ -168,9 +168,11 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                 pager.setCurrentItem(pager.getCurrentItem() + 1, true);
                 break;
             case R.id.newHarborButton:
-                Intent createnote = new Intent(this, CreateNote.class);
-                createnote.putExtra("etape_id", etaper.get(pager.getCurrentItem()).etape.getEtape_id());
-                this.startActivityForResult(createnote, NOTE_CODE);
+                if(!etaper.isEmpty()) {
+                    Intent createnote = new Intent(this, CreateNote.class);
+                    createnote.putExtra("etape_id", etaper.get(pager.getCurrentItem()).etape.getEtape_id());
+                    this.startActivityForResult(createnote, NOTE_CODE);
+                }
                 break;
         }
     }
