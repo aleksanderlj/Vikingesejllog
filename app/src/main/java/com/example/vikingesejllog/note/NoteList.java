@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -25,7 +23,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -33,12 +30,10 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.etape.CreateEtape;
 import com.example.vikingesejllog.etape.EtapeTopFragment;
-import com.example.vikingesejllog.etape.CreateButton;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.togt.CreateTogt;
 import com.example.vikingesejllog.togt.TogtList;
-import com.example.vikingesejllog.togt.TogtListAdapter;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 import com.google.android.material.navigation.NavigationView;
@@ -65,6 +60,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
     private NavigationView navigationView;
     private Context c;
     private EtapeTopFragment f;
+    private boolean firstLaunch = true, secondLaunch = true;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,7 +100,9 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                 etaper.clear();
                 etaper.addAll(newEtaper);
                 pager.post(() -> adapter.notifyDataSetChanged());
-                pager.setCurrentItem(etaper.size() - 1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
+                runOnUiThread(() ->{
+                    pager.setCurrentItem(etaper.size() - 1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
+                });
             } else {
                 togt = new Togt();
                 togt.setTogt_id(1L);
@@ -116,7 +114,8 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
     
             pager.post(() -> adapter.notifyDataSetChanged());
             runOnUiThread(() -> {
-                f.giveTogtId(togt.getTogt_id());
+                f.updateSpinner(togt.getTogt_id());
+                System.out.println(togt.getTogt_id() + " onCreate");
                 pager.setCurrentItem(etaper.size() - 1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
                 
                 if (pager.getCurrentItem() < etaper.size()) {
@@ -141,11 +140,8 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
     
                 f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
                 
-                //f.setEtape(position);
                 dotNavigation.setViewPager2(pager);
                 String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
-                
-                
                 
                 runOnUiThread(() -> {
                     System.out.println("Før set");
@@ -171,6 +167,27 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                 });
             }
         });
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println(firstLaunch);
+        if (!firstLaunch && !secondLaunch) {
+            EtapeTopFragment topFragment = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
+            Executors.newSingleThreadExecutor().execute(() -> {
+                Intent i = getIntent();
+                long togt_id = i.getLongExtra("togt_id", -1L);
+                runOnUiThread(() -> {
+                    topFragment.updateSpinner(togt_id);
+                });
+                System.out.println(i.getLongExtra("togt_id", -1L) + "What");
+            });
+        }
+        if (firstLaunch)
+            firstLaunch = false;
+        else
+            secondLaunch = false;
     }
     
     public void setOnClickListenerNavigationDrawer() {
@@ -306,4 +323,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
     public void onSpinnerItemSelected(int position) {
         pager.setCurrentItem(position, true);
     }
+    
+
 }

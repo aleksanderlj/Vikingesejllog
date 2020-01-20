@@ -48,7 +48,6 @@ public class EtapeTopFragment extends Fragment {
 			public View getView(int position, View cachedView, ViewGroup parent){
 				View view = super.getView(position, cachedView, parent);
 			
-			
 				TextView departure = view.findViewById(R.id.departure);
 				departure.setTextColor(Color.parseColor("#FFFFFF"));
 				String s = etapeList.get(position).getEtape().getStart() + " -\n" + etapeList.get(position).getEtape().getEnd();
@@ -72,14 +71,20 @@ public class EtapeTopFragment extends Fragment {
         });
         return view;
     }
-    
-    public void setCrew(String skipper, int crew){
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+	}
+	
+	public void setCrew(String skipper, int crew){
         TextView tv = getView().findViewById(R.id.crew);
         String s = "Skipper: " + skipper + "\nBesætning: " + crew;
         tv.setText(s);
     }
 
-    public void giveTogtId(long togt_id){
+    public void updateSpinner(long togt_id){
+		System.out.println("Update spinner.");
 		Executors.newSingleThreadExecutor().execute(() -> {
 			etapeList.clear();
 			etapeList.addAll(db.etapeDAO().getAllByTogtId(togt_id));
@@ -88,11 +93,10 @@ public class EtapeTopFragment extends Fragment {
 			for (int i = 0; i < etapeList.size(); i++)
 				etapeStringList.add(etapeList.get(i).etape.getStart() + " - " + etapeList.get(i).etape.getEnd());
 			getActivity().runOnUiThread(()->{
-				System.out.println("For addAll");
 				adapter.clear();
 				adapter.addAll(etapeStringList);
+				adapter.notifyDataSetChanged();
 				spinner.setSelection(currPosition);
-				System.out.println("Efter addAll");
 			});
 
 		});
@@ -101,7 +105,6 @@ public class EtapeTopFragment extends Fragment {
     public void setEtape(int position){
         this.currPosition = position;
         if (spinner != null) {
-			
 			spinner.setSelection(position);
 		}
     }
