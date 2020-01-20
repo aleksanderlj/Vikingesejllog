@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.note.dialogs.NoteDialog;
+import com.example.vikingesejllog.note.dialogs.NoteDialogComment;
 import com.example.vikingesejllog.note.dialogs.NoteDialogListener;
 import com.example.vikingesejllog.note.dialogs.NoteDialogNumberPicker;
 import com.example.vikingesejllog.other.DatabaseBuilder;
@@ -40,6 +42,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Executors;
+
+import im.delight.android.location.SimpleLocation;
 
 public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, NoteDialogListener {
 
@@ -59,10 +63,10 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
 
     //ALLE VARIABLE TIL SELVE NOTEN:
-    private Button windSpeed, course, sejlforing, sejlStilling, rowers, micButton, cameraButton;
-    private EditText commentText;
+    private Button windSpeed, course, sejlforing, sejlStilling, rowers, comment;
     private TextView windSpeedBtnText, courseBtnText, sejlforingBtnText,
-            sejlStillingBtnText, rowersBtnText;
+            sejlStillingBtnText, rowersBtnText, commentText;
+    private ImageButton micButton, cameraButton;
 
     private MyGPS gps;
     private String gpsData;
@@ -82,13 +86,13 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private File audioFolder, imageFolder, imageFile;
 
     private String fileName, audioDurationString;
-    private int audioDurationInt;
 
     private boolean recordingDone;
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private ImageView savedPicture, savedPictureZoomed;
 
+    private SimpleLocation location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,18 +124,19 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         rowersBtnText = findViewById(R.id.rowersBtnText);
         rowers.setOnClickListener(this);
 
-        commentText = findViewById(R.id.commentEditText);
+        comment = findViewById(R.id.commentButton);
+        commentText = findViewById(R.id.commentText);
+        comment.setOnClickListener(this);
 
         gps = new MyGPS(this);
-        gpsData = "LAT: " + String.format(Locale.US, "%.2f", gps.getLocation().getLatitude()) + "\n" +
-                "LON: " + String.format(Locale.US, "%.2f", gps.getLocation().getLongitude());
-        System.out.println(gpsData);
-
+        location = gps.getLocation();
+        location.beginUpdates();
 
 
         //Gør lydoptageren og lydafspilleren klar:
         audioRecorder = new AudioRecorder();
         audioPlayer = new AudioPlayer();
+
 
         // Vigtigt at der her er noget, der aflæser om noten har et billede
         // gemt sammen med dens database objekt, således at det bliver muligt, at bestemme
@@ -170,6 +175,18 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         imageFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Billedenoter/");
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        location.beginUpdates();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        location.endUpdates();
     }
 
     public void setWindSpeed() {
@@ -234,9 +251,37 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         df.show(getSupportFragmentManager().beginTransaction(), "rowers");
     }
 
+    public void setComment(){
+        NoteDialog cd = new NoteDialogComment(commentText.getText().toString());
+        cd.setNoteDialogListener(this);
+        cd.show(getSupportFragmentManager().beginTransaction(), "comment");
+    }
+
     public void confirm() {
+        location = gps.getLocation();
+
+        gpsData = "LAT: " + String.format(Locale.US, "%.2f", location.getLatitude()) + "\n" +
+                "LON: " + String.format(Locale.US, "%.2f", location.getLongitude());
+
         SimpleDateFormat clock = new SimpleDateFormat("HH.mm", Locale.getDefault());
         String time = clock.format(new Date());
+
+        boolean hasComment = false, hasImage = false, hasAudio = false;
+
+        if(!commentText.getText().toString().equals("")){
+            hasComment = true;
+        }
+
+        File a = new File(audioFolder + "/" + fileName + ".mp3");
+        if(a.exists()){
+            hasAudio = true;
+        }
+
+        File i = new File(imageFolder + "/" + fileName + ".jpg");
+        if(i.exists()){
+            hasImage = true;
+        }
+
 
         Note note = new Note(getIntent().getLongExtra("etape_id", -1L), gpsData,
                 windSpeedBtnText.getText().toString(),
@@ -246,6 +291,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 sejlStillingBtnText.getText().toString(),
                 courseBtnText.getText().toString(),
                 commentText.getText().toString(),
+                hasComment,
+                hasImage,
+                hasAudio,
                 fileName);
 
         Executors.newSingleThreadExecutor().execute(() -> {
@@ -283,6 +331,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 setCourse();
                 break;
 
+            case R.id.commentButton:
+                setComment();
+                break;
 
             case R.id.createNoteMicBtn:
                 ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
@@ -307,8 +358,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     }.execute();
 
                     progressDialogOptager = new ProgressDialog(CreateNote.this);
-                    progressDialogOptager.setMax(200);
                     progressDialogOptager.setTitle("Optager lydnote...");
+                    progressDialogOptager.setCancelable(false);
                     progressDialogOptager.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialogOptager.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
                         @Override
@@ -316,7 +367,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             audioRecorder.stopAudioRecord();
                             recordingDone = true;
                             //Skifter ikon til "PLAY"-knap.
-                            ((ImageView) findViewById(R.id.createNoteMic)).setImageResource(R.drawable.play);
+                            ((ImageView) findViewById(R.id.createNoteMicBtn)).setImageResource(R.drawable.play);
 
                             //Er nødvendigt at gøre AudioPlayer klar her, da progressdialog ellers
                             // ikke opdateres med duration på filen, når den afspilles første gang!
@@ -333,31 +384,55 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
                                 @Override
                                 protected void onPostExecute(Object obj){
-                                    audioDurationString = audioPlayer.returnDurationString(); //Gemmer længden på filen der skal afspilles
-                                    audioDurationInt = audioPlayer.returnDurationInt(); //Til progressdialogAfspiller.setMax
+                                    audioDurationString = audioPlayer.returnDurationString(); //Gemmer længden på filen der skal afspilles, så den kan vises senere
                                 }
                             }.execute();
 
                             Toast.makeText(CreateNote.this, "Lydnoten blev gemt i mappen: " + audioFolder, Toast.LENGTH_SHORT).show();
                         }
                     });
-                    progressDialogOptager.show();
+                    progressDialogOptager.show(); }
 
-                } if (recordingDone){
+                if (recordingDone) {
                     //Starter afspilleren:
                     audioPlayer.startAudioPlayer();
 
+
                     progressDialogAfspiller = new ProgressDialog(CreateNote.this);
-                    progressDialogAfspiller.setMax(audioDurationInt);
-                    progressDialogAfspiller.setTitle("Afspiller på repeat...");
-                    progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString + " lang");
+                    progressDialogAfspiller.setTitle("Afspiller lydnote..");
+                    progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString);
+                    progressDialogAfspiller.setCancelable(false);
                     progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            audioPlayer.stopAudioNote();
-                        }});
-                    progressDialogAfspiller.show();}
+                            audioPlayer.stopAudioPlayer();
+                        }
+                    });
+                    progressDialogAfspiller.show();
+
+                    //Asynctask der holder øje med om afspilleren stadigvæk spiller lyd, og hvis den
+                    // ikke gør det, så lukkes progressDialogAfspiller ned i stedet for brugeren
+                    // selv skal trykke afslut:
+                    new AsyncTask() {
+                        @Override
+                        protected Object doInBackground(Object... arg0) {
+                            try {
+                                while (audioPlayer.isAudioPlaying());
+                                return Log.d(audioTAG, audioPlayer.isAudioPlaying() + "");
+                            } catch (Exception e){
+                                e.printStackTrace();
+                                return Log.d(audioTAG, "ProgressDialog kunne ikke lukkes " + audioPlayer.isAudioPlaying() + "  " + e);
+                            }}
+
+                        @Override
+                        protected void onPostExecute(Object obj){
+                            if (!audioPlayer.isAudioPlaying()){
+                            audioPlayer.stopAudioPlayer();
+                            progressDialogAfspiller.dismiss();}
+                        }
+                    }.execute();
+                }
                 break;
 
 
@@ -381,12 +456,14 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.createNoteAccepterBtn:
-                audioPlayer.releaseAudioPlayer();
+                if(audioPlayer != null){
+                    audioPlayer.releaseAudioPlayer();}
                 confirm();
                 break;
 
             case R.id.createNoteAfbrydBtn:
-                audioPlayer.releaseAudioPlayer();
+                if(audioPlayer != null){
+                    audioPlayer.releaseAudioPlayer();}
                 finish();
                 break;
         }}
@@ -435,19 +512,23 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         //Køres når der er et resultat fra kamera appen og gemmer det som et bitmap:
         super.onActivityResult(REQUEST_IMAGE_CAPTURE, resultCode, data);
 
-        Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_SHORT).show();
+        if (resultCode == RESULT_OK) { //Så billedet kun vises, hvis brugeren trykke OK og ikke bare back-button
+            Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_SHORT).show();
 
-        //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
-        Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
-        savedPicture.setImageBitmap(bitmap);
-            //Er nødvendigt da nogen telefoner roterer billedet forkert.. som f.eks. Samsung zzz
-            if (bitmap.getHeight() < bitmap.getWidth()){
-                    savedPicture.setRotation(90);
-                    savedPictureZoomed.setRotation(90);}
-        savedPicture.setVisibility(View.VISIBLE);
-        savedPicture.setOnTouchListener(this);
-
-        savedPictureZoomed.setImageBitmap(bitmap);
+            //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
+            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
+            if (bitmap != null) {
+                savedPicture.setImageBitmap(bitmap);
+                    //Er nødvendigt da nogen telefoner roterer billedet forkert.. som f.eks. Samsung....
+                    if (bitmap.getHeight() < bitmap.getWidth()) {
+                        savedPicture.setRotation(90);
+                        savedPictureZoomed.setRotation(90);
+                    }
+                savedPicture.setVisibility(View.VISIBLE);
+                savedPicture.setOnTouchListener(this);
+                savedPictureZoomed.setImageBitmap(bitmap);
+            }
+        }
     }
 
     //Zoom ind på billede bitmap ved at røre det:
@@ -457,7 +538,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     hvis fingeren slippes
      */
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                savedPictureZoomed.setElevation(100);
+                savedPictureZoomed.setElevation(1000);
                 savedPictureZoomed.setVisibility(View.VISIBLE);
                 return true;
             }
@@ -499,5 +580,35 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 break;
         }
 
+    }
+
+    @Override
+    public void onNumberPickerDelete(int field) {
+        switch (field) {
+            case ROWERS_FIELD:
+                rowersBtnText.setText("");
+                break;
+
+            case SAILFORING_FIELD:
+                sejlforingBtnText.setText("");
+                break;
+
+            case WIND_FIELD:
+                windSpeedBtnText.setText("");
+                break;
+
+            case SAILDIRECTION_FIELD:
+                sejlStillingBtnText.setText("");
+                break;
+
+            case COURSE_FIELD:
+                courseBtnText.setText("");
+                break;
+        }
+    }
+
+    @Override
+    public void onCommentSelected(String comment) {
+        commentText.setText(comment);
     }
 }

@@ -67,13 +67,11 @@
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/btn_create_note"
-        android:onClick="setRowers"
         android:text="Antal Roere"
         android:textAlignment="textStart"
         android:textAllCaps="false"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/windspeedBtn" />
 
@@ -146,54 +144,32 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_top" />
 
-    <Button
+    <ImageButton
         android:id="@+id/createNoteMicBtn"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
         android:background="@drawable/btn_create_note_round"
+        android:elevation="10dp"
+        android:src="@drawable/mic"
+        android:translationZ="20dp"
         app:layout_constraintBottom_toTopOf="@+id/commentBox"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_left_left"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_right"
         app:layout_constraintTop_toBottomOf="@+id/courseBtn" />
 
-    <Button
+    <ImageButton
         android:id="@+id/createNoteCameraBtn"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
         android:background="@drawable/btn_create_note_round"
+        android:elevation="10dp"
+        android:src="@drawable/camera"
+        android:translationZ="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/createNoteMicBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_left_left"
         app:layout_constraintTop_toTopOf="@+id/createNoteMicBtn"
         app:layout_constraintVertical_bias="0.0" />
-
-    <ImageView
-        android:id="@+id/createNoteMic"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/createNoteMicBtn"
-        app:layout_constraintEnd_toEndOf="@+id/createNoteMicBtn"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/createNoteMicBtn"
-        app:layout_constraintTop_toTopOf="@+id/createNoteMicBtn"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/mic" />
-
-    <ImageView
-        android:id="@+id/createNoteCamera"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/createNoteCameraBtn"
-        app:layout_constraintEnd_toEndOf="@+id/createNoteCameraBtn"
-        app:layout_constraintStart_toStartOf="@+id/createNoteCameraBtn"
-        app:layout_constraintTop_toTopOf="@+id/createNoteCameraBtn"
-        app:srcCompat="@drawable/camera" />
 
     <ImageView
         android:id="@+id/commentBox"
@@ -207,17 +183,34 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:srcCompat="@drawable/btn_create_note" />
 
-    <EditText
-        android:id="@+id/commentEditText"
+    <Button
+        android:id="@+id/commentButton"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:hint="Tilføj kommentar"
-        android:inputType="textPersonName"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_create_note"
+        android:text="Kommentar"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/commentBox"
         app:layout_constraintEnd_toEndOf="@+id/commentBox"
         app:layout_constraintStart_toStartOf="@+id/commentBox"
         app:layout_constraintTop_toTopOf="@+id/commentBox" />
+
+    <TextView
+        android:id="@+id/commentText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="7dp"
+        android:elevation="5dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="@+id/commentButton"
+        app:layout_constraintEnd_toEndOf="@+id/commentButton"
+        app:layout_constraintStart_toStartOf="@+id/commentButton"
+        app:layout_constraintTop_toTopOf="@+id/commentButton" />
 
     <Button
         android:id="@+id/createNoteAfbrydBtn"

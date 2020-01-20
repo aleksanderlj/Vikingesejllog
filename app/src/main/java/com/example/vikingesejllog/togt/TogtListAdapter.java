@@ -1,5 +1,6 @@
 package com.example.vikingesejllog.togt;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Togt;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class TogtListAdapter extends RecyclerView.Adapter<TogtListAdapter.ViewHolder> {
@@ -45,10 +49,18 @@ public class TogtListAdapter extends RecyclerView.Adapter<TogtListAdapter.ViewHo
         Togt togt = togtList.get(position);
 
         holder.departure.setText(togt.getDeparture());
-        holder.destination.setText(togt.getDestination());
+        holder.name.setText(togt.getName());
 
-        // TODO If there are two, set a line between them
-        // TODO Get time from etape
+        Date d = togt.getDepartureDate();
+
+        if (d.getTime() != 0L) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(togt.getDepartureDate());
+            String s = c.get(Calendar.DAY_OF_MONTH) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.YEAR);
+            holder.togtDate.setText(s);
+        } else {
+            holder.togtDate.setText("");
+        }
     }
 
     @Override
@@ -57,14 +69,14 @@ public class TogtListAdapter extends RecyclerView.Adapter<TogtListAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView departure, destination;
+        public TextView departure, name, togtDate;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             departure = (TextView) itemView.findViewById(R.id.togtAfgang);
-            destination = (TextView) itemView.findViewById(R.id.togtDestination);
-//            togtDate = (TextView) itemView.findViewById(R.id.togtDato);
+            name = (TextView) itemView.findViewById(R.id.togtName);
+            togtDate = (TextView) itemView.findViewById(R.id.togtDato);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

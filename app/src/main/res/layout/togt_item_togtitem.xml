@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -13,27 +14,38 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="55dp">
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp">
+
+            <TextView
+                android:id="@+id/togtName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/togtDato"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Sommertogt 2018"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
 
             <TextView
                 android:id="@+id/togtAfgang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:paddingStart="4dp"
+                android:layout_alignTop="@+id/afgangFra"
+                android:layout_toStartOf="@+id/togtDato"
+                android:layout_toEndOf="@+id/afgangFra"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Nykøbing Falster"
                 android:textColor="#000000"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/togtDestination"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/togtAfgang"
-                android:paddingStart="4dp"
-                android:textColor="#000000"
-                android:textSize="18sp" />
+                android:textSize="14sp"
+                android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/togtDato"
@@ -41,10 +53,23 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="8dp"
-                android:textAlignment="center"
+                android:layout_marginStart="8dp"
+                android:maxLines="1"
+                android:text="18-01-2020"
                 android:textColor="#000000"
-                android:textSize="14sp"></TextView>
+                android:textSize="14sp">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/afgangFra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/togtName"
+                android:layout_marginEnd="4dp"
+                android:text="Afgang fra:"
+                android:textColor="#000000"
+                android:textSize="14sp" />
 
         </RelativeLayout>
 
