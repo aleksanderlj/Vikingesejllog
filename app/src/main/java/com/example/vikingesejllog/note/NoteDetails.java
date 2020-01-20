@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,6 +43,9 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
     private AudioPlayer audioPlayer;
     private ProgressDialog progressDialogAfspiller;
     private File audioFolder, imageFolder, audioFile, imageFile;
+
+    Handler handler = new Handler();
+    Runnable audioPlayerTimeUpdate;
 
     private String fileName, audioDurationString;
 
@@ -170,16 +174,17 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
 
             progressDialogAfspiller = new ProgressDialog(NoteDetails.this, ProgressDialog.STYLE_SPINNER);
             progressDialogAfspiller.setTitle("Afspiller lydnote...");
-            progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString);
+            progressDialogAfspiller.setMessage("00:00 / " + audioDurationString);
             progressDialogAfspiller.setCancelable(false);
-            progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
+            progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Stop afspilning", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    handler.removeCallbacks(audioPlayerTimeUpdate);
                     audioPlayer.rewindAudioPlayer();
                 }
             });
             progressDialogAfspiller.show();
-            progressDialogAfspiller.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorWhiteGrey));
+            progressDialogAfspiller.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorWhiteGrey));
             progressDialogAfspiller.getButton(DialogInterface.BUTTON_NEGATIVE).setBackground(getResources().getDrawable(R.drawable.media_player_button_accept));
 
             new AsyncTask() {
@@ -196,10 +201,32 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                 @Override
                 protected void onPostExecute(Object obj){
                     if (!audioPlayer.isAudioPlaying()){
+                        handler.removeCallbacks(audioPlayerTimeUpdate);
                         audioPlayer.rewindAudioPlayer();
                         progressDialogAfspiller.dismiss();}
                 }
             }.execute();
+
+            runOnUiThread(audioPlayerTimeUpdate = new Runnable() {
+                int currentPlaytime = -1;
+
+                public void run() {
+                    if (currentPlaytime++ < 9 && audioPlayer.isAudioPlaying()) {
+                        progressDialogAfspiller.setMessage("00:0" + currentPlaytime + "/" + audioDurationString);
+                        progressDialogAfspiller.show();
+                    } else if (currentPlaytime >= 9 && currentPlaytime <60 && audioPlayer.isAudioPlaying()){
+                        progressDialogAfspiller.setMessage("00:" + currentPlaytime + "/" + audioDurationString);
+                        progressDialogAfspiller.show();
+                    } else if (currentPlaytime >= 59 && currentPlaytime < 300 && audioPlayer.isAudioPlaying()){
+                        progressDialogAfspiller.setMessage("0" + currentPlaytime + "/" + audioDurationString); // Format skal lige fikses ved denne
+                        progressDialogAfspiller.show();
+                    } else if (currentPlaytime >= 300 && audioPlayer.isAudioPlaying()){ //Max 5 minuters optagelse virker rimeligt.
+                        handler.removeCallbacks(audioPlayerTimeUpdate);
+                        audioPlayer.rewindAudioPlayer();
+                    }
+                    handler.postDelayed(audioPlayerTimeUpdate, 1000); // et sekund
+                }
+            });
         }
     }
 

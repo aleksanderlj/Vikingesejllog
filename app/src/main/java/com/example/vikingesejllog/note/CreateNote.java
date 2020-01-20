@@ -81,7 +81,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private static final String imageTAG = "TEST AF BILLEDEFUNKTION";
 
     Handler handler = new Handler();
-    Runnable playtimeUpdate;
+    Runnable audioRecorderTimeUpdate, audioPlayerTimeUpdate;
 
     private AudioRecorder audioRecorder;
     private AudioPlayer audioPlayer;
@@ -347,7 +347,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     progressDialogOptager.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            handler.removeCallbacks(playtimeUpdate);
+                            handler.removeCallbacks(audioRecorderTimeUpdate);
                             audioRecorder.stopAudioRecord();
                             recordingDone = true;
                             //Skifter ikon til "PLAY"-knap.
@@ -379,23 +379,28 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     progressDialogOptager.getButton(DialogInterface.BUTTON_NEGATIVE).setBackground(getResources().getDrawable(R.drawable.media_player_button_accept));
                     progressDialogOptager.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorWhiteGrey));
 
-                    runOnUiThread(playtimeUpdate = new Runnable() {
-                        int antalSekunderGået = 0;
+                    //Sørger for at timeren tæller op, så brugeren kan se hvor lang optagelsen er:
+                    runOnUiThread(audioRecorderTimeUpdate = new Runnable() {
+                        int currentPlaytime = -1;
 
                         public void run() {
-                            if (antalSekunderGået++ < 10) {
-                                progressDialogOptager.setMessage("" + antalSekunderGået);
+                            if (currentPlaytime++ < 9) {
+                                progressDialogOptager.setMessage("00:0" + currentPlaytime);
                                 progressDialogOptager.show();
-                                handler.postDelayed(playtimeUpdate, 1000);
+                            } else if (currentPlaytime >= 9 && currentPlaytime <60){
+                                progressDialogOptager.setMessage("00:" + currentPlaytime);
+                                progressDialogOptager.show();
+                            } else if (currentPlaytime >= 59 && currentPlaytime < 300){
+                                progressDialogOptager.setMessage("0" + currentPlaytime); // Format skal lige fikses
+                                progressDialogOptager.show();
+                            } else if (currentPlaytime >= 300){ //Max 5 minuters optagelse virker rimeligt.
+                                handler.removeCallbacks(audioRecorderTimeUpdate);
+                                audioRecorder.stopAudioRecord();
+                                recordingDone = true;
                             }
+                            handler.postDelayed(audioRecorderTimeUpdate, 1000); // et sekund
                         }
                     });
-
-
-
-
-
-
                 }
 
                 if (recordingDone) {
@@ -405,7 +410,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
                     progressDialogAfspiller = new ProgressDialog(CreateNote.this, ProgressDialog.STYLE_SPINNER);
                     progressDialogAfspiller.setTitle("Afspiller lydnote..");
-                    progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString);
+                    progressDialogAfspiller.setMessage("00:00 / " + audioDurationString);
                     progressDialogAfspiller.setCancelable(false);
                     progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEUTRAL, "SLET", new DialogInterface.OnClickListener(){
                         @Override
@@ -413,11 +418,14 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             audioPlayer.resetAudioPlayer();
                             recordingDone = false;
                             ((ImageView) findViewById(R.id.createNoteMicBtn)).setImageResource(R.drawable.mic);
+                            File deleteAudioFile = new File(audioFolder + "/" + fileName + ".mp3");
+                            deleteAudioFile.delete();
                         }
                     });
                     progressDialogAfspiller.setButton(DialogInterface.BUTTON_POSITIVE, "Stop afspilning", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            handler.removeCallbacks(audioPlayerTimeUpdate);
                             audioPlayer.rewindAudioPlayer(); //Går tilbage til 00:00
                         }
                     });
@@ -443,10 +451,33 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                         @Override
                         protected void onPostExecute(Object obj){
                             if (!audioPlayer.isAudioPlaying()){
-                            audioPlayer.rewindAudioPlayer();
-                            progressDialogAfspiller.dismiss();}
+                                handler.removeCallbacks(audioPlayerTimeUpdate);
+                                audioPlayer.rewindAudioPlayer();
+                                progressDialogAfspiller.dismiss();}
                         }
                     }.execute();
+
+                    //Sørger for at timeren opdaterer så brugeren kan se, hvor langt lydnoten er, samt hvor meget af den, der er afspillet:
+                    runOnUiThread(audioPlayerTimeUpdate = new Runnable() {
+                        int currentPlaytime = -1;
+
+                        public void run() {
+                            if (currentPlaytime++ < 9 && audioPlayer.isAudioPlaying()) {
+                                progressDialogAfspiller.setMessage("00:0" + currentPlaytime + "/" + audioDurationString);
+                                progressDialogAfspiller.show();
+                            } else if (currentPlaytime >= 9 && currentPlaytime <60 && audioPlayer.isAudioPlaying()){
+                                progressDialogAfspiller.setMessage("00:" + currentPlaytime + "/" + audioDurationString);
+                                progressDialogAfspiller.show();
+                            } else if (currentPlaytime >= 59 && currentPlaytime < 300 && audioPlayer.isAudioPlaying()){
+                                progressDialogAfspiller.setMessage("0" + currentPlaytime + "/" + audioDurationString); // Format skal lige fikses ved denne
+                                progressDialogAfspiller.show();
+                            } else if (currentPlaytime >= 300 && audioPlayer.isAudioPlaying()){ //Max 5 minuters optagelse virker rimeligt.
+                                handler.removeCallbacks(audioPlayerTimeUpdate);
+                                audioPlayer.rewindAudioPlayer();
+                            }
+                            handler.postDelayed(audioPlayerTimeUpdate, 1000); // et sekund
+                        }
+                    });
                 }
                 break;
 
