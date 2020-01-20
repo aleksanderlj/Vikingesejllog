@@ -369,7 +369,10 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             Toast.makeText(CreateNote.this, "Lydnoten blev gemt i mappen: " + audioFolder, Toast.LENGTH_SHORT).show();
                         }
                     });
-                    progressDialogOptager.show(); }
+                    progressDialogOptager.show();
+                    progressDialogOptager.getButton(DialogInterface.BUTTON_NEGATIVE).setBackground(getResources().getDrawable(R.drawable.media_player_button_accept));
+                    progressDialogOptager.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorWhiteGrey));
+                }
 
                 if (recordingDone) {
                     //Starter afspilleren:
@@ -380,7 +383,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     progressDialogAfspiller.setTitle("Afspiller lydnote..");
                     progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString);
                     progressDialogAfspiller.setCancelable(false);
-                    progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Ny optagelse", new DialogInterface.OnClickListener(){
+                    progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEUTRAL, "SLET", new DialogInterface.OnClickListener(){
                         @Override
                         public void onClick(DialogInterface dialog, int which) { //Så lydnoten kan tages om:
                             audioPlayer.resetAudioPlayer();
@@ -388,18 +391,17 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             ((ImageView) findViewById(R.id.createNoteMicBtn)).setImageResource(R.drawable.mic);
                         }
                     });
-                    progressDialogAfspiller.setButton(DialogInterface.BUTTON_POSITIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
+                    progressDialogAfspiller.setButton(DialogInterface.BUTTON_POSITIVE, "Stop afspilning", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             audioPlayer.replayAudioPlayer();
                         }
                     });
-                    progressDialogAfspiller.show();
-                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccept));
-                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorNegative));
-                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_POSITIVE).setBackground(getResources().getDrawable(R.drawable.media_player_button));
-                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_NEGATIVE).setBackground(getResources().getDrawable(R.drawable.media_player_button));
-
+                    progressDialogAfspiller.show(); //Er nødt til at hardcode farverne, da theme ikke fungerer ordentligt:
+                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorWhiteGrey));
+                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_POSITIVE).setBackground(getResources().getDrawable(R.drawable.media_player_button_accept));
+                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_NEUTRAL).setBackground(getResources().getDrawable(R.drawable.media_player_button_negative));
+                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getResources().getColor(R.color.colorWhiteGrey));
                     //Asynctask der holder øje med om afspilleren stadigvæk spiller lyd, og hvis den
                     // ikke gør det, så lukkes progressDialogAfspiller ned i stedet for brugeren
                     // selv skal trykke afslut:

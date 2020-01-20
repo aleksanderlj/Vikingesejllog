@@ -14,7 +14,7 @@
 
     <style name="ProgressDialogTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/colorDarkGray</item>
-        <item name="buttonStyle">@drawable/media_player_button</item>
+        <item name="buttonStyle">@drawable/media_player_button_accept</item>
         <item name="colorAccent">@color/colorNegative</item>
     </style>
 
