@@ -26,13 +26,41 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.50" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.22" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_second_box_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.38" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_third_box_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.54" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.83" />
+
     <TextView
         android:id="@+id/createTogtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Oprettelse af togt"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/createTogtNameBox"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_top"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,14 +69,13 @@
         android:id="@+id/createTogtAfbrydBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="75dp"
         android:background="@drawable/btn_create_note_afbryd"
         android:singleLine="true"
         android:text="Afbryd"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left" />
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_bottom" />
 
     <Button
         android:id="@+id/createTogtAccepterBtn"
@@ -62,15 +89,13 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_middle" />
 
 
-
     <ImageView
         android:id="@+id/createTogtNameBox"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginTop="150dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_top"
         app:srcCompat="@drawable/btn_create_note" />
 
     <ImageView
@@ -102,11 +127,9 @@
         android:id="@+id/createTogtDepartureBox"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/createTogtNameUnderline"
+        app:layout_constraintTop_toTopOf="@+id/guideline_second_box_top"
         app:srcCompat="@drawable/btn_create_note" />
 
     <ImageView
@@ -134,16 +157,13 @@
         app:layout_constraintTop_toTopOf="@+id/createTogtDepartureBox" />
 
 
-
-
     <ImageView
         android:id="@+id/createTogtDepartureDateBox"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/createTogtDepatureUnderline"
+        app:layout_constraintTop_toTopOf="@+id/guideline_third_box_top"
         app:srcCompat="@drawable/btn_create_note" />
 
     <TextView

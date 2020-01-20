@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:padding="40dp"
-    android:background="@drawable/crew_fragment_box">
+    android:background="@drawable/crew_fragment_box"
+    android:padding="15dp">
 
     <EditText
         android:id="@+id/crewMemberNameEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:hint="@string/skriv_navn_her"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
@@ -53,9 +52,9 @@
         android:id="@+id/cancelNameButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_create_note_afbryd"
+        android:background="@android:color/transparent"
         android:text="@string/afbryd"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorRed"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal" />
@@ -64,9 +63,9 @@
         android:id="@+id/acceptNameButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_create_note_accepter"
+        android:background="@android:color/transparent"
         android:text="@string/accepter"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorLightBlue"
         app:layout_constraintBottom_toBottomOf="@+id/cancelNameButton"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle"
