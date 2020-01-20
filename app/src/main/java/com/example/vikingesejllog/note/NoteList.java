@@ -3,6 +3,7 @@ package com.example.vikingesejllog.note;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -131,6 +132,24 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                     startActivityForResult(newEtapeIntent, ETAPE_CODE);
                     mDrawerLayout.closeDrawer(GravityCompat.END);
                     return true;
+                case R.id.slet_etape:
+                    AlertDialog.Builder ad = new AlertDialog.Builder(this);
+                    ad.setTitle("Vil du slette denne etape?");
+                    ad.setPositiveButton("Godkend", (dialog, which) -> {
+                        Executors.newSingleThreadExecutor().execute(() -> {
+                            db.etapeDAO().delete(etaper.get(pager.getCurrentItem()).etape);
+                            etaper.remove(etaper.get(pager.getCurrentItem()));
+                            updateEtapeList(pager.getCurrentItem());
+
+                            mDrawerLayout.closeDrawer(GravityCompat.END);
+                        });
+                    });
+                    ad.setNegativeButton("Fortryd", (dialog, which) -> {
+                        dialog.cancel();
+                    });
+
+                    ad.create().show();
+                    return true;
                 case R.id.togt_oversigt:
                     finish();
                     return true;
@@ -144,11 +163,10 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     }
 
     // if navigation drawer is open backbutton will close it
-    @SuppressLint("WrongConstant")
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(Gravity.END))
-            mDrawerLayout.closeDrawer(Gravity.END);
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.END))
+            mDrawerLayout.closeDrawer(GravityCompat.END);
         else {
             super.onBackPressed();
         }
