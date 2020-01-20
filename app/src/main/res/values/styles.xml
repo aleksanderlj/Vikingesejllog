@@ -5,10 +5,17 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorDarkGray</item>
         <item name="colorPrimaryDark">@color/colorDarkGray</item>
-        <item name="colorAccent">@color/colorLightBlue</item>
+        <item name="colorAccent">@color/colorAccept</item>
         <item name="android:fontFamily">@font/montserrat</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+
+    <style name="ProgressDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/colorDarkGray</item>
+        <item name="buttonStyle">@drawable/media_player_button</item>
+        <item name="colorAccent">@color/colorNegative</item>
     </style>
 
 </resources>

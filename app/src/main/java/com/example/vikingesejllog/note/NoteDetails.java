@@ -168,15 +168,14 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
 
             audioPlayer.startAudioPlayer();
 
-            progressDialogAfspiller = new ProgressDialog(NoteDetails.this);
+            progressDialogAfspiller = new ProgressDialog(NoteDetails.this, ProgressDialog.STYLE_SPINNER);
             progressDialogAfspiller.setTitle("Afspiller lydnote...");
             progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString);
             progressDialogAfspiller.setCancelable(false);
-            progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    audioPlayer.stopAudioPlayer();
+                    audioPlayer.replayAudioPlayer();
                 }
             });
             progressDialogAfspiller.show();
@@ -195,7 +194,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                 @Override
                 protected void onPostExecute(Object obj){
                     if (!audioPlayer.isAudioPlaying()){
-                        audioPlayer.stopAudioPlayer();
+                        audioPlayer.replayAudioPlayer();
                         progressDialogAfspiller.dismiss();}
                 }
             }.execute();

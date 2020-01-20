@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -337,10 +336,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                         }
                     }.execute();
 
-                    progressDialogOptager = new ProgressDialog(CreateNote.this);
+                    progressDialogOptager = new ProgressDialog(CreateNote.this, ProgressDialog.STYLE_SPINNER);
                     progressDialogOptager.setTitle("Optager lydnote...");
                     progressDialogOptager.setCancelable(false);
-                    progressDialogOptager.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialogOptager.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -378,18 +376,29 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     audioPlayer.startAudioPlayer();
 
 
-                    progressDialogAfspiller = new ProgressDialog(CreateNote.this);
+                    progressDialogAfspiller = new ProgressDialog(CreateNote.this, ProgressDialog.STYLE_SPINNER);
                     progressDialogAfspiller.setTitle("Afspiller lydnote..");
                     progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString);
                     progressDialogAfspiller.setCancelable(false);
-                    progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
+                    progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Ny optagelse", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) { //Så lydnoten kan tages om:
+                            audioPlayer.resetAudioPlayer();
+                            recordingDone = false;
+                            ((ImageView) findViewById(R.id.createNoteMicBtn)).setImageResource(R.drawable.mic);
+                        }
+                    });
+                    progressDialogAfspiller.setButton(DialogInterface.BUTTON_POSITIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            audioPlayer.stopAudioPlayer();
+                            audioPlayer.replayAudioPlayer();
                         }
                     });
                     progressDialogAfspiller.show();
+                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccept));
+                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorNegative));
+                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_POSITIVE).setBackground(getResources().getDrawable(R.drawable.media_player_button));
+                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_NEGATIVE).setBackground(getResources().getDrawable(R.drawable.media_player_button));
 
                     //Asynctask der holder øje med om afspilleren stadigvæk spiller lyd, og hvis den
                     // ikke gør det, så lukkes progressDialogAfspiller ned i stedet for brugeren
@@ -408,7 +417,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                         @Override
                         protected void onPostExecute(Object obj){
                             if (!audioPlayer.isAudioPlaying()){
-                            audioPlayer.stopAudioPlayer();
+                            audioPlayer.replayAudioPlayer();
                             progressDialogAfspiller.dismiss();}
                         }
                     }.execute();
@@ -437,13 +446,13 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
             case R.id.createNoteAccepterBtn:
                 if(audioPlayer != null){
-                    audioPlayer.releaseAudioPlayer();}
+                    audioPlayer.endAudioPlayer();}
                 confirm();
                 break;
 
             case R.id.createNoteAfbrydBtn:
                 if(audioPlayer != null){
-                    audioPlayer.releaseAudioPlayer();}
+                    audioPlayer.endAudioPlayer();}
                 finish();
                 break;
         }}

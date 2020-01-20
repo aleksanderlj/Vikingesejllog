@@ -36,9 +36,14 @@ public class AudioPlayer extends AppCompatActivity {
     }
 
 
-    public void stopAudioPlayer(){//Gør audioPlayer klar til at spille igen
+    public void replayAudioPlayer(){//Gør audioPlayer klar til at spille igen
         audioPlayer.pause();
         audioPlayer.seekTo(0);
+    }
+
+    public void resetAudioPlayer(){
+        audioPlayer.stop();
+        audioPlayer.reset();
     }
 
 
@@ -58,7 +63,7 @@ public class AudioPlayer extends AppCompatActivity {
     }
 
 
-    public void releaseAudioPlayer(){
+    public void endAudioPlayer(){
         if (audioPlayer != null) {
             audioPlayer.stop();
             audioPlayer.reset();
