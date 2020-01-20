@@ -42,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import im.delight.android.location.SimpleLocation;
 
@@ -347,6 +348,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     progressDialogOptager.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+
                             handler.removeCallbacks(audioRecorderTimeUpdate);
                             audioRecorder.stopAudioRecord();
                             recordingDone = true;
@@ -381,24 +383,17 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
                     //Sørger for at timeren tæller op, så brugeren kan se hvor lang optagelsen er:
                     runOnUiThread(audioRecorderTimeUpdate = new Runnable() {
-                        int currentPlaytime = -1;
+                        int currentRecordTime = 0;
 
                         public void run() {
-                            if (currentPlaytime++ < 9) {
-                                progressDialogOptager.setMessage("00:0" + currentPlaytime);
+                            String currentRecordTimeString = String.format("%02d:%02d",
+                                    TimeUnit.SECONDS.toMinutes(currentRecordTime), TimeUnit.SECONDS.toSeconds(currentRecordTime));
+
+                            if (currentRecordTime++ <= 100000) {
+                                progressDialogOptager.setMessage(currentRecordTimeString);
                                 progressDialogOptager.show();
-                            } else if (currentPlaytime >= 9 && currentPlaytime <60){
-                                progressDialogOptager.setMessage("00:" + currentPlaytime);
-                                progressDialogOptager.show();
-                            } else if (currentPlaytime >= 59 && currentPlaytime < 300){
-                                progressDialogOptager.setMessage("0" + currentPlaytime); // Format skal lige fikses
-                                progressDialogOptager.show();
-                            } else if (currentPlaytime >= 300){ //Max 5 minuters optagelse virker rimeligt.
-                                handler.removeCallbacks(audioRecorderTimeUpdate);
-                                audioRecorder.stopAudioRecord();
-                                recordingDone = true;
                             }
-                            handler.postDelayed(audioRecorderTimeUpdate, 1000); // et sekund
+                            handler.postDelayed(audioRecorderTimeUpdate, 10); // hvert sekund
                         }
                     });
                 }
@@ -419,7 +414,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             recordingDone = false;
                             ((ImageView) findViewById(R.id.createNoteMicBtn)).setImageResource(R.drawable.mic);
                             File deleteAudioFile = new File(audioFolder + "/" + fileName + ".mp3");
-                            deleteAudioFile.delete();
+                            deleteAudioFile.delete(); //Sletter filen i hukommelsen
                         }
                     });
                     progressDialogAfspiller.setButton(DialogInterface.BUTTON_POSITIVE, "Stop afspilning", new DialogInterface.OnClickListener() {
@@ -459,23 +454,19 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
                     //Sørger for at timeren opdaterer så brugeren kan se, hvor langt lydnoten er, samt hvor meget af den, der er afspillet:
                     runOnUiThread(audioPlayerTimeUpdate = new Runnable() {
-                        int currentPlaytime = -1;
+                        int currentPlayTime = 0;
 
                         public void run() {
-                            if (currentPlaytime++ < 9 && audioPlayer.isAudioPlaying()) {
-                                progressDialogAfspiller.setMessage("00:0" + currentPlaytime + "/" + audioDurationString);
+                            String currentPlayTimeString = String.format("%02d:%02d",
+                                    TimeUnit.SECONDS.toMinutes(currentPlayTime),
+                                    TimeUnit.SECONDS.toSeconds(currentPlayTime) -
+                                            TimeUnit.SECONDS.toMinutes(TimeUnit.SECONDS.toSeconds(currentPlayTime)));
+
+                            if (currentPlayTime++ <= 100000  && audioPlayer.isAudioPlaying()) {
+                                progressDialogAfspiller.setMessage(currentPlayTimeString + "/" + audioDurationString);
                                 progressDialogAfspiller.show();
-                            } else if (currentPlaytime >= 9 && currentPlaytime <60 && audioPlayer.isAudioPlaying()){
-                                progressDialogAfspiller.setMessage("00:" + currentPlaytime + "/" + audioDurationString);
-                                progressDialogAfspiller.show();
-                            } else if (currentPlaytime >= 59 && currentPlaytime < 300 && audioPlayer.isAudioPlaying()){
-                                progressDialogAfspiller.setMessage("0" + currentPlaytime + "/" + audioDurationString); // Format skal lige fikses ved denne
-                                progressDialogAfspiller.show();
-                            } else if (currentPlaytime >= 300 && audioPlayer.isAudioPlaying()){ //Max 5 minuters optagelse virker rimeligt.
-                                handler.removeCallbacks(audioPlayerTimeUpdate);
-                                audioPlayer.rewindAudioPlayer();
                             }
-                            handler.postDelayed(audioPlayerTimeUpdate, 1000); // et sekund
+                            handler.postDelayed(audioPlayerTimeUpdate, 1000); // hvert sekund
                         }
                     });
                 }

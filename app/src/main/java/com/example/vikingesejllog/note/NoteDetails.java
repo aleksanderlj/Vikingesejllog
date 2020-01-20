@@ -26,6 +26,7 @@ import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.io.File;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class NoteDetails extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
 
@@ -207,24 +208,21 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                 }
             }.execute();
 
+            //Sørger for at timeren opdaterer så brugeren kan se, hvor langt lydnoten er, samt hvor meget af den, der er afspillet:
             runOnUiThread(audioPlayerTimeUpdate = new Runnable() {
-                int currentPlaytime = -1;
+                int currentPlayTime = 0;
 
                 public void run() {
-                    if (currentPlaytime++ < 9 && audioPlayer.isAudioPlaying()) {
-                        progressDialogAfspiller.setMessage("00:0" + currentPlaytime + "/" + audioDurationString);
+                    String currentPlayTimeString = String.format("%02d:%02d",
+                            TimeUnit.SECONDS.toMinutes(currentPlayTime),
+                            TimeUnit.SECONDS.toSeconds(currentPlayTime) -
+                                    TimeUnit.SECONDS.toMinutes(TimeUnit.SECONDS.toSeconds(currentPlayTime)));
+
+                    if (currentPlayTime++ <= 100000  && audioPlayer.isAudioPlaying()) {
+                        progressDialogAfspiller.setMessage(currentPlayTimeString + "/" + audioDurationString);
                         progressDialogAfspiller.show();
-                    } else if (currentPlaytime >= 9 && currentPlaytime <60 && audioPlayer.isAudioPlaying()){
-                        progressDialogAfspiller.setMessage("00:" + currentPlaytime + "/" + audioDurationString);
-                        progressDialogAfspiller.show();
-                    } else if (currentPlaytime >= 59 && currentPlaytime < 300 && audioPlayer.isAudioPlaying()){
-                        progressDialogAfspiller.setMessage("0" + currentPlaytime + "/" + audioDurationString); // Format skal lige fikses ved denne
-                        progressDialogAfspiller.show();
-                    } else if (currentPlaytime >= 300 && audioPlayer.isAudioPlaying()){ //Max 5 minuters optagelse virker rimeligt.
-                        handler.removeCallbacks(audioPlayerTimeUpdate);
-                        audioPlayer.rewindAudioPlayer();
                     }
-                    handler.postDelayed(audioPlayerTimeUpdate, 1000); // et sekund
+                    handler.postDelayed(audioPlayerTimeUpdate, 1000); // hvert sekund
                 }
             });
         }
