@@ -15,6 +15,13 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.40" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.10" />
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_horizontal_bottom"
@@ -25,11 +32,11 @@
 
 
     <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.05" />
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05109489" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_right"
@@ -46,7 +53,7 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_bottom"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/crewNameFragment">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -68,6 +75,7 @@
         android:id="@+id/acceptCrewButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
         android:background="@drawable/btn_crew_accept"
         android:text="Færdig"
         android:textColor="@android:color/white"
@@ -78,8 +86,6 @@
         app:layout_constraintTop_toTopOf="@+id/newCrewButton" />
 
 
-
-
     <FrameLayout
         android:id="@+id/crewNameFragment"
         android:layout_width="0dp"
@@ -87,11 +93,22 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_bottom"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_top">
 
     </FrameLayout>
 
-
+    <TextView
+        android:id="@+id/addCrewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:text="Tilføj besætning"
+        android:textColor="@color/colorDarkGray"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/crewRecyclerView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

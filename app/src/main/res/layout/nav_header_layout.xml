@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="120dp"
     android:layout_gravity="bottom"
-    android:background="@drawable/rectangle24"
+    android:background="@drawable/gradient_box"
     android:clickable="true"
     android:gravity="bottom"
     android:orientation="vertical"
@@ -23,7 +23,7 @@
         android:fontFamily="@font/montserrat"
         android:paddingTop="16dp"
         android:text="Menu"
-        android:textColor="#152569"
+        android:textColor="@color/colorTextWhite"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
