@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -78,6 +79,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     //AUDIO OG IMAGE VARIABLER:
     private static final String audioTAG = "TEST AF LYDOPTAGER";
     private static final String imageTAG = "TEST AF BILLEDEFUNKTION";
+
+    Handler handler = new Handler();
+    Runnable playtimeUpdate;
 
     private AudioRecorder audioRecorder;
     private AudioPlayer audioPlayer;
@@ -338,10 +342,12 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
                     progressDialogOptager = new ProgressDialog(CreateNote.this, ProgressDialog.STYLE_SPINNER);
                     progressDialogOptager.setTitle("Optager lydnote...");
+                    progressDialogOptager.setMessage("00:00");
                     progressDialogOptager.setCancelable(false);
                     progressDialogOptager.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            handler.removeCallbacks(playtimeUpdate);
                             audioRecorder.stopAudioRecord();
                             recordingDone = true;
                             //Skifter ikon til "PLAY"-knap.
@@ -372,6 +378,24 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     progressDialogOptager.show();
                     progressDialogOptager.getButton(DialogInterface.BUTTON_NEGATIVE).setBackground(getResources().getDrawable(R.drawable.media_player_button_accept));
                     progressDialogOptager.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorWhiteGrey));
+
+                    runOnUiThread(playtimeUpdate = new Runnable() {
+                        int antalSekunderGået = 0;
+
+                        public void run() {
+                            if (antalSekunderGået++ < 10) {
+                                progressDialogOptager.setMessage("" + antalSekunderGået);
+                                progressDialogOptager.show();
+                                handler.postDelayed(playtimeUpdate, 1000);
+                            }
+                        }
+                    });
+
+
+
+
+
+
                 }
 
                 if (recordingDone) {
@@ -394,7 +418,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     progressDialogAfspiller.setButton(DialogInterface.BUTTON_POSITIVE, "Stop afspilning", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            audioPlayer.replayAudioPlayer();
+                            audioPlayer.rewindAudioPlayer(); //Går tilbage til 00:00
                         }
                     });
                     progressDialogAfspiller.show(); //Er nødt til at hardcode farverne, da theme ikke fungerer ordentligt:
@@ -419,7 +443,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                         @Override
                         protected void onPostExecute(Object obj){
                             if (!audioPlayer.isAudioPlaying()){
-                            audioPlayer.replayAudioPlayer();
+                            audioPlayer.rewindAudioPlayer();
                             progressDialogAfspiller.dismiss();}
                         }
                     }.execute();

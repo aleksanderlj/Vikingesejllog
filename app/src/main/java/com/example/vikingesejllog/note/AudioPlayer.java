@@ -36,7 +36,7 @@ public class AudioPlayer extends AppCompatActivity {
     }
 
 
-    public void replayAudioPlayer(){//Gør audioPlayer klar til at spille igen
+    public void rewindAudioPlayer(){//Gør audioPlayer klar til at spille igen
         audioPlayer.pause();
         audioPlayer.seekTo(0);
     }

@@ -175,7 +175,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
             progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    audioPlayer.replayAudioPlayer();
+                    audioPlayer.rewindAudioPlayer();
                 }
             });
             progressDialogAfspiller.show();
@@ -196,7 +196,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                 @Override
                 protected void onPostExecute(Object obj){
                     if (!audioPlayer.isAudioPlaying()){
-                        audioPlayer.replayAudioPlayer();
+                        audioPlayer.rewindAudioPlayer();
                         progressDialogAfspiller.dismiss();}
                 }
             }.execute();
