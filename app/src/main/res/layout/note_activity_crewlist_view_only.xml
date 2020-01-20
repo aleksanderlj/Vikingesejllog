@@ -6,7 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".etape.CrewList">
+    tools:context=".etape.CrewList"
+    android:background="#F0F0F0">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_middle"
@@ -21,15 +22,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
 
 
     <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.05" />
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="21dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_right"
@@ -40,58 +48,47 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/crewRecyclerView"
+        android:id="@+id/crewRecyclerView_viewOnly"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_bottom"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_top">
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <com.github.clans.fab.FloatingActionButton
-        android:id="@+id/newCrewButton"
+    <TextView
+        android:id="@+id/skipperName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
         android:elevation="5dp"
-        android:src="@drawable/plus"
-        app:fab_colorNormal="@color/colorLightBlue"
-        app:fab_colorPressed="#120722"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-
-    <Button
-        android:id="@+id/acceptCrewButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_crew_accept"
-        android:text="Færdig"
+        android:text="Skipper"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/newCrewButton"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_middle"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="@+id/newCrewButton" />
-
-
-
-
-    <FrameLayout
-        android:id="@+id/crewNameFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_bottom"
+        app:layout_constraintBottom_toBottomOf="@+id/skipperBackgroundColor"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-    </FrameLayout>
+    <TextView
+        android:id="@+id/additionalCrewText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:text="Øvrig besætning:"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_top"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left" />
 
-
+    <ImageView
+        android:id="@+id/skipperBackgroundColor"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/additionalCrewText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/colorDarkBlue" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

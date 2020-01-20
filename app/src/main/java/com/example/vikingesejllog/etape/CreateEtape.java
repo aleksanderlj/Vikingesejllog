@@ -18,16 +18,19 @@ import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.note.NoteList;
 import com.example.vikingesejllog.other.DatabaseBuilder;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.Executors;
 
 public class CreateEtape extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
-    List<String> crew;
+    ArrayList<CrewListItem> crew;
+    ArrayList<String> crewNames;
     AppDatabase db;
     Date departure;
     ImageView crewButton;
@@ -44,15 +47,19 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         findViewById(R.id.createEtapeCrewCountBox).setOnClickListener(this);
         findViewById(R.id.createEtapeAccepterBtn).setOnClickListener(this);
         findViewById(R.id.createEtapeAfbrydBtn).setOnClickListener(this);
-
     }
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.createEtapeCrewCountBox:
                 Intent i = new Intent(this, CrewList.class);
-                startActivity(i);
+                Gson gson = new Gson();
+                String json = gson.toJson(crew);
+                i.putExtra("crew", json);
+
+                startActivityForResult(i, 1);
+
                 break;
 
             case R.id.createEtapeDepartureDateBox:
@@ -71,11 +78,13 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
                 EditText end = findViewById(R.id.createEtapeArrivalText);
 //                EditText date = findViewById(R.id.createEtapeDepartureDateBox);
 
+                crewNames = crewItemsToString(crew);
+
                 e.setSkipper(skipper.getText().toString());
                 e.setStart(start.getText().toString());
                 e.setEnd(end.getText().toString());
                 e.setDeparture(departure);
-                e.setCrew(crew);
+                e.setCrew(crewNames);
                 e.setTogt_id(getIntent().getLongExtra("togt_id", -1L));
 
                 setResult(Activity.RESULT_OK);
@@ -108,8 +117,31 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         Calendar c = Calendar.getInstance();
         c.set(year, month, dayOfMonth);
         departure = c.getTime();
-        String s = "" + dayOfMonth + "-" + (month+1) + "-" + year;
+        String s = "" + dayOfMonth + "-" + (month + 1) + "-" + year;
         TextView date = findViewById(R.id.createEtapeDepartureDateText);
         date.setText(s);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+
+
+            String json = data.getStringExtra("crewList");
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<CrewListItem>>() {
+            }.getType();
+            crew = gson.fromJson(json, type);
+        }
+    }
+
+    private ArrayList<String> crewItemsToString(ArrayList<CrewListItem> crewListItems) {
+        ArrayList<String> crewNames = new ArrayList<>();
+        for (int i = 0; i < crewListItems.size(); i++) {
+            crewNames.add(crewListItems.get(i).getCrewMember());
+        }
+        return crewNames;
     }
 }
