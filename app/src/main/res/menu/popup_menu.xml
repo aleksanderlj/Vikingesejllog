@@ -5,6 +5,10 @@
         android:title="Opret ny etape"
         />
     <item
+        android:id="@+id/slet_etape"
+        android:title="Slet nuværende etape"
+        />
+    <item
         android:id="@+id/togt_oversigt"
         android:title="Oversigt over togter"/>
     <item

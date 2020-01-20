@@ -1,25 +1,34 @@
 package com.example.vikingesejllog.note;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Note;
+import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
 public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHolder> {
 
     private List<Note> noteListItems;
     private Context context;
     private OnItemClickListener listener;
+    private AppDatabase db;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -32,6 +41,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
     public NoteListAdapter(List<Note> noteListItems, Context context) {
         this.noteListItems = noteListItems;
         this.context = context;
+        db = DatabaseBuilder.get(context);
     }
 
     @NonNull
@@ -53,15 +63,21 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
         bindView(noteListItem.getSailForing(), holder.sailforing, holder.sailforing_text);
 
         if(!noteListItem.isHasImage()){
-            holder.picImage.setVisibility(View.INVISIBLE);
+            holder.picImage.setVisibility(View.GONE);
+        } else{
+            holder.picImage.setVisibility(View.VISIBLE);
         }
 
         if(!noteListItem.isHasAudio()){
-            holder.audioImage.setVisibility(View.INVISIBLE);
+            holder.audioImage.setVisibility(View.GONE);
+        }else{
+            holder.audioImage.setVisibility(View.VISIBLE);
         }
 
         if(!noteListItem.isHasComment()){
-            holder.commentImage.setVisibility(View.INVISIBLE);
+            holder.commentImage.setVisibility(View.GONE);
+        }else{
+            holder.commentImage.setVisibility(View.VISIBLE);
         }
 
 
@@ -70,6 +86,8 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
     private void bindView(String text, TextView info, TextView title){
         if(text.compareTo("") == 0)
             title.setVisibility(View.INVISIBLE);
+        else
+            title.setVisibility(View.VISIBLE);
         info.setText(text);
     }
 
@@ -127,6 +145,28 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
                         }
                     }
                 }
+            });
+
+            itemView.setOnCreateContextMenuListener((menu, v, menuInfo) -> {
+                MenuItem mItem = menu.add(0, v.getId(), 0, "Slet");
+                mItem.setOnMenuItemClickListener((item) -> {
+                    AlertDialog.Builder ad = new AlertDialog.Builder(context);
+                    ad.setTitle("Vil du slette denne note?");
+                    ad.setPositiveButton("Godkend", (dialog, which) -> {
+                        Executors.newSingleThreadExecutor().execute(() -> {
+                            db.noteDAO().delete(noteListItems.get(getAdapterPosition()));
+                            noteListItems.remove(noteListItems.get(getAdapterPosition()));
+                            ((Activity) context).runOnUiThread(() -> notifyDataSetChanged());
+                        });
+                    });
+                    ad.setNegativeButton("Fortryd", (dialog, which) -> {
+                        dialog.cancel();
+                    });
+
+                    ad.create().show();
+
+                    return true;
+                });
             });
         }
     }

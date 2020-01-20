@@ -1,8 +1,12 @@
 package com.example.vikingesejllog.togt;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -10,19 +14,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Togt;
+import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 public class TogtListAdapter extends RecyclerView.Adapter<TogtListAdapter.ViewHolder> {
 
     private List<Togt> togtList;
     private Context context;
     private OnItemClickListener listener;
+    private AppDatabase db;
 
     public interface OnItemClickListener{
         void onItemClick(int position);
@@ -35,6 +43,7 @@ public class TogtListAdapter extends RecyclerView.Adapter<TogtListAdapter.ViewHo
     public TogtListAdapter(List<Togt> togtList, Context context) {
         this.togtList = togtList;
         this.context = context;
+        db = DatabaseBuilder.get(context);
     }
 
     @NonNull
@@ -88,6 +97,28 @@ public class TogtListAdapter extends RecyclerView.Adapter<TogtListAdapter.ViewHo
                         }
                     }
                 }
+            });
+
+            itemView.setOnCreateContextMenuListener((menu, v, menuInfo) -> {
+                MenuItem mItem = menu.add(0, v.getId(), 0, "Slet");
+                mItem.setOnMenuItemClickListener((item) -> {
+                    AlertDialog.Builder ad = new AlertDialog.Builder(context);
+                    ad.setTitle("Vil du slette dette togt?");
+                    ad.setPositiveButton("Godkend", (dialog, which) -> {
+                        Executors.newSingleThreadExecutor().execute(() -> {
+                            db.togtDAO().delete(togtList.get(getAdapterPosition()));
+                            togtList.remove(togtList.get(getAdapterPosition()));
+                            ((Activity) context).runOnUiThread(() -> notifyDataSetChanged());
+                        });
+                    });
+                    ad.setNegativeButton("Fortryd", (dialog, which) -> {
+                        dialog.cancel();
+                    });
+
+                    ad.create().show();
+
+                    return true;
+                });
             });
         }
     }
