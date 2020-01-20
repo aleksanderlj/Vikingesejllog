@@ -47,7 +47,7 @@ public class EtapeTopFragment extends Fragment {
         if(date.getTime() != 0L){
             Calendar c = Calendar.getInstance();
             c.setTime(date);
-            String s = c.get(Calendar.DAY_OF_MONTH) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.YEAR);
+            String s = c.get(Calendar.DAY_OF_MONTH) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.YEAR);
             tv.setText(s);
         } else {
             tv.setText("");
