@@ -71,7 +71,8 @@ public class CreateTogt extends AppCompatActivity implements View.OnClickListene
 		Calendar c = Calendar.getInstance();
 		c.set(year, month, dayOfMonth);
 		departureDate = c.getTime();
-		String s = "" + dayOfMonth + "-" + (month+1) + "-" + year;
+		month++;
+		String s = "" + dayOfMonth + "-" + month + "-" + year;
 		TextView date = findViewById(R.id.createTogtDepartureDateText);
 		date.setText(s);
 	}

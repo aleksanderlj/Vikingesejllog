@@ -56,8 +56,7 @@ public class TogtListAdapter extends RecyclerView.Adapter<TogtListAdapter.ViewHo
         if (d.getTime() != 0L) {
             Calendar c = Calendar.getInstance();
             c.setTime(togt.getDepartureDate());
-
-            String s = c.get(Calendar.DAY_OF_MONTH) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.YEAR);
+            String s = c.get(Calendar.DAY_OF_MONTH) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.YEAR);
             holder.togtDate.setText(s);
         } else {
             holder.togtDate.setText("");
