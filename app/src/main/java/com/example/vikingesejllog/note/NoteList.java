@@ -47,7 +47,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
     private ArrayList<EtapeWithNotes> etaper;
     private Togt togt;
     private AppDatabase db;
-    private final int ETAPE_CODE = 1, NOTE_CODE = 2;
+    private final int ETAPE_CODE = 1, NOTE_CODE = 2, LASTETAPE = -1;
     private int savedPos;
     private WormDotsIndicator dotNavigation;
     private NavigationView navigationView;
@@ -80,7 +80,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         Intent i = getIntent();
         Executors.newSingleThreadExecutor().execute(() -> {
             togt = db.togtDAO().getById(i.getLongExtra("togt_id", -1L));
-            updateEtapeList(etaper.size());
+            updateEtapeList(LASTETAPE);
         });
 
 
@@ -206,7 +206,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         if ((requestCode == ETAPE_CODE || requestCode == NOTE_CODE) && resultCode == Activity.RESULT_OK) {
             Executors.newSingleThreadExecutor().execute(() -> {
                 if (requestCode == ETAPE_CODE) {
-                    updateEtapeList(etaper.size());
+                    updateEtapeList(LASTETAPE);
                 } else {
                     updateEtapeList(savedPos);
                     ((NotePagerAdapter) adapter).notifyNoteDataSetChanged(pager.getCurrentItem());
@@ -218,13 +218,17 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
 
     private void updateEtapeList(int startPos) {
         List<EtapeWithNotes> newEtaper = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
+        if(startPos == LASTETAPE){
+            startPos = newEtaper.size();
+        }
         if (newEtaper.size() != 0) {
             etaper.clear();
             etaper.addAll(newEtaper);
             pager.post(() -> adapter.notifyDataSetChanged());
+            int finalStartPos = startPos;
             runOnUiThread(() -> {
                 pager.setAdapter(adapter);
-                pager.setCurrentItem(startPos, false); // Pageren klarer selv out of bounds exceptions
+                pager.setCurrentItem(finalStartPos, false); // Pageren klarer selv out of bounds exceptions
 
                 String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
                 ((TextView) findViewById(R.id.pagecount)).setText(s);
