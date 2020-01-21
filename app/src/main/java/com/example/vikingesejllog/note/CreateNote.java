@@ -12,12 +12,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,15 +30,21 @@ import androidx.core.content.FileProvider;
 
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
+import com.example.vikingesejllog.etape.CrewListItem;
+import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.note.dialogs.NoteDialog;
 import com.example.vikingesejllog.note.dialogs.NoteDialogComment;
 import com.example.vikingesejllog.note.dialogs.NoteDialogListener;
 import com.example.vikingesejllog.note.dialogs.NoteDialogNumberPicker;
 import com.example.vikingesejllog.other.DatabaseBuilder;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Executors;
@@ -80,14 +86,18 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private static final String audioTAG = "TEST AF LYDOPTAGER";
     private static final String imageTAG = "TEST AF BILLEDEFUNKTION";
 
+    Handler handler = new Handler();
+    Runnable audioRecorderTimeUpdate, audioPlayerTimeUpdate;
+
     private AudioRecorder audioRecorder;
     private AudioPlayer audioPlayer;
 
-    private File audioFolder, imageFolder, imageFile;
+    private File audioFolder, imageFolder, imageFile, audioFile;
 
     private String fileName, audioDurationString;
 
     private boolean recordingDone;
+    private int numberOfRowers = 0;
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private ImageView savedPicture, savedPictureZoomed;
@@ -169,8 +179,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         Log.d("Aktuelle filnavn: ", fileName);
 
 
-        //Gør mappen for lydnoter klar:
+        //Gør mappen for lydnoter samt lydfil klar:
         audioFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Lydnoter/");
+        audioFile = new File(audioFolder + "/" + fileName + ".mp3");
         //Gør mappen for billeder klar:
         imageFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Billedenoter/");
 
@@ -240,9 +251,15 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
     public void setRowers() {
-        int range = 20; //TODO should be crewsize
-        String[] s = new String[range + 1];
-        for (int n = 0; n < range + 1; n++) {
+
+        numberOfRowers = getIntent().getIntExtra("crew_size",20);
+
+        // defaults to 20 if no crewList is given
+        if (numberOfRowers == 0)
+            numberOfRowers = 20;
+
+        String[] s = new String[numberOfRowers + 1];
+        for (int n = 0; n < numberOfRowers + 1; n++) {
             s[n] = String.valueOf(n);
         }
 
@@ -272,13 +289,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             hasComment = true;
         }
 
-        File a = new File(audioFolder + "/" + fileName + ".mp3");
-        if(a.exists()){
+        if(audioFile != null && audioFile.exists()){
             hasAudio = true;
         }
 
-        File i = new File(imageFolder + "/" + fileName + ".jpg");
-        if(i.exists()){
+        if(imageFile != null && imageFile.exists()){
             hasImage = true;
         }
 
@@ -343,8 +358,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                         @Override
                         protected Object doInBackground(Object... arg0) {
                             try {
-                                audioRecorder.setupAudioRecord(audioFolder + "/" + fileName + ".mp3");
-                                return Log.d(audioTAG, "Der gemmes en lydfil i: " + audioFolder + "/" + fileName + ".mp3");
+                                audioRecorder.setupAudioRecord(audioFile.toString());
+                                return Log.d(audioTAG, "Der gemmes en lydfil i: " + audioFile);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 return Log.d(audioTAG, "Det virker IKKE: " + e);
@@ -357,13 +372,15 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                         }
                     }.execute();
 
-                    progressDialogOptager = new ProgressDialog(CreateNote.this);
+                    progressDialogOptager = new ProgressDialog(CreateNote.this, ProgressDialog.STYLE_SPINNER);
                     progressDialogOptager.setTitle("Optager lydnote...");
+                    progressDialogOptager.setMessage("00:00");
                     progressDialogOptager.setCancelable(false);
-                    progressDialogOptager.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialogOptager.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+
+                            handler.removeCallbacks(audioRecorderTimeUpdate);
                             audioRecorder.stopAudioRecord();
                             recordingDone = true;
                             //Skifter ikon til "PLAY"-knap.
@@ -375,8 +392,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                                 @Override
                                 protected Object doInBackground(Object... arg0) {
                                     try {
-                                        audioPlayer.setupAudioPlayer(audioFolder + "/" + fileName + ".mp3");
-                                        return Log.d(audioTAG, "Følgende lydfil klargøres: " + audioFolder + "/" + fileName + ".mp3");
+                                        audioPlayer.setupAudioPlayer(audioFile.toString());
+                                        return Log.d(audioTAG, "Følgende lydfil klargøres: " + audioFile);
                                     } catch (Exception e){
                                         e.printStackTrace();
                                         return Log.d(audioTAG, "Fejl i afspiller: " + audioFolder + "    " + fileName + e);
@@ -391,26 +408,58 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             Toast.makeText(CreateNote.this, "Lydnoten blev gemt i mappen: " + audioFolder, Toast.LENGTH_SHORT).show();
                         }
                     });
-                    progressDialogOptager.show(); }
+                    progressDialogOptager.show();
+                    progressDialogOptager.getButton(DialogInterface.BUTTON_NEGATIVE).setBackground(getResources().getDrawable(R.drawable.media_player_button_accept));
+                    progressDialogOptager.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorWhiteGrey));
+
+                    //Sørger for at timeren tæller op, så brugeren kan se hvor lang optagelsen er:
+                    runOnUiThread(audioRecorderTimeUpdate = new Runnable() {
+                        int currentRecordTime = 0;
+
+                        public void run() {
+                            String currentRecordTimeString = String.format("%02d:%02d",
+                                    currentRecordTime/60, currentRecordTime % 60);
+
+                            if (currentRecordTime++ <= 100000) {
+                                progressDialogOptager.setMessage(currentRecordTimeString);
+                                progressDialogOptager.show();
+                            }
+                            handler.postDelayed(audioRecorderTimeUpdate, 1000); // hvert sekund
+                        }
+                    });
+                }
 
                 if (recordingDone) {
                     //Starter afspilleren:
                     audioPlayer.startAudioPlayer();
 
 
-                    progressDialogAfspiller = new ProgressDialog(CreateNote.this);
+                    progressDialogAfspiller = new ProgressDialog(CreateNote.this, ProgressDialog.STYLE_SPINNER);
                     progressDialogAfspiller.setTitle("Afspiller lydnote..");
-                    progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString);
+                    progressDialogAfspiller.setMessage("00:00 / " + audioDurationString);
                     progressDialogAfspiller.setCancelable(false);
-                    progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
+                    progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEUTRAL, "SLET", new DialogInterface.OnClickListener(){
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            audioPlayer.stopAudioPlayer();
+                        public void onClick(DialogInterface dialog, int which) { //Så lydnoten kan tages om:
+                            audioPlayer.resetAudioPlayer();
+                            recordingDone = false;
+                            ((ImageView) findViewById(R.id.createNoteMicBtn)).setImageResource(R.drawable.mic);
+                            File deleteAudioFile = new File(audioFile.toString());
+                            deleteAudioFile.delete(); //Sletter filen i hukommelsen
                         }
                     });
-                    progressDialogAfspiller.show();
-
+                    progressDialogAfspiller.setButton(DialogInterface.BUTTON_POSITIVE, "Stop afspilning", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            handler.removeCallbacks(audioPlayerTimeUpdate);
+                            audioPlayer.rewindAudioPlayer(); //Går tilbage til 00:00
+                        }
+                    });
+                    progressDialogAfspiller.show(); //Er nødt til at hardcode farverne, da theme ikke fungerer ordentligt:
+                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorWhiteGrey));
+                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_POSITIVE).setBackground(getResources().getDrawable(R.drawable.media_player_button_accept));
+                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_NEUTRAL).setBackground(getResources().getDrawable(R.drawable.media_player_button_negative));
+                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getResources().getColor(R.color.colorWhiteGrey));
                     //Asynctask der holder øje med om afspilleren stadigvæk spiller lyd, og hvis den
                     // ikke gør det, så lukkes progressDialogAfspiller ned i stedet for brugeren
                     // selv skal trykke afslut:
@@ -428,10 +477,27 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                         @Override
                         protected void onPostExecute(Object obj){
                             if (!audioPlayer.isAudioPlaying()){
-                            audioPlayer.stopAudioPlayer();
-                            progressDialogAfspiller.dismiss();}
+                                handler.removeCallbacks(audioPlayerTimeUpdate);
+                                audioPlayer.rewindAudioPlayer();
+                                progressDialogAfspiller.dismiss();}
                         }
                     }.execute();
+
+                    //Sørger for at timeren opdaterer så brugeren kan se, hvor langt lydnoten er, samt hvor meget af den, der er afspillet:
+                    runOnUiThread(audioPlayerTimeUpdate = new Runnable() {
+                        int currentPlayTime = 0;
+
+                        public void run() {
+                            String currentPlayTimeString = String.format("%02d:%02d",
+                                    currentPlayTime/60, currentPlayTime % 60);
+
+                            if (currentPlayTime++ <= 100000  && audioPlayer.isAudioPlaying()) {
+                                progressDialogAfspiller.setMessage(currentPlayTimeString + "/" + audioDurationString);
+                                progressDialogAfspiller.show();
+                            }
+                            handler.postDelayed(audioPlayerTimeUpdate, 1000); // hvert sekund
+                        }
+                    });
                 }
                 break;
 
@@ -457,13 +523,18 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
             case R.id.createNoteAccepterBtn:
                 if(audioPlayer != null){
-                    audioPlayer.releaseAudioPlayer();}
+                    audioPlayer.endAudioPlayer();}
                 confirm();
                 break;
 
             case R.id.createNoteAfbrydBtn:
                 if(audioPlayer != null){
-                    audioPlayer.releaseAudioPlayer();}
+                    audioPlayer.endAudioPlayer();}
+                if (imageFile != null && imageFile.exists()){
+                    imageFile.delete(); }
+                if (audioFile != null && audioFile.exists()){
+                    audioFile.delete();
+                }
                 finish();
                 break;
         }}

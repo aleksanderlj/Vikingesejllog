@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,6 +43,9 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
     private AudioPlayer audioPlayer;
     private ProgressDialog progressDialogAfspiller;
     private File audioFolder, imageFolder, audioFile, imageFile;
+
+    Handler handler = new Handler();
+    Runnable audioPlayerTimeUpdate;
 
     private String fileName, audioDurationString;
 
@@ -168,18 +172,20 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
 
             audioPlayer.startAudioPlayer();
 
-            progressDialogAfspiller = new ProgressDialog(NoteDetails.this);
+            progressDialogAfspiller = new ProgressDialog(NoteDetails.this, ProgressDialog.STYLE_SPINNER);
             progressDialogAfspiller.setTitle("Afspiller lydnote...");
-            progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString);
+            progressDialogAfspiller.setMessage("00:00 / " + audioDurationString);
             progressDialogAfspiller.setCancelable(false);
-            progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
+            progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Stop afspilning", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    audioPlayer.stopAudioPlayer();
+                    handler.removeCallbacks(audioPlayerTimeUpdate);
+                    audioPlayer.rewindAudioPlayer();
                 }
             });
             progressDialogAfspiller.show();
+            progressDialogAfspiller.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorWhiteGrey));
+            progressDialogAfspiller.getButton(DialogInterface.BUTTON_NEGATIVE).setBackground(getResources().getDrawable(R.drawable.media_player_button_accept));
 
             new AsyncTask() {
                 @Override
@@ -195,10 +201,27 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                 @Override
                 protected void onPostExecute(Object obj){
                     if (!audioPlayer.isAudioPlaying()){
-                        audioPlayer.stopAudioPlayer();
+                        handler.removeCallbacks(audioPlayerTimeUpdate);
+                        audioPlayer.rewindAudioPlayer();
                         progressDialogAfspiller.dismiss();}
                 }
             }.execute();
+
+            //Sørger for at timeren opdaterer så brugeren kan se, hvor langt lydnoten er, samt hvor meget af den, der er afspillet:
+            runOnUiThread(audioPlayerTimeUpdate = new Runnable() {
+                int currentPlayTime = 0;
+
+                public void run() {
+                    String currentPlayTimeString = String.format("%02d:%02d",
+                            currentPlayTime/60, currentPlayTime % 60);
+
+                    if (currentPlayTime++ <= 100000  && audioPlayer.isAudioPlaying()) {
+                        progressDialogAfspiller.setMessage(currentPlayTimeString + "/" + audioDurationString);
+                        progressDialogAfspiller.show();
+                    }
+                    handler.postDelayed(audioPlayerTimeUpdate, 1000); // hvert sekund
+                }
+            });
         }
     }
 
