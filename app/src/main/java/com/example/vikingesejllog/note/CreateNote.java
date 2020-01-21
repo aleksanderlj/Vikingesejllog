@@ -276,11 +276,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             hasComment = true;
         }
 
-        if(audioFile.exists()){
+        if(audioFile != null && audioFile.exists()){
             hasAudio = true;
         }
 
-        if(imageFile.exists()){
+        if(imageFile != null && imageFile.exists()){
             hasImage = true;
         }
 
