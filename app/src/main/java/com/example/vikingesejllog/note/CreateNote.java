@@ -12,12 +12,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -79,6 +79,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     //AUDIO OG IMAGE VARIABLER:
     private static final String audioTAG = "TEST AF LYDOPTAGER";
     private static final String imageTAG = "TEST AF BILLEDEFUNKTION";
+
+    Handler handler = new Handler();
+    Runnable audioRecorderTimeUpdate, audioPlayerTimeUpdate;
 
     private AudioRecorder audioRecorder;
     private AudioPlayer audioPlayer;
@@ -357,13 +360,15 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                         }
                     }.execute();
 
-                    progressDialogOptager = new ProgressDialog(CreateNote.this);
+                    progressDialogOptager = new ProgressDialog(CreateNote.this, ProgressDialog.STYLE_SPINNER);
                     progressDialogOptager.setTitle("Optager lydnote...");
+                    progressDialogOptager.setMessage("00:00");
                     progressDialogOptager.setCancelable(false);
-                    progressDialogOptager.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialogOptager.setButton(DialogInterface.BUTTON_NEGATIVE, "Gem optagelse", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+
+                            handler.removeCallbacks(audioRecorderTimeUpdate);
                             audioRecorder.stopAudioRecord();
                             recordingDone = true;
                             //Skifter ikon til "PLAY"-knap.
@@ -391,26 +396,58 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             Toast.makeText(CreateNote.this, "Lydnoten blev gemt i mappen: " + audioFolder, Toast.LENGTH_SHORT).show();
                         }
                     });
-                    progressDialogOptager.show(); }
+                    progressDialogOptager.show();
+                    progressDialogOptager.getButton(DialogInterface.BUTTON_NEGATIVE).setBackground(getResources().getDrawable(R.drawable.media_player_button_accept));
+                    progressDialogOptager.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorWhiteGrey));
+
+                    //Sørger for at timeren tæller op, så brugeren kan se hvor lang optagelsen er:
+                    runOnUiThread(audioRecorderTimeUpdate = new Runnable() {
+                        int currentRecordTime = 0;
+
+                        public void run() {
+                            String currentRecordTimeString = String.format("%02d:%02d",
+                                    currentRecordTime/60, currentRecordTime % 60);
+
+                            if (currentRecordTime++ <= 100000) {
+                                progressDialogOptager.setMessage(currentRecordTimeString);
+                                progressDialogOptager.show();
+                            }
+                            handler.postDelayed(audioRecorderTimeUpdate, 1000); // hvert sekund
+                        }
+                    });
+                }
 
                 if (recordingDone) {
                     //Starter afspilleren:
                     audioPlayer.startAudioPlayer();
 
 
-                    progressDialogAfspiller = new ProgressDialog(CreateNote.this);
+                    progressDialogAfspiller = new ProgressDialog(CreateNote.this, ProgressDialog.STYLE_SPINNER);
                     progressDialogAfspiller.setTitle("Afspiller lydnote..");
-                    progressDialogAfspiller.setMessage("Optagelsen er på " + audioDurationString);
+                    progressDialogAfspiller.setMessage("00:00 / " + audioDurationString);
                     progressDialogAfspiller.setCancelable(false);
-                    progressDialogAfspiller.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEGATIVE, "Afslut afspilning", new DialogInterface.OnClickListener() {
+                    progressDialogAfspiller.setButton(DialogInterface.BUTTON_NEUTRAL, "SLET", new DialogInterface.OnClickListener(){
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            audioPlayer.stopAudioPlayer();
+                        public void onClick(DialogInterface dialog, int which) { //Så lydnoten kan tages om:
+                            audioPlayer.resetAudioPlayer();
+                            recordingDone = false;
+                            ((ImageView) findViewById(R.id.createNoteMicBtn)).setImageResource(R.drawable.mic);
+                            File deleteAudioFile = new File(audioFolder + "/" + fileName + ".mp3");
+                            deleteAudioFile.delete(); //Sletter filen i hukommelsen
                         }
                     });
-                    progressDialogAfspiller.show();
-
+                    progressDialogAfspiller.setButton(DialogInterface.BUTTON_POSITIVE, "Stop afspilning", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            handler.removeCallbacks(audioPlayerTimeUpdate);
+                            audioPlayer.rewindAudioPlayer(); //Går tilbage til 00:00
+                        }
+                    });
+                    progressDialogAfspiller.show(); //Er nødt til at hardcode farverne, da theme ikke fungerer ordentligt:
+                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorWhiteGrey));
+                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_POSITIVE).setBackground(getResources().getDrawable(R.drawable.media_player_button_accept));
+                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_NEUTRAL).setBackground(getResources().getDrawable(R.drawable.media_player_button_negative));
+                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getResources().getColor(R.color.colorWhiteGrey));
                     //Asynctask der holder øje med om afspilleren stadigvæk spiller lyd, og hvis den
                     // ikke gør det, så lukkes progressDialogAfspiller ned i stedet for brugeren
                     // selv skal trykke afslut:
@@ -428,10 +465,27 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                         @Override
                         protected void onPostExecute(Object obj){
                             if (!audioPlayer.isAudioPlaying()){
-                            audioPlayer.stopAudioPlayer();
-                            progressDialogAfspiller.dismiss();}
+                                handler.removeCallbacks(audioPlayerTimeUpdate);
+                                audioPlayer.rewindAudioPlayer();
+                                progressDialogAfspiller.dismiss();}
                         }
                     }.execute();
+
+                    //Sørger for at timeren opdaterer så brugeren kan se, hvor langt lydnoten er, samt hvor meget af den, der er afspillet:
+                    runOnUiThread(audioPlayerTimeUpdate = new Runnable() {
+                        int currentPlayTime = 0;
+
+                        public void run() {
+                            String currentPlayTimeString = String.format("%02d:%02d",
+                                    currentPlayTime/60, currentPlayTime % 60);
+
+                            if (currentPlayTime++ <= 100000  && audioPlayer.isAudioPlaying()) {
+                                progressDialogAfspiller.setMessage(currentPlayTimeString + "/" + audioDurationString);
+                                progressDialogAfspiller.show();
+                            }
+                            handler.postDelayed(audioPlayerTimeUpdate, 1000); // hvert sekund
+                        }
+                    });
                 }
                 break;
 
@@ -457,13 +511,15 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
             case R.id.createNoteAccepterBtn:
                 if(audioPlayer != null){
-                    audioPlayer.releaseAudioPlayer();}
+                    audioPlayer.endAudioPlayer();}
                 confirm();
                 break;
 
             case R.id.createNoteAfbrydBtn:
                 if(audioPlayer != null){
-                    audioPlayer.releaseAudioPlayer();}
+                    audioPlayer.endAudioPlayer();}
+                if (imageFile.exists()){
+                    imageFile.delete(); }
                 finish();
                 break;
         }}

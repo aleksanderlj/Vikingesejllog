@@ -36,9 +36,14 @@ public class AudioPlayer extends AppCompatActivity {
     }
 
 
-    public void stopAudioPlayer(){//Gør audioPlayer klar til at spille igen
+    public void rewindAudioPlayer(){//Gør audioPlayer klar til at spille igen
         audioPlayer.pause();
         audioPlayer.seekTo(0);
+    }
+
+    public void resetAudioPlayer(){
+        audioPlayer.stop();
+        audioPlayer.reset();
     }
 
 
@@ -50,7 +55,7 @@ public class AudioPlayer extends AppCompatActivity {
     public String returnDurationString(){
         //Formaterer længden på optagelsen:
         int audioDurationMilliseconds = audioPlayer.getDuration();
-        String audioDuration = String.format("%02dm og %02ds",
+        String audioDuration = String.format("%02d:%02d",
                 TimeUnit.MILLISECONDS.toMinutes(audioDurationMilliseconds),
                 TimeUnit.MILLISECONDS.toSeconds(audioDurationMilliseconds) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(audioDurationMilliseconds)));
@@ -58,7 +63,7 @@ public class AudioPlayer extends AppCompatActivity {
     }
 
 
-    public void releaseAudioPlayer(){
+    public void endAudioPlayer(){
         if (audioPlayer != null) {
             audioPlayer.stop();
             audioPlayer.reset();
