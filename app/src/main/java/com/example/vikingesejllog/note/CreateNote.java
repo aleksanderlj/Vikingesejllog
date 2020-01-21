@@ -42,7 +42,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import im.delight.android.location.SimpleLocation;
 
@@ -387,13 +386,13 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
                         public void run() {
                             String currentRecordTimeString = String.format("%02d:%02d",
-                                    TimeUnit.SECONDS.toMinutes(currentRecordTime), TimeUnit.SECONDS.toSeconds(currentRecordTime));
+                                    currentRecordTime/60, currentRecordTime % 60);
 
                             if (currentRecordTime++ <= 100000) {
                                 progressDialogOptager.setMessage(currentRecordTimeString);
                                 progressDialogOptager.show();
                             }
-                            handler.postDelayed(audioRecorderTimeUpdate, 10); // hvert sekund
+                            handler.postDelayed(audioRecorderTimeUpdate, 1000); // hvert sekund
                         }
                     });
                 }
@@ -458,9 +457,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
                         public void run() {
                             String currentPlayTimeString = String.format("%02d:%02d",
-                                    TimeUnit.SECONDS.toMinutes(currentPlayTime),
-                                    TimeUnit.SECONDS.toSeconds(currentPlayTime) -
-                                            TimeUnit.SECONDS.toMinutes(TimeUnit.SECONDS.toSeconds(currentPlayTime)));
+                                    currentPlayTime/60, currentPlayTime % 60);
 
                             if (currentPlayTime++ <= 100000  && audioPlayer.isAudioPlaying()) {
                                 progressDialogAfspiller.setMessage(currentPlayTimeString + "/" + audioDurationString);
@@ -501,6 +498,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             case R.id.createNoteAfbrydBtn:
                 if(audioPlayer != null){
                     audioPlayer.endAudioPlayer();}
+                if (imageFile.exists()){
+                    imageFile.delete(); }
                 finish();
                 break;
         }}

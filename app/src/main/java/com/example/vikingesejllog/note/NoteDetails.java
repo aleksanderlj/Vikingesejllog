@@ -26,7 +26,6 @@ import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.io.File;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class NoteDetails extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
 
@@ -214,9 +213,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
 
                 public void run() {
                     String currentPlayTimeString = String.format("%02d:%02d",
-                            TimeUnit.SECONDS.toMinutes(currentPlayTime),
-                            TimeUnit.SECONDS.toSeconds(currentPlayTime) -
-                                    TimeUnit.SECONDS.toMinutes(TimeUnit.SECONDS.toSeconds(currentPlayTime)));
+                            currentPlayTime/60, currentPlayTime % 60);
 
                     if (currentPlayTime++ <= 100000  && audioPlayer.isAudioPlaying()) {
                         progressDialogAfspiller.setMessage(currentPlayTimeString + "/" + audioDurationString);
