@@ -1,9 +1,11 @@
 package com.example.vikingesejllog.etape;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,7 +20,7 @@ public class AddCrewFragment extends Fragment implements View.OnClickListener{
     private EditText crewMemberName;
     private View crewView;
     CrewListener callback;
-    
+
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState){
         crewView = i.inflate(R.layout.addcrew_fragment, container, false);
@@ -30,6 +32,8 @@ public class AddCrewFragment extends Fragment implements View.OnClickListener{
 
         acceptNameButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
+        crewMemberName.requestFocus();
+        toggleKeyboard();
 
         return crewView;
     }
@@ -51,6 +55,7 @@ public class AddCrewFragment extends Fragment implements View.OnClickListener{
 
                break;
         }
+        toggleKeyboard();
 
         try {
             getActivity().getSupportFragmentManager().popBackStack();
@@ -67,5 +72,10 @@ public class AddCrewFragment extends Fragment implements View.OnClickListener{
     public void onDestroy() {
         callback.enableButtons();
         super.onDestroy();
+    }
+
+    private void toggleKeyboard(){
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
     }
 }
