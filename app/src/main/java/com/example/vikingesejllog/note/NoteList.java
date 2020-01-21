@@ -175,14 +175,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
         System.out.println(firstLaunch);
         if (!firstLaunch && !secondLaunch) {
             EtapeTopFragment topFragment = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
-            Executors.newSingleThreadExecutor().execute(() -> {
-                Intent i = getIntent();
-                long togt_id = i.getLongExtra("togt_id", -1L);
-                runOnUiThread(() -> {
-                    topFragment.updateSpinner(togt_id);
-                });
-                System.out.println(i.getLongExtra("togt_id", -1L) + "What");
-            });
+            topFragment.updateSpinner(togt.getTogt_id());
         }
         if (firstLaunch)
             firstLaunch = false;
@@ -280,7 +273,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                 pager.post(() -> {
                     pager.setAdapter(adapter);
                     if (requestCode == ETAPE_CODE) {
-                        pager.setCurrentItem(etaper.size() - 1, false);
+                        //pager.setCurrentItem(etaper.size() - 1, false);
                     } else {
                         pager.setCurrentItem(savedPos, false);
                     }

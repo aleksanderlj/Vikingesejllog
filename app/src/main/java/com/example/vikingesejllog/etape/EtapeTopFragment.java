@@ -38,10 +38,7 @@ public class EtapeTopFragment extends Fragment {
         View view = inflater.inflate(R.layout.etape_fragment_top, container, false);
         db = DatabaseBuilder.get(getContext());
         etapeList = new ArrayList<>();
-		
         etapeStringList = new ArrayList<>();
-		for (int i = 0; i < etapeList.size(); i++)
-			etapeStringList.add(etapeList.get(i).etape.getStart() + " - " + etapeList.get(i).etape.getEnd());
 	
 		adapter = new ArrayAdapter(getContext(), R.layout.etape_spinner_list_elements, R.id.departure, etapeStringList){
 			@Override
@@ -96,7 +93,7 @@ public class EtapeTopFragment extends Fragment {
 				adapter.clear();
 				adapter.addAll(etapeStringList);
 				adapter.notifyDataSetChanged();
-				spinner.setSelection(currPosition);
+				spinner.setSelection(etapeStringList.size());
 			});
 
 		});
