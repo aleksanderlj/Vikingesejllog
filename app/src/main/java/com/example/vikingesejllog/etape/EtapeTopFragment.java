@@ -10,25 +10,19 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.UiThread;
 import androidx.fragment.app.Fragment;
 
-import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.EtapeWithNotes;
-import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
 
 public class EtapeTopFragment extends Fragment {
-    private AppDatabase db;
     private List<EtapeWithNotes> etapeList;
     private List<String> etapeStringList;
     private ArrayAdapter adapter;
     private UpdateEtapeTopFrag callback;
-    private int currPosition;
 	private Spinner spinner;
     
     public EtapeTopFragment(){}
@@ -36,7 +30,6 @@ public class EtapeTopFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.etape_fragment_top, container, false);
-        db = DatabaseBuilder.get(getContext());
         etapeList = new ArrayList<>();
         etapeStringList = new ArrayList<>();
 	
@@ -60,7 +53,6 @@ public class EtapeTopFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 callback.onSpinnerItemSelected(position);
-                currPosition = position;
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -95,16 +87,14 @@ public class EtapeTopFragment extends Fragment {
     }
     
     public void setEtape(int position){
-        this.currPosition = position;
         if (spinner != null) {
 			spinner.setSelection(position);
 		}
     }
     
-    public void setAll(EtapeWithNotes etape){
+    public void setAll(EtapeWithNotes etape, int position){
         setCrew(etape.etape.getSkipper(), etape.etape.getCrew().size());
-        //setDestination(etape.etape.getStart(), etape.etape.getEnd(), etapeList);
-        //setEtape(currPosition);
+        setEtape(position);
     }
     
     public interface UpdateEtapeTopFrag{

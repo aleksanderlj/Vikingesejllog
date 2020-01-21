@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,7 +46,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
     private ViewPager2 pager;
     private RecyclerView.Adapter adapter;
     private DrawerLayout mDrawerLayout;
-    private Button newTogt;
     private ImageButton nextButton, prevButton;
     private ArrayList<EtapeWithNotes> etaper;
     private Togt togt;
@@ -60,7 +58,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
     private NavigationView navigationView;
     private Context c;
     private EtapeTopFragment f;
-    private boolean firstLaunch = true, secondLaunch = true;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,18 +137,13 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-    
                 f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
-                
                 dotNavigation.setViewPager2(pager);
                 String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
                 
                 runOnUiThread(() -> {
-                    System.out.println("Før set");
-                    f.setAll(etaper.get(pager.getCurrentItem()));
-                    f.setEtape(position);
+                    f.setAll(etaper.get(pager.getCurrentItem()), position);
                     ((TextView) findViewById(R.id.pagecount)).setText(s);
-                    System.out.println("Efter set");
                     if (pager.getCurrentItem() == 0) {
                         prevButton.setEnabled(false);
                         prevButton.setVisibility(View.INVISIBLE);
@@ -171,26 +163,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
             }
         });
     }
-    
-    /*@Override
-    protected void onResume() {
-        super.onResume();
-        if (!firstLaunch && !secondLaunch) {
-            EtapeTopFragment topFragment = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
-            Executors.newSingleThreadExecutor().execute(() ->{
-                List<EtapeWithNotes> etapeList;
-                etapeList = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
-                runOnUiThread(() ->{
-                    topFragment.updateSpinner(etapeList);
-                    pager.setCurrentItem(etapeList.size() - 1);
-                });
-            });
-        }
-        if (firstLaunch)
-            firstLaunch = false;
-        else
-            secondLaunch = false;
-    }*/
     
     public void setOnClickListenerNavigationDrawer() {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
