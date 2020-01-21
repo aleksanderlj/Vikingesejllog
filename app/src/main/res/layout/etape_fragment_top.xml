@@ -23,17 +23,16 @@
         android:textSize="12sp" />
 
     <Spinner
+        android:id="@+id/destination"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
+        android:layout_margin="0dp"
         android:layout_weight="1"
-        android:id="@+id/destination"
+        android:background="@null"
+        android:dropDownWidth="wrap_content"
         android:gravity="center"
-        android:textSize="10sp"
-        android:dropDownWidth="300dp"
         android:overlapAnchor="false"
-        android:spinnerMode="dialog"
-        android:background="@null"/>
+        android:spinnerMode="dialog" />
 
     <ImageView
         android:id="@+id/menu_button"

@@ -172,7 +172,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
         });
     }
     
-    @Override
+    /*@Override
     protected void onResume() {
         super.onResume();
         if (!firstLaunch && !secondLaunch) {
@@ -190,7 +190,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
             firstLaunch = false;
         else
             secondLaunch = false;
-    }
+    }*/
     
     public void setOnClickListenerNavigationDrawer() {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -282,7 +282,11 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                 pager.post(() -> {
                     pager.setAdapter(adapter);
                     if (requestCode == ETAPE_CODE) {
-                        //pager.setCurrentItem(etaper.size() - 1, false);
+                        EtapeTopFragment topFragment = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
+                        topFragment.updateSpinner(etaper);
+                        pager.setCurrentItem(etaper.size() - 1);
+                        pager.setCurrentItem(etaper.size() - 1, false);
+                        dotNavigation.addDot(etaper.size()-1);
                     } else {
                         pager.setCurrentItem(savedPos, false);
                     }

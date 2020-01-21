@@ -47,6 +47,7 @@ public class EtapeTopFragment extends Fragment {
 			
 				TextView departure = view.findViewById(R.id.departure);
 				departure.setTextColor(Color.parseColor("#FFFFFF"));
+				departure.setTextSize(12);
 				String s = etapeList.get(position).getEtape().getStart() + " -\n" + etapeList.get(position).getEtape().getEnd();
 				departure.setText(s);
 				return view;
