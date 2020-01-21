@@ -35,6 +35,7 @@ import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.other.DatabaseBuilder;
+import com.example.vikingesejllog.other.ExportCsv;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
@@ -160,7 +161,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                     finish();
                     return true;
                 case R.id.exporter_csv:
-                    // TODO do dis
+                    ExportCsv.export(this, togt);
                     return true;
             }
             mDrawerLayout.closeDrawer(GravityCompat.END);
