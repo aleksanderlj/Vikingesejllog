@@ -254,6 +254,10 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
 
         numberOfRowers = getIntent().getIntExtra("crew_size",20);
 
+        // defaults to 20 if no crewList is given
+        if (numberOfRowers == 0)
+            numberOfRowers = 20;
+
         String[] s = new String[numberOfRowers + 1];
         for (int n = 0; n < numberOfRowers + 1; n++) {
             s[n] = String.valueOf(n);
