@@ -46,6 +46,10 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
             Sentry.init("https://99007285c4ed4ad9baa4d5ceb094e365@sentry.io/1890062", new AndroidSentryClientFactory(this));
         }
 
+        // tempoary use
+        //TODO delete
+        Sentry.init("https://99007285c4ed4ad9baa4d5ceb094e365@sentry.io/1890062", new AndroidSentryClientFactory(this));
+
         db = DatabaseBuilder.get(this);
 
         recyclerView = findViewById(R.id.journeyRecyclerView);
