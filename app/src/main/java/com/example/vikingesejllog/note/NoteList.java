@@ -106,7 +106,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                 super.onPageSelected(position);
                 EtapeTopFragment f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
 
-                f.setAll(etaper.get(pager.getCurrentItem()));
+                f.setAll(etaper.get(pager.getCurrentItem()), position);
                 String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
                 ((TextView) findViewById(R.id.pagecount)).setText(s);
 
@@ -170,8 +170,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
             mDrawerLayout.closeDrawer(GravityCompat.END);
             return true;
         });
-        
-        findViewById(R.id.newHarborButton).setOnClickListener(this);
     }
     
     // if navigation drawer is open backbutton will close it
@@ -254,9 +252,11 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
             Executors.newSingleThreadExecutor().execute(() -> {
                 if (requestCode == ETAPE_CODE) {
 					EtapeTopFragment topFragment = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
-					topFragment.updateSpinner(etaper);
                     updateEtapeList(LASTETAPE);
-					dotNavigation.addDot(etaper.size()-1);
+                    runOnUiThread(() ->{
+                        topFragment.updateSpinner(etaper);
+                        dotNavigation.addDot(etaper.size()-1);
+                    });
                 } else {
                     updateEtapeList(savedPos);
                     ((NotePagerAdapter) adapter).notifyNoteDataSetChanged(pager.getCurrentItem());
