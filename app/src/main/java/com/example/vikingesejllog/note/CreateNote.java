@@ -44,6 +44,7 @@ import java.util.Locale;
 import java.util.concurrent.Executors;
 
 import im.delight.android.location.SimpleLocation;
+import io.sentry.Sentry;
 
 public class CreateNote extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, NoteDialogListener {
 
@@ -184,7 +185,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
     }
 
-        @Override
+    @Override
     protected void onResume() {
         super.onResume();
         location.beginUpdates();
@@ -357,6 +358,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                                 audioRecorder.setupAudioRecord(audioFile.toString());
                                 return Log.d(audioTAG, "Der gemmes en lydfil i: " + audioFile);
                             } catch (Exception e) {
+                                Sentry.capture(e);
                                 e.printStackTrace();
                                 return Log.d(audioTAG, "Det virker IKKE: " + e);
                             }
@@ -391,6 +393,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                                         audioPlayer.setupAudioPlayer(audioFile.toString());
                                         return Log.d(audioTAG, "Følgende lydfil klargøres: " + audioFile);
                                     } catch (Exception e){
+                                        Sentry.capture(e);
                                         e.printStackTrace();
                                         return Log.d(audioTAG, "Fejl i afspiller: " + audioFolder + "    " + fileName + e);
                                     }}
@@ -463,6 +466,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                                 while (audioPlayer.isAudioPlaying());
                                 return Log.d(audioTAG, audioPlayer.isAudioPlaying() + "");
                             } catch (Exception e){
+                                Sentry.capture(e);
                                 e.printStackTrace();
                                 return Log.d(audioTAG, "ProgressDialog kunne ikke lukkes " + audioPlayer.isAudioPlaying() + "  " + e);
                             }}
@@ -556,6 +560,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             audioFolder.mkdirs();
                             audioFolder.createNewFile();
                         } catch (Exception e) {
+                            Sentry.capture(e);
                             e.printStackTrace();
                         }
                     }
@@ -564,6 +569,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                         imageFolder.mkdirs();
                         imageFolder.createNewFile();
                     } catch (Exception e) {
+                        Sentry.capture(e);
                         e.printStackTrace();
                     }
                 }

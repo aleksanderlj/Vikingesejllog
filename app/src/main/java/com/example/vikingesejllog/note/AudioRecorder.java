@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 
+import io.sentry.Sentry;
 
 
 public class AudioRecorder extends AppCompatActivity {
@@ -29,6 +30,7 @@ public class AudioRecorder extends AppCompatActivity {
             audioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
             audioRecorder.prepare();
         }catch (IOException e) {
+            Sentry.capture(e);
             e.printStackTrace();
         }}
 

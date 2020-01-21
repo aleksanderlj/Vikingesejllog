@@ -23,6 +23,8 @@ import com.example.vikingesejllog.other.DatabaseBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.sentry.Sentry;
+
 public class NoteListFragment extends Fragment {
 
     private RecyclerView recyclerView;
@@ -60,6 +62,7 @@ public class NoteListFragment extends Fragment {
                     intent.putExtra("noteNumber", (position + 1));
                     intent.putExtra("noteCount", etape.getNoteList().size());
                 } catch (Exception e){
+                    Sentry.capture(e);
                     e.printStackTrace();
                 }
 

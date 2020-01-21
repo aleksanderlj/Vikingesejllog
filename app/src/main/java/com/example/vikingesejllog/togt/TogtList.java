@@ -1,6 +1,7 @@
 package com.example.vikingesejllog.togt;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -25,6 +26,9 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import io.sentry.Sentry;
+import io.sentry.android.AndroidSentryClientFactory;
+
 public class TogtList extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView recyclerView;
     private TogtListAdapter adapter;
@@ -33,8 +37,19 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.togt_activity_list);
+
+        boolean EMULATOR = Build.PRODUCT.contains("sdk") || Build.MODEL.contains("Emulator");
+        if (!EMULATOR) {
+            Sentry.init("https://99007285c4ed4ad9baa4d5ceb094e365@sentry.io/1890062", new AndroidSentryClientFactory(this));
+        }
+
+        // tempoary use
+        //TODO delete
+        Sentry.init("https://99007285c4ed4ad9baa4d5ceb094e365@sentry.io/1890062", new AndroidSentryClientFactory(this));
+
         db = DatabaseBuilder.get(this);
 
         recyclerView = findViewById(R.id.journeyRecyclerView);

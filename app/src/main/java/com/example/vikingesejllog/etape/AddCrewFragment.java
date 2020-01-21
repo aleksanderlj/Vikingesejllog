@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.vikingesejllog.R;
 
+import io.sentry.Sentry;
+
 public class AddCrewFragment extends Fragment implements View.OnClickListener{
 
     private Button acceptNameButton, cancelButton;
@@ -60,6 +62,7 @@ public class AddCrewFragment extends Fragment implements View.OnClickListener{
         try {
             getActivity().getSupportFragmentManager().popBackStack();
         }catch (NullPointerException npe){
+            Sentry.capture(npe);
             npe.printStackTrace();
         }
     }
