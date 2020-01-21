@@ -149,7 +149,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
                             db.etapeDAO().delete(etaper.get(pager.getCurrentItem()).etape);
                             etaper.remove(etaper.get(pager.getCurrentItem()));
                             updateEtapeList(pager.getCurrentItem());
-
                             mDrawerLayout.closeDrawer(GravityCompat.END);
                         });
                     });
@@ -280,6 +279,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             Intent i = new Intent(this, CreateEtape.class);
             i.putExtra("togt_id", togt.getTogt_id());
             startActivityForResult(i, ETAPE_CODE);
+            finish();
         }
     }
 
