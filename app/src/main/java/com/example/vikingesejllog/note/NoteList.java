@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -34,8 +33,6 @@ import com.example.vikingesejllog.etape.EtapeTopFragment;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Togt;
-import com.example.vikingesejllog.togt.CreateTogt;
-import com.example.vikingesejllog.togt.TogtList;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 import com.google.android.material.navigation.NavigationView;
@@ -58,7 +55,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
     private int savedPos;
     private WormDotsIndicator dotNavigation;
     private NavigationView navigationView;
-    private EtapeTopFragment f;
+    private EtapeTopFragment topFrag;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +74,9 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
         findViewById(R.id.newNoteButton).setOnClickListener(this);
         findViewById(R.id.etape_crewinfo).setOnClickListener(this);
 
+        topFrag = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
+        topFrag.setUpdateEtapeTopFrag(this);
+
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         setOnClickListenerNavigationDrawer();
@@ -90,9 +90,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
         Executors.newSingleThreadExecutor().execute(() -> {
             togt = db.togtDAO().getById(i.getLongExtra("togt_id", -1L));
             updateEtapeList(LASTETAPE);
-			f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
-			f.updateSpinner(etaper);
-        
         });
 
 
@@ -104,9 +101,8 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                EtapeTopFragment f = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
 
-                f.setAll(etaper.get(pager.getCurrentItem()), position);
+                topFrag.setAll(etaper.get(pager.getCurrentItem()), position);
                 String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
                 ((TextView) findViewById(R.id.pagecount)).setText(s);
 
@@ -251,10 +247,9 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
         if ((requestCode == ETAPE_CODE || requestCode == NOTE_CODE) && resultCode == Activity.RESULT_OK) {
             Executors.newSingleThreadExecutor().execute(() -> {
                 if (requestCode == ETAPE_CODE) {
-					EtapeTopFragment topFragment = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
                     updateEtapeList(LASTETAPE);
                     runOnUiThread(() ->{
-                        topFragment.updateSpinner(etaper);
+
                         dotNavigation.addDot(etaper.size()-1);
                     });
                 } else {
@@ -282,6 +277,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                 String s = "" + (pager.getCurrentItem() + 1) + "/" + (etaper.size());
                 ((TextView) findViewById(R.id.pagecount)).setText(s);
                 updateNavButtons();
+                topFrag.updateSpinner(etaper);
             });
         } else {
             Intent i = new Intent(this, CreateEtape.class);
@@ -322,14 +318,6 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
     private String getSkipperName(){
         Etape etape = getEtape();
         return etape.getSkipper();
-    }
-    
-    @Override
-    public void onAttachFragment(@NonNull Fragment fragment) {
-        if (fragment instanceof EtapeTopFragment){
-            EtapeTopFragment etapeTopFragment = (EtapeTopFragment) fragment;
-            etapeTopFragment.setUpdateEtapeTopFrag(this);
-        }
     }
     
     @Override
