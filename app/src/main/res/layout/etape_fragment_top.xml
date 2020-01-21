@@ -44,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
+            android:elevation="5dp"
             android:text="Fra"
             android:textColor="@android:color/white" />
 
@@ -52,6 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/etape_from_title"
+            android:elevation="5dp"
             android:text="Til"
             android:textColor="@android:color/white" />
 
@@ -76,7 +78,9 @@
             android:layout_alignTop="@+id/etape_from"
             android:layout_alignBottom="@+id/etape_to"
             android:layout_toStartOf="@+id/etape_date"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"
+            android:elevation="2dp"
+            android:spinnerMode="dialog" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/etape_from"
@@ -87,6 +91,7 @@
             android:layout_alignParentTop="true"
             android:layout_toStartOf="@+id/etape_date"
             android:layout_toEndOf="@+id/etape_from_title"
+            android:elevation="5dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
@@ -104,6 +109,7 @@
             android:layout_below="@+id/etape_from_title"
             android:layout_toStartOf="@+id/etape_date"
             android:layout_toEndOf="@+id/etape_from_title"
+            android:elevation="5dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
