@@ -86,7 +86,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private AudioRecorder audioRecorder;
     private AudioPlayer audioPlayer;
 
-    private File audioFolder, imageFolder, imageFile;
+    private File audioFolder, imageFolder, imageFile, audioFile;
 
     private String fileName, audioDurationString;
 
@@ -172,8 +172,9 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         Log.d("Aktuelle filnavn: ", fileName);
 
 
-        //Gør mappen for lydnoter klar:
+        //Gør mappen for lydnoter samt lydfil klar:
         audioFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Lydnoter/");
+        audioFile = new File(audioFolder + "/" + fileName + ".mp3");
         //Gør mappen for billeder klar:
         imageFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Billedenoter/");
 
@@ -275,13 +276,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             hasComment = true;
         }
 
-        File a = new File(audioFolder + "/" + fileName + ".mp3");
-        if(a.exists()){
+        if(audioFile.exists()){
             hasAudio = true;
         }
 
-        File i = new File(imageFolder + "/" + fileName + ".jpg");
-        if(i.exists()){
+        if(imageFile.exists()){
             hasImage = true;
         }
 
@@ -346,8 +345,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                         @Override
                         protected Object doInBackground(Object... arg0) {
                             try {
-                                audioRecorder.setupAudioRecord(audioFolder + "/" + fileName + ".mp3");
-                                return Log.d(audioTAG, "Der gemmes en lydfil i: " + audioFolder + "/" + fileName + ".mp3");
+                                audioRecorder.setupAudioRecord(audioFile.toString());
+                                return Log.d(audioTAG, "Der gemmes en lydfil i: " + audioFile);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 return Log.d(audioTAG, "Det virker IKKE: " + e);
@@ -380,8 +379,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                                 @Override
                                 protected Object doInBackground(Object... arg0) {
                                     try {
-                                        audioPlayer.setupAudioPlayer(audioFolder + "/" + fileName + ".mp3");
-                                        return Log.d(audioTAG, "Følgende lydfil klargøres: " + audioFolder + "/" + fileName + ".mp3");
+                                        audioPlayer.setupAudioPlayer(audioFile.toString());
+                                        return Log.d(audioTAG, "Følgende lydfil klargøres: " + audioFile);
                                     } catch (Exception e){
                                         e.printStackTrace();
                                         return Log.d(audioTAG, "Fejl i afspiller: " + audioFolder + "    " + fileName + e);
@@ -432,7 +431,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             audioPlayer.resetAudioPlayer();
                             recordingDone = false;
                             ((ImageView) findViewById(R.id.createNoteMicBtn)).setImageResource(R.drawable.mic);
-                            File deleteAudioFile = new File(audioFolder + "/" + fileName + ".mp3");
+                            File deleteAudioFile = new File(audioFile.toString());
                             deleteAudioFile.delete(); //Sletter filen i hukommelsen
                         }
                     });
@@ -518,8 +517,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
             case R.id.createNoteAfbrydBtn:
                 if(audioPlayer != null){
                     audioPlayer.endAudioPlayer();}
-                if (imageFile.exists()){
+                if (imageFile != null && imageFile.exists()){
                     imageFile.delete(); }
+                if (audioFile != null && audioFile.exists()){
+                    audioFile.delete();
+                }
                 finish();
                 break;
         }}
