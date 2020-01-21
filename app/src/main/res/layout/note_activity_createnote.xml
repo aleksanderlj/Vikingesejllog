@@ -165,6 +165,7 @@
         android:elevation="10dp"
         android:src="@drawable/camera"
         android:translationZ="20dp"
+        android:padding="25dp"
         app:layout_constraintBottom_toBottomOf="@+id/createNoteMicBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_left_left"
