@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import io.sentry.Sentry;
+
 public class AudioPlayer extends AppCompatActivity {
     /*Denne klasse har til formål at styre logikken bag lydafspilning inde i "MakeNoteActivity". Herved
     kan optagelsen, der er knyttet til den specifikke note afspilles igen.
@@ -26,6 +28,7 @@ public class AudioPlayer extends AppCompatActivity {
             audioPlayer.prepare();
         } catch (IOException e) {
             Log.d("INDLÆSNINGSFEJL", "Filen blev ikke indlæst" + fileDestination);
+            Sentry.capture(e);
             e.printStackTrace();
         }}
 

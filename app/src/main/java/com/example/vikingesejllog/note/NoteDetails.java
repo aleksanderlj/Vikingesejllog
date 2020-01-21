@@ -27,6 +27,8 @@ import com.example.vikingesejllog.other.DatabaseBuilder;
 import java.io.File;
 import java.util.concurrent.Executors;
 
+import io.sentry.Sentry;
+
 public class NoteDetails extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
 
     private ImageButton cameraButton, playButton;
@@ -151,6 +153,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                             audioPlayer.setupAudioPlayer(audioFolder + "/" + fileName + ".mp3");
                             return Log.d("Afspiller", "Følgende lydfil afspilles: " + audioFolder + "/" + fileName + ".mp3");
                         } catch (Exception e) {
+                            Sentry.capture(e);
                             Toast.makeText(NoteDetails.this, "Indlæsning fejlede - prøv igen", Toast.LENGTH_LONG).show();
                             return Log.d("ERROR", "Det virker IKKE: " + audioFolder + "    " + fileName + e);
                         }
@@ -194,6 +197,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                         while (audioPlayer.isAudioPlaying());
                         return Log.d("Test af lydafspiller: ", audioPlayer.isAudioPlaying() + "");
                     } catch (Exception e){
+                        Sentry.capture(e);
                         e.printStackTrace();
                         return Log.d("Test af lydafspiller: ", "ProgressDialog kunne ikke lukkes " + audioPlayer.isAudioPlaying() + "  " + e);
                     }}
