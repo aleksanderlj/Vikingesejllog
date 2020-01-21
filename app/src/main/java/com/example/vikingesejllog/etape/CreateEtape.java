@@ -34,6 +34,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
     AppDatabase db;
     Date departure;
     ImageView crewButton;
+    TextView crewCountText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,11 +43,14 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         db = DatabaseBuilder.get(this);
         setContentView(R.layout.etape_activity_createetape);
         departure = new Date(0L);
+        crewCountText = findViewById(R.id.createEtapeCrewCountText);
 
         findViewById(R.id.createEtapeDepartureDateBox).setOnClickListener(this);
         findViewById(R.id.createEtapeCrewCountBox).setOnClickListener(this);
         findViewById(R.id.createEtapeAccepterBtn).setOnClickListener(this);
         findViewById(R.id.createEtapeAfbrydBtn).setOnClickListener(this);
+
+        updateCrewCountText();
     }
 
     @Override
@@ -135,6 +139,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
             }.getType();
             crew = gson.fromJson(json, type);
         }
+        updateCrewCountText();
     }
 
     private ArrayList<String> crewItemsToString(ArrayList<CrewListItem> crewListItems) {
@@ -143,5 +148,13 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
             crewNames.add(crewListItems.get(i).getCrewMember());
         }
         return crewNames;
+    }
+
+    private void updateCrewCountText(){
+        if (crew.isEmpty()){
+            crewCountText.setText("Tilføj øvrig besætning");
+        } else {
+            crewCountText.setText("Antal øvrig besætning: " + crew.size());
+        }
     }
 }

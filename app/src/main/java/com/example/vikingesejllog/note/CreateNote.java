@@ -396,7 +396,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                         }
                     });
                     progressDialogOptager.show();
-//                    progressDialogOptager.getButton(DialogInterface.BUTTON_NEGATIVE).setBackground(getResources().getDrawable(R.drawable.media_player_button_accept));
                     progressDialogOptager.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorAccept));
 
                     //Sørger for at timeren tæller op, så brugeren kan se hvor lang optagelsen er:
@@ -444,8 +443,6 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                     });
                     progressDialogAfspiller.show(); //Er nødt til at hardcode farverne, da theme ikke fungerer ordentligt:
                     progressDialogAfspiller.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccept));
-//                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_POSITIVE).setBackground(getResources().getDrawable(R.drawable.media_player_button_accept));
-//                    progressDialogAfspiller.getButton(DialogInterface.BUTTON_NEUTRAL).setBackground(getResources().getDrawable(R.drawable.media_player_button_negative));
                     progressDialogAfspiller.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getResources().getColor(R.color.colorNegative));
                     //Asynctask der holder øje med om afspilleren stadigvæk spiller lyd, og hvis den
                     // ikke gør det, så lukkes progressDialogAfspiller ned i stedet for brugeren
