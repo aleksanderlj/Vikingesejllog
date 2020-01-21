@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,22 +27,18 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.etape.CreateEtape;
-import com.example.vikingesejllog.etape.CrewList;
 import com.example.vikingesejllog.etape.CrewListItem;
 import com.example.vikingesejllog.etape.CrewListViewOnly;
 import com.example.vikingesejllog.etape.EtapeTopFragment;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Togt;
-import com.example.vikingesejllog.togt.TogtList;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -75,7 +70,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
         prevButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
         findViewById(R.id.menu_button).setOnClickListener(this);
-        findViewById(R.id.newHarborButton).setOnClickListener(this);
+        findViewById(R.id.newNoteButton).setOnClickListener(this);
         findViewById(R.id.etape_crewinfo).setOnClickListener(this);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -193,10 +188,11 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener 
             case R.id.nextButton:
                 pager.setCurrentItem(pager.getCurrentItem() + 1, true);
                 break;
-            case R.id.newHarborButton:
+            case R.id.newNoteButton:
                 if(!etaper.isEmpty()) {
                     Intent createnote = new Intent(this, CreateNote.class);
                     createnote.putExtra("etape_id", etaper.get(pager.getCurrentItem()).etape.getEtape_id());
+                    createnote.putExtra("crew_size",etaper.get(pager.getCurrentItem()).etape.getCrew().size());
                     this.startActivityForResult(createnote, NOTE_CODE);
                 } else {
                     Toast toast = Toast.makeText(this, "Opret først etape",Toast.LENGTH_SHORT);

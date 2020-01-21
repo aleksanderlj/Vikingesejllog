@@ -85,7 +85,7 @@
             app:progressMode="true" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/newHarborButton"
+            android:id="@+id/newNoteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"

@@ -30,15 +30,21 @@ import androidx.core.content.FileProvider;
 
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
+import com.example.vikingesejllog.etape.CrewListItem;
+import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.note.dialogs.NoteDialog;
 import com.example.vikingesejllog.note.dialogs.NoteDialogComment;
 import com.example.vikingesejllog.note.dialogs.NoteDialogListener;
 import com.example.vikingesejllog.note.dialogs.NoteDialogNumberPicker;
 import com.example.vikingesejllog.other.DatabaseBuilder;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Executors;
@@ -91,6 +97,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     private String fileName, audioDurationString;
 
     private boolean recordingDone;
+    private int numberOfRowers = 0;
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private ImageView savedPicture, savedPictureZoomed;
@@ -244,9 +251,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     }
 
     public void setRowers() {
-        int range = 20; //TODO should be crewsize
-        String[] s = new String[range + 1];
-        for (int n = 0; n < range + 1; n++) {
+
+        numberOfRowers = getIntent().getIntExtra("crew_size",20);
+
+        String[] s = new String[numberOfRowers + 1];
+        for (int n = 0; n < numberOfRowers + 1; n++) {
             s[n] = String.valueOf(n);
         }
 
