@@ -113,8 +113,11 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
             
     
             pager.post(() -> adapter.notifyDataSetChanged());
+    
+            List<EtapeWithNotes> etapeList;
+            etapeList = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
             runOnUiThread(() -> {
-                f.updateSpinner(togt.getTogt_id());
+                f.updateSpinner(etapeList);
                 System.out.println(togt.getTogt_id() + " onCreate");
                 pager.setCurrentItem(etaper.size() - 1, false); // setCurrentItem klarer selv OutOfBounds execptions O.O
                 
@@ -172,10 +175,16 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
-        System.out.println(firstLaunch);
         if (!firstLaunch && !secondLaunch) {
             EtapeTopFragment topFragment = (EtapeTopFragment) getSupportFragmentManager().findFragmentById(R.id.topMenuFragment);
-            topFragment.updateSpinner(togt.getTogt_id());
+            Executors.newSingleThreadExecutor().execute(() ->{
+                List<EtapeWithNotes> etapeList;
+                etapeList = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
+                runOnUiThread(() ->{
+                    topFragment.updateSpinner(etapeList);
+                    pager.setCurrentItem(etapeList.size() - 1);
+                });
+            });
         }
         if (firstLaunch)
             firstLaunch = false;

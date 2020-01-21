@@ -80,23 +80,17 @@ public class EtapeTopFragment extends Fragment {
         tv.setText(s);
     }
 
-    public void updateSpinner(long togt_id){
+    public void updateSpinner(List<EtapeWithNotes> newEtapeList){
 		System.out.println("Update spinner.");
-		Executors.newSingleThreadExecutor().execute(() -> {
-			etapeList.clear();
-			etapeList.addAll(db.etapeDAO().getAllByTogtId(togt_id));
-			//System.out.println(etapeList.toString());
-			etapeStringList = new ArrayList<>();
-			for (int i = 0; i < etapeList.size(); i++)
-				etapeStringList.add(etapeList.get(i).etape.getStart() + " - " + etapeList.get(i).etape.getEnd());
-			getActivity().runOnUiThread(()->{
-				adapter.clear();
-				adapter.addAll(etapeStringList);
-				adapter.notifyDataSetChanged();
-				spinner.setSelection(etapeStringList.size());
-			});
-
-		});
+		etapeList = newEtapeList;
+		etapeStringList = new ArrayList<>();
+		for (int i = 0; i < etapeList.size(); i++)
+			etapeStringList.add(etapeList.get(i).etape.getStart() + " - " + etapeList.get(i).etape.getEnd());
+			
+		adapter.clear();
+		adapter.addAll(etapeStringList);
+		adapter.notifyDataSetChanged();
+		spinner.setSelection(etapeStringList.size() - 1, true);
     }
     
     public void setEtape(int position){
