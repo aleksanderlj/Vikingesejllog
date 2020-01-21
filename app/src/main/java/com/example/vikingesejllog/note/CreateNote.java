@@ -544,6 +544,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length==0) return;
         switch (requestCode){
             case REQUEST_RECORD_AUDIO_PERMISSION:
                 if (!permissionToRecordAccepted){
