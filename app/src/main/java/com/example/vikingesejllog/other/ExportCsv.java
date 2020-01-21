@@ -3,13 +3,16 @@ package com.example.vikingesejllog.other;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.ContactsContract;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.model.Etape;
@@ -50,7 +53,7 @@ public class ExportCsv {
                     BufferedWriter bw = new BufferedWriter(osw);
 
                     // Togt info
-                    String s = String.format("Togt:,Navn,Fra,Dato,,,,,");
+                    String s = String.format("TOGT:,Navn,Fra,Dato,,,,,");
                     bw.write(s);
                     bw.newLine();
 
@@ -69,12 +72,12 @@ public class ExportCsv {
 
                     for (EtapeWithNotes e : etaper) {
                         // Etape info
-                        s = "Etape:,Fra,Afrejse dato,Skipper,Besætning,,,,";
+                        s = "ETAPE:,Fra-til,Afrejse dato,Skipper,Besætning,,,,";
                         bw.write(s);
                         bw.newLine();
 
                         s = String.format(",%s,%s,%s,\"%s\",,,,",
-                                e.etape.getStart(), e.etape.getDeparture(), e.etape.getSkipper(), e.etape.getCrew().toString());
+                                e.etape.getStart() + " - " + e.etape.getEnd(), e.etape.getDeparture(), e.etape.getSkipper(), e.etape.getCrew().toString());
                         bw.write(s);
                         bw.newLine();
 
@@ -82,7 +85,7 @@ public class ExportCsv {
                         bw.write(s);
                         bw.newLine();
 
-                        s = "Noter:,Tid,\"GPS (Long, Lat)\",Vindhastighed,Sejlføring,Sejlstilling,Kurs,Roere,Kommentar";
+                        s = ",Tid,\"GPS\",Vindhastighed,Sejlføring,Sejlstilling,Kurs,Roere,Kommentar";
                         bw.write(s);
                         bw.newLine();
 
@@ -107,7 +110,13 @@ public class ExportCsv {
 
                     bw.flush();
                     bw.close();
-                    ((Activity) context).runOnUiThread(() -> Toast.makeText(context, "Export færdig!", Toast.LENGTH_SHORT).show());
+                    ((Activity) context).runOnUiThread(() -> Toast.makeText(context, "Export klar...", Toast.LENGTH_SHORT).show());
+
+                    Intent email = new Intent(Intent.ACTION_SEND);
+                    email.setType("application/csv");
+                    email.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".fileprovider", csv));
+                    email.putExtra(Intent.EXTRA_SUBJECT, "Export af " + togt.getName());
+                    context.startActivity(Intent.createChooser(email, "Send csv til..."));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
