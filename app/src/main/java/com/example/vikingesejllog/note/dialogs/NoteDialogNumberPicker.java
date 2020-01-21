@@ -69,9 +69,9 @@ public class NoteDialogNumberPicker extends NoteDialog {
                     field);
         });
 
-        builder.setNegativeButton("Tilbage", (dialog, which) -> {
-            dialog.cancel();
-        });
+//        builder.setNegativeButton("Tilbage", (dialog, which) -> {
+//            dialog.cancel();
+//        });
 
         builder.setNeutralButton("Slet", (dialog, which) -> {
             getCallback().onNumberPickerDelete(field);
