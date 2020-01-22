@@ -34,6 +34,7 @@ import java.util.concurrent.Executors;
 public class ExportCsv {
     public static void export(Context context, Togt togt) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(context, "Appen skal kunne gemme filer for at exportere", Toast.LENGTH_LONG).show();
             ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         } else {
 

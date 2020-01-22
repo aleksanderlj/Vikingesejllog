@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -208,7 +210,12 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                     Intent createnote = new Intent(this, CreateNote.class);
                     createnote.putExtra("etape_id", etaper.get(pager.getCurrentItem()).etape.getEtape_id());
                     createnote.putExtra("crew_size",etaper.get(pager.getCurrentItem()).etape.getCrew().size());
-                    this.startActivityForResult(createnote, NOTE_CODE);
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        Toast.makeText(this, "Appen skal have GPS adgang for at lave en note", Toast.LENGTH_LONG).show();
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                    } else {
+                        this.startActivityForResult(createnote, NOTE_CODE);
+                    }
                 } else {
                     Toast toast = Toast.makeText(this, "Opret først etape",Toast.LENGTH_SHORT);
                     toast.show();
