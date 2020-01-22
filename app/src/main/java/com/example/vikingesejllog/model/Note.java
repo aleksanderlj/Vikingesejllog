@@ -183,5 +183,23 @@ public class Note {
     public void setHasAudio(boolean hasAudio) {
         this.hasAudio = hasAudio;
     }
+
+    public static Note GetEmptyNote(){
+        Note n = new Note();
+        n.setEtape_id(-1);
+        n.setGpsLoc("");
+        n.setWindSpeed("");
+        n.setTime("");
+        n.setRowers("");
+        n.setSailForing("");
+        n.setSailStilling("");
+        n.setCourse("");
+        n.setComment("");
+        n.setHasComment(false);
+        n.setHasImage(false);
+        n.setHasAudio(false);
+        n.setFileName("");
+        return n;
+    }
 }
 

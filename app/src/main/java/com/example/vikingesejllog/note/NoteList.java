@@ -35,6 +35,7 @@ import com.example.vikingesejllog.etape.CrewListViewOnly;
 import com.example.vikingesejllog.etape.EtapeTopFragment;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
+import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.other.AppInfoActivity;
@@ -44,9 +45,14 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executors;
+
+import im.delight.android.location.SimpleLocation;
 
 public class NoteList extends AppCompatActivity implements View.OnClickListener, EtapeTopFragment.UpdateEtapeTopFrag {
     private ViewPager2 pager;
@@ -61,12 +67,12 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
     private WormDotsIndicator dotNavigation;
     private NavigationView navigationView;
     private EtapeTopFragment topFrag;
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.etape_activity_list);
-        
+
         db = DatabaseBuilder.get(this);
         ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
 
@@ -102,7 +108,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
         // Create navigation buttons.
         dotNavigation = findViewById(R.id.dotNavigator);
         dotNavigation.setViewPager2(pager);
-        
+
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -119,7 +125,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
         });
     }
 
-    private void updateNavButtons(){
+    private void updateNavButtons() {
         if (pager.getCurrentItem() == 0) {
             prevButton.setEnabled(false);
             prevButton.setVisibility(View.INVISIBLE);
@@ -135,7 +141,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
             nextButton.setVisibility(View.VISIBLE);
         }
     }
-    
+
     public void setOnClickListenerNavigationDrawer() {
         navigationView.setNavigationItemSelectedListener((item) -> {
             switch (item.getItemId()) {
@@ -144,7 +150,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                     newEtapeIntent.putExtra("togt_id", togt.getTogt_id());
 
                     // Hent sidste etape i togten, for autofyld af crew i CreateEtape.
-                    Etape lastEtape = etaper.get(etaper.size()-1).getEtape();
+                    Etape lastEtape = etaper.get(etaper.size() - 1).getEtape();
                     newEtapeIntent.putExtra("etape_id", lastEtape.getEtape_id());
 
                     startActivityForResult(newEtapeIntent, ETAPE_CODE);
@@ -173,15 +179,47 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                 case R.id.exporter_csv:
                     ExportCsv.export(this, togt);
                     return true;
+                case R.id.mob:
+
+                    Note mobNote = Note.GetEmptyNote();
+                    SimpleLocation location;
+                    MyGPS gps = new MyGPS(this);
+                    location = gps.getLocation();
+                    location.beginUpdates();
+                    location = gps.getLocation();
+                    location.endUpdates();
+
+                    String gpsData = "LAT: " + String.format(Locale.US, "%.2f", location.getLatitude()) + "\n" +
+                            "LON: " + String.format(Locale.US, "%.2f", location.getLongitude());
+
+                    SimpleDateFormat clock = new SimpleDateFormat("HH.mm", Locale.getDefault());
+                    String time = clock.format(new Date());
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss", Locale.getDefault());
+                    String fileName = sdf.format(new Date());
+
+                    mobNote.setEtape_id(etaper.get(pager.getCurrentItem()).etape.getEtape_id());
+                    mobNote.setComment("MOB");
+                    mobNote.setHasComment(true);
+                    mobNote.setTime(time);
+                    mobNote.setGpsLoc(gpsData);
+                    mobNote.setFileName(fileName);
+
+                    Executors.newSingleThreadExecutor().execute(() -> {
+                        db.noteDAO().insert(mobNote);
+                        updateEtapeList(pager.getCurrentItem());
+                    });
+                    if (mDrawerLayout.isDrawerOpen(GravityCompat.END))
+                        mDrawerLayout.closeDrawer(GravityCompat.END);
+                    return true;
                 case R.id.app_info:
-                    Intent intent = new Intent(this,AppInfoActivity.class);
+                    Intent intent = new Intent(this, AppInfoActivity.class);
                     startActivity(intent);
             }
             mDrawerLayout.closeDrawer(GravityCompat.END);
             return true;
         });
     }
-    
+
     // if navigation drawer is open backbutton will close it
     @Override
     public void onBackPressed() {
@@ -191,7 +229,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
             super.onBackPressed();
         }
     }
-    
+
     @SuppressLint("WrongConstant")
     @Override
     public void onClick(View v) {
@@ -206,10 +244,10 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                 pager.setCurrentItem(pager.getCurrentItem() + 1, true);
                 break;
             case R.id.newNoteButton:
-                if(!etaper.isEmpty()) {
+                if (!etaper.isEmpty()) {
                     Intent createnote = new Intent(this, CreateNote.class);
                     createnote.putExtra("etape_id", etaper.get(pager.getCurrentItem()).etape.getEtape_id());
-                    createnote.putExtra("crew_size",etaper.get(pager.getCurrentItem()).etape.getCrew().size());
+                    createnote.putExtra("crew_size", etaper.get(pager.getCurrentItem()).etape.getCrew().size());
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         Toast.makeText(this, "Appen skal have GPS adgang for at lave en note", Toast.LENGTH_LONG).show();
                         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
@@ -217,31 +255,31 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                         this.startActivityForResult(createnote, NOTE_CODE);
                     }
                 } else {
-                    Toast toast = Toast.makeText(this, "Opret først etape",Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(this, "Opret først etape", Toast.LENGTH_SHORT);
                     toast.show();
                 }
                 break;
             case R.id.etape_crewinfo:
-                if (!etaper.isEmpty()){
+                if (!etaper.isEmpty()) {
                     Intent intent = new Intent(this, CrewListViewOnly.class);
                     intent.putExtra("skipper", getSkipperName());
                     intent.putExtra("crew", convertCrewListToJson());
                     startActivity(intent);
                 } else {
-                    Toast toast = Toast.makeText(this, "Opret først etape",Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(this, "Opret først etape", Toast.LENGTH_SHORT);
                     toast.show();
                 }
                 break;
         }
     }
-    
+
     private class NotePagerAdapter extends FragmentStateAdapter {
         List<NoteListFragment> fragments = new ArrayList<>();
 
         public NotePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
         }
-        
+
         @NonNull
         @Override
         public Fragment createFragment(int position) {
@@ -249,17 +287,17 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
             fragments.add(f);
             return f;
         }
-        
+
         @Override
         public int getItemCount() {
             return etaper.size();
         }
 
-        public void notifyNoteDataSetChanged(int pos){
+        public void notifyNoteDataSetChanged(int pos) {
             runOnUiThread(() -> fragments.get(pos).getAdapter().notifyDataSetChanged());
         }
     }
-    
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -267,9 +305,9 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
             Executors.newSingleThreadExecutor().execute(() -> {
                 if (requestCode == ETAPE_CODE) {
                     updateEtapeList(LASTETAPE);
-                    runOnUiThread(() ->{
+                    runOnUiThread(() -> {
 
-                        dotNavigation.addDot(etaper.size()-1);
+                        dotNavigation.addDot(etaper.size() - 1);
                     });
                 } else {
                     updateEtapeList(savedPos);
@@ -281,7 +319,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
 
     private void updateEtapeList(int startPos) {
         List<EtapeWithNotes> newEtaper = db.etapeDAO().getAllByTogtId(togt.getTogt_id());
-        if(startPos == LASTETAPE){
+        if (startPos == LASTETAPE) {
             startPos = newEtaper.size();
         }
         if (newEtaper.size() != 0) {
@@ -305,44 +343,44 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
             finish();
         }
     }
-    
+
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
         savedPos = pager.getCurrentItem();
         super.startActivityForResult(intent, requestCode);
     }
 
-    private Etape getEtape(){
+    private Etape getEtape() {
         EtapeWithNotes etapeWithNotes = etaper.get(pager.getCurrentItem());
         return etapeWithNotes.getEtape();
     }
 
-    private ArrayList<CrewListItem> convertCrewToListItems(){
+    private ArrayList<CrewListItem> convertCrewToListItems() {
         ArrayList<CrewListItem> crewListItems = new ArrayList<>();
         List<String> crewNames;
         crewNames = getEtape().getCrew();
-        for (int i = 0; i < crewNames.size(); i++){
+        for (int i = 0; i < crewNames.size(); i++) {
             CrewListItem crewListItem = new CrewListItem(crewNames.get(i));
             crewListItems.add(crewListItem);
         }
         return crewListItems;
     }
 
-    private String convertCrewListToJson(){
+    private String convertCrewListToJson() {
         ArrayList<CrewListItem> crewListItems = convertCrewToListItems();
         Gson gson = new Gson();
         return gson.toJson(crewListItems);
     }
 
-    private String getSkipperName(){
+    private String getSkipperName() {
         Etape etape = getEtape();
         return etape.getSkipper();
     }
-    
+
     @Override
     public void onSpinnerItemSelected(int position) {
         pager.setCurrentItem(position, true);
     }
-    
+
 
 }
