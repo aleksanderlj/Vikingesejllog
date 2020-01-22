@@ -56,7 +56,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_note_details);
+        setContentView(R.layout.note_activity_notedetails);
         vindBox = findViewById(R.id.vindBox);
         GPSBox = findViewById(R.id.GPSBox);
         clockBox = findViewById(R.id.clockBox);

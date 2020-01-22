@@ -1,4 +1,4 @@
-package com.example.vikingesejllog.etape;
+package com.example.vikingesejllog.etape.crew;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -28,7 +28,7 @@ public class AddCrewFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState){
-        crewView = i.inflate(R.layout.addcrew_fragment, container, false);
+        crewView = i.inflate(R.layout.note_fragment_addcrew, container, false);
 
         crewMemberName = crewView.findViewById(R.id.crewMemberNameEditText);
 

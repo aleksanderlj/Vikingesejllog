@@ -12,16 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
-import com.example.vikingesejllog.etape.CreateEtape;
-import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.model.Note;
-import com.example.vikingesejllog.other.DatabaseBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import io.sentry.Sentry;
 
@@ -41,7 +34,7 @@ public class NoteListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.note_fragment_notelist, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.note_fragment_recyclerview, container, false);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.noteRecyclerView);
         recyclerView.setHasFixedSize(true);

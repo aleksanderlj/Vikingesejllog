@@ -25,7 +25,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".other.AppInfoActivity"></activity>
-        <activity android:name=".etape.CrewListViewOnly" />
+        <activity android:name=".etape.crew.CrewListViewOnly" />
         <activity
             android:name=".note.NoteDetails"
             android:screenOrientation="portrait" />
@@ -39,7 +39,7 @@
             android:name=".note.CreateNote"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".etape.CrewList"
+            android:name=".etape.crew.CrewList"
             android:screenOrientation="portrait" />
         <activity
             android:name=".togt.TogtList"

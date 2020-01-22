@@ -17,7 +17,7 @@ public class NoteDetailsTopFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.note_details_fragment_top, container, false);
+        return inflater.inflate(R.layout.note_fragment_notedetails_top, container, false);
     }
 
     public void updateTextView(String text){

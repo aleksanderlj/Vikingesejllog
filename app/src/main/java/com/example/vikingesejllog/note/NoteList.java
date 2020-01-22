@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,8 +29,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.etape.CreateEtape;
-import com.example.vikingesejllog.etape.CrewListItem;
-import com.example.vikingesejllog.etape.CrewListViewOnly;
+import com.example.vikingesejllog.etape.crew.CrewListItem;
+import com.example.vikingesejllog.etape.crew.CrewListViewOnly;
 import com.example.vikingesejllog.etape.EtapeTopFragment;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
@@ -71,7 +70,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.etape_activity_list);
+        setContentView(R.layout.etape_activity_pager);
 
         db = DatabaseBuilder.get(this);
         ActivityCompat.requestPermissions(NoteList.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);

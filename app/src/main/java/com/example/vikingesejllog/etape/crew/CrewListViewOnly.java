@@ -1,4 +1,4 @@
-package com.example.vikingesejllog.etape;
+package com.example.vikingesejllog.etape.crew;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.vikingesejllog.R;
+import com.example.vikingesejllog.etape.crew.CrewListAdapter;
+import com.example.vikingesejllog.etape.crew.CrewListItem;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
