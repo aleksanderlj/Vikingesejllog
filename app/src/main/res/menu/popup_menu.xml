@@ -15,4 +15,13 @@
         android:id="@+id/exporter_csv"
         android:title="Exporter csv"
         />
+
+    <item android:title="Information">
+        <menu>
+            <item
+                android:id="@+id/app_info"
+                android:title="Gruppemedlemmer"
+                />
+        </menu>
+    </item>
 </menu>

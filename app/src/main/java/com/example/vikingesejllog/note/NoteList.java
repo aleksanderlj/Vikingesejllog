@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.model.EtapeWithNotes;
+import com.example.vikingesejllog.other.AppInfoActivity;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 import com.example.vikingesejllog.other.ExportCsv;
 import com.google.android.material.navigation.NavigationView;
@@ -69,6 +71,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
         navigationView = findViewById(R.id.nav_view);
         prevButton = findViewById(R.id.prevButton);
         nextButton = findViewById(R.id.nextButton);
+
         prevButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
         findViewById(R.id.menu_button).setOnClickListener(this);
@@ -163,6 +166,9 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                 case R.id.exporter_csv:
                     ExportCsv.export(this, togt);
                     return true;
+                case R.id.app_info:
+                    Intent intent = new Intent(this,AppInfoActivity.class);
+                    startActivity(intent);
             }
             mDrawerLayout.closeDrawer(GravityCompat.END);
             return true;

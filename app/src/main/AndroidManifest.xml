@@ -24,7 +24,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".etape.CrewListViewOnly"></activity>
+        <activity android:name=".other.AppInfoActivity"></activity>
+        <activity android:name=".etape.CrewListViewOnly" />
         <activity
             android:name=".note.NoteDetails"
             android:screenOrientation="portrait" />
