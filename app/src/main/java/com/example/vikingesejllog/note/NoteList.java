@@ -180,36 +180,40 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                     ExportCsv.export(this, togt);
                     return true;
                 case R.id.mob:
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        Toast.makeText(this, "Appen skal have GPS adgang for at logge MOB", Toast.LENGTH_LONG).show();
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                    } else {
+                        Note mobNote = Note.GetEmptyNote();
+                        SimpleLocation location;
+                        MyGPS gps = new MyGPS(this);
+                        location = gps.getLocation();
+                        location.beginUpdates();
+                        location = gps.getLocation();
+                        location.endUpdates();
 
-                    Note mobNote = Note.GetEmptyNote();
-                    SimpleLocation location;
-                    MyGPS gps = new MyGPS(this);
-                    location = gps.getLocation();
-                    location.beginUpdates();
-                    location = gps.getLocation();
-                    location.endUpdates();
+                        String gpsData = "LAT: " + String.format(Locale.US, "%.2f", location.getLatitude()) + "\n" +
+                                "LON: " + String.format(Locale.US, "%.2f", location.getLongitude());
 
-                    String gpsData = "LAT: " + String.format(Locale.US, "%.2f", location.getLatitude()) + "\n" +
-                            "LON: " + String.format(Locale.US, "%.2f", location.getLongitude());
+                        SimpleDateFormat clock = new SimpleDateFormat("HH.mm", Locale.getDefault());
+                        String time = clock.format(new Date());
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss", Locale.getDefault());
+                        String fileName = sdf.format(new Date());
 
-                    SimpleDateFormat clock = new SimpleDateFormat("HH.mm", Locale.getDefault());
-                    String time = clock.format(new Date());
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss", Locale.getDefault());
-                    String fileName = sdf.format(new Date());
+                        mobNote.setEtape_id(etaper.get(pager.getCurrentItem()).etape.getEtape_id());
+                        mobNote.setComment("MOB");
+                        mobNote.setHasComment(true);
+                        mobNote.setTime(time);
+                        mobNote.setGpsLoc(gpsData);
+                        mobNote.setFileName(fileName);
 
-                    mobNote.setEtape_id(etaper.get(pager.getCurrentItem()).etape.getEtape_id());
-                    mobNote.setComment("MOB");
-                    mobNote.setHasComment(true);
-                    mobNote.setTime(time);
-                    mobNote.setGpsLoc(gpsData);
-                    mobNote.setFileName(fileName);
-
-                    Executors.newSingleThreadExecutor().execute(() -> {
-                        db.noteDAO().insert(mobNote);
-                        updateEtapeList(pager.getCurrentItem());
-                    });
-                    if (mDrawerLayout.isDrawerOpen(GravityCompat.END))
-                        mDrawerLayout.closeDrawer(GravityCompat.END);
+                        Executors.newSingleThreadExecutor().execute(() -> {
+                            db.noteDAO().insert(mobNote);
+                            updateEtapeList(pager.getCurrentItem());
+                        });
+                        if (mDrawerLayout.isDrawerOpen(GravityCompat.END))
+                            mDrawerLayout.closeDrawer(GravityCompat.END);
+                    }
                     return true;
                 case R.id.app_info:
                     Intent intent = new Intent(this, AppInfoActivity.class);
