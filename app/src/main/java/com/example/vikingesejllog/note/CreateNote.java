@@ -30,21 +30,15 @@ import androidx.core.content.FileProvider;
 
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
-import com.example.vikingesejllog.etape.CrewListItem;
-import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.note.dialogs.NoteDialog;
 import com.example.vikingesejllog.note.dialogs.NoteDialogComment;
 import com.example.vikingesejllog.note.dialogs.NoteDialogListener;
 import com.example.vikingesejllog.note.dialogs.NoteDialogNumberPicker;
 import com.example.vikingesejllog.other.DatabaseBuilder;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
-import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Executors;
@@ -185,6 +179,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         audioFile = new File(audioFolder + "/" + fileName + ".mp3");
         //Gør mappen for billeder klar:
         imageFolder = new File(Environment.getExternalStorageDirectory() + "/Sejllog/Billedenoter/");
+        //Ny billedfil der kan laves til en Uri efterfølgende:
+        imageFile = new File(imageFolder + "/" + fileName + ".jpg");
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
     }
@@ -544,15 +540,16 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length == 0) return;
         switch (requestCode){
             case REQUEST_RECORD_AUDIO_PERMISSION:
                 if (!permissionToRecordAccepted){
-                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;}
+                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;}
+                break;
             case REQUEST_CAMERA_PERMISSION:
                 if (!permissionToCamera){
-                permissionToCamera = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;}
+                permissionToCamera = grantResults[0] == PackageManager.PERMISSION_GRANTED;}
+                break;
             case REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION:
                 if (!permissionToWriteStorage){
                 permissionToWriteStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;}
@@ -587,11 +584,11 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
         super.onActivityResult(REQUEST_IMAGE_CAPTURE, resultCode, data);
 
         if (resultCode == RESULT_OK) { //Så billedet kun vises, hvis brugeren trykke OK og ikke bare back-button
-            Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_SHORT).show();
 
             //Gemmer billedet som et bitmap ud fra imageFile filen, således billedet også kan vises i appen.
             Bitmap bitmap = BitmapFactory.decodeFile(imageFile.toString());
             if (bitmap != null) {
+                Toast.makeText(CreateNote.this, "Det originale billede blev gemt i mappen: " + imageFolder, Toast.LENGTH_SHORT).show();
                 savedPicture.setImageBitmap(bitmap);
                     //Er nødvendigt da nogen telefoner roterer billedet forkert.. som f.eks. Samsung....
                     if (bitmap.getHeight() < bitmap.getWidth()) {
@@ -601,11 +598,16 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                 savedPicture.setVisibility(View.VISIBLE);
                 savedPicture.setOnTouchListener(this);
                 savedPictureZoomed.setImageBitmap(bitmap);
+            } if (bitmap == null){
+                // Er nødt til at oplyse brugeren om dette, grundet Samsung telefoner crasher ved godkendelse af billedet, hvis preview er i landscape...
+                Toast.makeText(CreateNote.this, "Godkend KUN billedet vandret ellers slettes noten!", Toast.LENGTH_LONG).show();
             }
+        } else if (resultCode == RESULT_CANCELED){
+            Toast.makeText(CreateNote.this, "Billedet blev ikke gemt", Toast.LENGTH_SHORT).show();
         }
     }
 
-    //Zoom ind på billede bitmap ved at røre det:
+        //Zoom ind på billede bitmap ved at røre det:
     @Override
     public boolean onTouch(View savedPicture, MotionEvent event) {
     /*Zoomer ind på billedet, hvis brugeren rør ved det, og zoomer ud igen,
