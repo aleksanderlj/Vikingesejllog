@@ -8,7 +8,6 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.Togt;
 
 import java.util.List;

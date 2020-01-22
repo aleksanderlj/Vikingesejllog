@@ -36,32 +36,29 @@ public class NoteListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.note_fragment_recyclerview, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.noteRecyclerView);
+        recyclerView = view.findViewById(R.id.noteRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         adapter = new NoteListAdapter(etape.getNoteList(), getActivity());
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnItemClickListener(new NoteListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                // Følgende kode henter variable fra note objektet der trykkes på, og sender dem til en NoteDetails aktivitet.
-                Intent intent = new Intent(getActivity(), NoteDetails.class);
-                Note note = etape.getNoteList().get(position);
-                try {
-                    intent.putExtra("noteId", note.getNote_id());
-                    intent.putExtra("fileName", note.getFileName());
-                    intent.putExtra("noteNumber", (position + 1));
-                    intent.putExtra("noteCount", etape.getNoteList().size());
-                } catch (Exception e){
-                    Sentry.capture(e);
-                    e.printStackTrace();
-                }
+        adapter.setOnItemClickListener(position -> {
+            // Følgende kode henter variable fra note objektet der trykkes på, og sender dem til en NoteDetails aktivitet.
+            Intent intent = new Intent(getActivity(), NoteDetails.class);
+            Note note = etape.getNoteList().get(position);
+            try {
+                intent.putExtra("noteId", note.getNote_id());
+                intent.putExtra("fileName", note.getFileName());
+                intent.putExtra("noteNumber", (position + 1));
+                intent.putExtra("noteCount", etape.getNoteList().size());
+            } catch (Exception e){
+                Sentry.capture(e);
+                e.printStackTrace();
+            }
 
-            startActivity(intent);
-        }
-        });
+        startActivity(intent);
+    });
 
         return view;
     }

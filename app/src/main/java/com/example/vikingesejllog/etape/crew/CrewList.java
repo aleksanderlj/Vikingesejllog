@@ -134,7 +134,6 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
     @Override
     public void onAttachFragment(@NonNull Fragment fragment) {
         if (fragment instanceof AddCrewFragment) {
-            AddCrewFragment addCrewFragment = (AddCrewFragment) fragment;
             ((AddCrewFragment) fragment).setCrewListener(this);
 
         }

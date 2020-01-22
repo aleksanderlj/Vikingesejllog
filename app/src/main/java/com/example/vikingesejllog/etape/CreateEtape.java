@@ -169,10 +169,13 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
 
     // Besætningsantal opdateres når en besætning haves
     private void updateCrewCountText(){
+        String s;
         if (crew.isEmpty()){
-            crewCountText.setText("Tilføj øvrig besætning");
+            s = "Tilføj øvrig besætning";
+            crewCountText.setText(s);
         } else {
-            crewCountText.setText("Antal øvrig besætning: " + crew.size());
+            s = "Antal øvrig besætning: " + crew.size();
+            crewCountText.setText(s);
         }
     }
 

@@ -3,10 +3,7 @@ package com.example.vikingesejllog.togt;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
-import com.example.vikingesejllog.TopMenu;
 import com.example.vikingesejllog.etape.CreateEtape;
 import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.note.NoteList;
@@ -23,7 +19,6 @@ import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import io.sentry.Sentry;
@@ -98,7 +93,6 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
             case R.id.newTogtButton:
                 Intent i = new Intent(this, CreateTogt.class);
                 startActivityForResult(i, 1);
-
                 break;
         }
     }

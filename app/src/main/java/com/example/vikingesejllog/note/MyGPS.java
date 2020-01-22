@@ -7,7 +7,6 @@ import im.delight.android.location.SimpleLocation;
 public class MyGPS {
 
     private Context context;
-    private SimpleLocation location;
 
 
     public MyGPS(Context context){
@@ -16,7 +15,7 @@ public class MyGPS {
 
     public SimpleLocation getLocation(){
 
-        location = new SimpleLocation(context);
+        SimpleLocation location = new SimpleLocation(context);
 
         if (!location.hasLocationEnabled())
             SimpleLocation.openSettings(context);

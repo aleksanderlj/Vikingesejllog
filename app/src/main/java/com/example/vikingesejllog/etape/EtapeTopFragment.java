@@ -1,6 +1,5 @@
 package com.example.vikingesejllog.etape;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +16,6 @@ import com.example.vikingesejllog.model.EtapeWithNotes;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.w3c.dom.Text;
-
 import java.util.Calendar;
 import java.util.Date;
 
@@ -67,14 +63,14 @@ public class EtapeTopFragment extends Fragment {
 		return view;
 	}
 	
-	public void setDestination(String from, String to) {
+	private void setDestination(String from, String to) {
 		TextView fromTV = getView().findViewById(R.id.etape_from);
 		TextView toTV = getView().findViewById(R.id.etape_to);
 		fromTV.setText(from);
 		toTV.setText(to);
 	}
 	
-	public void setTime(Date date) {
+	private void setTime(Date date) {
 		TextView tv = getView().findViewById(R.id.etape_date);
 		
 		if (date.getTime() != 0L) {

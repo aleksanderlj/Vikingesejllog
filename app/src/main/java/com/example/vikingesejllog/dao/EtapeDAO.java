@@ -10,7 +10,6 @@ import androidx.room.Update;
 
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.EtapeWithNotes;
-import com.example.vikingesejllog.model.Note;
 
 import java.util.List;
 

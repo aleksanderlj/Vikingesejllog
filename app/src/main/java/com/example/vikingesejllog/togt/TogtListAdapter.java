@@ -1,10 +1,8 @@
 package com.example.vikingesejllog.togt;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +17,6 @@ import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -83,18 +80,15 @@ public class TogtListAdapter extends RecyclerView.Adapter<TogtListAdapter.ViewHo
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            departure = (TextView) itemView.findViewById(R.id.togtAfgang);
-            name = (TextView) itemView.findViewById(R.id.togtName);
-            togtDate = (TextView) itemView.findViewById(R.id.togtDato);
+            departure = itemView.findViewById(R.id.togtAfgang);
+            name = itemView.findViewById(R.id.togtName);
+            togtDate = itemView.findViewById(R.id.togtDato);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null){
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION){
-                            listener.onItemClick(position);
-                        }
+            itemView.setOnClickListener((v) -> {
+                if (listener != null){
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION){
+                        listener.onItemClick(position);
                     }
                 }
             });

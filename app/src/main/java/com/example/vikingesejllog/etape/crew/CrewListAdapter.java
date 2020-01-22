@@ -16,12 +16,10 @@ import java.util.List;
 public class CrewListAdapter extends RecyclerView.Adapter<CrewListAdapter.CrewViewHolder> {
 
     private List<CrewListItem> crewList;
-    private Context context;
     private OnItemClickListener listener;
 
-    public CrewListAdapter(List<CrewListItem> crewList, Context context) {
+    public CrewListAdapter(List<CrewListItem> crewList) {
         this.crewList = crewList;
-        this.context = context;
     }
 
     public interface OnItemClickListener{
@@ -68,16 +66,13 @@ public class CrewListAdapter extends RecyclerView.Adapter<CrewListAdapter.CrewVi
 
             crewMember = itemView.findViewById(R.id.crewMember);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                   if (listener != null){
-                       int position = getAdapterPosition();
-                       if (position != RecyclerView.NO_POSITION){
-                           listener.onItemClick(position);
-                       }
+            itemView.setOnClickListener((v) -> {
+               if (listener != null){
+                   int position = getAdapterPosition();
+                   if (position != RecyclerView.NO_POSITION){
+                       listener.onItemClick(position);
                    }
-                }
+               }
             });
 
         }

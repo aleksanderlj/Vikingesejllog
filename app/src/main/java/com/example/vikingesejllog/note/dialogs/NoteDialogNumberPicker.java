@@ -4,18 +4,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.example.vikingesejllog.R;
-import com.google.android.gms.vision.text.Line;
 
 import java.util.ArrayList;
 import java.util.List;

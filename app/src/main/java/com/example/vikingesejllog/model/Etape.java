@@ -1,18 +1,12 @@
 package com.example.vikingesejllog.model;
 
-import androidx.annotation.RequiresPermission;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import androidx.room.Relation;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static androidx.room.ForeignKey.CASCADE;
 
 @Entity
 public class Etape {

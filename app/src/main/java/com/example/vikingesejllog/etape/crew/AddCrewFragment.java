@@ -23,8 +23,8 @@ public class AddCrewFragment extends Fragment implements View.OnClickListener{
     private Button acceptNameButton, cancelButton;
     private EditText crewMemberName;
     private View crewView;
-    CrewListener callback;
-    SharedPreferences toastFirstTime;
+    private CrewListener callback;
+    private SharedPreferences toastFirstTime;
 
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState){

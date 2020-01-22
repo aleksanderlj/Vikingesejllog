@@ -420,7 +420,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             int currentRecordTime = 0;
 
                             public void run() {
-                                String currentRecordTimeString = String.format("%02d:%02d",
+                                String currentRecordTimeString = String.format(Locale.US, "%02d:%02d",
                                         currentRecordTime / 60, currentRecordTime % 60);
 
                                 if (currentRecordTime++ <= 100000) {
@@ -492,7 +492,7 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
                             int currentPlayTime = 0;
 
                             public void run() {
-                                String currentPlayTimeString = String.format("%02d:%02d",
+                                String currentPlayTimeString = String.format(Locale.US, "%02d:%02d",
                                         currentPlayTime / 60, currentPlayTime % 60);
 
                                 if (currentPlayTime++ <= 100000 && audioPlayer.isAudioPlaying()) {

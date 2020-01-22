@@ -308,10 +308,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
             Executors.newSingleThreadExecutor().execute(() -> {
                 if (requestCode == ETAPE_CODE) {
                     updateEtapeList(LASTETAPE);
-                    runOnUiThread(() -> {
-
-                        dotNavigation.addDot(etaper.size() - 1);
-                    });
+                    runOnUiThread(() -> dotNavigation.addDot(etaper.size() - 1));
                 } else {
                     updateEtapeList(savedPos);
                     ((NotePagerAdapter) adapter).notifyNoteDataSetChanged(pager.getCurrentItem());

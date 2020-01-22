@@ -25,6 +25,7 @@ import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 
 import java.io.File;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 
 import io.sentry.Sentry;
@@ -215,7 +216,7 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
                 int currentPlayTime = 0;
 
                 public void run() {
-                    String currentPlayTimeString = String.format("%02d:%02d",
+                    String currentPlayTimeString = String.format(Locale.US, "%02d:%02d",
                             currentPlayTime/60, currentPlayTime % 60);
 
                     if (currentPlayTime++ <= 100000  && audioPlayer.isAudioPlaying()) {

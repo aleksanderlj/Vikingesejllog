@@ -5,9 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Environment;
-import android.provider.ContactsContract;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -15,7 +13,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.example.vikingesejllog.AppDatabase;
-import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.EtapeWithNotes;
 import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.model.Togt;
@@ -23,9 +20,7 @@ import com.example.vikingesejllog.model.Togt;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -54,7 +49,7 @@ public class ExportCsv {
                     BufferedWriter bw = new BufferedWriter(osw);
 
                     // Togt info
-                    String s = String.format("TOGT:,Navn,Fra,Dato,,,,,");
+                    String s = "TOGT:,Navn,Fra,Dato,,,,,";
                     bw.write(s);
                     bw.newLine();
 

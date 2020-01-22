@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import io.sentry.Sentry;
@@ -58,11 +59,10 @@ public class AudioPlayer extends AppCompatActivity {
     public String returnDurationString(){
         //Formaterer længden på optagelsen:
         int audioDurationMilliseconds = audioPlayer.getDuration();
-        String audioDuration = String.format("%02d:%02d",
+        return String.format(Locale.US, "%02d:%02d",
                 TimeUnit.MILLISECONDS.toMinutes(audioDurationMilliseconds),
                 TimeUnit.MILLISECONDS.toSeconds(audioDurationMilliseconds) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(audioDurationMilliseconds)));
-        return audioDuration;
     }
 
 
