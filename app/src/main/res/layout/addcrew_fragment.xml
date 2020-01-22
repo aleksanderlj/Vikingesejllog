@@ -64,7 +64,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:text="@string/accepter"
+        android:text="acceptér"
         android:textColor="@color/colorLightBlue"
         app:layout_constraintBottom_toBottomOf="@+id/cancelNameButton"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
