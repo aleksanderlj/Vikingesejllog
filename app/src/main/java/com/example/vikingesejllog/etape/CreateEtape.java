@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -17,7 +16,6 @@ import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
 import com.example.vikingesejllog.model.EtapeWithNotes;
-import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.note.NoteList;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 import com.google.gson.Gson;
@@ -37,7 +35,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
     AppDatabase db;
     Date departure;
     TextView crewCountText;
-    EditText skipperText;
+    EditText skipperText, departureText;
     long etapeId;
     EtapeWithNotes lastEtapeWithNotes;
     Etape lastEtape;
@@ -51,6 +49,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         departure = new Date(0L);
         crewCountText = findViewById(R.id.createEtapeCrewCountText);
         skipperText = findViewById(R.id.skipperNameEditText);
+        departureText = findViewById(R.id.createEtapeDepartureText);
 
         findViewById(R.id.createEtapeDepartureDateBox).setOnClickListener(this);
         findViewById(R.id.createEtapeCrewCountBox).setOnClickListener(this);
@@ -61,7 +60,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         etapeId = intent.getLongExtra("etape_id", -1);
 
         if (etapeId != -1){
-            getCrewFromEtapeId();
+            getDataFromLastEtape();
         }
 
         updateCrewCountText();
@@ -175,7 +174,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
 
     // Henter sidste etape i togt fra NoteList klassen, når en ny etape oprettes.
     // Herfra kan besætningslisten fra sidste etape autofyldes i den nye etape besætningsliste.
-    private void getCrewFromEtapeId(){
+    private void getDataFromLastEtape(){
         Executors.newSingleThreadExecutor().execute(() -> {
             lastEtapeWithNotes = db.etapeDAO().getById(etapeId);
             lastEtape = lastEtapeWithNotes.getEtape();
@@ -188,9 +187,15 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
             }
             crew = crewConvertedToItems;
 
-            // Autofyld skipper navn med skipper fra sidste etape
-            skipperText.setText(lastEtape.getSkipper());
-            updateCrewCountText();
+            runOnUiThread(() -> {
+                updateCrewCountText();
+
+                // Autofyld skipper navn med skipper fra sidste etape
+                skipperText.setText(lastEtape.getSkipper());
+
+                // Autofyld afgang med destination fra sidste etape
+                departureText.setText(lastEtape.getEnd());
+            });
         });
     }
 }
