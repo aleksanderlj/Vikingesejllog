@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
+import com.example.vikingesejllog.model.EtapeWithNotes;
+import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.note.NoteList;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 import com.google.gson.Gson;
@@ -25,6 +27,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.Executors;
 
 public class CreateEtape extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
@@ -33,8 +36,11 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
     ArrayList<String> crewNames;
     AppDatabase db;
     Date departure;
-    ImageView crewButton;
     TextView crewCountText;
+    EditText skipperText;
+    long etapeId;
+    EtapeWithNotes lastEtapeWithNotes;
+    Etape lastEtape;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,11 +50,19 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.etape_activity_createetape);
         departure = new Date(0L);
         crewCountText = findViewById(R.id.createEtapeCrewCountText);
+        skipperText = findViewById(R.id.skipperNameEditText);
 
         findViewById(R.id.createEtapeDepartureDateBox).setOnClickListener(this);
         findViewById(R.id.createEtapeCrewCountBox).setOnClickListener(this);
         findViewById(R.id.createEtapeAccepterBtn).setOnClickListener(this);
         findViewById(R.id.createEtapeAfbrydBtn).setOnClickListener(this);
+
+        Intent intent = getIntent();
+        etapeId = intent.getLongExtra("etape_id", -1);
+
+        if (etapeId != -1){
+            getCrewFromEtapeId();
+        }
 
         updateCrewCountText();
     }
@@ -58,10 +72,11 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         switch (v.getId()) {
             case R.id.createEtapeCrewCountBox:
                 Intent i = new Intent(this, CrewList.class);
+
+                // Overfør en liste af CrewListItems, så besætning kan redigeres efter den er oprettet.
                 Gson gson = new Gson();
                 String json = gson.toJson(crew);
                 i.putExtra("crew", json);
-
                 startActivityForResult(i, 1);
 
                 break;
@@ -80,7 +95,6 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
                 EditText skipper = findViewById(R.id.skipperNameEditText);
                 EditText start = findViewById(R.id.createEtapeDepartureText);
                 EditText end = findViewById(R.id.createEtapeArrivalText);
-//                EditText date = findViewById(R.id.createEtapeDepartureDateBox);
 
                 crewNames = crewItemsToString(crew);
 
@@ -130,9 +144,8 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // Hent crewListen fra CrewList klassen når besætning tilføjes og bruger vender tilbage til CreateEtape.
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-
-
             String json = data.getStringExtra("crewList");
             Gson gson = new Gson();
             Type type = new TypeToken<ArrayList<CrewListItem>>() {
@@ -142,6 +155,7 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         updateCrewCountText();
     }
 
+    // Converterer en liste af CrewlistItem til en liste af Strings.
     private ArrayList<String> crewItemsToString(ArrayList<CrewListItem> crewListItems) {
         ArrayList<String> crewNames = new ArrayList<>();
         for (int i = 0; i < crewListItems.size(); i++) {
@@ -150,11 +164,33 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         return crewNames;
     }
 
+    // Besætningsantal opdateres når en besætning haves
     private void updateCrewCountText(){
         if (crew.isEmpty()){
             crewCountText.setText("Tilføj øvrig besætning");
         } else {
             crewCountText.setText("Antal øvrig besætning: " + crew.size());
         }
+    }
+
+    // Henter sidste etape i togt fra NoteList klassen, når en ny etape oprettes.
+    // Herfra kan besætningslisten fra sidste etape autofyldes i den nye etape besætningsliste.
+    private void getCrewFromEtapeId(){
+        Executors.newSingleThreadExecutor().execute(() -> {
+            lastEtapeWithNotes = db.etapeDAO().getById(etapeId);
+            lastEtape = lastEtapeWithNotes.getEtape();
+            List<String> lastEtapeCrewNames;
+            lastEtapeCrewNames = lastEtape.getCrew();
+            ArrayList<CrewListItem> crewConvertedToItems = new ArrayList<>();
+            for (int i = 0; i < lastEtapeCrewNames.size(); i++){
+                CrewListItem crewListItem = new CrewListItem(lastEtapeCrewNames.get(i));
+                crewConvertedToItems.add(crewListItem);
+            }
+            crew = crewConvertedToItems;
+
+            // Autofyld skipper navn med skipper fra sidste etape
+            skipperText.setText(lastEtape.getSkipper());
+            updateCrewCountText();
+        });
     }
 }
