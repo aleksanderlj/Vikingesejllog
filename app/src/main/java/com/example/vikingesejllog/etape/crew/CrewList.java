@@ -43,7 +43,7 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
 
         getCrewFromJson();
 
-        listAdapter = new CrewListAdapter(crewListItems, this);
+        listAdapter = new CrewListAdapter(crewListItems);
         recyclerView.setAdapter(listAdapter);
 
         acceptCrewButton = findViewById(R.id.acceptCrewButton);
