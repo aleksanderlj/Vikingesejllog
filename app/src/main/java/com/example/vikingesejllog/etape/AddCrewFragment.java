@@ -1,7 +1,9 @@
 package com.example.vikingesejllog.etape;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ public class AddCrewFragment extends Fragment implements View.OnClickListener{
     private EditText crewMemberName;
     private View crewView;
     CrewListener callback;
+    SharedPreferences toastFirstTime;
 
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState){
@@ -47,6 +50,11 @@ public class AddCrewFragment extends Fragment implements View.OnClickListener{
 
                 if(!crewMemberName.getText().toString().isEmpty()) {
                     callback.onMemberSelected(crewMemberName.getText().toString());
+                    toastFirstTime = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    if (!toastFirstTime.getBoolean("firstTime", false)){ // Oplyser brugeren om at han kan swipe besætningsmedlemmer væk for at slette dem - KUN FØRSTE GANG!
+                        Toast.makeText(getActivity(), "Swipe for at slette besætningsmedlemmer", Toast.LENGTH_LONG).show();
+                        toastFirstTime.edit().putBoolean("firstTime", true).apply();
+                    }
                 }else{
                     Toast toast = Toast.makeText(getActivity(), "Indtast et navn",Toast.LENGTH_SHORT);
                     toast.show();

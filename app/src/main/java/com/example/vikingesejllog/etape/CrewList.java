@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +30,6 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
     private RecyclerView recyclerView;
     private CrewListAdapter listAdapter;
     ArrayList<CrewListItem> crewListItems;
-    SharedPreferences toastFirstTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +52,6 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
 
         newCrewButton = findViewById(R.id.newCrewButton);
         newCrewButton.setOnClickListener(this);
-
-        toastFirstTime = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!toastFirstTime.getBoolean("firstTime", false)){ // Oplyser brugeren om at han kan swipe besætningsmedlemmer væk for at slette dem - KUN FØRSTE GANG!
-        Toast.makeText(CrewList.this, "Swipe for at slette besætningsmedlemmer", Toast.LENGTH_LONG).show();
-        toastFirstTime.edit().putBoolean("firstTime", true).apply();
-        }
 
 
 
