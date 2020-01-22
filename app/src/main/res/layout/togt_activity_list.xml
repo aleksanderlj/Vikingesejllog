@@ -53,12 +53,4 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/topMenuFragment"></androidx.recyclerview.widget.RecyclerView>
 
-    <Button
-        android:id="@+id/delete_db"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="fuck my shit up fam"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

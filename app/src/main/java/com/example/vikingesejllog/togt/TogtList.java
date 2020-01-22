@@ -58,7 +58,6 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
 		updateList();
 
         findViewById(R.id.newTogtButton).setOnClickListener(this);
-        findViewById(R.id.delete_db).setOnClickListener(this);
     }
 
     public void updateList(){
@@ -100,10 +99,6 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
                 Intent i = new Intent(this, CreateTogt.class);
                 startActivityForResult(i, 1);
 
-                break;
-
-            case R.id.delete_db:
-                Executors.newSingleThreadExecutor().execute(() -> db.clearAllTables());
                 break;
         }
     }
