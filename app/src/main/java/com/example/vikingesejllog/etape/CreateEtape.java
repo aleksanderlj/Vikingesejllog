@@ -59,6 +59,8 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         Intent intent = getIntent();
         etapeId = intent.getLongExtra("etape_id", -1);
 
+        // Henter kun data fra sidste etape, hvis der blev sendt nogen over igennem intent.
+        // Etape id kan aldrig være -1, dvs if-statement her skippes kun ved default value i getLongExtra
         if (etapeId != -1){
             getDataFromLastEtape();
         }

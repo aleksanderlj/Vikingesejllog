@@ -2,7 +2,7 @@
     <string name="app_name">C1 Vikingesejllog</string>
     <string name="godkend">Godkend</string>
     <string name="skriv_navn_her">Skriv navn her</string>
-    <string name="accepter">Accepter</string>
+    <string name="acceptér">Accepter</string>
     <string name="afbryd">Afbryd</string>
 
 </resources>
