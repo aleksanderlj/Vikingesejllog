@@ -137,6 +137,11 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                 case R.id.ny_etape:
                     Intent newEtapeIntent = new Intent(NoteList.this, CreateEtape.class);
                     newEtapeIntent.putExtra("togt_id", togt.getTogt_id());
+
+                    // Hent sidste etape i togten, for autofyld af crew i CreateEtape.
+                    Etape lastEtape = etaper.get(etaper.size()-1).getEtape();
+                    newEtapeIntent.putExtra("etape_id", lastEtape.getEtape_id());
+
                     startActivityForResult(newEtapeIntent, ETAPE_CODE);
                     mDrawerLayout.closeDrawer(GravityCompat.END);
                     return true;

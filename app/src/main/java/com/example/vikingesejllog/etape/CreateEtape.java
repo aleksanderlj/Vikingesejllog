@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.vikingesejllog.AppDatabase;
 import com.example.vikingesejllog.R;
 import com.example.vikingesejllog.model.Etape;
+import com.example.vikingesejllog.model.EtapeWithNotes;
+import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.note.NoteList;
 import com.example.vikingesejllog.other.DatabaseBuilder;
 import com.google.gson.Gson;
@@ -25,6 +27,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.Executors;
 
 public class CreateEtape extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
@@ -33,8 +36,11 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
     ArrayList<String> crewNames;
     AppDatabase db;
     Date departure;
-    ImageView crewButton;
     TextView crewCountText;
+    EditText skipperText;
+    long etapeId;
+    EtapeWithNotes lastEtapeWithNotes;
+    Etape lastEtape;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,11 +50,19 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.etape_activity_createetape);
         departure = new Date(0L);
         crewCountText = findViewById(R.id.createEtapeCrewCountText);
+        skipperText = findViewById(R.id.skipperNameEditText);
 
         findViewById(R.id.createEtapeDepartureDateBox).setOnClickListener(this);
         findViewById(R.id.createEtapeCrewCountBox).setOnClickListener(this);
         findViewById(R.id.createEtapeAccepterBtn).setOnClickListener(this);
         findViewById(R.id.createEtapeAfbrydBtn).setOnClickListener(this);
+
+        Intent intent = getIntent();
+        etapeId = intent.getLongExtra("etape_id", -1);
+
+        if (etapeId != -1){
+            getCrewFromEtapeId();
+        }
 
         updateCrewCountText();
     }
@@ -156,5 +170,24 @@ public class CreateEtape extends AppCompatActivity implements View.OnClickListen
         } else {
             crewCountText.setText("Antal øvrig besætning: " + crew.size());
         }
+    }
+
+    private void getCrewFromEtapeId(){
+        Executors.newSingleThreadExecutor().execute(() -> {
+            lastEtapeWithNotes = db.etapeDAO().getById(etapeId);
+            lastEtape = lastEtapeWithNotes.getEtape();
+            List<String> lastEtapeCrewNames;
+            lastEtapeCrewNames = lastEtape.getCrew();
+            ArrayList<CrewListItem> crewConvertedToItems = new ArrayList<>();
+            for (int i = 0; i < lastEtapeCrewNames.size(); i++){
+                CrewListItem crewListItem = new CrewListItem(lastEtapeCrewNames.get(i));
+                crewConvertedToItems.add(crewListItem);
+            }
+            crew = crewConvertedToItems;
+
+            // Autofyld skipper navn med skipper fra sidste etape
+            skipperText.setText(lastEtape.getSkipper());
+            updateCrewCountText();
+        });
     }
 }
