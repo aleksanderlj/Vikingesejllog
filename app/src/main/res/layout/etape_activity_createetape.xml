@@ -7,7 +7,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/createEtapeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Opret etape"
@@ -226,7 +225,6 @@
         app:srcCompat="@drawable/dotted_line" />
 
     <ImageView
-        android:id="@+id/skipperUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/createEtapeSkipperBox"
@@ -235,7 +233,6 @@
         app:srcCompat="@drawable/underline_darkgray" />
 
     <ImageView
-        android:id="@+id/departureDestinationUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDestinationBox"
@@ -244,7 +241,6 @@
         app:srcCompat="@drawable/underline_darkgray" />
 
     <ImageView
-        android:id="@+id/departureDateUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/createEtapeDepartureDateBox"
@@ -253,7 +249,6 @@
         app:srcCompat="@drawable/underline_darkgray" />
 
     <ImageView
-        android:id="@+id/crewCountUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/createEtapeCrewCountBox"

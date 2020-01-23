@@ -304,7 +304,6 @@
         app:layout_constraintTop_toBottomOf="@+id/rowerCountBtn" />
 
     <ImageView
-        android:id="@+id/windspeedUnderline"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:elevation="10dp"
@@ -314,7 +313,6 @@
         app:srcCompat="@android:color/black" />
 
     <ImageView
-        android:id="@+id/sailForingUnderline"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:elevation="10dp"
@@ -324,7 +322,6 @@
         app:srcCompat="@android:color/black" />
 
     <ImageView
-        android:id="@+id/rowerCountUnderline"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:elevation="10dp"
@@ -334,7 +331,6 @@
         app:srcCompat="@android:color/black" />
 
     <ImageView
-        android:id="@+id/sailStillingUnderline"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:elevation="10dp"
@@ -344,7 +340,6 @@
         app:srcCompat="@android:color/black" />
 
     <ImageView
-        android:id="@+id/courseUnderline"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:elevation="10dp"
@@ -354,7 +349,6 @@
         app:srcCompat="@android:color/black" />
 
     <ImageView
-        android:id="@+id/commentUnderline"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:elevation="10dp"

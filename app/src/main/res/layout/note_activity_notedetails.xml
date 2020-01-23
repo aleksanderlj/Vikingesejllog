@@ -137,7 +137,6 @@
         app:layout_constraintTop_toTopOf="@+id/guideline_field3_top" />
 
     <TextView
-        android:id="@+id/vindText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="4dp"
@@ -149,7 +148,6 @@
         app:layout_constraintStart_toStartOf="@+id/vindBox" />
 
     <TextView
-        android:id="@+id/geocoordText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="4dp"
@@ -161,7 +159,6 @@
         app:layout_constraintStart_toStartOf="@+id/GPSBox" />
 
     <TextView
-        android:id="@+id/antalRoereText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="4dp"
@@ -173,7 +170,6 @@
         app:layout_constraintStart_toStartOf="@+id/antalRoereBox" />
 
     <TextView
-        android:id="@+id/sejlføringText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="4dp"
@@ -185,7 +181,6 @@
         app:layout_constraintStart_toStartOf="@+id/sejlføringBox" />
 
     <TextView
-        android:id="@+id/sejlstillingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="4dp"
@@ -197,7 +192,6 @@
         app:layout_constraintStart_toStartOf="@+id/sejlstillingBox" />
 
     <TextView
-        android:id="@+id/kursText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="4dp"
@@ -232,7 +226,6 @@
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_top" />
 
     <ImageView
-        android:id="@+id/blueClock"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginTop="20dp"
@@ -340,7 +333,6 @@
         app:srcCompat="@drawable/underline_darkgray" />
 
     <ImageView
-        android:id="@+id/windspeedUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/vindBox"
@@ -349,7 +341,6 @@
         app:srcCompat="@drawable/underline_darkgray" />
 
     <ImageView
-        android:id="@+id/sailForingUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/sejlføringBox"
@@ -358,7 +349,6 @@
         app:srcCompat="@drawable/underline_darkgray" />
 
     <ImageView
-        android:id="@+id/gpsUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/GPSBox"
@@ -367,7 +357,6 @@
         app:srcCompat="@drawable/underline_darkgray" />
 
     <ImageView
-        android:id="@+id/sailStillingUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/sejlstillingBox"
@@ -376,7 +365,6 @@
         app:srcCompat="@drawable/underline_darkgray" />
 
     <ImageView
-        android:id="@+id/rowersUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/antalRoereBox"
@@ -385,7 +373,6 @@
         app:srcCompat="@drawable/underline_darkgray" />
 
     <ImageView
-        android:id="@+id/courseUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/kursBox"
@@ -394,7 +381,6 @@
         app:srcCompat="@drawable/underline_darkgray" />
 
     <ImageView
-        android:id="@+id/commentBoxUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         android:elevation="5dp"

@@ -55,7 +55,6 @@
         app:layout_constraintGuide_percent="0.83" />
 
     <TextView
-        android:id="@+id/createTogtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Oprettelse af togt"
@@ -99,7 +98,6 @@
         app:srcCompat="@drawable/btn_create_note" />
 
     <ImageView
-        android:id="@+id/createTogtNameUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintEnd_toEndOf="@+id/createTogtNameBox"
@@ -133,7 +131,6 @@
         app:srcCompat="@drawable/btn_create_note" />
 
     <ImageView
-        android:id="@+id/createTogtDepatureUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintEnd_toEndOf="@+id/createTogtDepartureBox"
@@ -180,7 +177,6 @@
         app:layout_constraintTop_toTopOf="@+id/createTogtDepartureDateBox" />
 
     <ImageView
-        android:id="@+id/createTogtDepatureDateUnderline"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:layout_constraintEnd_toEndOf="@+id/createTogtDepartureDateBox"
