@@ -115,7 +115,6 @@
             app:autoSizeTextType="uniform" />
 
         <ImageView
-            android:id="@+id/guideline1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/etape_from_title"

@@ -12,7 +12,7 @@ import com.example.vikingesejllog.model.Note;
 import com.example.vikingesejllog.model.Togt;
 import com.example.vikingesejllog.other.Converters;
 
-@Database(entities = {Note.class, Etape.class, Togt.class}, version = 6, exportSchema = false)
+@Database(entities = {Note.class, Etape.class, Togt.class}, version = 7, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract NoteDAO noteDAO();

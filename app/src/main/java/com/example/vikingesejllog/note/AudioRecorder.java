@@ -19,7 +19,7 @@ public class AudioRecorder extends AppCompatActivity {
     MediaRecorder audioRecorder;
 
 
-    public void setupAudioRecord(String fileName) throws IOException {
+    public void setupAudioRecord(String fileName) {
 
         //fileName = et eller andet unikt navn på noten - lige nu filePath + fileName
         try {

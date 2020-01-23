@@ -1,9 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="menu_label">
-        <item name="android:background">@drawable/label_box</item>
-        <item name="android:textColor">#616161</item>
-        <item name="android:fontFamily">@font/roboto_medium</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-</resources>
+<resources></resources>
