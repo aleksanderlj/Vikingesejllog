@@ -101,7 +101,7 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
         newCrewButton.setPressed(false);
         newCrewButton.setClickable(true);
 
-        acceptCrewButton.setBackground(getResources().getDrawable(R.drawable.btn_crew_accept));
+        acceptCrewButton.setBackground(getDrawable(R.drawable.btn_crew_accept));
         acceptCrewButton.setTextColor(getResources().getColor(R.color.colorTextWhite));
         acceptCrewButton.setPressed(false);
         acceptCrewButton.setClickable(true);
@@ -113,7 +113,7 @@ public class CrewList extends AppCompatActivity implements View.OnClickListener,
         newCrewButton.setPressed(true);
         newCrewButton.setClickable(false);
 
-        acceptCrewButton.setBackground(getResources().getDrawable(R.drawable.btn_crew_accept_disabled));
+        acceptCrewButton.setBackground(getDrawable(R.drawable.btn_crew_accept_disabled));
         acceptCrewButton.setTextColor(getResources().getColor(R.color.colorDarkGray));
         acceptCrewButton.setPressed(true);
         acceptCrewButton.setClickable(false);

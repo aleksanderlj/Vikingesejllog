@@ -89,11 +89,9 @@ public class TogtList extends AppCompatActivity implements View.OnClickListener 
     
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.newTogtButton:
-                Intent i = new Intent(this, CreateTogt.class);
-                startActivityForResult(i, 1);
-                break;
+        if (v.getId() == R.id.newTogtButton){
+            Intent i = new Intent(this,CreateTogt.class);
+            startActivityForResult(i,1);
         }
     }
 	

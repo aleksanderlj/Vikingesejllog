@@ -227,7 +227,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_create_note_accepter"
-        android:onClick="confirm"
         android:text="Acceptér"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/createNoteAfbrydBtn"
