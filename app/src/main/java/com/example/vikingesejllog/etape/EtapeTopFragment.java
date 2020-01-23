@@ -93,7 +93,7 @@ public class EtapeTopFragment extends Fragment {
 		adapter.clear();
 		adapter.addAll(etapeStringList);
 		adapter.notifyDataSetChanged();
-		spinner.setSelection(etapeStringList.size() - 1, true);
+		//spinner.setSelection(etapeStringList.size() - 1, true);
 	}
 	
 	public void setEtape(int position) {
