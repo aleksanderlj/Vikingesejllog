@@ -46,7 +46,7 @@ public class EtapeTopFragment extends Fragment {
 				return view;
 			}
 		};
-		
+
 		spinner = view.findViewById(R.id.spinner);
 		spinner.setAdapter(adapter);
 		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -89,7 +89,7 @@ public class EtapeTopFragment extends Fragment {
 		etapeStringList = new ArrayList<>();
 		for (int i = 0; i < etapeList.size(); i++)
 			etapeStringList.add(etapeList.get(i).etape.getStart() + " - " + etapeList.get(i).etape.getEnd());
-		
+
 		adapter.clear();
 		adapter.addAll(etapeStringList);
 		adapter.notifyDataSetChanged();
@@ -115,5 +115,9 @@ public class EtapeTopFragment extends Fragment {
 	
 	public void setUpdateEtapeTopFrag(UpdateEtapeTopFrag callback) {
 		this.callback = callback;
+	}
+
+	public Spinner getSpinner() {
+		return spinner;
 	}
 }

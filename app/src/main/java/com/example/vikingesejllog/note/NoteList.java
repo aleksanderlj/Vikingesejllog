@@ -161,7 +161,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                     ad.setPositiveButton("Godkend", (dialog, which) -> {
                         Executors.newSingleThreadExecutor().execute(() -> {
                             db.etapeDAO().delete(etaper.get(pager.getCurrentItem()).etape);
-                            etaper.remove(etaper.get(pager.getCurrentItem()));
+                            runOnUiThread(() -> topFrag.getSpinner().setSelection(topFrag.getSpinner().getSelectedItemPosition()-1));
                             updateEtapeList(pager.getCurrentItem());
                             mDrawerLayout.closeDrawer(GravityCompat.END);
                         });
