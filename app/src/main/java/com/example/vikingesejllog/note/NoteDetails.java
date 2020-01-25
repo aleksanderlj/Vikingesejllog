@@ -83,7 +83,14 @@ public class NoteDetails extends AppCompatActivity implements View.OnClickListen
             note = db.noteDAO().getById(noteId);
             runOnUiThread(() -> {
                 vindBox.setText(note.getWindSpeed());
-                GPSBox.setText(note.getGpsLoc());
+
+                String s = "";
+                String[] gpsString = note.getGpsLoc().split("\n");
+                s += gpsString[0].substring(0, 15);
+                s += "\n";
+                s += gpsString[1].substring(0, 15);
+
+                GPSBox.setText(s);
                 clockBox.setText(note.getTime());
                 antalRoerBox.setText(note.getRowers());
                 sejlfoeringBox.setText(note.getSailForing());

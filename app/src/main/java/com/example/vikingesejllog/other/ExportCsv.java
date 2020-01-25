@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -53,7 +54,14 @@ public class ExportCsv {
                     bw.write(s);
                     bw.newLine();
 
-                    s = String.format(",%s,%s,%s,,,,,", togt.getName(), togt.getDeparture(), togt.getDepartureDate());
+                    Calendar c = Calendar.getInstance();
+                    String togtDate = "";
+                    if(togt.getDepartureDate().getTime() != 0L) {
+                        c.setTime(togt.getDepartureDate());
+                        togtDate = c.get(Calendar.DAY_OF_MONTH) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.YEAR);
+                    }
+
+                    s = String.format(",%s,%s,%s,,,,,", togt.getName(), togt.getDeparture(), togtDate);
                     bw.write(s);
                     bw.newLine();
 
@@ -72,8 +80,14 @@ public class ExportCsv {
                         bw.write(s);
                         bw.newLine();
 
+                        String etapeDate = "";
+                        if(e.etape.getDeparture().getTime() != 0L) {
+                            c.setTime(e.etape.getDeparture());
+                            etapeDate = c.get(Calendar.DAY_OF_MONTH) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.YEAR);
+                        }
+
                         s = String.format(",%s,%s,%s,\"%s\",,,,",
-                                e.etape.getStart() + " - " + e.etape.getEnd(), e.etape.getDeparture(), e.etape.getSkipper(), e.etape.getCrew().toString());
+                                e.etape.getStart() + " - " + e.etape.getEnd(), etapeDate, e.etape.getSkipper(), e.etape.getCrew().toString());
                         bw.write(s);
                         bw.newLine();
 
