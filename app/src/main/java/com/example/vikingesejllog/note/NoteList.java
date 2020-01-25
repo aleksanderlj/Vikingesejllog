@@ -191,8 +191,8 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                         location = gps.getLocation();
                         location.endUpdates();
 
-                        String gpsData = "LAT: " + String.format(Locale.US, "%.2f", location.getLatitude()) + "\n" +
-                                "LON: " + String.format(Locale.US, "%.2f", location.getLongitude());
+                        String gpsData = "LAT: " + location.getLatitude() + "\n" +
+                                "LON: " + location.getLongitude();
 
                         SimpleDateFormat clock = new SimpleDateFormat("HH.mm", Locale.getDefault());
                         String time = clock.format(new Date());
@@ -311,7 +311,7 @@ public class NoteList extends AppCompatActivity implements View.OnClickListener,
                     runOnUiThread(() -> dotNavigation.addDot(etaper.size() - 1));
                 } else {
                     updateEtapeList(savedPos);
-                    ((NotePagerAdapter) adapter).notifyNoteDataSetChanged(pager.getCurrentItem());
+                    //((NotePagerAdapter) adapter).notifyNoteDataSetChanged(pager.getCurrentItem());
                 }
             });
         }

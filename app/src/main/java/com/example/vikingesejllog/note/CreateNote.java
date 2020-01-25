@@ -275,8 +275,8 @@ public class CreateNote extends AppCompatActivity implements View.OnClickListene
     public void confirm() {
         location = gps.getLocation();
 
-        gpsData = "LAT: " + String.format(Locale.US, "%.2f", location.getLatitude()) + "\n" +
-                "LON: " + String.format(Locale.US, "%.2f", location.getLongitude());
+        gpsData = "LAT: " + location.getLatitude() + "\n" +
+                "LON: " + location.getLongitude();
 
         SimpleDateFormat clock = new SimpleDateFormat("HH.mm", Locale.getDefault());
         String time = clock.format(new Date());
